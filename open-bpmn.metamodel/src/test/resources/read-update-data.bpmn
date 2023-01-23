@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="demo" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn">
+    <bpmn2:process id="process_1" name="Default Process" processType="Public">
+        <bpmn2:task id="task_1" name="TASK-2">
+            <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_VxLtKg" isMultiple="true" name="inputTest" type="Sting">
+                <bpmn2:outgoing>DataFlowExtension_M9L5dg</bpmn2:outgoing>
+            </bpmn2:dataInputObjectProcess>
+            <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_CCIC6g" isMultiple="true" name="outTest" state="state" type="Sting">
+                <bpmn2:attribute id="DataObjectAttributeExtension_PhH0Kg" name="int" type="string">
+                    <bpmn2:incoming>DataFlowExtension_mIgbAg</bpmn2:incoming>
+                </bpmn2:attribute>
+            </bpmn2:dataOutputObjectProcess>
+            <bpmn2:dataProcessing id="DataProcessingExtension_rD03Eg" name="Data operation">
+                <bpmn2:incoming>DataFlowExtension_M9L5dg</bpmn2:incoming>
+                <bpmn2:outgoing>DataFlowExtension_mIgbAg</bpmn2:outgoing>
+            </bpmn2:dataProcessing>
+            <bpmn2:dataFlow id="DataFlowExtension_M9L5dg" sourceRef="DataInputObjectExtension_VxLtKg" targetRef="DataProcessingExtension_rD03Eg"/>
+            <bpmn2:dataFlow id="DataFlowExtension_mIgbAg" sourceRef="DataProcessingExtension_rD03Eg" targetRef="DataObjectAttributeExtension_PhH0Kg"/>
+            <bpmn2:dataInputObjectDependency id="DataInputObjectExtension_PLWVBQ" isMultiple="false" name="testRead" type="string"/>
+        </bpmn2:task>
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+        <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
+            <bpmndi:BPMNShape bpmnElement="task_1" id="BPMNShape_s6vr6Q">
+                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_VxLtKg" id="BPMNShape_o0XbtQ">
+                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_CCIC6g" id="BPMNShape_jdFROw">
+                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_PhH0Kg" id="BPMNShape_687ckg">
+                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_rD03Eg" id="BPMNShape_yr0jCg">
+                <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_M9L5dg" id="BPMNEdge_FV0JyQ"/>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_mIgbAg" id="BPMNEdge_dZHEew"/>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_PLWVBQ" id="BPMNShape_0PVveQ">
+                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

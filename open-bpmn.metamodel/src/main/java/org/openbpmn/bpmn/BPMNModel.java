@@ -1210,7 +1210,7 @@ public class BPMNModel {
             if (doc == null) {
                 logger.severe("...unable to save file - doc is null!");
             }
-
+            
             writeXml(doc, output);
         } catch (TransformerException | IOException e) {
             e.printStackTrace();

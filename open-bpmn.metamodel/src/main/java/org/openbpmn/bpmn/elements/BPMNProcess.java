@@ -105,7 +105,7 @@ public class BPMNProcess extends BPMNElement {
 
                 // check element type
                 if (BPMNModel.isActivity(child)) {
-                    this.createBPMNActivityByNode((Element) child);
+                    this.createBPMNActivityByNode((Element) child).openActivity();
                 } else if (BPMNModel.isEvent(child)) {
                     this.createBPMNEventByNode((Element) child);
                 } else if (BPMNModel.isGateway(child)) {

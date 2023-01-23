@@ -59,7 +59,7 @@ public class TestReadDom {
         logger.info("...read model");
 
         BPMNModel model = BPMNModelFactory.read("/process_example-01.bpmn");
-        String out = "src/test/resources/output/process-example-9.bpmn";
+        String out = "src/test/resources/process-example-9.bpmn";
         System.out.println("Root Element :" + model.getDoc().getDocumentElement().getNodeName());
         System.out.println("------");
         if (model.getDoc().hasChildNodes()) {

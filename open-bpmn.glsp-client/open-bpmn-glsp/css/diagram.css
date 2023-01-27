@@ -20,13 +20,12 @@
     height: 100%;
     background-size: 10px 10px;
 
-	background-image: linear-gradient(to right, #E4E4E4 1px, transparent 1px), linear-gradient(to bottom, #E4E4E4 1px, transparent 1px);
-    
+    background-image: linear-gradient(to right, #e4e4e4 1px, transparent 1px), linear-gradient(to bottom, #e4e4e4 1px, transparent 1px);
 }
 
-.vs-dark .sprotty-graph { 
+.vs-dark .sprotty-graph {
     /* vs-dark dark-theia theia-dark    vs light-theia theia-light  */
-	background-image: linear-gradient(to right, #2A2A2A 1px, transparent 1px), linear-gradient(to bottom, #2A2A2A 1px, transparent 1px);
+    background-image: linear-gradient(to right, #2a2a2a 1px, transparent 1px), linear-gradient(to bottom, #2a2a2a 1px, transparent 1px);
 }
 
 .sprotty-text {
@@ -53,9 +52,8 @@
     fill: #f0f3f8;
 }
 
-
 .sprotty-resize-handle.selected {
-    fill: #47699B;
+    fill: #47699b;
 }
 
 .icon path {
@@ -68,51 +66,89 @@
 }
 
 .task > .sprotty-node {
-    fill: #425C81;
+    fill: #30568f;
 }
 
 .task.bpmnextension-imixs > .sprotty-node {
-	stroke: darkorange;
-	stroke-width: 1;
+    stroke: darkorange;
+    stroke-width: 1;
 }
 .event.bpmnextension-imixs > .sprotty-node {
-	stroke: darkorange;
-	stroke-width: 1;
+    stroke: darkorange;
+    stroke-width: 1;
+}
+/*** Data Object ***/
+.dataObjectExtension > .bpmn-text-node pre {
+    color: #000102;
+    text-align: center;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    margin: 7px 20px 0px 20px;
+}
+
+.dataObjectExtension > .sprotty-node {
+    fill: #f9f9fa;
+}
+
+/* Data attribute*/
+.dataAttributeExtension > .bpmn-text-node pre {
+    color: #000102;
+    text-align: center;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    margin: 5px 4px 0px 4px;
+}
+
+.dataAttributeExtension > .sprotty-node {
+    fill: #afafc7;
+}
+/* Data Processing*/
+.dataProcessingExtension > polygon {
+    fill: #c39d5c;
+}
+
+.dataObjectExtension > .icon path {
+    stroke-width: 0;
+    fill: #30568f;
+}
+
+.dataObjectExtension > .icon .icon-background {
+    fill: transparent;
 }
 
 /*** Events ***/
 
-
 .event.startEvent > circle {
-	fill: #57A14C;
+    fill: #57a14c;
 }
 .event.endEvent > circle {
-	fill: #BE5961;
+    fill: #be5961;
 }
 
 .event.intermediateCatchEvent > circle {
-	fill: #82848a;
+    fill: #82848a;
 }
 .event.intermediateThrowEvent > circle {
-	fill: #82848a;
+    fill: #82848a;
 }
 
 .event.boundaryEvent > circle {
-	fill: #627ea5;
-	stroke-width: 1;
-	stroke: #354152a8
+    fill: #627ea5;
+    stroke-width: 1;
+    stroke: #354152a8;
 }
 
 /*** Gateways ***/
 
 .gateway > polygon {
-    fill: #C39D5C;
+    fill: #c39d5c;
 }
 
-
 .dataObject > .sprotty-node {
-	opacity: 80%;
-	stroke: var(--theia-focusBorder);
+    opacity: 80%;
+    stroke: var(--theia-focusBorder);
     outline-color: #ccc;
     outline-style: solid;
     outline-width: 1px;
@@ -120,12 +156,12 @@
 }
 
 .message > .sprotty-node {
-	opacity: 80%;
-	stroke: var(--theia-focusBorder);
+    opacity: 80%;
+    stroke: var(--theia-focusBorder);
     outline-color: #ccc;
     outline-style: solid;
     outline-width: 1px;
-    fill: #CFE9F5;
+    fill: #cfe9f5;
 }
 .message > polyline {
     stroke: #eee;
@@ -133,56 +169,52 @@
     fill: none;
 }
 
-
 .textAnnotation > .sprotty-node {
-	opacity: 20%;
+    opacity: 20%;
     fill: #82848a;
 }
 
 .textAnnotation > polyline {
-    stroke: #57A14C;
+    stroke: #57a14c;
     stroke-width: 2;
     fill: none;
 }
 .textAnnotation > .bpmn-text-node pre {
-	color: #447c3c;
-	font-size: 0.6em;
-	font-family: sans-serif;
-	margin: 0.3em;
-	white-space: pre-wrap;
+    color: #447c3c;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    margin: 0.3em;
+    white-space: pre-wrap;
 }
 
 .task > .bpmn-text-node pre {
-	color: #f0f3f8;
-	text-align: center;
-	font-size: 0.6em;
-	font-family: sans-serif;
-	white-space: pre-wrap;
-	margin: 7px 20px 0px 20px;
+    color: #f0f3f8;
+    text-align: center;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    margin: 7px 20px 0px 20px;
 }
 
-
 .BPMNLabel > .sprotty-node {
-	fill: transparent;
+    fill: transparent;
 }
 
 .BPMNLabel > .sprotty-label.heading {
-	fill: var(--theia-titleBar-activeForeground);
+    fill: var(--theia-titleBar-activeForeground);
 }
 .BPMNLabel > .sprotty-node.mouseover {
-	fill: var(--theia-activityBar-background);
+    fill: var(--theia-activityBar-background);
 }
 
 .BPMNLabel > .bpmn-text-node pre {
-	color: #f0f3f8;
-	text-align: center;
-	font-size: 0.6em;
-	font-family: sans-serif;
-	white-space: pre-wrap;
-	margin: 0;
+    color: #f0f3f8;
+    text-align: center;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    margin: 0;
 }
-
-
 
 .label-edit textarea {
     margin: 1px;
@@ -199,15 +231,15 @@
     outline-color: var(--theia-focusBorder);
     outline-style: solid;
     outline-width: 1px;
-    outline-offset: -1px;    
+    outline-offset: -1px;
 }
 .pool > .sprotty-node.mouseover {
-	 opacity: 60%;
+    opacity: 60%;
 }
 .pool .header {
-	fill: var(--theia-titleBar-activeBackground);
+    fill: var(--theia-titleBar-activeBackground);
 }
- 
+
 .lane > .sprotty-node {
     fill: none;
     stroke: var(--theia-focusBorder);
@@ -218,7 +250,7 @@
 }
 
 .pool .header text {
-	font-weight: normal;
+    font-weight: normal;
     font-size: 0.7em;
     fill: var(--theia-titleBar-activeForeground);
 }
@@ -236,22 +268,19 @@
 
 /* messageFlow */
 .sprotty-edge.messageFlow .line {
-   stroke-dasharray: 6,4;
+    stroke-dasharray: 6, 4;
 }
 /* Association */
 .sprotty-edge.association .line {
-   stroke-dasharray: 4,4;
+    stroke-dasharray: 4, 4;
 }
 
 .helper-line {
-	stroke: #f18e00;
-	stroke-width:1;
+    stroke: #f18e00;
+    stroke-width: 1;
 }
 
 .sprotty-comp {
     stroke: transparent;
     fill: transparent;
 }
-
-
-

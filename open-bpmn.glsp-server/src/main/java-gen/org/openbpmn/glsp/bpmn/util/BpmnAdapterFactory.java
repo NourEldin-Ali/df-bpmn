@@ -130,6 +130,18 @@ public class BpmnAdapterFactory extends AdapterFactoryImpl {
                 return createLaneGNodeAdapter();
             }
             @Override
+            public Adapter caseDataObjectExtensionGNode(DataObjectExtensionGNode object) {
+                return createDataObjectExtensionGNodeAdapter();
+            }
+            @Override
+            public Adapter caseDataProcessingExtenstionGNode(DataProcessingExtenstionGNode object) {
+                return createDataProcessingExtenstionGNodeAdapter();
+            }
+            @Override
+            public Adapter caseDataAttributeExtensionGNode(DataAttributeExtensionGNode object) {
+                return createDataAttributeExtensionGNodeAdapter();
+            }
+            @Override
             public Adapter caseGArgumentable(GArgumentable object) {
                 return createGArgumentableAdapter();
             }
@@ -364,6 +376,48 @@ public class BpmnAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLaneGNodeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openbpmn.glsp.bpmn.DataObjectExtensionGNode <em>Data Object Extension GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openbpmn.glsp.bpmn.DataObjectExtensionGNode
+     * @generated
+     */
+    public Adapter createDataObjectExtensionGNodeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openbpmn.glsp.bpmn.DataProcessingExtenstionGNode <em>Data Processing Extenstion GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openbpmn.glsp.bpmn.DataProcessingExtenstionGNode
+     * @generated
+     */
+    public Adapter createDataProcessingExtenstionGNodeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode <em>Data Attribute Extension GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode
+     * @generated
+     */
+    public Adapter createDataAttributeExtensionGNodeAdapter() {
         return null;
     }
 

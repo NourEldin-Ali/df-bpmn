@@ -56,7 +56,7 @@ public class DataInputObjectExtension extends BPMNElementNode {
 	}
 	
 	
-	public DataObjectAttributeExtension addAttributeObject(String type, String attName, String attType)
+	public DataObjectAttributeExtension addAttributeObject( String attName, String attType)
 			throws BPMNModelException {
 		if (this.getElementNode() == null) {
 			throw new BPMNMissingElementException("Missing ElementNode!");
@@ -66,19 +66,16 @@ public class DataInputObjectExtension extends BPMNElementNode {
 			throw new BPMNInvalidTypeException("Local type can't be contains attributes");
 		}
 			
-		if (!type.contentEquals(BPMNTypes.DATA_OBJECT_ATTRIBUTE)) {
-			throw new BPMNInvalidTypeException("Type should be "+BPMNTypes.DATA_OBJECT_ATTRIBUTE );
-		}
 		
 		if (attName.isEmpty() || attType.isEmpty()) {
 			throw new BPMNInvalidTypeException("Attribute name and attribute type should be filled");
 		}
-		for (DataObjectAttributeExtension dataObjectAttributeExtension : DataAttributes) {
-			if(dataObjectAttributeExtension.getAttribute("name").contentEquals(attName)) {
-				throw new BPMNInvalidTypeException("Attribute name already used");
-			}
-		}
-		Element dataObject = model.createElement(BPMNNS.BPMN2, type);
+//		for (DataObjectAttributeExtension dataObjectAttributeExtension : DataAttributes) {
+//			if(dataObjectAttributeExtension.getAttribute("name").contentEquals(attName)) {
+//				throw new BPMNInvalidTypeException("Attribute name already used");
+//			}
+//		}
+		Element dataObject = model.createElement(BPMNNS.BPMN2, BPMNTypes.DATA_OBJECT_ATTRIBUTE);
 		dataObject.setAttribute("id",  BPMNModel.generateShortID(BPMNTypes.DATA_OBJECT_ATTRIBUTE_Extension));
 		dataObject.setAttribute("name", attName);
 		dataObject.setAttribute("type", attType);
@@ -96,7 +93,7 @@ public class DataInputObjectExtension extends BPMNElementNode {
 		return dataObject;
 	}
 
-	public BPMNElementNode findElementById(String id) {
+	public BPMNElement findElementById(String id) {
    		for (DataObjectAttributeExtension element : getDataAttributes()) {
    			if (id.equals(element.getId())) {
 				return element;

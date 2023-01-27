@@ -21,8 +21,8 @@ import {
     PolylineEdgeViewWithGapsOnIntersections,
     RenderingContext,
     SEdge,
-    toDegrees,
-    svg
+    svg,
+    toDegrees
 } from '@eclipse-glsp/client';
 import { injectable } from 'inversify';
 import { VNode } from 'snabbdom';
@@ -46,18 +46,18 @@ export class BPMNEdgeView extends PolylineEdgeViewWithGapsOnIntersections {
         const p2 = segments[segments.length - 1];
 
         // arrow depends on the type of the BPMNEdge
-        if ('sequenceFlow'===edge.type || 'messageFlow'===edge.type) {
-          const arrow: any = (
-            <path
-                class-sprotty-edge={true}
-                class-arrow={true}
-                d='M 1,0 L 14,-4 L 14,4 Z'
-                transform={`rotate(${toDegrees(angleOfPoint({ x: p1.x - p2.x, y: p1.y - p2.y }))} ${p2.x} ${p2.y}) translate(${p2.x} ${
-                    p2.y
-                })`}
-            />
-          );
-          additionals.push(arrow);
+        if ('sequenceFlow' === edge.type || 'messageFlow' === edge.type || 'dataFlow' === edge.type) {
+            const arrow: any = (
+                <path
+                    class-sprotty-edge={true}
+                    class-arrow={true}
+                    d='M 1,0 L 14,-4 L 14,4 Z'
+                    transform={`rotate(${toDegrees(angleOfPoint({ x: p1.x - p2.x, y: p1.y - p2.y }))} ${p2.x} ${p2.y}) translate(${p2.x} ${
+                        p2.y
+                    })`}
+                />
+            );
+            additionals.push(arrow);
         }
         return additionals;
     }

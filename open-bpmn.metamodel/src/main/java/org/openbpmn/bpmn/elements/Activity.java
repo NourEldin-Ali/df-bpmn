@@ -39,7 +39,7 @@ import org.w3c.dom.NodeList;
  */
 public class Activity extends BPMNElementNode {
 
-	public final static double DEFAULT_WIDTH = 110.0;
+	public final static double DEFAULT_WIDTH = 150.0;
 	public final static double DEFAULT_HEIGHT = 50.0;
 
 	protected Activity(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess) throws BPMNModelException {
@@ -192,9 +192,9 @@ public class Activity extends BPMNElementNode {
 					throw new BPMNInvalidTypeException("objectType with empty objectName already used");
 				}
 			} else {
-				if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
-					throw new BPMNInvalidTypeException("objectName already used");
-				}
+//				if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
+//					throw new BPMNInvalidTypeException("objectName already used");
+//				}
 			}
 		}
 
@@ -254,9 +254,9 @@ public class Activity extends BPMNElementNode {
 					throw new BPMNInvalidTypeException("objectType with empty objectName already used");
 				}
 			} else {
-				if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
-					throw new BPMNInvalidTypeException("objectName already used");
-				}
+//				if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
+//					throw new BPMNInvalidTypeException("objectName already used");
+//				}
 			}
 		}
 		if (!BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.stream().anyMatch(type::contentEquals)) {
@@ -410,13 +410,11 @@ public class Activity extends BPMNElementNode {
 			throw new BPMNInvalidTypeException("Invalid object name");
 		}
 
-		for (DataInputObjectExtension dataInputObjectExtension : dataInputObjects) {
-
-			if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
-				throw new BPMNInvalidTypeException("objectName already used");
-			}
-
-		}
+//		for (DataInputObjectExtension dataInputObjectExtension : dataInputObjects) {
+//			if (dataInputObjectExtension.getAttribute("name").contentEquals(objectName)) {
+//				throw new BPMNInvalidTypeException("objectName already used");
+//			}
+//		}
 
 		Element dataProcessing = model.createElement(BPMNNS.BPMN2, BPMNTypes.DATA_PROCESSING);
 
@@ -703,6 +701,22 @@ public class Activity extends BPMNElementNode {
 	 * 
 	 * @param id
 	 */
+	public void deleteAllElements() {
+		for (DataInputObjectExtension data : getDataInputObjects()) {
+			
+			this.deleteElementById(data.getId());
+		}
+
+		for (DataOutputObjectExtension data : getDataOutputObjects()) {
+			
+			this.deleteElementById(data.getId());
+		}
+
+		for (DataProcessingExtension data : getDataProcessing()) {
+			this.deleteElementById(data.getId());
+		}
+	}
+
 	public void deleteElementById(String id) {
 		BPMNElement bpmnElement = this.findElementById(id);
 		if (bpmnElement == null) {
@@ -717,13 +731,31 @@ public class Activity extends BPMNElementNode {
 			removeAllEdgesFromElement(bpmnElementNode.getId());
 
 			// delete the shape
-			this.getElementNode().removeChild(bpmnElementNode.getElementNode());
+			if (bpmnElement instanceof DataObjectAttributeExtension) {
+				((DataObjectAttributeExtension) bpmnElement).getElementNode().getParentNode()
+						.removeChild(bpmnElementNode.getElementNode());
+			} else {
+				if (bpmnElement instanceof DataInputObjectExtension || bpmnElement instanceof DataOutputObjectExtension) {
+					Set<DataObjectAttributeExtension> attL = null;
+					if(bpmnElement instanceof DataInputObjectExtension) {
+						attL = ((DataInputObjectExtension) bpmnElement).getDataAttributes();
+					}else {
+						attL = ((DataOutputObjectExtension) bpmnElement).getDataAttributes();
+					}
+					for(DataObjectAttributeExtension att:attL) {
+						this.deleteElementById(att.getId());
+					}
+					
+				}
+				this.getElementNode().removeChild(bpmnElementNode.getElementNode());
+			}
 
 			// finally delete the element from the corresponding list
 			if (bpmnElementNode.getBpmnShape() != null) {
 				model.getBpmnPlane().removeChild(bpmnElementNode.getBpmnShape());
 			}
 			if (bpmnElement instanceof DataInputObjectExtension) {
+				
 				this.getDataInputObjects().remove(bpmnElement);
 			}
 			if (bpmnElement instanceof DataOutputObjectExtension) {
@@ -892,6 +924,27 @@ public class Activity extends BPMNElementNode {
 			removeElementEdge(id);
 			this.getDataReferences().remove(bpmnEdge);
 		}
+	}
+
+	/**
+	 * get All node in the activity
+	 * 
+	 * @return BPMNElementNode
+	 */
+	public Set<BPMNElementNode> getAllNodes() {
+		Set<BPMNElementNode> results = new LinkedHashSet<>();
+		results.addAll(getDataInputObjects());
+		results.addAll(getDataOutputObjects());
+		results.addAll(getDataProcessing());
+//		for (DataInputObjectExtension data : getDataInputObjects()) {
+//			results.addAll(data.getDataAttributes());
+//
+//		}
+//		for (DataOutputObjectExtension data : getDataOutputObjects()) {
+//			results.addAll(data.getDataAttributes());
+//
+//		}
+		return results;
 	}
 
 }

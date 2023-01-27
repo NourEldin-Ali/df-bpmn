@@ -250,6 +250,49 @@ public class BpmnSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case BpmnPackage.DATA_OBJECT_EXTENSION_GNODE: {
+                DataObjectExtensionGNode dataObjectExtensionGNode = (DataObjectExtensionGNode)theEObject;
+                T result = caseDataObjectExtensionGNode(dataObjectExtensionGNode);
+                if (result == null) result = caseBPMNGNode(dataObjectExtensionGNode);
+                if (result == null) result = caseGNode(dataObjectExtensionGNode);
+                if (result == null) result = caseGShapeElement(dataObjectExtensionGNode);
+                if (result == null) result = caseGEdgeLayoutable(dataObjectExtensionGNode);
+                if (result == null) result = caseGLayouting(dataObjectExtensionGNode);
+                if (result == null) result = caseGModelElement(dataObjectExtensionGNode);
+                if (result == null) result = caseGBoundsAware(dataObjectExtensionGNode);
+                if (result == null) result = caseGArgumentable(dataObjectExtensionGNode);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BpmnPackage.DATA_PROCESSING_EXTENSTION_GNODE: {
+                DataProcessingExtenstionGNode dataProcessingExtenstionGNode = (DataProcessingExtenstionGNode)theEObject;
+                T result = caseDataProcessingExtenstionGNode(dataProcessingExtenstionGNode);
+                if (result == null) result = caseBPMNGNode(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGNode(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGShapeElement(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGEdgeLayoutable(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGLayouting(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGModelElement(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGBoundsAware(dataProcessingExtenstionGNode);
+                if (result == null) result = caseGArgumentable(dataProcessingExtenstionGNode);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BpmnPackage.DATA_ATTRIBUTE_EXTENSION_GNODE: {
+                DataAttributeExtensionGNode dataAttributeExtensionGNode = (DataAttributeExtensionGNode)theEObject;
+                T result = caseDataAttributeExtensionGNode(dataAttributeExtensionGNode);
+                if (result == null) result = caseDataObjectExtensionGNode(dataAttributeExtensionGNode);
+                if (result == null) result = caseBPMNGNode(dataAttributeExtensionGNode);
+                if (result == null) result = caseGNode(dataAttributeExtensionGNode);
+                if (result == null) result = caseGShapeElement(dataAttributeExtensionGNode);
+                if (result == null) result = caseGEdgeLayoutable(dataAttributeExtensionGNode);
+                if (result == null) result = caseGLayouting(dataAttributeExtensionGNode);
+                if (result == null) result = caseGModelElement(dataAttributeExtensionGNode);
+                if (result == null) result = caseGBoundsAware(dataAttributeExtensionGNode);
+                if (result == null) result = caseGArgumentable(dataAttributeExtensionGNode);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -446,6 +489,51 @@ public class BpmnSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLaneGNode(LaneGNode object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Data Object Extension GNode</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Data Object Extension GNode</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDataObjectExtensionGNode(DataObjectExtensionGNode object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Data Processing Extenstion GNode</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Data Processing Extenstion GNode</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDataProcessingExtenstionGNode(DataProcessingExtenstionGNode object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Data Attribute Extension GNode</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Data Attribute Extension GNode</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDataAttributeExtensionGNode(DataAttributeExtensionGNode object) {
         return null;
     }
 

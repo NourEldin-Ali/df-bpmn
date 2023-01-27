@@ -16,7 +16,7 @@
             </bpmn2:dataProcessing>
             <bpmn2:dataFlow id="DataFlowExtension_vtdGZw" sourceRef="DataInputObjectExtension_jV0SGQ" targetRef="DataProcessingExtension_ZBdwoA"/>
             <bpmn2:dataFlow id="DataFlowExtension_iHwIRQ" sourceRef="DataProcessingExtension_ZBdwoA" targetRef="DataObjectAttributeExtension_kSNKDA"/>
-            <bpmn2:dataInputObjectDependency id="DataInputObjectExtension_YS4sig" isMultiple="false" name="testRead" type="string"/>
+            <bpmn2:dataInputObjectDependency id="DataInputObjectExtension_2I0GWQ" isMultiple="false" name="testRead" type="string"/>
         </bpmn2:task>
     </bpmn2:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
@@ -38,7 +38,7 @@
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_vtdGZw" id="BPMNEdge_hZ6LHA"/>
             <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_iHwIRQ" id="BPMNEdge_aWF6Ig"/>
-            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_YS4sig" id="BPMNShape_aX06Mw">
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_2I0GWQ" id="BPMNShape_Ug6dwQ">
                 <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
             </bpmndi:BPMNShape>
         </bpmndi:BPMNPlane>

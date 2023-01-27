@@ -2041,6 +2041,468 @@ public interface BpmnPackage extends EPackage {
      */
     int LANE_GNODE_OPERATION_COUNT = BPMNG_NODE_OPERATION_COUNT + 0;
 
+    /**
+     * The meta object id for the '{@link org.openbpmn.glsp.bpmn.impl.DataObjectExtensionGNodeImpl <em>Data Object Extension GNode</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.openbpmn.glsp.bpmn.impl.DataObjectExtensionGNodeImpl
+     * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataObjectExtensionGNode()
+     * @generated
+     */
+    int DATA_OBJECT_EXTENSION_GNODE = 13;
+
+    /**
+     * The feature id for the '<em><b>Args</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__ARGS = BPMNG_NODE__ARGS;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__ID = BPMNG_NODE__ID;
+
+    /**
+     * The feature id for the '<em><b>Css Classes</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__CSS_CLASSES = BPMNG_NODE__CSS_CLASSES;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__CHILDREN = BPMNG_NODE__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__PARENT = BPMNG_NODE__PARENT;
+
+    /**
+     * The feature id for the '<em><b>Trace</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__TRACE = BPMNG_NODE__TRACE;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__TYPE = BPMNG_NODE__TYPE;
+
+    /**
+     * The feature id for the '<em><b>Position</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__POSITION = BPMNG_NODE__POSITION;
+
+    /**
+     * The feature id for the '<em><b>Size</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__SIZE = BPMNG_NODE__SIZE;
+
+    /**
+     * The feature id for the '<em><b>Edge Placement</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__EDGE_PLACEMENT = BPMNG_NODE__EDGE_PLACEMENT;
+
+    /**
+     * The feature id for the '<em><b>Layout</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__LAYOUT = BPMNG_NODE__LAYOUT;
+
+    /**
+     * The feature id for the '<em><b>Layout Options</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__LAYOUT_OPTIONS = BPMNG_NODE__LAYOUT_OPTIONS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__NAME = BPMNG_NODE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Kind</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE__KIND = BPMNG_NODE__KIND;
+
+    /**
+     * The number of structural features of the '<em>Data Object Extension GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE_FEATURE_COUNT = BPMNG_NODE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Data Object Extension GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_OBJECT_EXTENSION_GNODE_OPERATION_COUNT = BPMNG_NODE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.openbpmn.glsp.bpmn.impl.DataProcessingExtenstionGNodeImpl <em>Data Processing Extenstion GNode</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.openbpmn.glsp.bpmn.impl.DataProcessingExtenstionGNodeImpl
+     * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataProcessingExtenstionGNode()
+     * @generated
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE = 14;
+
+    /**
+     * The feature id for the '<em><b>Args</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__ARGS = BPMNG_NODE__ARGS;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__ID = BPMNG_NODE__ID;
+
+    /**
+     * The feature id for the '<em><b>Css Classes</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__CSS_CLASSES = BPMNG_NODE__CSS_CLASSES;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__CHILDREN = BPMNG_NODE__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__PARENT = BPMNG_NODE__PARENT;
+
+    /**
+     * The feature id for the '<em><b>Trace</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__TRACE = BPMNG_NODE__TRACE;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__TYPE = BPMNG_NODE__TYPE;
+
+    /**
+     * The feature id for the '<em><b>Position</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__POSITION = BPMNG_NODE__POSITION;
+
+    /**
+     * The feature id for the '<em><b>Size</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__SIZE = BPMNG_NODE__SIZE;
+
+    /**
+     * The feature id for the '<em><b>Edge Placement</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__EDGE_PLACEMENT = BPMNG_NODE__EDGE_PLACEMENT;
+
+    /**
+     * The feature id for the '<em><b>Layout</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__LAYOUT = BPMNG_NODE__LAYOUT;
+
+    /**
+     * The feature id for the '<em><b>Layout Options</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__LAYOUT_OPTIONS = BPMNG_NODE__LAYOUT_OPTIONS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__NAME = BPMNG_NODE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Kind</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE__KIND = BPMNG_NODE__KIND;
+
+    /**
+     * The number of structural features of the '<em>Data Processing Extenstion GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE_FEATURE_COUNT = BPMNG_NODE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Data Processing Extenstion GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_PROCESSING_EXTENSTION_GNODE_OPERATION_COUNT = BPMNG_NODE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.openbpmn.glsp.bpmn.impl.DataAttributeExtensionGNodeImpl <em>Data Attribute Extension GNode</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.openbpmn.glsp.bpmn.impl.DataAttributeExtensionGNodeImpl
+     * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataAttributeExtensionGNode()
+     * @generated
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE = 15;
+
+    /**
+     * The feature id for the '<em><b>Args</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__ARGS = DATA_OBJECT_EXTENSION_GNODE__ARGS;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__ID = DATA_OBJECT_EXTENSION_GNODE__ID;
+
+    /**
+     * The feature id for the '<em><b>Css Classes</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__CSS_CLASSES = DATA_OBJECT_EXTENSION_GNODE__CSS_CLASSES;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__CHILDREN = DATA_OBJECT_EXTENSION_GNODE__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__PARENT = DATA_OBJECT_EXTENSION_GNODE__PARENT;
+
+    /**
+     * The feature id for the '<em><b>Trace</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__TRACE = DATA_OBJECT_EXTENSION_GNODE__TRACE;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__TYPE = DATA_OBJECT_EXTENSION_GNODE__TYPE;
+
+    /**
+     * The feature id for the '<em><b>Position</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__POSITION = DATA_OBJECT_EXTENSION_GNODE__POSITION;
+
+    /**
+     * The feature id for the '<em><b>Size</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__SIZE = DATA_OBJECT_EXTENSION_GNODE__SIZE;
+
+    /**
+     * The feature id for the '<em><b>Edge Placement</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__EDGE_PLACEMENT = DATA_OBJECT_EXTENSION_GNODE__EDGE_PLACEMENT;
+
+    /**
+     * The feature id for the '<em><b>Layout</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__LAYOUT = DATA_OBJECT_EXTENSION_GNODE__LAYOUT;
+
+    /**
+     * The feature id for the '<em><b>Layout Options</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__LAYOUT_OPTIONS = DATA_OBJECT_EXTENSION_GNODE__LAYOUT_OPTIONS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__NAME = DATA_OBJECT_EXTENSION_GNODE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Kind</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE__KIND = DATA_OBJECT_EXTENSION_GNODE__KIND;
+
+    /**
+     * The number of structural features of the '<em>Data Attribute Extension GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE_FEATURE_COUNT = DATA_OBJECT_EXTENSION_GNODE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Data Attribute Extension GNode</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATA_ATTRIBUTE_EXTENSION_GNODE_OPERATION_COUNT = DATA_OBJECT_EXTENSION_GNODE_OPERATION_COUNT + 0;
+
 
     /**
      * Returns the meta object for class '{@link org.openbpmn.glsp.bpmn.BPMNGNode <em>BPMNG Node</em>}'.
@@ -2215,6 +2677,36 @@ public interface BpmnPackage extends EPackage {
      * @generated
      */
     EClass getLaneGNode();
+
+    /**
+     * Returns the meta object for class '{@link org.openbpmn.glsp.bpmn.DataObjectExtensionGNode <em>Data Object Extension GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Data Object Extension GNode</em>'.
+     * @see org.openbpmn.glsp.bpmn.DataObjectExtensionGNode
+     * @generated
+     */
+    EClass getDataObjectExtensionGNode();
+
+    /**
+     * Returns the meta object for class '{@link org.openbpmn.glsp.bpmn.DataProcessingExtenstionGNode <em>Data Processing Extenstion GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Data Processing Extenstion GNode</em>'.
+     * @see org.openbpmn.glsp.bpmn.DataProcessingExtenstionGNode
+     * @generated
+     */
+    EClass getDataProcessingExtenstionGNode();
+
+    /**
+     * Returns the meta object for class '{@link org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode <em>Data Attribute Extension GNode</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Data Attribute Extension GNode</em>'.
+     * @see org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode
+     * @generated
+     */
+    EClass getDataAttributeExtensionGNode();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -2400,6 +2892,36 @@ public interface BpmnPackage extends EPackage {
          * @generated
          */
         EClass LANE_GNODE = eINSTANCE.getLaneGNode();
+
+        /**
+         * The meta object literal for the '{@link org.openbpmn.glsp.bpmn.impl.DataObjectExtensionGNodeImpl <em>Data Object Extension GNode</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.openbpmn.glsp.bpmn.impl.DataObjectExtensionGNodeImpl
+         * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataObjectExtensionGNode()
+         * @generated
+         */
+        EClass DATA_OBJECT_EXTENSION_GNODE = eINSTANCE.getDataObjectExtensionGNode();
+
+        /**
+         * The meta object literal for the '{@link org.openbpmn.glsp.bpmn.impl.DataProcessingExtenstionGNodeImpl <em>Data Processing Extenstion GNode</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.openbpmn.glsp.bpmn.impl.DataProcessingExtenstionGNodeImpl
+         * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataProcessingExtenstionGNode()
+         * @generated
+         */
+        EClass DATA_PROCESSING_EXTENSTION_GNODE = eINSTANCE.getDataProcessingExtenstionGNode();
+
+        /**
+         * The meta object literal for the '{@link org.openbpmn.glsp.bpmn.impl.DataAttributeExtensionGNodeImpl <em>Data Attribute Extension GNode</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.openbpmn.glsp.bpmn.impl.DataAttributeExtensionGNodeImpl
+         * @see org.openbpmn.glsp.bpmn.impl.BpmnPackageImpl#getDataAttributeExtensionGNode()
+         * @generated
+         */
+        EClass DATA_ATTRIBUTE_EXTENSION_GNODE = eINSTANCE.getDataAttributeExtensionGNode();
 
     }
 

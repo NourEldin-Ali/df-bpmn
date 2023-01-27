@@ -139,6 +139,33 @@ public interface BpmnFactory extends EFactory {
     LaneGNode createLaneGNode();
 
     /**
+     * Returns a new object of class '<em>Data Object Extension GNode</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Data Object Extension GNode</em>'.
+     * @generated
+     */
+    DataObjectExtensionGNode createDataObjectExtensionGNode();
+
+    /**
+     * Returns a new object of class '<em>Data Processing Extenstion GNode</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Data Processing Extenstion GNode</em>'.
+     * @generated
+     */
+    DataProcessingExtenstionGNode createDataProcessingExtenstionGNode();
+
+    /**
+     * Returns a new object of class '<em>Data Attribute Extension GNode</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Data Attribute Extension GNode</em>'.
+     * @generated
+     */
+    DataAttributeExtensionGNode createDataAttributeExtensionGNode();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

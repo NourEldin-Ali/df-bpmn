@@ -46,6 +46,11 @@ import org.openbpmn.glsp.elements.data.BPMNApplyEditLabelOperationHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateDataObjectHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateMessageHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateTextAnnotationHandler;
+import org.openbpmn.glsp.elements.dataextension.BPMNCreateDataAttributeExtensionHandler;
+import org.openbpmn.glsp.elements.dataextension.BPMNCreateDataInputExtensionHandler;
+import org.openbpmn.glsp.elements.dataextension.BPMNCreateDataOutputExtensionHandler;
+import org.openbpmn.glsp.elements.dataextension.BPMNCreateDataProcessingHandler;
+import org.openbpmn.glsp.elements.dataextension.BPMNGEdgeFlowCreateHandler;
 import org.openbpmn.glsp.elements.edge.BPMNGEdgeCreateHandler;
 import org.openbpmn.glsp.elements.event.BPMNCreateEventDefinitionHandler;
 import org.openbpmn.glsp.elements.event.BPMNCreateEventHandler;
@@ -158,6 +163,13 @@ public class BPMNDiagramModule extends DiagramModule {
 
         // Extension handler
         binding.add(BPMNCreateExtensionHandler.class);
+
+        // Data Extension
+        binding.add(BPMNCreateDataInputExtensionHandler.class);
+        binding.add(BPMNCreateDataOutputExtensionHandler.class);
+        binding.add(BPMNCreateDataProcessingHandler.class);
+        binding.add(BPMNGEdgeFlowCreateHandler.class);
+        binding.add(BPMNCreateDataAttributeExtensionHandler.class);
 
     }
 

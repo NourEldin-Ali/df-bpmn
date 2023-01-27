@@ -74,17 +74,164 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
                 PaletteItem.createPaletteGroup("gateway-group", "Gateways", createPaletteGatewayItems(),
                         "symbol-property", "E"),
 
-                PaletteItem.createPaletteGroup("gateway-group", "Data Items", createPaletteDataItems(),
-                        "symbol-property", "F"),
+                PaletteItem.createPaletteGroup("data-group", "Data Items", createPaletteDataItems(), "symbol-property",
+                        "F"),
 
                 PaletteItem.createPaletteGroup("edge-group", "Edges", createPaletteSequenceFlowItems(),
                         "symbol-property", "G"),
 
                 PaletteItem.createPaletteGroup("extension-group", "Extensions", createPaletteExtensions(),
-                        "symbol-property", "H")
+                        "symbol-property", "H"),
+
+                PaletteItem.createPaletteGroup("input-group", "Input Extension",
+                        createPaletteDataInputObjectExtensions(), "symbol-property", "I"),
+
+                PaletteItem.createPaletteGroup("dependent-group", "Dependent Extension",
+                        createPaletteDataDependentInputObjectExtensions(), "symbol-property", "J"),
+
+                PaletteItem.createPaletteGroup("output-group", "Output Extension",
+                        createPaletteDataOutputObjectExtensions(), "symbol-property", "K"),
+
+                PaletteItem.createPaletteGroup("attribute-group", "Attribute Extension",
+                        createPaletteDataAttribiteExtensions(), "symbol-property", "L"),
+
+                PaletteItem.createPaletteGroup("processing-group", "Processing Extension",
+                        createPaletteDataProcessingExtensions(), "symbol-property", "M"),
+
+                PaletteItem.createPaletteGroup("flow-group", "Flow Extension", createPaletteDataFlowExtensions(),
+                        "symbol-property", "N")
 
         );
 
+    }
+
+    /**
+     * Create a palette Item Group with all Data Object Extentsion elements
+     *
+     * @author Ali Nour Eldin
+     */
+
+    protected List<PaletteItem> createPaletteDataInputObjectExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_LOCAL, "local data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_LOCAL));
+        item.setSortString("A");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_PROCESS, "process data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_PROCESS));
+        item.setSortString("B");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE, "data store",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE));
+        item.setSortString("C");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA, "external data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA));
+        item.setSortString("D");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER, "user data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
+        item.setSortString("E");
+        result.add(item);
+
+        return result;
+    }
+
+    protected List<PaletteItem> createPaletteDataDependentInputObjectExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL, "local dependent",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL));
+        item.setSortString("A");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS, "dependent data process",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS));
+        item.setSortString("B");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE, "dependent data store",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE));
+        item.setSortString("C");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, "data dependency",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
+        item.setSortString("D");
+        result.add(item);
+
+        return result;
+    }
+
+    /**
+     * Create a palette Item Group with all Data Flow Extentsion elements
+     *
+     * @author Ali Nour Eldin
+     */
+    protected List<PaletteItem> createPaletteDataFlowExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_FLOW, "Data Flow",
+                new TriggerEdgeCreationAction(BPMNTypes.DATA_FLOW));
+        item.setSortString("A");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_REFERENCE, "Data Reference",
+                new TriggerEdgeCreationAction(BPMNTypes.DATA_REFERENCE));
+        item.setSortString("B");
+
+        result.add(item);
+
+        return result;
+    }
+
+    protected List<PaletteItem> createPaletteDataProcessingExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_PROCESSING, "Data Processing",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_PROCESSING));
+        item.setSortString("A");
+        result.add(item);
+        return result;
+    }
+
+    protected List<PaletteItem> createPaletteDataOutputObjectExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS, "data process",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS));
+        item.setSortString("A");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE, "data store",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE));
+        item.setSortString("B");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA, "external data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA));
+        item.setSortString("C");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER, "user data",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER));
+        item.setSortString("D");
+        result.add(item);
+
+        return result;
+    }
+
+    protected List<PaletteItem> createPaletteDataAttribiteExtensions() {
+        List<PaletteItem> result = new ArrayList<>();
+
+        PaletteItem item = new PaletteItem(BPMNTypes.DATA_OBJECT_ATTRIBUTE, "Data Attribute",
+                new TriggerNodeCreationAction(BPMNTypes.DATA_OBJECT_ATTRIBUTE));
+        item.setSortString("A");
+        result.add(item);
+        return result;
     }
 
     /**

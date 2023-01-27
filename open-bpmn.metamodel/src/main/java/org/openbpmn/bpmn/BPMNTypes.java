@@ -81,7 +81,7 @@ public class BPMNTypes {
 			BPMNTypes.BUSINESSRULE_TASK, //
 			BPMNTypes.SERVICE_TASK, //
 			BPMNTypes.SEND_TASK, //
-			BPMNTypes.RECEIVE_TASK //
+			BPMNTypes.RECEIVE_TASK, //
 	});
 
 	public static List<String> BPMN_ACTIVITIES = Arrays.asList(new String[] { //
@@ -181,10 +181,11 @@ public class BPMNTypes {
 
 	});
 
-	/*-------------------
+	/**-------------------
 	 *  Add the data definition needed to DA-BPMN
 	 * @author Ali Nour Eldin
 	 */
+	public static final String DATA_OBJECT_EXTENSION = "DataObjectExtension";
 	// Data input object types
 	public static final String DATA_INPUT_OBJECT_LOCAL = "dataInputObjectLocal";
 	public static final String DATA_INPUT_OBJECT_PROCESS = "dataInputObjectProcess";
@@ -192,15 +193,16 @@ public class BPMNTypes {
 	public static final String DATA_INPUT_OBJECT_ENVIRONMENT_DATA = "dataInputObjectEnvironmentData";
 	public static final String DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER = "dataInputObjectEnvironmentDataUser";
 
-	public static final String DATA_INPUT_OBJECT_DEPENDENT = "dataInputObjectDependent";
+	public static final String DATA_INPUT_OBJECT_DEPENDENT_LOCAL = "dataInputObjectDependentLocal";
+	public static final String DATA_INPUT_OBJECT_DEPENDENT_PROCESS = "dataInputObjectDependentProcess";
+	public static final String DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE = "dataInputObjectDependentDataStore";
 	public static final String DATA_INPUT_OBJECT_DEPENDENCY = "dataInputObjectDependency";
 
 	// Data output object types
 	public static final String DATA_OUTPUT_OBJECT_PROCESS = "dataOutputObjectProcess";
-	public static final String DATA_OUTPUT_OBJECT_DATA_STORE = "dataOutputObjectProcess";
-	public static final String DATA_OUTPUT_ENVIRONMENT_DATA = "dataOutputObjectProcess";
-	public static final String DATA_OUTPUT_ENVIRONMENT_DATA_USER = "dataOutputObjectProcess";
-
+	public static final String DATA_OUTPUT_OBJECT_DATA_STORE = "dataOutputObjectDataStore";
+	public static final String DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA = "dataOutputObjectEnvironmentData";
+	public static final String DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER = "dataOutputObjectEnvironmentDataUser";
 
 	// Data processing
 	public static final String DATA_PROCESSING = "dataProcessing";
@@ -217,7 +219,7 @@ public class BPMNTypes {
 	public static final String DATA_INPUT_OBJECT_Extension = "DataInputObjectExtension";
 	public static final String DATA_PROCESSING_EXTENSION = "DataProcessingExtension";
 	public static final String DATA_REFERENCE_EXTENSION = "DataReferenceExtension";
-	
+
 	// Type Collections
 	public static List<String> BPMN_DATA_INPUT_EXTENSION = Arrays.asList(new String[] { //
 			BPMNTypes.DATA_INPUT_OBJECT_LOCAL, //
@@ -225,35 +227,57 @@ public class BPMNTypes {
 			BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE, //
 			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA, //
 			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER, //
-			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE, //
 			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, });
 
 	public static List<String> BPMN_DATA_OUTPUT_EXTENSION = Arrays.asList(new String[] { //
 			BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS, //
 			BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE, //
-			BPMNTypes.DATA_OUTPUT_ENVIRONMENT_DATA, //
-			BPMNTypes.DATA_OUTPUT_ENVIRONMENT_DATA_USER, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER, //
 
 	});
-
-	public final static List<String> BPMN_NODE_ELEMENTS_EXTENSION = Arrays.asList(new String[] { ////
+	public final static List<String> BPMN_DATA_OBJECTS_EXTENSION = Arrays.asList(new String[] { ////
+			BPMNTypes.DATA_INPUT_OBJECT_LOCAL, //
 			BPMNTypes.DATA_INPUT_OBJECT_PROCESS, //
 			BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE, //
-			BPMNTypes.DATA_INPUT_OBJECT_LOCAL, //
-			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT, //
+			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA, //
+			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE, //
 			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, //
 
 			BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS, //
 			BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE, //
-			BPMNTypes.DATA_OUTPUT_ENVIRONMENT_DATA, //
-			BPMNTypes.DATA_OUTPUT_ENVIRONMENT_DATA_USER, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER, //
+
+	});
+	public final static List<String> BPMN_NODE_ELEMENTS_EXTENSION = Arrays.asList(new String[] { ////
+			BPMNTypes.DATA_OBJECT_EXTENSION, //
+			BPMNTypes.DATA_INPUT_OBJECT_PROCESS, //
+			BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE, //
+			BPMNTypes.DATA_INPUT_OBJECT_LOCAL, //
+			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA, //
+			BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE, //
+			BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, //
+
+			BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA, //
+			BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER, //
 
 			BPMNTypes.DATA_OBJECT_ATTRIBUTE, //
 
 	});
 	public static List<String> BPMN_EXTENSION_EDGES = Arrays.asList(new String[] { //
 			BPMNTypes.DATA_FLOW, //
-			BPMNTypes.DATA_REFERENCE 
-			});
+			BPMNTypes.DATA_REFERENCE });
 
 }

@@ -69,6 +69,9 @@ public class BpmnFactoryImpl extends EFactoryImpl implements BpmnFactory {
             case BpmnPackage.TEXT_ANNOTATION_GNODE: return createTextAnnotationGNode();
             case BpmnPackage.POOL_GNODE: return createPoolGNode();
             case BpmnPackage.LANE_GNODE: return createLaneGNode();
+            case BpmnPackage.DATA_OBJECT_EXTENSION_GNODE: return createDataObjectExtensionGNode();
+            case BpmnPackage.DATA_PROCESSING_EXTENSTION_GNODE: return createDataProcessingExtenstionGNode();
+            case BpmnPackage.DATA_ATTRIBUTE_EXTENSION_GNODE: return createDataAttributeExtensionGNode();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -202,6 +205,36 @@ public class BpmnFactoryImpl extends EFactoryImpl implements BpmnFactory {
     public LaneGNode createLaneGNode() {
         LaneGNodeImpl laneGNode = new LaneGNodeImpl();
         return laneGNode;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public DataObjectExtensionGNode createDataObjectExtensionGNode() {
+        DataObjectExtensionGNodeImpl dataObjectExtensionGNode = new DataObjectExtensionGNodeImpl();
+        return dataObjectExtensionGNode;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public DataProcessingExtenstionGNode createDataProcessingExtenstionGNode() {
+        DataProcessingExtenstionGNodeImpl dataProcessingExtenstionGNode = new DataProcessingExtenstionGNodeImpl();
+        return dataProcessingExtenstionGNode;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public DataAttributeExtensionGNode createDataAttributeExtensionGNode() {
+        DataAttributeExtensionGNodeImpl dataAttributeExtensionGNode = new DataAttributeExtensionGNodeImpl();
+        return dataAttributeExtensionGNode;
     }
 
     /**

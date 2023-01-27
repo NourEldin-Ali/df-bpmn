@@ -260,6 +260,10 @@ public abstract class BPMNElementNode extends BPMNElement {
             return true;
         }
 
+        if (BPMNTypes.DATA_PROCESSING.contains(type)) {
+            return true;
+        }
+        
         return false;
     }
 

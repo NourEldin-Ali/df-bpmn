@@ -14,137 +14,170 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import {
-	boundsFeature,
-	connectableFeature,
-	CircularNode,DiamondNode,
-	deletableFeature,
-	EditableLabel,
-	fadeFeature,
-	hoverFeedbackFeature,
-	isEditableLabel,
-	layoutableChildFeature,
-	LayoutContainer,
-	layoutContainerFeature,
-	moveFeature,
-	Nameable,
-	nameFeature,
-	popupFeature,
-	RectangularNode,
-	SChildElement,
-	SEdge,
-	selectFeature,
-	SModelElement,
-	SShapeElement,
-	WithEditableLabel,
-	withEditLabelFeature,
-	ForeignObjectElement,SArgumentable,Args,Bounds,isBoundsAware,Dimension
+    Args,
+    Bounds,
+    boundsFeature,
+    CircularNode,
+    connectableFeature,
+    deletableFeature,
+    DiamondNode,
+    Dimension,
+    EditableLabel,
+    fadeFeature,
+    ForeignObjectElement,
+    hoverFeedbackFeature,
+    isBoundsAware,
+    isEditableLabel,
+    layoutableChildFeature,
+    LayoutContainer,
+    layoutContainerFeature,
+    moveFeature,
+    Nameable,
+    nameFeature,
+    popupFeature,
+    RectangularNode,
+    SArgumentable,
+    SChildElement,
+    SEdge,
+    selectFeature,
+    SModelElement,
+    SShapeElement,
+    WithEditableLabel,
+    withEditLabelFeature
 } from '@eclipse-glsp/client';
 
-export interface BPMNFlowElement {
-}
+export interface BPMNFlowElement {}
 
 export class LabelNode extends RectangularNode {
-	static override readonly DEFAULT_FEATURES = [
-		selectFeature,
-		moveFeature,
-		layoutContainerFeature,
-		hoverFeedbackFeature
-	];
+    static override readonly DEFAULT_FEATURES = [selectFeature, moveFeature, layoutContainerFeature, hoverFeedbackFeature];
 }
 
 export class TaskNode extends RectangularNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature
-	];
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature
+    ];
 }
 
 /* CircularNode RectangularNode */
 export class EventNode extends CircularNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature,
-		nameFeature
-	];
-	kind?: string;
-	documentation: string;
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature
+    ];
+    kind?: string;
+    documentation: string;
 }
 
 // DiamondNode  //  Nameable, WithEditableLabel,
 export class GatewayNode extends DiamondNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature,
-		nameFeature
-	];
-	kind?: string;
-	documentation: string;
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature
+    ];
+    kind?: string;
+    documentation: string;
 }
 
 export class DataObjectNode extends RectangularNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature,
-		nameFeature
-	];
-	documentation: string;
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature
+    ];
+    documentation: string;
 }
 
 export class MessageNode extends RectangularNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature
-	];
-	documentation: string;
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature
+    ];
+    documentation: string;
 }
 
 export class TextAnnotationNode extends RectangularNode implements BPMNFlowElement {
-	static override readonly DEFAULT_FEATURES = [
-		connectableFeature,
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature
-	];
-	documentation: string;
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature
+    ];
+    documentation: string;
+}
+
+/**
+ * @author Ali Nour Eldin
+ */
+export class DataObjectExtensionNode extends RectangularNode implements BPMNFlowElement {
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature
+    ];
+}
+
+export class DataProcessingExtensionNode extends DiamondNode implements BPMNFlowElement {
+    static override readonly DEFAULT_FEATURES = [
+        connectableFeature,
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature
+    ];
+    kind?: string;
+    documentation: string;
 }
 
 /*
@@ -155,45 +188,45 @@ export class TextAnnotationNode extends RectangularNode implements BPMNFlowEleme
  * See: https://www.eclipse.org/glsp/documentation/rendering/#default-views
  */
 export class MultiLineTextNode extends ForeignObjectElement implements SArgumentable, EditableLabel {
-  readonly isMultiLine = true;
-  readonly args: Args;
-  text = '';
+    readonly isMultiLine = true;
+    readonly args: Args;
+    text = '';
 
-  override set bounds(bounds: Bounds) {
-    /* ignore set bounds, always use the parent's bounds */
-  }
-
-  override get bounds(): Bounds {
-    if (isBoundsAware(this.parent)) {
-      return {
-        x: this.position.x,
-        y: this.position.y,
-        width: this.parent.bounds.width,
-        height: this.parent.bounds.height
-      };
+    override set bounds(bounds: Bounds) {
+        /* ignore set bounds, always use the parent's bounds */
     }
-    return Bounds.EMPTY;
-  }
 
-  // @ts-expect-error Arguments are set in the element
-  override get code(): string {
-    if (this.text === '') {
-      const textArg = this.args['text'];
-      if (typeof textArg === 'string') {
-        this.text = textArg;
-      }
+    override get bounds(): Bounds {
+        if (isBoundsAware(this.parent)) {
+            return {
+                x: this.position.x,
+                y: this.position.y,
+                width: this.parent.bounds.width,
+                height: this.parent.bounds.height
+            };
+        }
+        return Bounds.EMPTY;
     }
-    return `<pre>${this.text}</pre>`;
-  }
 
-  override namespace = 'http://www.w3.org/1999/xhtml';
+    // @ts-expect-error Arguments are set in the element
+    override get code(): string {
+        if (this.text === '') {
+            const textArg = this.args['text'];
+            if (typeof textArg === 'string') {
+                this.text = textArg;
+            }
+        }
+        return `<pre>${this.text}</pre>`;
+    }
 
-  get editControlDimension(): Dimension {
-    return {
-      width: this.bounds.width - 4,
-      height: this.bounds.height - 4
-    };
-  }
+    override namespace = 'http://www.w3.org/1999/xhtml';
+
+    get editControlDimension(): Dimension {
+        return {
+            width: this.bounds.width - 4,
+            height: this.bounds.height - 4
+        };
+    }
 }
 
 /*
@@ -201,46 +234,73 @@ export class MultiLineTextNode extends ForeignObjectElement implements SArgument
  * The methods return the corresponding node
  */
 export function isTaskNode(element: SModelElement): element is TaskNode {
-	return element instanceof TaskNode || false;
+    return element instanceof TaskNode || false;
 }
 
 export function isPoolNode(element: SModelElement): element is PoolNode {
-	return element instanceof PoolNode || false;
+    return element instanceof PoolNode || false;
 }
 
 export function isContainerNode(element: SModelElement): element is LaneNode | PoolNode {
-	return (element instanceof LaneNode || element instanceof PoolNode) || false;
+    return element instanceof LaneNode || element instanceof PoolNode || false;
 }
 
 export function isLaneNode(element: SModelElement): element is LaneNode {
-	return element instanceof LaneNode || false;
+    return element instanceof LaneNode || false;
 }
 
 export function isEventNode(element: SModelElement): element is EventNode {
-	return element instanceof EventNode || false;
+    return element instanceof EventNode || false;
 }
 
 export function isGatewayNode(element: SModelElement): element is GatewayNode {
-	return element instanceof GatewayNode || false;
+    return element instanceof GatewayNode || false;
 }
 
+/**
+ * data extension
+
+ * @param element
+ * @returns
+ */
+export function isDataObjectExtensionNode(element: SModelElement): element is DataObjectExtensionNode {
+    return element instanceof DataObjectExtensionNode || false;
+}
+
+export function isDataProcessingExtensionNode(element: SModelElement): element is DataProcessingExtensionNode {
+    return element instanceof DataProcessingExtensionNode || false;
+}
 /*
  * Indicates that the ModelElement has a independed BPNNLabel
  */
 export function isBPMNLabelNode(element: SModelElement): element is SModelElement {
-	return (element instanceof EventNode || element instanceof GatewayNode || element instanceof DataObjectNode
-            || element instanceof MessageNode) || false;
+    return (
+        element instanceof EventNode ||
+        element instanceof GatewayNode ||
+        element instanceof DataObjectNode ||
+        element instanceof MessageNode ||
+        element instanceof DataProcessingExtensionNode ||
+        false
+    );
 }
 
 /*
-* This method returns the BPMN Node Element of a given SModelElement.
-* The method detects if the given ModelElement is for example a SPort
-* or label:heading. In this case the method returns the parent element
-* which is a Task, Event or Gateway node
-*/
+ * This method returns the BPMN Node Element of a given SModelElement.
+ * The method detects if the given ModelElement is for example a SPort
+ * or label:heading. In this case the method returns the parent element
+ * which is a Task, Event or Gateway node
+ */
 export function isBPMNNode(element: SModelElement): element is TaskNode | EventNode | GatewayNode {
-    return element instanceof TaskNode || element instanceof EventNode || element instanceof GatewayNode ||
-           element instanceof DataObjectNode || element instanceof MessageNode || element instanceof PoolNode;
+    return (
+        element instanceof TaskNode ||
+        element instanceof EventNode ||
+        element instanceof GatewayNode ||
+        element instanceof DataObjectNode ||
+        element instanceof MessageNode ||
+        element instanceof PoolNode ||
+        element instanceof DataObjectExtensionNode ||
+        element instanceof DataProcessingExtensionNode
+    );
 }
 
 /*
@@ -251,69 +311,65 @@ export function isBoundaryEvent(element: SModelElement): element is EventNode {
 }
 
 export class BPMNEdge extends SEdge {
-	kind?: string;
-	documentation: string;
+    kind?: string;
+    documentation: string;
 }
 
 export class Icon extends SShapeElement implements LayoutContainer {
-	static readonly DEFAULT_FEATURES = [
-		boundsFeature,
-		layoutContainerFeature,
-		layoutableChildFeature,
-		fadeFeature];
-	layout: string;
-	override layoutOptions?: { [key: string]: string | number | boolean };
-	override size = {
-		width: 16,
-		height: 16
-	};
+    static readonly DEFAULT_FEATURES = [boundsFeature, layoutContainerFeature, layoutableChildFeature, fadeFeature];
+    layout: string;
+    override layoutOptions?: { [key: string]: string | number | boolean };
+    override size = {
+        width: 16,
+        height: 16
+    };
 }
 
 export class PoolNode extends RectangularNode implements Nameable, WithEditableLabel {
-	static override readonly DEFAULT_FEATURES = [
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature,
-		nameFeature,
-		withEditLabelFeature
-	];
+    static override readonly DEFAULT_FEATURES = [
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature,
+        withEditLabelFeature
+    ];
 
-	name = '';
+    name = '';
 
-	get editableLabel(): (SChildElement & EditableLabel) | undefined {
-		const label = this.children.find(element => element.type === 'label:heading');
-		if (label && isEditableLabel(label)) {
-			return label;
-		}
-		return undefined;
-	}
+    get editableLabel(): (SChildElement & EditableLabel) | undefined {
+        const label = this.children.find(element => element.type === 'label:heading');
+        if (label && isEditableLabel(label)) {
+            return label;
+        }
+        return undefined;
+    }
 }
 
 export class LaneNode extends RectangularNode implements Nameable, WithEditableLabel {
-	static override readonly DEFAULT_FEATURES = [
-		deletableFeature,
-		selectFeature,
-		boundsFeature,
-		moveFeature,
-		layoutContainerFeature,
-		fadeFeature,
-		hoverFeedbackFeature,
-		popupFeature,
-		nameFeature,
-		withEditLabelFeature
-	];
+    static override readonly DEFAULT_FEATURES = [
+        deletableFeature,
+        selectFeature,
+        boundsFeature,
+        moveFeature,
+        layoutContainerFeature,
+        fadeFeature,
+        hoverFeedbackFeature,
+        popupFeature,
+        nameFeature,
+        withEditLabelFeature
+    ];
 
-	name = '';
+    name = '';
 
-	get editableLabel(): (SChildElement & EditableLabel) | undefined {
-		const label = this.children.find(element => element.type === 'label:heading');
-		if (label && isEditableLabel(label)) {
-			return label;
-		}
-		return undefined;
-	}
+    get editableLabel(): (SChildElement & EditableLabel) | undefined {
+        const label = this.children.find(element => element.type === 'label:heading');
+        if (label && isEditableLabel(label)) {
+            return label;
+        }
+        return undefined;
+    }
 }

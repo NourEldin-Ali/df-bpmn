@@ -17,6 +17,7 @@ package org.openbpmn.glsp.operations;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -32,7 +33,11 @@ import org.eclipse.glsp.graph.util.GraphUtil;
 import org.eclipse.glsp.server.operations.AbstractOperationHandler;
 import org.eclipse.glsp.server.operations.ChangeBoundsOperation;
 import org.eclipse.glsp.server.types.ElementAndBounds;
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
+import org.openbpmn.bpmn.elements.DataInputObjectExtension;
+import org.openbpmn.bpmn.elements.DataObjectAttributeExtension;
+import org.openbpmn.bpmn.elements.DataOutputObjectExtension;
 import org.openbpmn.bpmn.elements.Lane;
 import org.openbpmn.bpmn.elements.Participant;
 import org.openbpmn.bpmn.elements.core.BPMNBounds;
@@ -100,7 +105,6 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
     public void executeOperation(final ChangeBoundsOperation operation) {
         // iterate over all new Bounds...
         logger.debug("=== ChangeBoundsOperation - " + operation.getNewBounds().size() + " new bounds");
-
         try {
             List<ElementAndBounds> elementBounds = operation.getNewBounds();
 
@@ -131,12 +135,19 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                 // find the BPMNElementNode
                 BPMNElementNode bpmnElementNode = (BPMNElementNode) modelState.getBpmnModel().findElementById(id);
                 if (bpmnElementNode != null) {
-
+//                    System.out.println(bpmnElementNode.getId());
                     if (bpmnElementNode instanceof Participant) {
                         updatePool(gNode, bpmnElementNode, id, newPoint, newSize);
                     } else {
-                        // it is a normal bpmn flow element...
+
                         updateFlowElement(gNode, bpmnElementNode, elementBound, newPoint, newSize);
+                        // it is a normal bpmn flow element...
+                        if (bpmnElementNode instanceof Activity) {
+                            ((Activity) bpmnElementNode).getBpmnProcess().getModel().openDefaultProcess();
+//                            System.out.println(bpmnElementNode.getId());
+                            updateEmbeddedActivityElementNodes(((Activity) bpmnElementNode).getAllNodes(), offsetX,
+                                    offsetY);
+                        }
                     }
                 } else {
                     // test if we have a BPMNLable element was selected?
@@ -147,11 +158,25 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                         BPMNLabel bpmnLabel = _bpmnElement.getLabel();
 
                         updateLabel(gNode, bpmnLabel, offsetX, offsetY);
+                    } else {
+
+                        Activity activityElement = (Activity) modelState.getBpmnModel()
+                                .findElementExtensionNodeById(id);
+                        BPMNElementNode bPMNElementNodeExtension = (BPMNElementNode) activityElement
+                                .findElementById(id);
+                        if (bPMNElementNodeExtension instanceof DataObjectAttributeExtension) {
+                        } else {
+                            updateFlowElementExtension(gNode, bPMNElementNodeExtension, elementBound, newPoint,
+                                    newSize);
+                        }
+
                     }
                 }
 
             }
-        } catch (BPMNMissingElementException | BPMNInvalidReferenceException | BPMNInvalidTypeException e) {
+        } catch (BPMNMissingElementException | BPMNInvalidReferenceException |
+
+                BPMNInvalidTypeException e) {
             e.printStackTrace();
         }
         // no more action - the GModel is now up to date
@@ -264,6 +289,47 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                 updateLabel(_labelnode.get(), bpmnLabel, offsetX, offsetY);
             }
         }
+    }
+
+    private void updateFlowElementExtension(final GNode gNode, final BPMNElementNode bpmnElementNode,
+            final ElementAndBounds elementBound, final GPoint newPoint, final GDimension newSize)
+            throws BPMNInvalidTypeException, BPMNMissingElementException, BPMNInvalidReferenceException {
+        // TODO Auto-generated method stub
+        double offsetX = newPoint.getX() - gNode.getPosition().getX();
+        double offsetY = newPoint.getY() - gNode.getPosition().getY();
+
+        BPMNBounds bpmnBounds = bpmnElementNode.getBounds();
+        if (bpmnBounds != null) {
+            BPMNPoint oldBpmnPoint = bpmnBounds.getPosition();
+            BPMNPoint newBpmnPoint = new BPMNPoint(oldBpmnPoint.getX() + offsetX, oldBpmnPoint.getY() + offsetY);
+
+            gNode.setPosition(newPoint);
+            // The BPMN Position is always absolute so we can simply update the element
+            // BPMN Position by the new offset and new dimensions.
+            bpmnBounds.setPosition(newBpmnPoint);
+            bpmnBounds.setDimension(newSize.getWidth(), newSize.getHeight());
+
+            // Finally Update GNode dimension....
+            gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, newSize.getWidth());
+            gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, newSize.getHeight());
+            // calling the size method does not have an effect.
+            // see:
+            // https://github.com/eclipse-glsp/glsp/discussions/741#discussioncomment-3688606
+            gNode.setSize(newSize);
+            // if the flow Element has a BPMNLabel, than we need to adjust finally the
+            // position of the label too
+            if (bpmnElementNode.hasBPMNLabel()) {
+                BPMNLabel bpmnLabel = bpmnElementNode.getLabel();
+                Optional<GNode> _labelnode = modelState.getIndex()
+                        .findElementByClass(bpmnElementNode.getId() + "_bpmnlabel", GNode.class);
+                updateLabel(_labelnode.get(), bpmnLabel, offsetX, offsetY);
+            }
+        }
+        if (bpmnElementNode instanceof DataInputObjectExtension
+                || bpmnElementNode instanceof DataOutputObjectExtension) {
+            updateEmbeddedAttributeElementNodes(bpmnElementNode, offsetX, offsetY);
+        }
+
     }
 
     /**
@@ -483,8 +549,9 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                     bounds.setPosition(bounds.getPosition().getX() + offsetX, bounds.getPosition().getY() + offsetY);
                 }
                 // if the flowElemen has a BPMNLabel element we adjust position of the label too
-                BPMNLabel bpmnLabel = flowElement.getLabel();
-                if (bpmnLabel != null) {
+
+                if (flowElement.hasBPMNLabel()) {
+                    BPMNLabel bpmnLabel = flowElement.getLabel();
                     bpmnLabel.updateLocation(bpmnLabel.getPosition().getX() + offsetX,
                             bpmnLabel.getPosition().getY() + offsetY);
                 }
@@ -525,5 +592,138 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
             }
         }
         return filteredElementBounds;
+    }
+
+    /**
+     *
+     * @author Ali Nour Eldin
+     */
+    /**
+     * This method updates the position for all BPMNElementNodes contained in a pool
+     * given a x and y offset. This method is needed because in BPMN all positions
+     * are absolute and in GLSP the position of a element embedded in a container is
+     * relative.
+     *
+     * @param activity - the bpmnProcess containing the bpmn element nodes.
+     * @param gNode
+     * @param offsetX  - new X offset
+     * @param offsetY  - new Y offset
+     * @throws BPMNMissingElementException
+     */
+    void updateEmbeddedActivityElementNodes(final Set<BPMNElementNode> bpmnFlowElements, final double offsetX,
+            final double offsetY) throws BPMNMissingElementException {
+
+//        System.out.println(bpmnFlowElements.size());
+        for (BPMNElementNode flowElement : bpmnFlowElements) {
+            logger.debug("update element bounds: " + flowElement.getId());
+            try {
+                BPMNBounds bounds = flowElement.getBounds();
+                if (bounds != null) {
+                    bounds.setPosition(bounds.getPosition().getX() + offsetX, bounds.getPosition().getY() + offsetY);
+                    // find the corresponding GNode Element
+                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
+                    if (!_node.isPresent()) {
+                        // this case should not happen!
+                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+                        continue;
+                    }
+
+                    GNode gNode = _node.get();
+                    gNode.getPosition().setX(bounds.getPosition().getX());
+                    gNode.getPosition().setY(bounds.getPosition().getY());
+
+                }
+
+                // if the flowElemen has a BPMNLabel element we adjust position of the label too
+                BPMNLabel bpmnLabel = flowElement.getLabel();
+
+                if (bpmnLabel != null) {
+
+                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
+                    if (!_node.isPresent()) {
+                        // this case should not happen!
+                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+                        continue;
+                    }
+
+                    Optional<GNode> _labelnode = modelState.getIndex()
+                            .findElementByClass(flowElement.getId() + "_bpmnlabel", GNode.class);
+                    updateLabel(_labelnode.get(), bpmnLabel, offsetX, offsetY);
+                }
+                if (flowElement instanceof DataInputObjectExtension
+                        || flowElement instanceof DataOutputObjectExtension) {
+                    updateEmbeddedAttributeElementNodes(flowElement, offsetX, offsetY);
+                }
+            } catch (BPMNMissingElementException e) {
+                logger.warn("Failed to update FlowElement bounds for : " + flowElement.getId());
+            }
+        }
+
+    }
+
+    void updateEmbeddedAttributeElementNodes(final BPMNElementNode bpmnElementNode, final double offsetX,
+            final double offsetY) throws BPMNMissingElementException {
+        int count = 0;
+        Set<DataObjectAttributeExtension> dataAttribute = new LinkedHashSet<>();
+        if (bpmnElementNode instanceof DataInputObjectExtension) {
+            dataAttribute.addAll(((DataInputObjectExtension) bpmnElementNode).getDataAttributes());
+        } else if (bpmnElementNode instanceof DataOutputObjectExtension) {
+            dataAttribute.addAll(((DataOutputObjectExtension) bpmnElementNode).getDataAttributes());
+        }
+
+//        System.out.println(dataAttribute.size());
+        for (BPMNElementNode flowElement : dataAttribute) {
+            logger.debug("update element bounds: " + flowElement.getId());
+            try {
+                BPMNBounds bounds = flowElement.getBounds();
+                if (bounds != null) {
+                    // get data object
+                    Optional<GNode> _node_data_node = modelState.getIndex().findElementByClass(bpmnElementNode.getId(),
+                            GNode.class);
+                    if (!_node_data_node.isPresent()) {
+                        // this case should not happen!
+                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+                        continue;
+                    }
+
+                    GNode gNodeData = _node_data_node.get();
+
+                    bounds.setPosition(bounds.getPosition().getX() + offsetX, bounds.getPosition().getY() + offsetY);
+                    // find the corresponding GNode Element
+                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
+                    if (!_node.isPresent()) {
+                        // this case should not happen!
+                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+                        continue;
+                    }
+
+                    GNode gNode = _node.get();
+                    gNode.getPosition().setY(gNodeData.getPosition().getY() + gNodeData.getSize().getHeight()
+                            + DataObjectAttributeExtension.DEFAULT_HEIGHT * count);
+                    gNode.getPosition().setX(gNodeData.getPosition().getX() + 30);
+
+                }
+
+                // if the flowElemen has a BPMNLabel element we adjust position of the label too
+                BPMNLabel bpmnLabel = flowElement.getLabel();
+
+                if (bpmnLabel != null) {
+
+                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
+                    if (!_node.isPresent()) {
+                        // this case should not happen!
+                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+                        continue;
+                    }
+
+                    Optional<GNode> _labelnode = modelState.getIndex()
+                            .findElementByClass(flowElement.getId() + "_bpmnlabel", GNode.class);
+                    updateLabel(_labelnode.get(), bpmnLabel, offsetX, offsetY);
+                }
+                count++;
+            } catch (BPMNMissingElementException e) {
+                logger.warn("Failed to update FlowElement bounds for : " + flowElement.getId());
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.bpmn.elements.core.BPMNBounds;
 import org.openbpmn.bpmn.elements.core.BPMNElementEdge;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
+import org.openbpmn.bpmn.elements.core.BPMNPoint;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidIDException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
@@ -783,6 +784,7 @@ public class BPMNProcess extends BPMNElement {
             return;
         }
         if (baseElement instanceof Activity) {
+        	((Activity) baseElement).deleteAllElements();
             this.deleteTask(id);
             return;
         }
@@ -1339,6 +1341,72 @@ public class BPMNProcess extends BPMNElement {
             BPMNModel.error("Error updating bonds for LaneSet: " + e.getMessage());
         }
 
+    }
+    
+    /**
+     * This method returns the BPMN Participant (Pool) a element contains to based
+     * on a given absolute position in the diagram. This method is used to move a
+     * element within a diagram from one process pool into another.
+     * <p>
+     * If the model type is no Collaboration diagram the method throws a
+     * BPMNInvalidTypeException
+     * <p>
+     * If no matching Participant can be found, than the method returns null.
+     * 
+     * @param point - an absolute point within the current diagram
+     * @return a Participant or null
+     * @throws BPMNInvalidTypeException
+     */
+    public Activity findActivityByPoint(BPMNPoint point) throws BPMNInvalidTypeException {
+        
+
+        if (point != null ) {
+            // iterate over all participants
+            for (Activity activity : this.getActivities()) {
+                // try to get the bound
+                try {
+                    BPMNBounds participantBounds;
+                    participantBounds = activity.getBounds();
+                    if (participantBounds.containsPoint(point)) {
+                        return activity;
+                    }
+                } catch (BPMNMissingElementException e) {
+                    // participant does not contain bounds, so we can skip this one
+                }
+            }
+        }
+       
+        return null;
+    }
+    public BPMNElementNode findDataObjectByPoint(BPMNPoint point) throws BPMNInvalidTypeException {
+        
+
+        if (point != null ) {
+            // iterate over all participants
+            for (Activity activity : this.getActivities()) {
+                // try to get the bound
+                try {
+                    BPMNBounds participantBounds;
+                    for(DataInputObjectExtension data:activity.getDataInputObjects()) {
+                    	participantBounds = data.getBounds();
+                        if (participantBounds.containsPoint(point)) {
+                            return data;
+                        }
+                    }
+                    for(DataOutputObjectExtension data:activity.getDataOutputObjects()) {
+                    	participantBounds = data.getBounds();
+                        if (participantBounds.containsPoint(point)) {
+                            return data;
+                        }
+                    }
+                    
+                } catch (BPMNMissingElementException e) {
+                    // participant does not contain bounds, so we can skip this one
+                }
+            }
+        }
+       
+        return null;
     }
 
 }

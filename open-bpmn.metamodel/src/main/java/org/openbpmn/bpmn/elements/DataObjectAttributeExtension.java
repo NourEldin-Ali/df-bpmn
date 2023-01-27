@@ -1,5 +1,6 @@
 package org.openbpmn.bpmn.elements;
 
+import java.io.DataOutput;
 import java.util.Set;
 
 import org.openbpmn.bpmn.BPMNModel;
@@ -15,7 +16,7 @@ import org.w3c.dom.Element;
 public class DataObjectAttributeExtension extends BPMNElementNode {
 
     public final static double DEFAULT_WIDTH = 110.0;
-    public final static double DEFAULT_HEIGHT = 50.0;
+    public final static double DEFAULT_HEIGHT = 25.0;
     @SuppressWarnings("unused")
 	private DataInputObjectExtension dataInputObject=null;
     
@@ -52,5 +53,13 @@ public class DataObjectAttributeExtension extends BPMNElementNode {
     public double getDefaultHeigth() {
         return DEFAULT_HEIGHT;
     }
-
+    
+    public Activity getActivity() {
+    	if(dataInputObject != null) {
+    		return dataInputObject.activity;
+    	}else if(dataOutputObject != null) {
+    		return dataOutputObject.activity;
+    	}
+    	return null;
+    }
 }

@@ -48,7 +48,7 @@ public class BPMNChangeRoutingPointsOperationHandler extends AbstractOperationHa
 
     @Override
     public void executeOperation(final ChangeRoutingPointsOperation operation) {
-
+        System.out.println(operation.getNewRoutingPoints());
         List<ElementAndRoutingPoints> routingPoints = operation.getNewRoutingPoints();
         logger.fine("=== ChangeRoutingPointsOperation - " + routingPoints.size() + " routing points");
         try {

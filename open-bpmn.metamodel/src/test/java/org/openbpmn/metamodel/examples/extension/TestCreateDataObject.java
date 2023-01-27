@@ -54,8 +54,8 @@ public class TestCreateDataObject {
 //            dataObjectInput.addAttributeObject(BPMNTypes.DATA_OBJECT_ATTRIBUTE, "attInputTest","string");
 
             //add output with attribute
-            DataOutputObjectExtension  dataObjectOutput =  activity.addDataOutputObject(BPMNTypes.DATA_OUTPUT_ENVIRONMENT_DATA,"outTest","Sting",true,"state");
-            DataObjectAttributeExtension dataObjectAttributeExtension  = dataObjectOutput.addAttributeObject(BPMNTypes.DATA_OBJECT_ATTRIBUTE, "attOutputTest","string");
+            DataOutputObjectExtension  dataObjectOutput =  activity.addDataOutputObject(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA,"outTest","Sting",true,"state");
+            DataObjectAttributeExtension dataObjectAttributeExtension  = dataObjectOutput.addAttributeObject("attOutputTest","string");
             
             DataProcessingExtension dataProc =  activity.addDataProcessing("Data operation");
             

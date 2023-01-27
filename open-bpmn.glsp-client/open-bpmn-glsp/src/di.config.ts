@@ -14,57 +14,74 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import {
+    boundsFeature,
+    CircularNodeView,
+    configureCommand,
     configureDefaultModelElements,
     configureModelElement,
+    configureView,
     ConsoleLogger,
     createClientContainer,
     DeleteElementContextMenuItemProvider,
-    editLabelFeature, moveFeature, selectFeature,
+    DiamondNodeView,
+    editLabelFeature,
+    ForeignObjectView,
     LogLevel,
+    moveFeature,
     overrideViewerOptions,
+    RectangularNodeView,
     RevealNamedElementActionProvider,
-    RoundedCornerNodeView,RectangularNodeView,
+    RoundedCornerNodeView,
     SCompartment,
     SCompartmentView,
-    SLabel,CircularNodeView,DiamondNodeView,
-    SLabelView,configureView,
-    configureCommand,
-    TYPES,ForeignObjectView, boundsFeature
+    selectFeature,
+    SLabel,
+    SLabelView,
+    TYPES
 } from '@eclipse-glsp/client';
 // import { DefaultTypes } from '@eclipse-glsp/protocol';
+import {
+    BPMNEdge,
+    DataObjectExtensionNode,
+    DataObjectNode,
+    DataProcessingExtensionNode,
+    EventNode,
+    GatewayNode,
+    Icon,
+    LabelNode,
+    LaneNode,
+    MessageNode,
+    MultiLineTextNode,
+    PoolNode,
+    TaskNode,
+    TextAnnotationNode
+} from '@open-bpmn/open-bpmn-model';
 import 'balloon-css/balloon.min.css';
 import { Container, ContainerModule } from 'inversify';
 import 'sprotty/css/edit-label.css';
 import '../css/diagram.css';
 import {
-	LabelNode,
-	GatewayNode,
-	PoolNode,
-	LaneNode,
-	DataObjectNode,
-	MessageNode,
-	TextAnnotationNode,
-	Icon,
-	TaskNode,
-	EventNode,
-	BPMNEdge,
-	MultiLineTextNode
-} from '@open-bpmn/open-bpmn-model';
-import { IconView,ContainerHeaderView,
-         BPMNLabelNodeSelectionListener,
-         DataObjectNodeView,
-         MessageNodeView,
-         TextAnnotationNodeView
+    BPMNLabelNodeSelectionListener,
+    ContainerHeaderView,
+    DataDependencyNodeExtensionNodeView,
+    DataDependentNodeExtensionNodeView,
+    DataInputNodeExtensionNodeView,
+    DataObjectNodeView,
+    DataOutputNodeExtensionNodeView,
+    IconView,
+    MessageNodeView,
+    TextAnnotationNodeView
 } from './bpmn-element-views';
+import {
+    BPMNElementSnapper,
+    DrawHelperLinesCommand,
+    HelperLineListener,
+    HelperLineView,
+    RemoveHelperLinesCommand
+} from './bpmn-helperlines';
 import { BPMNEdgeView } from './bpmn-routing-views';
-import { HelperLineListener,
-         DrawHelperLinesCommand,
-         RemoveHelperLinesCommand,
-         HelperLineView,
-         BPMNElementSnapper
-       } from './bpmn-helperlines';
 
-import {bpmnPropertyModule} from '@open-bpmn/open-bpmn-properties';
+import { bpmnPropertyModule } from '@open-bpmn/open-bpmn-properties';
 
 const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -76,10 +93,10 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     bind(TYPES.ICommandPaletteActionProvider).to(RevealNamedElementActionProvider);
     bind(TYPES.IContextMenuItemProvider).to(DeleteElementContextMenuItemProvider);
 
-	// neuer SelectionListener for Event BPMNLabels
-	bind(TYPES.SelectionListener).to(BPMNLabelNodeSelectionListener);
+    // neuer SelectionListener for Event BPMNLabels
+    bind(TYPES.SelectionListener).to(BPMNLabelNodeSelectionListener);
 
-	// bpmn helper lines
+    // bpmn helper lines
     bind(TYPES.MouseListener).to(HelperLineListener);
     configureCommand({ bind, isBound }, DrawHelperLinesCommand);
     configureCommand({ bind, isBound }, RemoveHelperLinesCommand);
@@ -115,7 +132,7 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
 
     configureModelElement(context, 'comp:header', SCompartment, ContainerHeaderView);
 
-    configureModelElement(context, 'pool', PoolNode, RoundedCornerNodeView, { disable: [moveFeature] } );
+    configureModelElement(context, 'pool', PoolNode, RoundedCornerNodeView, { disable: [moveFeature] });
     configureModelElement(context, 'lane', LaneNode, RoundedCornerNodeView);
     configureModelElement(context, 'dataObject', DataObjectNode, DataObjectNodeView);
     configureModelElement(context, 'message', MessageNode, MessageNodeView);
@@ -125,9 +142,9 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
 
     // textNode of BPMNLable, TextAnnotation...
     configureModelElement(context, 'bpmn-text-node', MultiLineTextNode, ForeignObjectView, {
-         disable: [moveFeature, selectFeature,boundsFeature],
-         enable: [editLabelFeature]}
-    );
+        disable: [moveFeature, selectFeature, boundsFeature],
+        enable: [editLabelFeature]
+    });
 
     configureModelElement(context, 'container', SCompartment, SCompartmentView);
 
@@ -136,6 +153,29 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     configureModelElement(context, 'messageFlow', BPMNEdge, BPMNEdgeView);
     configureModelElement(context, 'association', BPMNEdge, BPMNEdgeView);
 
+    // data object extension
+    // input
+    configureModelElement(context, 'dataInputObjectLocal', DataObjectExtensionNode, DataInputNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectProcess', DataObjectExtensionNode, DataInputNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectDataStore', DataObjectExtensionNode, DataInputNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectEnvironmentData', DataObjectExtensionNode, DataInputNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectEnvironmentDataUser', DataObjectExtensionNode, DataInputNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectDependentLocal', DataObjectExtensionNode, DataDependentNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectDependentProcess', DataObjectExtensionNode, DataDependentNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectDependentDataStore', DataObjectExtensionNode, DataDependentNodeExtensionNodeView);
+    configureModelElement(context, 'dataInputObjectDependency', DataObjectExtensionNode, DataDependencyNodeExtensionNodeView);
+    // output
+    configureModelElement(context, 'dataOutputObjectProcess', DataObjectExtensionNode, DataOutputNodeExtensionNodeView);
+    configureModelElement(context, 'dataOutputObjectDataStore', DataObjectExtensionNode, DataOutputNodeExtensionNodeView);
+    configureModelElement(context, 'dataOutputObjectEnvironmentData', DataObjectExtensionNode, DataOutputNodeExtensionNodeView);
+    configureModelElement(context, 'dataOutputObjectEnvironmentDataUser', DataObjectExtensionNode, DataOutputNodeExtensionNodeView);
+    // attribute
+    configureModelElement(context, 'attribute', DataObjectExtensionNode, RoundedCornerNodeView);
+    // data processing
+    configureModelElement(context, 'dataProcessing', DataProcessingExtensionNode, DiamondNodeView);
+    // data flow
+    configureModelElement(context, 'dataFlow', BPMNEdge, BPMNEdgeView);
+    configureModelElement(context, 'dataReference', BPMNEdge, BPMNEdgeView);
 });
 
 export default function createBPMNDiagramContainer(widgetId: string): Container {

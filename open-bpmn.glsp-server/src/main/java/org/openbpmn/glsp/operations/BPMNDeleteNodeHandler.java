@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.glsp.server.operations.AbstractOperationHandler;
 import org.eclipse.glsp.server.operations.DeleteOperation;
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.Association;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Lane;
@@ -61,8 +62,14 @@ public class BPMNDeleteNodeHandler extends AbstractOperationHandler<DeleteOperat
             // find the bpmnBaseElement
             BPMNElement bpmnElement = modelState.getBpmnModel().findElementById(id);
             if (bpmnElement == null) {
-                logger.warning("...no BPMN elmenet with id: " + id + " found!");
-                continue;
+                Activity bpmnElementExt = (Activity) modelState.getBpmnModel().findElementExtensionNodeById(id);
+                if (bpmnElementExt == null) {
+                    logger.warning("...no BPMN elmenet with id: " + id + " found!");
+                    continue;
+                }
+//                System.out.println(bpmnElementExt.getName());
+                bpmnElementExt.deleteElementById(id);
+
             }
             if (bpmnElement instanceof Lane) {
                 // delete lane
@@ -101,7 +108,6 @@ public class BPMNDeleteNodeHandler extends AbstractOperationHandler<DeleteOperat
             if (bpmnElement instanceof MessageFlow) {
                 bpmnElement.getModel().deleteMessageFlow(id);
             }
-
         }
 
         // reset model state

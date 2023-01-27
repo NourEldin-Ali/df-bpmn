@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-package org.openbpmn.glsp.elements.task;
+package org.openbpmn.glsp.elements.dataextension;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +25,15 @@ import org.eclipse.glsp.server.actions.ActionDispatcher;
 import org.eclipse.glsp.server.actions.SelectAction;
 import org.eclipse.glsp.server.operations.CreateNodeOperation;
 import org.eclipse.glsp.server.utils.GModelUtil;
-import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
+import org.openbpmn.bpmn.elements.DataOutputObjectExtension;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.glsp.bpmn.BpmnPackage;
 import org.openbpmn.glsp.elements.CreateBPMNNodeOperationHandler;
 import org.openbpmn.glsp.model.BPMNGModelState;
+import org.openbpmn.glsp.utils.BPMNGraphUtil;
 
 import com.google.inject.Inject;
 
@@ -44,9 +45,9 @@ import com.google.inject.Inject;
  * @author rsoika
  *
  */
-public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
+public class BPMNCreateDataOutputExtensionHandler extends CreateBPMNNodeOperationHandler {
 
-    private static Logger logger = LogManager.getLogger(BPMNCreateTaskHandler.class);
+    private static Logger logger = LogManager.getLogger(BPMNCreateDataOutputExtensionHandler.class);
 
     @Inject
     protected BPMNGModelState modelState;
@@ -61,36 +62,46 @@ public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
      * <p>
      * We use this constructor to overwrite the handledElementTypeIds
      */
-    public BPMNCreateTaskHandler() {
-        super(BPMNTypes.BPMN_TASKS);
+    public BPMNCreateDataOutputExtensionHandler() {
+        super(BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION);
     }
 
     @Override
     protected void executeOperation(final CreateNodeOperation operation) {
-
         elementTypeId = operation.getElementTypeId();
-        // now we add this task into the source model
-        String taskID = BPMNModel.generateShortID("task");// "task-" + BPMNModel.generateShortID();
-        logger.debug("createNode tasknodeID=" + taskID);
+
         try {
             // find the process - either the default process for Root container or the
             // corresponding participant process
             BPMNProcess bpmnProcess = findProcessByCreateNodeOperation(operation);
+
             if (bpmnProcess != null) {
-                Activity task = bpmnProcess.addTask(taskID, getLabel(), operation.getElementTypeId());
+                GPoint dropPoint = operation.getLocation().orElse(null);
+                Activity task = bpmnProcess.findActivityByPoint(BPMNGraphUtil.createBPMNPoint(dropPoint));
                 Optional<GPoint> point = operation.getLocation();
-                if (point.isPresent()) {
-                    double elementX = point.get().getX();
-                    double elementY = point.get().getY();
-                    // compute relative center position...
-                    elementX = elementX - (Activity.DEFAULT_WIDTH / 2);
-                    elementY = elementY - (Activity.DEFAULT_HEIGHT / 2);
+                if (BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.contains(elementTypeId)) {
+                    DataOutputObjectExtension data = task.addDataOutputObject(elementTypeId, getLabel(), "any", false,
+                            "init");
+                    if (point.isPresent()) {
+                        double elementX = point.get().getX();
+                        double elementY = point.get().getY();
+                        // compute relative center position...
+                        elementX = elementX - (DataOutputObjectExtension.DEFAULT_WIDTH / 2);
+                        elementY = elementY - (DataOutputObjectExtension.DEFAULT_HEIGHT / 2);
 
-                    task.getBounds().setPosition(elementX, elementY);
-                    task.getBounds().setDimension(Activity.DEFAULT_WIDTH, Activity.DEFAULT_HEIGHT);
+                        data.getBounds().setPosition(elementX, elementY);
+                        data.getBounds().setDimension(DataOutputObjectExtension.DEFAULT_WIDTH,
+                                DataOutputObjectExtension.DEFAULT_HEIGHT);
 
-                    logger.debug("new BPMNActivity Position = " + elementX + "," + elementY);
+                        logger.debug("new BPMN-DataOutput Position = " + elementX + "," + elementY);
+                    }
+                    modelState.reset();
+                    actionDispatcher.dispatchAfterNextUpdate(new SelectAction(),
+                            new SelectAction(List.of(data.getId())));
+                } else {
+                    // not supported element
                 }
+
             } else {
                 // should not happen
                 logger.fatal("Unable to find a vaild BPMNElement to place the new node: " + elementTypeId);
@@ -98,15 +109,14 @@ public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
         } catch (BPMNModelException e) {
             e.printStackTrace();
         }
-        modelState.reset();
-        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(taskID)));
+
     }
 
     @Override
     public String getLabel() {
-        int nodeCounter = GModelUtil.generateId(BpmnPackage.Literals.TASK_GNODE, elementTypeId, modelState);
-//        System.out.println(nodeCounter);
-        return "Task-" + (nodeCounter + 1);
+        int nodeCounter = GModelUtil.generateId(BpmnPackage.Literals.DATA_OBJECT_EXTENSION_GNODE, elementTypeId,
+                modelState);
+        return "DataOutput-" + (nodeCounter + 1);
     }
 
 }

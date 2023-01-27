@@ -84,6 +84,11 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         mappings.put(BPMNTypes.MESSAGE, BpmnPackage.Literals.MESSAGE_GNODE);
         mappings.put(BPMNTypes.TEXTANNOTATION, BpmnPackage.Literals.TEXT_ANNOTATION_GNODE);
 
+        // DATA Extension
+        mappings.put(BPMNTypes.DATA_OBJECT_EXTENSION, BpmnPackage.Literals.DATA_OBJECT_EXTENSION_GNODE);
+        mappings.put(BPMNTypes.DATA_OBJECT_ATTRIBUTE_Extension, BpmnPackage.Literals.DATA_ATTRIBUTE_EXTENSION_GNODE);
+        mappings.put(BPMNTypes.DATA_PROCESSING_EXTENSION, BpmnPackage.Literals.DATA_PROCESSING_EXTENSTION_GNODE);
+
         return mappings;
     }
 
@@ -137,6 +142,24 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         // BPMNLabel ShapeEventTypes
         nodeHints.add(createBPMNLabelHint());
 
+        //
+
+        // DATA EXTENSION
+//        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_LOCAL));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_PROCESS));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
+//        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_LOCAL));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_PROCESS));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE));
+
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA));
+        nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER));
+
         return nodeHints;
     }
 
@@ -174,6 +197,23 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         associationHint.setTargetElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS);
         edgeHints.add(associationHint);
 
+        /**
+         * Data extension
+         *
+         * @author Ali Nour Eldin
+         */
+        // Data Flow
+        EdgeTypeHint dataFlowHint = createDefaultEdgeTypeHint(BPMNTypes.DATA_FLOW);
+        dataFlowHint.setSourceElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS_EXTENSION);
+        dataFlowHint.setTargetElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS_EXTENSION);
+        edgeHints.add(dataFlowHint);
+
+        // Reference
+        EdgeTypeHint referenceHint = createDefaultEdgeTypeHint(BPMNTypes.DATA_REFERENCE);
+        referenceHint.setSourceElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS_EXTENSION);
+        referenceHint.setTargetElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS_EXTENSION);
+        edgeHints.add(referenceHint);
+
         return edgeHints;
     }
 
@@ -194,6 +234,8 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         elementList.add(BPMNTypes.MESSAGE);
         elementList.add(BPMNTypes.TEXTANNOTATION);
         elementList.add(BPMNTypes.POOL);
+
+//        elementList.addAll(BPMNTypes.BPMN_DATA_OBJECTS_EXTENSION);
 
         rootHint.setContainableElementTypeIds(elementList);
         return rootHint;
@@ -241,6 +283,9 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         ShapeTypeHint shapeTypeHint = new ShapeTypeHint(taskType, true, true, true, true);
 
         List<String> containables = new ArrayList<>();
+        // Add object data
+        containables.addAll(BPMNTypes.BPMN_DATA_OBJECTS_EXTENSION);
+        containables.add(BPMNTypes.DATA_PROCESSING);
         // add Boundary Event as the only containable for a Task Element
         containables.addAll(Arrays.asList(new String[] { //
                 BPMNTypes.BOUNDARY_EVENT //
@@ -249,6 +294,14 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         // Add optional Extension Hints...
         addExtensionHints(taskType, containables);
 
+        shapeTypeHint.setContainableElementTypeIds(containables);
+        return shapeTypeHint;
+    }
+
+    private ShapeTypeHint createDataObjectExtensionHint(final String dataObjectType) {
+        ShapeTypeHint shapeTypeHint = new ShapeTypeHint(dataObjectType, true, true, false, true);
+        List<String> containables = new ArrayList<>();
+        containables.add(BPMNTypes.DATA_OBJECT_ATTRIBUTE);
         shapeTypeHint.setContainableElementTypeIds(containables);
         return shapeTypeHint;
     }

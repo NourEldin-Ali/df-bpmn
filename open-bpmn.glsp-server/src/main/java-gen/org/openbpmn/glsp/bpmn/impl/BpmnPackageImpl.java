@@ -16,7 +16,10 @@ import org.openbpmn.glsp.bpmn.BPMNGEdge;
 import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.bpmn.BpmnFactory;
 import org.openbpmn.glsp.bpmn.BpmnPackage;
+import org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode;
+import org.openbpmn.glsp.bpmn.DataObjectExtensionGNode;
 import org.openbpmn.glsp.bpmn.DataObjectGNode;
+import org.openbpmn.glsp.bpmn.DataProcessingExtenstionGNode;
 import org.openbpmn.glsp.bpmn.EventGNode;
 import org.openbpmn.glsp.bpmn.GatewayGNode;
 import org.openbpmn.glsp.bpmn.GroupGNode;
@@ -125,6 +128,27 @@ public class BpmnPackageImpl extends EPackageImpl implements BpmnPackage {
      * @generated
      */
     private EClass laneGNodeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass dataObjectExtensionGNodeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass dataProcessingExtenstionGNodeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass dataAttributeExtensionGNodeEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -351,6 +375,33 @@ public class BpmnPackageImpl extends EPackageImpl implements BpmnPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getDataObjectExtensionGNode() {
+        return dataObjectExtensionGNodeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getDataProcessingExtenstionGNode() {
+        return dataProcessingExtenstionGNodeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getDataAttributeExtensionGNode() {
+        return dataAttributeExtensionGNodeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public BpmnFactory getBpmnFactory() {
         return (BpmnFactory)getEFactoryInstance();
     }
@@ -403,6 +454,12 @@ public class BpmnPackageImpl extends EPackageImpl implements BpmnPackage {
         poolGNodeEClass = createEClass(POOL_GNODE);
 
         laneGNodeEClass = createEClass(LANE_GNODE);
+
+        dataObjectExtensionGNodeEClass = createEClass(DATA_OBJECT_EXTENSION_GNODE);
+
+        dataProcessingExtenstionGNodeEClass = createEClass(DATA_PROCESSING_EXTENSTION_GNODE);
+
+        dataAttributeExtensionGNodeEClass = createEClass(DATA_ATTRIBUTE_EXTENSION_GNODE);
     }
 
     /**
@@ -449,6 +506,9 @@ public class BpmnPackageImpl extends EPackageImpl implements BpmnPackage {
         textAnnotationGNodeEClass.getESuperTypes().add(this.getBPMNGNode());
         poolGNodeEClass.getESuperTypes().add(this.getBPMNGNode());
         laneGNodeEClass.getESuperTypes().add(this.getBPMNGNode());
+        dataObjectExtensionGNodeEClass.getESuperTypes().add(this.getBPMNGNode());
+        dataProcessingExtenstionGNodeEClass.getESuperTypes().add(this.getBPMNGNode());
+        dataAttributeExtensionGNodeEClass.getESuperTypes().add(this.getDataObjectExtensionGNode());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(bpmngNodeEClass, BPMNGNode.class, "BPMNGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -480,6 +540,12 @@ public class BpmnPackageImpl extends EPackageImpl implements BpmnPackage {
         initEClass(poolGNodeEClass, PoolGNode.class, "PoolGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(laneGNodeEClass, LaneGNode.class, "LaneGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(dataObjectExtensionGNodeEClass, DataObjectExtensionGNode.class, "DataObjectExtensionGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(dataProcessingExtenstionGNodeEClass, DataProcessingExtenstionGNode.class, "DataProcessingExtenstionGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(dataAttributeExtensionGNodeEClass, DataAttributeExtensionGNode.class, "DataAttributeExtensionGNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

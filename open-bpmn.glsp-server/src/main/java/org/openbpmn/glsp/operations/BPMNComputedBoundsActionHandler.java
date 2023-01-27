@@ -24,6 +24,7 @@ import org.eclipse.glsp.server.actions.Action;
 import org.eclipse.glsp.server.features.core.model.ComputedBoundsAction;
 import org.eclipse.glsp.server.types.ElementAndRoutingPoints;
 import org.openbpmn.bpmn.BPMNTypes;
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.Association;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Participant;
@@ -59,6 +60,11 @@ public class BPMNComputedBoundsActionHandler extends AbstractActionHandler<Compu
             for (ElementAndRoutingPoints routingInfo : routings) {
                 String id = routingInfo.getElementId();
                 BPMNElement element = modelState.getBpmnModel().findElementById(id);
+                if (element == null) {
+                    element = ((Activity) modelState.getBpmnModel().findElementExtensionNodeById(id))
+                            .findElementById(id);
+
+                }
                 // do we have a BPMNSequenceFlow ?
                 if (element != null && element instanceof BPMNElementEdge) {
                     BPMNElementEdge bpmnElementEdge = (BPMNElementEdge) element;

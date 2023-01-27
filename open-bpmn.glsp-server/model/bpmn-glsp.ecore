@@ -20,4 +20,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="TextAnnotationGNode" eSuperTypes="#//BPMNGNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="PoolGNode" eSuperTypes="#//BPMNGNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="LaneGNode" eSuperTypes="#//BPMNGNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataObjectExtensionGNode" eSuperTypes="#//BPMNGNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataProcessingExtenstionGNode" eSuperTypes="#//BPMNGNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataAttributeExtensionGNode" eSuperTypes="#//DataObjectExtensionGNode"/>
 </ecore:EPackage>

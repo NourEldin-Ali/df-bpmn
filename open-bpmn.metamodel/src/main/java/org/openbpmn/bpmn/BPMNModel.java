@@ -27,6 +27,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Event;
 import org.openbpmn.bpmn.elements.Lane;
@@ -1018,6 +1019,35 @@ public class BPMNModel {
         return null;
     }
 
+    /**
+     * to find data in the activity
+     * 
+     * @author Ali Nour Eldin
+     */
+    
+    public BPMNElement findElementExtensionNodeById(String id) {
+
+//        BPMNElement result = this.findElementById(id);
+//        if (result != null && result instanceof BPMNElementNode) {
+//            return (BPMNElementNode) result;
+//        }
+     // iterate over all processes
+        Set<BPMNProcess> processList = this.getProcesses();
+        for (BPMNProcess process : processList) {
+           for(Activity activity: process.getActivities()) {
+                // analyze the content of the process
+        	   BPMNElement baseElement = (BPMNElement) activity.findElementById(id);
+                if (baseElement != null) {
+                    return activity;
+                }
+            }
+        }
+
+        // no corresponding element found!
+        return null;
+    }
+    
+    
     /**
      * Finds a BPMNElementEdge by ID within this model. The method iterates over all
      * existing Processes and its contained FlowElements.

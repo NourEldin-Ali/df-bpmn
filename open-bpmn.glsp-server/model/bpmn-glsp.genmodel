@@ -26,6 +26,9 @@
     <genClasses ecoreClass="bpmn-glsp.ecore#//TextAnnotationGNode"/>
     <genClasses ecoreClass="bpmn-glsp.ecore#//PoolGNode"/>
     <genClasses ecoreClass="bpmn-glsp.ecore#//LaneGNode"/>
+    <genClasses ecoreClass="bpmn-glsp.ecore#//DataObjectExtensionGNode"/>
+    <genClasses ecoreClass="bpmn-glsp.ecore#//DataProcessingExtenstionGNode"/>
+    <genClasses ecoreClass="bpmn-glsp.ecore#//DataAttributeExtensionGNode"/>
   </genPackages>
   <genPackages prefix="Graph" basePackage="org.eclipse.glsp" disposableProviderFactory="true"
       ecorePackage="glsp-graph.ecore#/">

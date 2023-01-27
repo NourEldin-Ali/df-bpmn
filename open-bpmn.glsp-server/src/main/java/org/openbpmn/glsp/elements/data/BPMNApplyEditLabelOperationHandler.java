@@ -28,6 +28,8 @@ import org.eclipse.glsp.graph.util.GraphUtil;
 import org.eclipse.glsp.server.features.directediting.ApplyLabelEditOperation;
 import org.eclipse.glsp.server.operations.AbstractOperationHandler;
 import org.eclipse.glsp.server.operations.Operation;
+import org.openbpmn.bpmn.BPMNTypes;
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.TextAnnotation;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
@@ -121,6 +123,48 @@ public class BPMNApplyEditLabelOperationHandler extends AbstractOperationHandler
                         }
 
                     }
+                }
+            } else {
+                System.out.println(gNodeElement.getId());
+                Activity act = null;
+                String elementId = "";
+                if (gNodeElement.getId().contains(BPMNTypes.DATA_PROCESSING_EXTENSION)) {
+                    elementId = gNodeElement.getId().split("_bpmnlabel_bpmntext")[0];
+
+                } else {
+                    elementId = gNodeElement.getId().split("_name")[0];
+
+                }
+                act = (Activity) modelState.getBpmnModel().findElementExtensionNodeById(elementId);
+                bpmnElementNode = (BPMNElementNode) act.findElementById(elementId);
+                bpmnElementNode.setName(operation.getText());
+                // update gNode
+                String text = operation.getText();
+                gNodeElement.getArgs().put("text", text);
+
+                GModelElement parent = gNodeElement.getParent();
+                if (parent != null && parent instanceof LabelGNode) {
+                    int FONT_SIZE = 14;
+                    LabelGNode label = (LabelGNode) parent;
+                    // resize based on the lines....
+                    int estimatedLines = estimateLineCount(operation.getText(), FONT_SIZE, 100);
+                    GDimension newLabelSize = GraphUtil.dimension(100, FONT_SIZE * estimatedLines);
+                    label.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, newLabelSize.getWidth());
+                    label.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, newLabelSize.getHeight());
+                    // calling the size method does not have an effect.
+                    // see:
+                    // https://github.com/eclipse-glsp/glsp/discussions/741#discussioncomment-3688606
+                    label.setSize(newLabelSize);
+                    // Update the BPMNLabel bounds...
+                    try {
+                        BPMNLabel bpmnLabel = bpmnElementNode.getLabel();
+                        if (bpmnLabel != null) {
+                            bpmnLabel.getBounds().setDimension(newLabelSize.getWidth(), newLabelSize.getHeight());
+                        }
+                    } catch (BPMNMissingElementException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         } else {

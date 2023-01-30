@@ -1,59 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:BPMN2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:imixs="http://www.imixs.org/bpmn2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn">
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:BPMN2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:imixs="http://www.imixs.org/bpmn2"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn"
+    exporterVersion="1.0.0" targetNamespace="http://org.openbpmn">
     <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
-        <bpmn2:participant id="participant_Ddxtjg" name="Default Process" processRef="process_1"/>
+        <bpmn2:participant id="participant_Ddxtjg" name="Default Process" processRef="process_1" />
     </bpmn2:collaboration>
-    <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_1" name="Default Processvb" processType="Public">
-        <bpmn2:documentation id="documentation_JOldbw"/>
-        <bpmn2:task id="task_cL1fqA" name="Task-4ddd">
-            <bpmn2:documentation id="documentation_AtXQFg"/>
-            <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_7rJsLQ" isMultiple="false" name="DataInput-1ddsas" type="any" value="DataInput-1"/>
-            <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_NQCxmA" isMultiple="false" name="asdaDataOutput-2dddddsasd" state="init" type="any">
-                <bpmn2:attribute id="DataObjectAttributeExtension_YZcEzA" name="DataAttribute-1asdasdasddddsas" type="anyasdasd"/>
-            </bpmn2:dataOutputObjectProcess>
-            <bpmn2:dataProcessing id="DataProcessingExtension_S0fzJg" name="dataProcessing-1xdzxczxc"/>
-        </bpmn2:task>
-        <bpmn2:task id="task_L6v1Xw" name="Task-2ddddddddddddddddddddddddddddddddddd">
-            <bpmn2:documentation id="documentation_i7pqPw"/>
-        </bpmn2:task>
+    <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_1"
+        name="Default Processvb" processType="Public">
+        <bpmn2:documentation id="documentation_JOldbw" />
     </bpmn2:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
-        <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
-            <bpmndi:BPMNShape bpmnElement="task_cL1fqA" id="BPMNShape_dlZMIg">
-                <dc:Bounds height="433.0" width="653.0" x="72.69839477539062" y="264.5198974609375"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_mjPl9g" id="BPMNEdge_0PzYVg">
-                <di:waypoint x="320.5028381347656" y="355.0198974609375"/>
-                <di:waypoint x="88.50283813476562" y="355.0198974609375"/>
-                <di:waypoint x="88.50283813476562" y="392.0198974609375"/>
-                <di:waypoint x="294.5028381347656" y="392.0198974609375"/>
-                <di:waypoint x="294.5028381347656" y="138.0198974609375"/>
-                <di:waypoint x="399.50282287597656" y="138.0198974609375"/>
-                <di:waypoint x="399.50282287597656" y="186.0198974609375"/>
-                <di:waypoint x="608.5028076171875" y="186.0198974609375"/>
-                <di:waypoint x="608.5028076171875" y="440.0198974609375"/>
-                <di:waypoint x="402.5028076171875" y="440.0198974609375"/>
-                <di:waypoint x="402.5028076171875" y="403.0198974609375"/>
-                <di:waypoint x="634.5028076171875" y="403.0198974609375"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_7rJsLQ" id="BPMNShape_gzYN6w">
-                <dc:Bounds height="50.0" width="150.0" x="87.69842529296875" y="391.0198974609375"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_NQCxmA" id="BPMNShape_0I6ktQ">
-                <dc:Bounds height="50.0" width="150.0" x="531.6983032226562" y="446.5198974609375"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_S0fzJg" id="BPMNShape_PcdaWA">
-                <dc:Bounds height="50.0" width="50.0" x="313.69842529296875" y="466.0198974609375"/>
-                <bpmndi:BPMNLabel id="BPMNLabel_uo4yWw">
-                    <dc:Bounds height="16.0" width="100.0" x="294.69842529296875" y="521.0198974609375"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_YZcEzA" id="BPMNShape_8G8CnQ">
-                <dc:Bounds height="25.0" width="110.0" x="552.6983032226562" y="451.5198974609375"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="task_L6v1Xw" id="BPMNShape_QZ5NbQ">
-                <dc:Bounds height="50.0" width="150.0" x="824.4985961914062" y="125.36026763916016"/>
-            </bpmndi:BPMNShape>
-        </bpmndi:BPMNPlane>
+        <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1" />
     </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

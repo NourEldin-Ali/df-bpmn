@@ -729,6 +729,17 @@ public class Activity extends BPMNElementNode {
         	 model.getBpmnPlane().removeChild(dataProcessing.next().getBpmnShape());
         }
         
+        Iterator<DataFlowExtension> dataFlow = this.getDataFlows().iterator();
+        while (dataFlow.hasNext()) {
+        	 model.getBpmnPlane().removeChild(dataFlow.next().getBpmnEdge());
+        }
+        
+        Iterator<DataReferenceExtension> dataReferences = this.getDataReferences().iterator();
+        while (dataReferences.hasNext()) {
+        	 model.getBpmnPlane().removeChild(dataReferences.next().getBpmnEdge());
+        }
+        
+        
 	}
 
 	public void deleteElementById(String id) {

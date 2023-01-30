@@ -2,6 +2,7 @@ package org.openbpmn.bpmn.elements;
 
 import java.io.DataOutput;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -44,11 +45,11 @@ public class Activity extends BPMNElementNode {
 
 	protected Activity(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess) throws BPMNModelException {
 		super(model, node, type, bpmnProcess);
-		dataInputObjects = new LinkedHashSet<>();
-		dataOutputObjects = new LinkedHashSet<>();
-		dataFlows = new LinkedHashSet<>();
-		setDataReferences(new LinkedHashSet<>());
-		setDataProcessing(new LinkedHashSet<>());
+		dataInputObjects = new LinkedHashSet<DataInputObjectExtension>();
+		dataOutputObjects = new LinkedHashSet<DataOutputObjectExtension>();
+		dataFlows = new LinkedHashSet<DataFlowExtension>();
+		setDataReferences(new LinkedHashSet<DataReferenceExtension>());
+		setDataProcessing(new LinkedHashSet<DataProcessingExtension>());
 	}
 
 	public void openActivity() {
@@ -120,11 +121,11 @@ public class Activity extends BPMNElementNode {
 	 * 
 	 * @author Ali Nour Eldin
 	 */
-	private Set<DataInputObjectExtension> dataInputObjects = null;
-	private Set<DataOutputObjectExtension> dataOutputObjects = null;
-	private Set<DataFlowExtension> dataFlows = null;
-	private Set<DataReferenceExtension> dataReferences = null;
-	private Set<DataProcessingExtension> dataProcessing = null;
+	private Set<DataInputObjectExtension> dataInputObjects ;
+	private Set<DataOutputObjectExtension> dataOutputObjects ;
+	private Set<DataFlowExtension> dataFlows ;
+	private Set<DataReferenceExtension> dataReferences ;
+	private Set<DataProcessingExtension> dataProcessing ;
 
 	public Set<DataInputObjectExtension> getDataInputObjects() {
 		return dataInputObjects;
@@ -702,19 +703,32 @@ public class Activity extends BPMNElementNode {
 	 * @param id
 	 */
 	public void deleteAllElements() {
-		for (DataInputObjectExtension data : getDataInputObjects()) {
-			
-			this.deleteElementById(data.getId());
-		}
+		Iterator<DataInputObjectExtension> dataInput = this.getDataInputObjects().iterator();
+        while (dataInput.hasNext()) {
+        	DataInputObjectExtension di=dataInput.next();
+        	Iterator<DataObjectAttributeExtension> att = di.getDataAttributes().iterator();
+        	while(att.hasNext()) {
+        		 model.getBpmnPlane().removeChild(att.next().getBpmnShape());
+        	}
+        	 model.getBpmnPlane().removeChild(di.getBpmnShape());
+        }
 
-		for (DataOutputObjectExtension data : getDataOutputObjects()) {
-			
-			this.deleteElementById(data.getId());
-		}
-
-		for (DataProcessingExtension data : getDataProcessing()) {
-			this.deleteElementById(data.getId());
-		}
+        
+        Iterator<DataOutputObjectExtension> dataOut = this.getDataOutputObjects().iterator();
+        while (dataOut.hasNext()) {
+        	DataOutputObjectExtension d=dataOut.next();
+        	Iterator<DataObjectAttributeExtension> att = d.getDataAttributes().iterator();
+        	while(att.hasNext()) {
+        		model.getBpmnPlane().removeChild(att.next().getBpmnShape());
+        	}
+        	 model.getBpmnPlane().removeChild(d.getBpmnShape());
+        }
+		
+        Iterator<DataProcessingExtension> dataProcessing = this.getDataProcessing().iterator();
+        while (dataProcessing.hasNext()) {
+        	 model.getBpmnPlane().removeChild(dataProcessing.next().getBpmnShape());
+        }
+        
 	}
 
 	public void deleteElementById(String id) {
@@ -742,8 +756,9 @@ public class Activity extends BPMNElementNode {
 					}else {
 						attL = ((DataOutputObjectExtension) bpmnElement).getDataAttributes();
 					}
+
 					for(DataObjectAttributeExtension att:attL) {
-						this.deleteElementById(att.getId());
+						model.getBpmnPlane().removeChild(att.getBpmnShape());
 					}
 					
 				}

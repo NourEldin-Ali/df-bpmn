@@ -27,7 +27,7 @@ public class DataOutputObjectExtension extends BPMNElementNode {
     protected DataOutputObjectExtension(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess, Activity activity) throws BPMNModelException {
         super(model, node, type,bpmnProcess);
         this.activity = activity;
-        this.dataAttributes = new LinkedHashSet<>();
+        this.dataAttributes = new LinkedHashSet<DataObjectAttributeExtension>();
     }
 
     @Override

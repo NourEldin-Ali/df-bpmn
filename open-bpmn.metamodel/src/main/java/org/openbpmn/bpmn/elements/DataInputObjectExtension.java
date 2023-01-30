@@ -28,7 +28,7 @@ public class DataInputObjectExtension extends BPMNElementNode {
     protected DataInputObjectExtension(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess, Activity activity) throws BPMNModelException {
         super(model, node, type,bpmnProcess);
         this.activity = activity;
-        setDataAttributes(new LinkedHashSet<>());
+        this.dataAttributes = new LinkedHashSet<DataObjectAttributeExtension>();
     }
 
     @Override
@@ -42,17 +42,17 @@ public class DataInputObjectExtension extends BPMNElementNode {
         return DEFAULT_HEIGHT;
     }
     
-    private Set<DataObjectAttributeExtension> DataAttributes = null;
+    private Set<DataObjectAttributeExtension> dataAttributes = null;
     
     
     
     
 	public Set<DataObjectAttributeExtension> getDataAttributes() {
-		return DataAttributes;
+		return dataAttributes;
 	}
 
 	public void setDataAttributes(Set<DataObjectAttributeExtension> dataAttributes) {
-		DataAttributes = dataAttributes;
+		dataAttributes = dataAttributes;
 	}
 	
 	

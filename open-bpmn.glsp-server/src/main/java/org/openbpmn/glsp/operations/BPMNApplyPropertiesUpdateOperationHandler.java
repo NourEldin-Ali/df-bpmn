@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.glsp.graph.GModelElement;
 import org.eclipse.glsp.server.actions.ActionDispatcher;
 import org.eclipse.glsp.server.operations.AbstractOperationHandler;
+import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.extension.BPMNExtension;
 import org.openbpmn.glsp.bpmn.BPMNGEdge;
@@ -79,6 +80,12 @@ public class BPMNApplyPropertiesUpdateOperationHandler
             if (!_baseElement.isEmpty()) {
                 gModelElement = _baseElement.get();
                 bpmnElement = modelState.getBpmnModel().findElementNodeById(elementID);
+                if (bpmnElement == null) {
+                    BPMNElement bpmnElementEx = modelState.getBpmnModel().findElementExtensionNodeById(elementID);
+                    if (bpmnElementEx != null) {
+                        bpmnElement = ((Activity) bpmnElementEx).findElementById(elementID);
+                    }
+                }
             }
             if (bpmnElement == null) {
                 // not yet found - check Edges....
@@ -114,7 +121,7 @@ public class BPMNApplyPropertiesUpdateOperationHandler
                 }
             }
         }
-
+        modelState.reset();
         logger.debug("....execute Update " + operation.getId() + " in " + (System.currentTimeMillis() - l) + "ms");
 
     }

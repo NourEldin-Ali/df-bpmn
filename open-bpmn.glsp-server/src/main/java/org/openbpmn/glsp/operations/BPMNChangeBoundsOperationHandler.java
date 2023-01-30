@@ -155,6 +155,12 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                         // find parent
                         String flowElementID = BPMNGraphUtil.resolveFlowElementIDfromLabelID(id);
                         BPMNElementNode _bpmnElement = modelState.getBpmnModel().findElementNodeById(flowElementID);
+
+                        if (_bpmnElement == null) {
+                            Activity activityElement = (Activity) modelState.getBpmnModel()
+                                    .findElementExtensionNodeById(flowElementID);
+                            _bpmnElement = (BPMNElementNode) activityElement.findElementById(flowElementID);
+                        }
                         BPMNLabel bpmnLabel = _bpmnElement.getLabel();
 
                         updateLabel(gNode, bpmnLabel, offsetX, offsetY);

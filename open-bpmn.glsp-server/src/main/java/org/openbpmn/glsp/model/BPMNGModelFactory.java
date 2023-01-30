@@ -538,7 +538,7 @@ public class BPMNGModelFactory implements GModelFactory {
                     .position(point) //
                     .build();
             // apply BPMN Extensions
-            applyBPMNExtensions(dataNode, activity);
+            applyBPMNExtensions(dataNode, data);
             gNodeList.add(dataNode);
             computeGModelDataExtensionElements(data.getDataAttributes(), gNodeList, participant, dataNode);
         }
@@ -555,7 +555,7 @@ public class BPMNGModelFactory implements GModelFactory {
                     .position(point) //
                     .build();
             // apply BPMN Extensions
-            applyBPMNExtensions(dataNode, activity);
+            applyBPMNExtensions(dataNode, data);
             gNodeList.add(dataNode);
             computeGModelDataExtensionElements(data.getDataAttributes(), gNodeList, participant, dataNode);
         }
@@ -572,7 +572,7 @@ public class BPMNGModelFactory implements GModelFactory {
 
             gNodeList.add(dataNode);
             // apply BPMN Extensions
-//            applyBPMNExtensions(dataNode, data);
+            applyBPMNExtensions(dataNode, data);
 
             // now add a GLabel
             BPMNLabel bpmnLabel = data.getLabel();

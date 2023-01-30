@@ -42,6 +42,10 @@ import org.openbpmn.extension.DefaultBPMNMessageExtension;
 import org.openbpmn.extension.DefaultBPMNParticipantExtension;
 import org.openbpmn.extension.DefaultBPMNTaskExtension;
 import org.openbpmn.extension.DefaultBPMNTextAnnotationExtension;
+import org.openbpmn.extension.dataextension.DefaultBPMNDataAttributeExtension;
+import org.openbpmn.extension.dataextension.DefaultBPMNDataInputExtension;
+import org.openbpmn.extension.dataextension.DefaultBPMNDataOutputExtension;
+import org.openbpmn.extension.dataextension.DefaultBPMNDataProcessingExtension;
 import org.openbpmn.glsp.elements.data.BPMNApplyEditLabelOperationHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateDataObjectHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateMessageHandler;
@@ -243,5 +247,12 @@ public class BPMNDiagramModule extends DiagramModule {
 
         // Imixs Extensions (just for testing)
         binding.addBinding().to(ImixsBPMNTaskExtension.class);
+
+        // DA-BPMN extension
+        binding.addBinding().to(DefaultBPMNDataInputExtension.class);
+        binding.addBinding().to(DefaultBPMNDataOutputExtension.class);
+        binding.addBinding().to(DefaultBPMNDataProcessingExtension.class);
+        binding.addBinding().to(DefaultBPMNDataAttributeExtension.class);
+
     }
 }

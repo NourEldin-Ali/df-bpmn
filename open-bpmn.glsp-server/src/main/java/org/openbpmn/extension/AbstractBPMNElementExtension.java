@@ -26,7 +26,7 @@ import org.openbpmn.bpmn.elements.core.BPMNElement;
  * @author rsoika
  *
  */
-abstract class AbstractBPMNElementExtension implements BPMNExtension {
+public abstract class AbstractBPMNElementExtension implements BPMNExtension {
 
     /**
      * Returns the Extension label to be used in the Tool Palette. The default name

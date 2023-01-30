@@ -75,6 +75,28 @@ public class DataBuilder {
     }
 
     /**
+     * Adds a new property
+     *
+     * @param name  - name of the data property
+     * @param value - value of the data property
+     *
+     */
+    public DataBuilder addData(final String name, final Boolean value) {
+
+        if (objectArrayBuilder != null) {
+            if (objectArrayItemBuilder == null) {
+                objectArrayItemBuilder = Json.createObjectBuilder();
+            }
+            objectArrayItemBuilder.add(name, value);
+
+        } else {
+            jsonObjectBuilder.add(name, value);
+        }
+        return this;
+
+    }
+
+    /**
      * Adds a new property array type
      *
      * @param name - name of the array property

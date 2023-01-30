@@ -148,6 +148,7 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                             updateEmbeddedActivityElementNodes(((Activity) bpmnElementNode).getAllNodes(), offsetX,
                                     offsetY);
                         }
+
                     }
                 } else {
                     // test if we have a BPMNLable element was selected?
@@ -274,18 +275,50 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                 gNode.setPosition(newPoint);
             }
 
-            // The BPMN Position is always absolute so we can simply update the element
+            // The BPMN Position is always absolute so we can simply update the element .
             // BPMN Position by the new offset and new dimensions.
             bpmnBounds.setPosition(newBpmnPoint);
-            bpmnBounds.setDimension(newSize.getWidth(), newSize.getHeight());
 
-            // Finally Update GNode dimension....
-            gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, newSize.getWidth());
-            gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, newSize.getHeight());
-            // calling the size method does not have an effect.
-            // see:
-            // https://github.com/eclipse-glsp/glsp/discussions/741#discussioncomment-3688606
-            gNode.setSize(newSize);
+            // for the dimension, if the BPMNElement is an Activity so you need to check if
+            // all the activities in the bound
+            if (bpmnElementNode instanceof Activity) {
+                boolean canModifyBound = true;
+                Set<BPMNElementNode> activityNodeElements = ((Activity) bpmnElementNode).getNodesWithAttributes();
+                for (BPMNElementNode elementNode : activityNodeElements) {
+                    if (elementNode.getBounds().getPosition().getX() < newBpmnPoint.getX() //
+                            || elementNode.getBounds().getPosition().getY() < newBpmnPoint.getY() //
+                            || elementNode.getBounds().getPosition().getX()
+                                    + elementNode.getBounds().getDimension().getWidth() //
+                                    > newBpmnPoint.getX() + newSize.getWidth()//
+                            || elementNode.getBounds().getPosition().getY()
+                                    + elementNode.getBounds().getDimension().getHeight() //
+                                    > newBpmnPoint.getY() + newSize.getHeight() //
+                    ) {
+                        canModifyBound = false;
+                        break;
+                    }
+                }
+                if (canModifyBound) {
+                    bpmnBounds.setDimension(newSize.getWidth(), newSize.getHeight());
+                    // Finally Update GNode dimension....
+                    gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, newSize.getWidth());
+                    gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, newSize.getHeight());
+                    // calling the size method does not have an effect.
+                    // see:
+                    // https://github.com/eclipse-glsp/glsp/discussions/741#discussioncomment-3688606
+                    gNode.setSize(newSize);
+                }
+            } else {
+                bpmnBounds.setDimension(newSize.getWidth(), newSize.getHeight());
+                // Finally Update GNode dimension....
+                gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, newSize.getWidth());
+                gNode.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, newSize.getHeight());
+                // calling the size method does not have an effect.
+                // see:
+                // https://github.com/eclipse-glsp/glsp/discussions/741#discussioncomment-3688606
+                gNode.setSize(newSize);
+            }
+
             // if the flow Element has a BPMNLabel, than we need to adjust finally the
             // position of the label too
             if (bpmnElementNode.hasBPMNLabel()) {
@@ -694,7 +727,6 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
 
                     GNode gNodeData = _node_data_node.get();
 
-                    bounds.setPosition(bounds.getPosition().getX() + offsetX, bounds.getPosition().getY() + offsetY);
                     // find the corresponding GNode Element
                     Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
                     if (!_node.isPresent()) {
@@ -704,10 +736,15 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                     }
 
                     GNode gNode = _node.get();
-                    gNode.getPosition().setY(gNodeData.getPosition().getY() + gNodeData.getSize().getHeight()
-                            + DataObjectAttributeExtension.DEFAULT_HEIGHT * count);
-                    gNode.getPosition().setX(gNodeData.getPosition().getX() + 30);
 
+                    double newY = gNodeData.getPosition().getY() + gNodeData.getSize().getHeight()
+                            + DataObjectAttributeExtension.DEFAULT_HEIGHT * count;
+                    gNode.getPosition().setY(newY);
+
+                    double newX = gNodeData.getPosition().getX() + 25;
+                    gNode.getPosition().setX(newX);
+
+                    bounds.setPosition(newX, newY);
                 }
 
                 // if the flowElemen has a BPMNLabel element we adjust position of the label too

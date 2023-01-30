@@ -43,6 +43,16 @@ public class DataObjectAttributeExtension extends BPMNElementNode {
     return null;
     }
     
+    public BPMNElementNode getDataParent() {
+    	if ( dataInputObject!=null) {
+        	return dataInputObject;
+        }
+        if ( dataOutputObject!=null) {
+        	return dataOutputObject;
+        }
+        return null;
+        }
+    
     @Override
     public double getDefaultWidth() {
         return DEFAULT_WIDTH;

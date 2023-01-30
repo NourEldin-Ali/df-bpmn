@@ -191,7 +191,7 @@ export class MultiLineTextNode extends ForeignObjectElement implements SArgument
     readonly isMultiLine = true;
     readonly args: Args;
     text = '';
-
+    header = '';
     override set bounds(bounds: Bounds) {
         /* ignore set bounds, always use the parent's bounds */
     }
@@ -215,6 +215,16 @@ export class MultiLineTextNode extends ForeignObjectElement implements SArgument
             if (typeof textArg === 'string') {
                 this.text = textArg;
             }
+        }
+
+        if (this.header === '') {
+            const headerArg = this.args['header'];
+            if (typeof headerArg === 'string') {
+                this.header = headerArg;
+            }
+        }
+        if (this.header !== '') {
+            return `<pre style="line-height: 0.7; text-align: left"><sup>[${this.header}]</sup><br/>${this.text}</pre>`;
         }
         return `<pre>${this.text}</pre>`;
     }

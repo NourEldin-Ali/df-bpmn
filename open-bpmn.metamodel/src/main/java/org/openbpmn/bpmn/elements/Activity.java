@@ -759,6 +759,7 @@ public class Activity extends BPMNElementNode {
 			if (bpmnElement instanceof DataObjectAttributeExtension) {
 				((DataObjectAttributeExtension) bpmnElement).getElementNode().getParentNode()
 						.removeChild(bpmnElementNode.getElementNode());
+				
 			} else {
 				if (bpmnElement instanceof DataInputObjectExtension || bpmnElement instanceof DataOutputObjectExtension) {
 					Set<DataObjectAttributeExtension> attL = null;
@@ -792,6 +793,12 @@ public class Activity extends BPMNElementNode {
 			}
 			if (bpmnElement instanceof DataObjectAttributeExtension) {
 				((DataObjectAttributeExtension) bpmnElement).getAttributesObject().remove(bpmnElementNode);
+				try {
+					rePosiningAttributes((DataObjectAttributeExtension) bpmnElement);
+				} catch (BPMNMissingElementException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		} else if (bpmnElement instanceof BPMNElementEdge) {
@@ -803,6 +810,25 @@ public class Activity extends BPMNElementNode {
 			}
 		}
 
+	}
+
+	private void rePosiningAttributes(DataObjectAttributeExtension bpmnElement) throws BPMNMissingElementException {
+		int count = 0;
+		BPMNElementNode data = bpmnElement.getDataParent();
+		
+		for (DataObjectAttributeExtension attribute : bpmnElement.getAttributesObject()) {
+			double elementX = data.getBounds().getPosition().getX() + 25;
+	        double elementY = data.getBounds().getPosition().getY()
+	                + data.getBounds().getDimension().getHeight()
+	                + DataObjectAttributeExtension.DEFAULT_HEIGHT * count;
+	        attribute.getBounds().setPosition(elementX, elementY);
+	        attribute.getBounds().setDimension(DataObjectAttributeExtension.DEFAULT_WIDTH,
+	                DataObjectAttributeExtension.DEFAULT_HEIGHT);
+	        count ++;
+		}
+		
+		
+		
 	}
 
 	/**
@@ -953,7 +979,7 @@ public class Activity extends BPMNElementNode {
 	}
 
 	/**
-	 * get All node in the activity
+	 * get All node in the activity without attribute
 	 * 
 	 * @return BPMNElementNode
 	 */
@@ -972,5 +998,24 @@ public class Activity extends BPMNElementNode {
 //		}
 		return results;
 	}
+	/**
+	 * get All node in the activity without attribute
+	 * 
+	 * @return BPMNElementNode
+	 */
+	public Set<BPMNElementNode> getNodesWithAttributes() {
+		Set<BPMNElementNode> results = new LinkedHashSet<>();
+		results.addAll(getDataInputObjects());
+		results.addAll(getDataOutputObjects());
+		results.addAll(getDataProcessing());
+		for (DataInputObjectExtension data : getDataInputObjects()) {
+			results.addAll(data.getDataAttributes());
 
+		}
+		for (DataOutputObjectExtension data : getDataOutputObjects()) {
+			results.addAll(data.getDataAttributes());
+
+		}
+		return results;
+	}
 }

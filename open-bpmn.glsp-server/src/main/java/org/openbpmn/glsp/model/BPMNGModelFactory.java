@@ -608,9 +608,9 @@ public class BPMNGModelFactory implements GModelFactory {
 //                    .position(point) //
 //                    .build();
 
-                point.setY(dataObjectNode.getPosition().getY() + dataObjectNode.getSize().getHeight()
-                        + DataObjectAttributeExtension.DEFAULT_HEIGHT * count);
-                point.setX(dataObjectNode.getPosition().getX() + 30);
+//                point.setY(dataObjectNode.getPosition().getY() + dataObjectNode.getSize().getHeight()
+//                        + DataObjectAttributeExtension.DEFAULT_HEIGHT * count);
+//                point.setX(dataObjectNode.getPosition().getX() + 25);
                 DataAttributeExtensionGNode dataNode = new DataAttributeExtensionGNodeBuilder(data)//
                         .position(point) //
                         .build();

@@ -222,11 +222,11 @@ export class IconView extends ShapeView {
             translateX = 15.0;
             translateY = 3.0;
             rotate = 90;
-            console.warn(dataObjectExtensionNode.id);
+            // console.warn(dataObjectExtensionNode.id);
             // console.warn(dataObjectExtensionNode.cssClasses?.indexOf('isMuliple'));
 
             if (dataObjectExtensionNode.cssClasses?.indexOf('isMuliple') !== -1) {
-                console.warn(dataObjectExtensionNode.cssClasses?.length);
+                // console.warn(dataObjectExtensionNode.cssClasses?.length);
                 // From codicons: https://github.com/microsoft/vscode-codicons/blob/main/src/icons/three-bars.svg
                 icon =
                     // three bars
@@ -350,6 +350,7 @@ export class DataObjectNodeView extends ShapeView {
         if (!this.isVisible(node, context)) {
             return undefined;
         }
+
         return (
             <g>
                 <rect
@@ -478,6 +479,7 @@ export class DataInputNodeExtensionNodeView extends ShapeView {
         if (!this.isVisible(node, context)) {
             return undefined;
         }
+
         // const textBorder = '20,0 0,0 0,' + node.size.height + ' 20,' + node.size.height;
         return (
             <g>

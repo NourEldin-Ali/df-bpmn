@@ -58,6 +58,7 @@ public class DataAttributeExtensionGNodeBuilder
             BPMNBounds bpmnBounds = data.getBounds();
             this.size = GraphUtil.dimension(bpmnBounds.getDimension().getWidth(),
                     bpmnBounds.getDimension().getHeight());
+//            System.out.println(data.getBounds().getPosition());
         } catch (BPMNMissingElementException e) {
             // should not happen
             logger.severe("BPMN-DataInputExtension does not support a BPMNBounds object!");

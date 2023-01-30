@@ -86,12 +86,18 @@ public class BPMNCreateDataAttributeExtensionHandler extends CreateBPMNNodeOpera
                     DataInputObjectExtension data = (DataInputObjectExtension) dataObject;
                     DataObjectAttributeExtension attribute = data.addAttributeObject(getLabel(), "any");
                     if (point.isPresent()) {
-                        double elementX = point.get().getX();
-                        double elementY = point.get().getY();
-                        // compute relative center position...
-                        elementX = elementX - (DataObjectAttributeExtension.DEFAULT_WIDTH / 2);
-                        elementY = elementY - (DataObjectAttributeExtension.DEFAULT_HEIGHT / 2);
+//                        double elementX = point.get().getX();
+//                        double elementY = point.get().getY();
+//                        // compute relative center position...
+//                        elementX = elementX - (DataObjectAttributeExtension.DEFAULT_WIDTH / 2);
+//                        elementY = elementY - (DataObjectAttributeExtension.DEFAULT_HEIGHT / 2);
 
+                        // get
+
+                        double elementX = data.getBounds().getPosition().getX() + 25;
+                        double elementY = data.getBounds().getPosition().getY()
+                                + data.getBounds().getDimension().getHeight()
+                                + DataObjectAttributeExtension.DEFAULT_HEIGHT * (data.getDataAttributes().size() - 1);
                         attribute.getBounds().setPosition(elementX, elementY);
                         attribute.getBounds().setDimension(DataObjectAttributeExtension.DEFAULT_WIDTH,
                                 DataObjectAttributeExtension.DEFAULT_HEIGHT);
@@ -106,12 +112,15 @@ public class BPMNCreateDataAttributeExtensionHandler extends CreateBPMNNodeOpera
                     DataOutputObjectExtension data = (DataOutputObjectExtension) dataObject;
                     DataObjectAttributeExtension attribute = data.addAttributeObject(getLabel(), "any");
                     if (point.isPresent()) {
-                        double elementX = point.get().getX();
-                        double elementY = point.get().getY();
-                        // compute relative center position...
-                        elementX = elementX - (DataObjectAttributeExtension.DEFAULT_WIDTH / 2);
-                        elementY = elementY - (DataObjectAttributeExtension.DEFAULT_HEIGHT / 2);
-
+//                        double elementX = point.get().getX();
+//                        double elementY = point.get().getY();
+//                        // compute relative center position...
+//                        elementX = elementX - (DataObjectAttributeExtension.DEFAULT_WIDTH / 2);
+//                        elementY = elementY - (DataObjectAttributeExtension.DEFAULT_HEIGHT / 2);
+                        double elementX = data.getBounds().getPosition().getX() + 25;
+                        double elementY = data.getBounds().getPosition().getY()
+                                + data.getBounds().getDimension().getHeight()
+                                + DataObjectAttributeExtension.DEFAULT_HEIGHT * (data.getDataAttributes().size() - 1);
                         attribute.getBounds().setPosition(elementX, elementY);
                         attribute.getBounds().setDimension(DataObjectAttributeExtension.DEFAULT_WIDTH,
                                 DataObjectAttributeExtension.DEFAULT_HEIGHT);

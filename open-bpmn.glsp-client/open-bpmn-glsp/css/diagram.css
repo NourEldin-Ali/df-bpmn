@@ -109,12 +109,6 @@
     fill: #c39d5c;
 }
 
-.isMultiple > .icon path {
-    transform: rotate(90deg);
-    stroke-width: 0;
-    fill: #8f3030;
-}
-
 .dataObjectExtension > .icon path {
     stroke-width: 0;
     fill: #30568f;

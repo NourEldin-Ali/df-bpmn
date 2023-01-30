@@ -82,7 +82,18 @@ public class BPMNGraphUtil {
     public static GNode createMultiLineTextNode(final String id, final String text) {
         return new GNodeBuilder(ModelTypes.BPMN_TEXT_NODE). //
                 id(id). //
+
                 addArgument("text", text). //
+
+                build();
+    }
+
+    public static GNode createMultiLineTextNode(final String id, final String text, final String header) {
+        return new GNodeBuilder(ModelTypes.BPMN_TEXT_NODE). //
+                id(id). //
+                addArgument("header", header). //
+                addArgument("text", text). //
+
                 build();
     }
 

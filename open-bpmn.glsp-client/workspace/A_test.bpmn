@@ -7,20 +7,33 @@
         <bpmn2:documentation id="documentation_JOldbw"/>
         <bpmn2:task id="task_lCxRcQ" name="Task-1">
             <bpmn2:documentation id="documentation_CUKGEA"/>
-            <bpmn2:dataInputObjectEnvironmentData id="DataInputObjectExtension_eHQuTQ" isMultiple="true" name="DataInput-1" type="any"/>
-            <bpmn2:dataOutputObjectEnvironmentDataUser id="DataOutputObjectExtension_0MBvYw" isMultiple="true" name="DataOutput-2" state="init" type="any"/>
+            <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_ydj90w" isMultiple="false" name="DataInput-1" type="any">
+                <bpmn2:attribute id="DataObjectAttributeExtension_NDk82Q" name="DataAttribute-1" type="any"/>
+                <bpmn2:attribute id="DataObjectAttributeExtension_gxJ7fA" name="DataAttribute-2" type="any"/>
+                <bpmn2:attribute id="DataObjectAttributeExtension_Di4OeA" name="DataAttribute-4" type="any"/>
+                <bpmn2:attribute id="DataObjectAttributeExtension_xd0YDg" name="DataAttribute-5" type="any"/>
+            </bpmn2:dataInputObjectDataStore>
         </bpmn2:task>
     </bpmn2:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
         <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
             <bpmndi:BPMNShape bpmnElement="task_lCxRcQ" id="BPMNShape_o0x0oQ">
-                <dc:Bounds height="288.0" width="590.0" x="209.00283813476562" y="152.0198974609375"/>
+                <dc:Bounds height="278.0" width="629.0" x="153.95721435546875" y="124.5198974609375"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_eHQuTQ" id="BPMNShape_vLW2hg">
-                <dc:Bounds height="50.0" width="150.0" x="264.0028076171875" y="196.0198974609375"/>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_ydj90w" id="BPMNShape_yBYNtA">
+                <dc:Bounds height="50.0" width="150.0" x="211.0028076171875" y="180.0198974609375"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_0MBvYw" id="BPMNShape_wd7HDw">
-                <dc:Bounds height="50.0" width="150.0" x="588.0028076171875" y="196.0198974609375"/>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_NDk82Q" id="BPMNShape_FpwgFw">
+                <dc:Bounds height="25.0" width="110.0" x="236.0028076171875" y="230.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_gxJ7fA" id="BPMNShape_iTfTwg">
+                <dc:Bounds height="25.0" width="110.0" x="236.0028076171875" y="255.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_Di4OeA" id="BPMNShape_0Cgckg">
+                <dc:Bounds height="25.0" width="110.0" x="236.0028076171875" y="280.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_xd0YDg" id="BPMNShape_48rZtg">
+                <dc:Bounds height="25.0" width="110.0" x="236.0028076171875" y="305.0198974609375"/>
             </bpmndi:BPMNShape>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

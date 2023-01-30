@@ -66,7 +66,9 @@ public class DataOutputExtensionGNodeBuilder
         // set Layout options
         this.addCssClass(type);
         this.addCssClass("dataObjectExtension");
-
+        if (data.getAttribute("isMultiple").contentEquals("true")) {
+            this.addCssClass("isMuliple");
+        }
         this.addArguments(GArguments.cornerRadius(5));
     }
 
@@ -109,6 +111,12 @@ public class DataOutputExtensionGNodeBuilder
 
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name));
         node.getChildren().add(taskIcon);
+
+        IconGCompartment taskIcon2 = new IconGCompartmentBuilder(). //
+                id(node.getId() + "_icon2"). //
+                layoutOptions(new GLayoutOptions().hAlign(GConstants.HAlign.CENTER)). //
+                build();
+        node.getChildren().add(taskIcon2);
 
     }
 

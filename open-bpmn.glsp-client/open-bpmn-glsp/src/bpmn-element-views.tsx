@@ -68,6 +68,8 @@ export class IconView extends ShapeView {
         let scaleFactor = 1;
         let translateX = 0;
         let translateY = 0;
+        let rotate = 0;
+
         if (!this.isVisible(element, context)) {
             return undefined;
         }
@@ -80,7 +82,6 @@ export class IconView extends ShapeView {
         if (!(eventNode || taskNode || gatewayNode || dataObjectExtensionNode || dataProcessingExtensionNode)) {
             return undefined;
         }
-
         let icon;
         if (taskNode) {
             translateX = 0.0;
@@ -216,7 +217,22 @@ export class IconView extends ShapeView {
             }
         }
 
-        if (dataObjectExtensionNode) {
+        if (element.id.includes('icon2') && dataObjectExtensionNode) {
+            scaleFactor = 1.3;
+            translateX = 15.0;
+            translateY = 3.0;
+            rotate = 90;
+            console.warn(dataObjectExtensionNode.id);
+            // console.warn(dataObjectExtensionNode.cssClasses?.indexOf('isMuliple'));
+
+            if (dataObjectExtensionNode.cssClasses?.indexOf('isMuliple') !== -1) {
+                console.warn(dataObjectExtensionNode.cssClasses?.length);
+                // From codicons: https://github.com/microsoft/vscode-codicons/blob/main/src/icons/three-bars.svg
+                icon =
+                    // three bars
+                    'M14 5H2V3h12v2zm0 4H2V7h12v2zM2 13h12v-2H2v2z';
+            }
+        } else if (dataObjectExtensionNode) {
             scaleFactor = 1.5;
             translateX = 3.0;
             translateY = 3.0;
@@ -275,7 +291,10 @@ export class IconView extends ShapeView {
         } else {
             vnode = (
                 <g>
-                    <path transform={'scale(' + scaleFactor + '),translate(' + translateX + ',' + translateY + ')'} d={icon} />
+                    <path
+                        transform={'scale(' + scaleFactor + '),translate(' + translateX + ',' + translateY + '),rotate(' + rotate + ')'}
+                        d={icon}
+                    />
                 </g>
             );
         }

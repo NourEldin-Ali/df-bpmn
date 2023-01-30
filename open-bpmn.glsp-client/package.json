@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "parent",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Open BPMN 2.0",
-  "license": "(GPL-3.0)",     
+  "license": "EPL-2.0",     
   "engines": {
     "yarn": ">=1.7.0 <2.x.x",
     "node": ">=14.18.0"
@@ -27,13 +27,12 @@
     "prepare": "lerna run prepare",
     "watch": "lerna run --parallel watch",
     "build": "yarn install:only && lerna run build",
-    "lint": "yarn install:only && lerna run lint --",
+    "lint": "lerna run lint --",
     "install:only": "yarn install --ignore-scripts",
     "rebuild:browser": "theia rebuild:browser",
     "start": "yarn rebuild:browser && yarn --cwd open-bpmn-app start",
     "start:external": "yarn rebuild:browser && yarn --cwd open-bpmn-app start:external"
   },
-    
   "devDependencies": {
     "@eclipse-glsp/config": "1.1.0-next.d03ad9f.112",
     "rimraf": "^2.6.1",
@@ -45,17 +44,6 @@
     "open-bpmn-model",
     "open-bpmn-properties",
     "open-bpmn-theia",
-    "open-bpmn-app",
-    "workspaces/*"
-  ],
-
-  "resolutions": {
-    "**/@theia/core": "1.29.2",
-    "**/@theia/editor": "1.29.2",
-    "**/@theia/filesystem": "1.29.2",
-    "**/@theia/messages": "1.29.2",
-    "**/@theia/monaco": "1.29.2",
-    "**/@theia/cli": "1.29.2",
-    "sprotty": "0.13.0-next.1c4343c.328"
-  }
+    "open-bpmn-app"
+  ]
 }

@@ -21,7 +21,7 @@ import {
     configureModelElement,
     configureView,
     ConsoleLogger,
-    createClientContainer,
+    createDiagramContainer,
     DeleteElementContextMenuItemProvider,
     DiamondNodeView,
     editLabelFeature,
@@ -180,7 +180,7 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
 
 export default function createBPMNDiagramContainer(widgetId: string): Container {
     // Create the createClientContainer with the diagramModule and the BPMN bpmnPropertyModule...
-    const container = createClientContainer(bpmnDiagramModule, bpmnPropertyModule);
+    const container = createDiagramContainer(bpmnDiagramModule, bpmnPropertyModule);
     overrideViewerOptions(container, {
         baseDiv: widgetId,
         hiddenDiv: widgetId + '_hidden'

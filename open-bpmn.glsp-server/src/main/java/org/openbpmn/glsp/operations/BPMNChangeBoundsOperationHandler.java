@@ -338,14 +338,37 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
         double offsetY = newPoint.getY() - gNode.getPosition().getY();
 
         BPMNBounds bpmnBounds = bpmnElementNode.getBounds();
+        boolean canModifyBound = true;
         if (bpmnBounds != null) {
             BPMNPoint oldBpmnPoint = bpmnBounds.getPosition();
             BPMNPoint newBpmnPoint = new BPMNPoint(oldBpmnPoint.getX() + offsetX, oldBpmnPoint.getY() + offsetY);
 
-            gNode.setPosition(newPoint);
-            // The BPMN Position is always absolute so we can simply update the element
-            // BPMN Position by the new offset and new dimensions.
-            bpmnBounds.setPosition(newBpmnPoint);
+            System.out.println(bpmnElementNode.getId());
+            BPMNElementNode elementNode = (BPMNElementNode) modelState.getBpmnModel()
+                    .findElementExtensionNodeById(bpmnElementNode.getId());
+            if (elementNode.getBounds().getPosition().getX() > newBpmnPoint.getX() //
+                    || elementNode.getBounds().getPosition().getY() > newBpmnPoint.getY() //
+                    || elementNode.getBounds().getPosition().getX() + elementNode.getBounds().getDimension().getWidth() //
+                            < newBpmnPoint.getX() + newSize.getWidth()//
+                    || elementNode.getBounds().getPosition().getY() + elementNode.getBounds().getDimension().getHeight() //
+                            < newBpmnPoint.getY() + newSize.getHeight() //
+            ) {
+                canModifyBound = false;
+
+            }
+
+            if (canModifyBound) {
+//                System.out.println("X=" + newPoint.getX());
+//                System.out.println("Y=" + newPoint.getY());
+                gNode.setPosition(newPoint);
+                // The BPMN Position is always absolute so we can simply update the element
+                // BPMN Position by the new offset and new dimensions.
+                System.out.println("X1=" + newBpmnPoint.getX());
+                System.out.println("Y1=" + newBpmnPoint.getY());
+                System.out.println("-----");
+                bpmnBounds.setPosition(newBpmnPoint);
+            }
+
             bpmnBounds.setDimension(newSize.getWidth(), newSize.getHeight());
 
             // Finally Update GNode dimension....
@@ -357,7 +380,7 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
             gNode.setSize(newSize);
             // if the flow Element has a BPMNLabel, than we need to adjust finally the
             // position of the label too
-            if (bpmnElementNode.hasBPMNLabel()) {
+            if (bpmnElementNode.hasBPMNLabel() && canModifyBound) {
                 BPMNLabel bpmnLabel = bpmnElementNode.getLabel();
                 Optional<GNode> _labelnode = modelState.getIndex()
                         .findElementByClass(bpmnElementNode.getId() + "_bpmnlabel", GNode.class);

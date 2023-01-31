@@ -118,6 +118,22 @@
     fill: transparent;
 }
 
+.hideElement {
+    display: none !important;
+}
+
+.node-expandable {
+    color: #f0f3f8;
+    text-align: center;
+    font-size: 0.6em;
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    margin: 7px 20px 0px 20px;
+}
+
+.node-expandable {
+    fill: #30568f;
+}
 /*** Events ***/
 
 .event.startEvent > circle {

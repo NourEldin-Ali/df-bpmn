@@ -16,22 +16,26 @@
 import {
     boundsFeature,
     CircularNodeView,
+    CollapseExpandAction,
+    configureActionHandler,
     configureCommand,
     configureDefaultModelElements,
     configureModelElement,
     configureView,
     ConsoleLogger,
     createDiagramContainer,
+    DefaultTypes,
     DeleteElementContextMenuItemProvider,
     DiamondNodeView,
     editLabelFeature,
+    ExpandButtonView,
     ForeignObjectView,
     LogLevel,
     moveFeature,
     overrideViewerOptions,
-    RectangularNodeView,
     RevealNamedElementActionProvider,
     RoundedCornerNodeView,
+    SButton,
     SCompartment,
     SCompartmentView,
     selectFeature,
@@ -46,6 +50,7 @@ import {
     DataObjectNode,
     DataProcessingExtensionNode,
     EventNode,
+    ExpandableNode,
     GatewayNode,
     Icon,
     LabelNode,
@@ -68,7 +73,10 @@ import {
     DataInputNodeExtensionNodeView,
     DataObjectNodeView,
     DataOutputNodeExtensionNodeView,
+    ExpandableNodeView,
+    ExpandHandler,
     IconView,
+    LabelNodeView,
     MessageNodeView,
     TextAnnotationNodeView
 } from './bpmn-element-views';
@@ -102,6 +110,12 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     configureCommand({ bind, isBound }, RemoveHelperLinesCommand);
     configureView({ bind, isBound }, 'helpline', HelperLineView);
     configureDefaultModelElements(context);
+
+    // collapse
+    configureModelElement(context, 'node:expandable', ExpandableNode, ExpandableNodeView);
+    configureModelElement(context, DefaultTypes.BUTTON_EXPAND, SButton, ExpandButtonView);
+    bind(ExpandHandler).toSelf().inSingletonScope();
+    configureActionHandler(context, CollapseExpandAction.KIND, ExpandHandler);
 
     configureModelElement(context, 'task', TaskNode, RoundedCornerNodeView);
     configureModelElement(context, 'manualTask', TaskNode, RoundedCornerNodeView);
@@ -138,7 +152,7 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     configureModelElement(context, 'message', MessageNode, MessageNodeView);
     configureModelElement(context, 'textAnnotation', TextAnnotationNode, TextAnnotationNodeView);
 
-    configureModelElement(context, 'BPMNLabel', LabelNode, RectangularNodeView);
+    configureModelElement(context, 'BPMNLabel', LabelNode, LabelNodeView);
 
     // textNode of BPMNLable, TextAnnotation...
     configureModelElement(context, 'bpmn-text-node', MultiLineTextNode, ForeignObjectView, {

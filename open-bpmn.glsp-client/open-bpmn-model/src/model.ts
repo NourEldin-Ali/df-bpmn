@@ -23,6 +23,8 @@ import {
     DiamondNode,
     Dimension,
     EditableLabel,
+    Expandable,
+    expandFeature,
     fadeFeature,
     ForeignObjectElement,
     hoverFeedbackFeature,
@@ -41,6 +43,7 @@ import {
     SEdge,
     selectFeature,
     SModelElement,
+    SNode,
     SShapeElement,
     WithEditableLabel,
     withEditLabelFeature
@@ -179,7 +182,10 @@ export class DataProcessingExtensionNode extends DiamondNode implements BPMNFlow
     kind?: string;
     documentation: string;
 }
-
+export class ExpandableNode extends RectangularNode implements Expandable {
+    static override readonly DEFAULT_FEATURES = [...SNode.DEFAULT_FEATURES, expandFeature];
+    expanded = false; // initially the node is collapsed
+}
 /*
  * This class provides a new Node displaying a multiline textblock.
  * The node also allows editing the text.

@@ -47,6 +47,11 @@ public class BPMNGEdgeFlowBuilder extends AbstractGEdgeBuilder<BPMNGEdge, BPMNGE
         }
 //        this.addCssClass(type);
         this.addCssClass("bpmnedge");
+
+        if (edge.getElementNode().getParentNode().getAttributes().getNamedItem("expand").getNodeValue()
+                .contentEquals("false")) {
+            this.addCssClass("hideElement");
+        }
     }
 
     @Override

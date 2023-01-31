@@ -14,13 +14,16 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import {
+    Action,
     ActionDispatcher,
+    CollapseExpandAction,
     filter,
     findParentByFeature,
     getElements,
     getSubType,
     hasArguments,
     Hoverable,
+    IActionHandler,
     IViewArgs,
     RenderingContext,
     Selectable,
@@ -29,13 +32,15 @@ import {
     ShapeView,
     SModelRoot,
     SNode,
+    SParentElement,
     SPort,
     SShapeElement,
     svg,
     TYPES
 } from '@eclipse-glsp/client';
-import { SelectionListener } from '@eclipse-glsp/client/lib/features/select/selection-service';
+import { SelectionListener, SelectionService } from '@eclipse-glsp/client/lib/features/select/selection-service';
 import {
+    ExpandableNode,
     Icon,
     isBoundaryEvent,
     isBPMNLabelNode,
@@ -474,6 +479,69 @@ export class BPMNLabelNodeSelectionListener implements SelectionListener {
  * @author Ali Nour Eldin
  */
 @injectable()
+export class LabelNodeView extends ShapeView {
+    render(node: Readonly<SShapeElement & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        if (node.id.includes('DataProcessingExtension')) {
+            node.parent.children.forEach((element, hide) => {
+                if (element.cssClasses?.includes('hideElement')) {
+                    node.parent.children.forEach(element2 => {
+                        if (element2.id === node.id) {
+                            element2.cssClasses?.push('hideElement');
+                        }
+                    });
+                }
+            });
+        }
+        return (
+            <g>
+                <rect
+                    class-sprotty-node={node instanceof SNode}
+                    class-sprotty-port={node instanceof SPort}
+                    class-mouseover={node.hoverFeedback}
+                    class-selected={node.selected}
+                    x='0'
+                    y='0'
+                    width={Math.max(node.size.width, 0)}
+                    height={Math.max(node.size.height, 0)}
+                ></rect>
+                {context.renderChildren(node)}
+            </g>
+        );
+    }
+}
+
+@injectable()
+export class ExpandableNodeView extends ShapeView {
+    render(node: Readonly<ExpandableNode>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        return (
+            <g>
+                <rect
+                    class-sprotty-node={node instanceof SNode}
+                    class-mouseover={node.hoverFeedback}
+                    class-selected={node.selected}
+                    x='0'
+                    y='0'
+                    width={Math.max(node.size.width, 0)}
+                    height={Math.max(node.expanded ? node.size.height + 20 : node.size.height, 0)}
+                ></rect>
+                {context.renderChildren(node)}
+                {node.expanded && (
+                    <text x='50' y='45'>
+                        More information
+                    </text>
+                )}
+            </g>
+        );
+    }
+}
+
+@injectable()
 export class DataInputNodeExtensionNodeView extends ShapeView {
     render(node: Readonly<SShapeElement & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
         if (!this.isVisible(node, context)) {
@@ -582,5 +650,42 @@ export class DataDependencyNodeExtensionNodeView extends ShapeView {
                 {context.renderChildren(node)}
             </g>
         );
+    }
+}
+
+@injectable()
+export class ExpandHandler implements IActionHandler {
+    @inject(TYPES.SelectionService)
+    protected selectionService: SelectionService;
+
+    expansionState: { [key: string]: boolean } = {};
+
+    handle(action: Action): void {
+        switch (action.kind) {
+            case CollapseExpandAction.KIND:
+                this.handleCollapseExpandAction(action as CollapseExpandAction);
+                break;
+        }
+    }
+
+    get modelRoot(): Readonly<SModelRoot> {
+        return this.selectionService.getModelRoot();
+    }
+
+    protected handleCollapseExpandAction(action: CollapseExpandAction): void {
+        action.expandIds.forEach(id => (this.expansionState[id] = true));
+        action.collapseIds.forEach(id => (this.expansionState[id] = false));
+        this.applyExpansionState();
+    }
+
+    protected applyExpansionState(): void {
+        // eslint-disable-next-line guard-for-in
+        for (const id in this.expansionState) {
+            const element = this.modelRoot.index.getById(id);
+            if (element && element instanceof SParentElement && element.children) {
+                const expanded = this.expansionState[id];
+                (element as any).expanded = expanded;
+            }
+        }
     }
 }

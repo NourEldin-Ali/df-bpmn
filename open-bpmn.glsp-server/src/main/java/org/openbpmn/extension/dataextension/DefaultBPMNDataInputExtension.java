@@ -69,7 +69,6 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
     @Override
     public void buildPropertiesForm(final BPMNElement bpmnElement, final DataBuilder dataBuilder,
             final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
-
         dataBuilder //
                 .addData("name", bpmnElement.getName()) //
                 .addData("type", bpmnElement.getAttribute("type")) //

@@ -14,8 +14,8 @@
                 <dc:Bounds height="80" width="100" x="260" y="60"/>
                 <bpmndi:BPMNLabel/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="task-2" id="BPMNShape_qAAOgA">
-                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            <bpmndi:BPMNShape bpmnElement="task-2" id="BPMNShape_nB0yqg">
+                <dc:Bounds height="50.0" width="150.0" x="0.0" y="0.0"/>
             </bpmndi:BPMNShape>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

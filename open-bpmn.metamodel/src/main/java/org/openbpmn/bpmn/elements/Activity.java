@@ -40,8 +40,8 @@ import org.w3c.dom.NodeList;
  */
 public class Activity extends BPMNElementNode {
 
-	public final static double DEFAULT_WIDTH = 150.0;
-	public final static double DEFAULT_HEIGHT = 50.0;
+	public final static double DEFAULT_WIDTH = 165.0;
+	public final static double DEFAULT_HEIGHT = 55.0;
 
 	protected Activity(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess) throws BPMNModelException {
 		super(model, node, type, bpmnProcess);

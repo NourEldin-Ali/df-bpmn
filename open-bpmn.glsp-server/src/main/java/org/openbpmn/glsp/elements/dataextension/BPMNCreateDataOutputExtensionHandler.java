@@ -88,10 +88,33 @@ public class BPMNCreateDataOutputExtensionHandler extends CreateBPMNNodeOperatio
                         // compute relative center position...
                         elementX = elementX - (DataOutputObjectExtension.DEFAULT_WIDTH / 2);
                         elementY = elementY - (DataOutputObjectExtension.DEFAULT_HEIGHT / 2);
+                        if (task.getBounds().getPosition().getX() > elementX) {
+                            elementX = task.getBounds().getPosition().getX();
+                        }
+                        if (task.getBounds().getPosition().getY() > elementY) {
+                            elementY = task.getBounds().getPosition().getY();
+                        }
+
+                        double width = DataOutputObjectExtension.DEFAULT_WIDTH;
+                        double height = DataOutputObjectExtension.DEFAULT_HEIGHT;
+
+                        if (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX() < //
+                                width + elementX) {
+                            double x = (width + elementX) - (task.getBounds().getDimension().getWidth()
+                                    + task.getBounds().getPosition().getX());
+                            elementX = elementX - x - 35;
+                        }
+
+                        if (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY() < //
+                                height + elementY) {
+                            double y = (height + elementY) - //
+                                    (task.getBounds().getDimension().getHeight()
+                                            + task.getBounds().getPosition().getY());
+                            elementY = elementY - y - 5;
+                        }
 
                         data.getBounds().setPosition(elementX, elementY);
-                        data.getBounds().setDimension(DataOutputObjectExtension.DEFAULT_WIDTH,
-                                DataOutputObjectExtension.DEFAULT_HEIGHT);
+                        data.getBounds().setDimension(width, height);
 
                         logger.debug("new BPMN-DataOutput Position = " + elementX + "," + elementY);
                     }

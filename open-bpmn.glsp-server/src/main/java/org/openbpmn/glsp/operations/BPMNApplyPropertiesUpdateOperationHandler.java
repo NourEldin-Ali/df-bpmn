@@ -64,7 +64,7 @@ public class BPMNApplyPropertiesUpdateOperationHandler
     protected void executeOperation(final BPMNApplyPropertiesUpdateOperation operation) {
         long l = System.currentTimeMillis();
         String jsonData = operation.getJsonData();
-
+//        System.out.println(jsonData);
         // validate GModel id
         String elementID = operation.getId();
         GModelElement gModelElement = null;

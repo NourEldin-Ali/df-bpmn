@@ -45,6 +45,10 @@ public class DataProcessingGNodeBuilder
         // set Layout options
         this.addCssClass(type);
         this.addCssClass("dataProcessingExtension");
+        if (dataProcessing.getElementNode().getParentNode().getAttributes().getNamedItem("expand").getNodeValue()
+                .contentEquals("false")) {
+            this.addCssClass("hideElement");
+        }
     }
 
     @Override

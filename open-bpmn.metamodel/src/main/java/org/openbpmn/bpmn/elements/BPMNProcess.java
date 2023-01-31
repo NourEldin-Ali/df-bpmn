@@ -106,7 +106,8 @@ public class BPMNProcess extends BPMNElement {
 
                 // check element type
                 if (BPMNModel.isActivity(child)) {
-                    this.createBPMNActivityByNode((Element) child).openActivity();
+           		 this.createBPMNActivityByNode((Element) child).openActivity();
+
                 } else if (BPMNModel.isEvent(child)) {
                     this.createBPMNEventByNode((Element) child);
                 } else if (BPMNModel.isGateway(child)) {
@@ -277,6 +278,7 @@ public class BPMNProcess extends BPMNElement {
         Element taskElement = model.createElement(BPMNNS.BPMN2, type);
         taskElement.setAttribute("id", id);
         taskElement.setAttribute("name", name);
+        taskElement.setAttribute("expand", "true");
         this.getElementNode().appendChild(taskElement);
 
         // add BPMNEvent instance

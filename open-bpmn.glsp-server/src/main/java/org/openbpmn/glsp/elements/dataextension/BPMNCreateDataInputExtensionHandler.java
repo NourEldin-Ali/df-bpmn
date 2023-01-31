@@ -90,9 +90,33 @@ public class BPMNCreateDataInputExtensionHandler extends CreateBPMNNodeOperation
                         elementX = elementX - (DataInputObjectExtension.DEFAULT_WIDTH / 2);
                         elementY = elementY - (DataInputObjectExtension.DEFAULT_HEIGHT / 2);
 
+                        if (task.getBounds().getPosition().getX() > elementX) {
+                            elementX = task.getBounds().getPosition().getX();
+                        }
+                        if (task.getBounds().getPosition().getY() > elementY) {
+                            elementY = task.getBounds().getPosition().getY();
+                        }
+
+                        double width = DataInputObjectExtension.DEFAULT_WIDTH;
+                        double height = DataInputObjectExtension.DEFAULT_HEIGHT;
+
+                        if (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX() < //
+                                width + elementX) {
+                            double x = (width + elementX) - (task.getBounds().getDimension().getWidth()
+                                    + task.getBounds().getPosition().getX());
+                            elementX = elementX - x - 35;
+                        }
+
+                        if (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY() < //
+                                height + elementY) {
+                            double y = (height + elementY) - //
+                                    (task.getBounds().getDimension().getHeight()
+                                            + task.getBounds().getPosition().getY());
+                            elementY = elementY - y - 5;
+                        }
+
                         data.getBounds().setPosition(elementX, elementY);
-                        data.getBounds().setDimension(DataInputObjectExtension.DEFAULT_WIDTH,
-                                DataInputObjectExtension.DEFAULT_HEIGHT);
+                        data.getBounds().setDimension(width, height);
 
                         logger.debug("new BPMN Data Position = " + elementX + "," + elementY);
                     }

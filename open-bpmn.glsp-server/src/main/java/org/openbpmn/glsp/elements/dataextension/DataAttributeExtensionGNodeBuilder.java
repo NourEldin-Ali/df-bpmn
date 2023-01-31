@@ -68,6 +68,11 @@ public class DataAttributeExtensionGNodeBuilder
         this.addCssClass("dataAttributeExtension");
 
         this.addArguments(GArguments.cornerRadius(0));
+
+        if (data.getElementNode().getParentNode().getParentNode().getAttributes().getNamedItem("expand").getNodeValue()
+                .contentEquals("false")) {
+            this.addCssClass("hideElement");
+        }
     }
 
     @Override

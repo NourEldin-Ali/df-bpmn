@@ -86,6 +86,29 @@ public class BPMNCreateDataProcessingHandler extends CreateBPMNNodeOperationHand
                     // compute relative center position...
                     elementX = elementX - (DataProcessingExtension.DEFAULT_WIDTH / 2);
                     elementY = elementY - (DataProcessingExtension.DEFAULT_HEIGHT / 2);
+                    if (task.getBounds().getPosition().getX() > elementX) {
+                        elementX = task.getBounds().getPosition().getX();
+                    }
+                    if (task.getBounds().getPosition().getY() > elementY) {
+                        elementY = task.getBounds().getPosition().getY();
+                    }
+
+                    double width = Gateway.DEFAULT_WIDTH;
+                    double height = Gateway.DEFAULT_HEIGHT;
+
+                    if (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX() < //
+                            width + elementX) {
+                        double x = (width + elementX)
+                                - (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX());
+                        elementX = elementX - x - 35;
+                    }
+
+                    if (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY() < //
+                            height + elementY) {
+                        double y = (height + elementY) - //
+                                (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY());
+                        elementY = elementY - y - 5;
+                    }
 
                     dataProcessing.getBounds().setPosition(elementX, elementY);
                     dataProcessing.getBounds().setDimension(Gateway.DEFAULT_WIDTH, Gateway.DEFAULT_HEIGHT);

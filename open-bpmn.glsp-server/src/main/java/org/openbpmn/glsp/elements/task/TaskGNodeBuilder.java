@@ -54,9 +54,15 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
         this.id = activity.getId();
 
         try {
+
             BPMNBounds bpmnBounds = activity.getBounds();
-            this.size = GraphUtil.dimension(bpmnBounds.getDimension().getWidth(),
-                    bpmnBounds.getDimension().getHeight());
+            if (activity.getAttribute("expand").contentEquals("true")) {
+                this.size = GraphUtil.dimension(bpmnBounds.getDimension().getWidth(),
+                        bpmnBounds.getDimension().getHeight());
+            } else {
+                this.size = GraphUtil.dimension(Activity.DEFAULT_WIDTH, Activity.DEFAULT_HEIGHT);
+            }
+
         } catch (BPMNMissingElementException e) {
             // should not happen
             logger.severe("BPMNActivity does not support a BPMNBounds object!");
@@ -100,6 +106,16 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
 
         node.getChildren().add(taskIcon);
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name));
+
+//        GModelElement b = new GNodeBuilder().type("node:expandable").addCssClass("node-expandable")
+////                .position(point.orElse(GraphUtil.point(0, 0)))
+//                .layout(GConstants.Layout.HBOX).layoutOptions(new GLayoutOptions().hGap(15))
+//                .add(new GLabelBuilder().text("Expand").build()).add(new GButtonBuilder()
+//                        .type(DefaultTypes.EXPAND_BUTTON).addCssClass("button-expand").enabled(true).build())
+//                .build();
+//
+//        node.getChildren().add(b);
+
     }
 
 }

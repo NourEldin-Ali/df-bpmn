@@ -22,7 +22,6 @@ import org.eclipse.glsp.graph.builder.impl.GArguments;
 import org.eclipse.glsp.graph.builder.impl.GLayoutOptions;
 import org.eclipse.glsp.graph.util.GConstants;
 import org.eclipse.glsp.graph.util.GraphUtil;
-import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
 import org.openbpmn.bpmn.elements.core.BPMNBounds;
 import org.openbpmn.bpmn.exceptions.BPMNMissingElementException;
@@ -70,6 +69,11 @@ public class DataInputExtensionGNodeBuilder
             this.addCssClass("isMuliple");
         }
         this.addArguments(GArguments.cornerRadius(0));
+
+        if (data.getElementNode().getParentNode().getAttributes().getNamedItem("expand").getNodeValue()
+                .contentEquals("false")) {
+            this.addCssClass("hideElement");
+        }
     }
 
     @Override
@@ -91,8 +95,8 @@ public class DataInputExtensionGNodeBuilder
 //        node.getLayoutOptions().put(GLayoutOptions.KEY_H_ALIGN, GConstants.HAlign.CENTER);
 //        node.getLayoutOptions().put(GLayoutOptions.KEY_V_ALIGN, GConstants.VAlign.CENTER);
         // Set min width/height
-        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_WIDTH, Activity.DEFAULT_WIDTH);
-        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_HEIGHT, Activity.DEFAULT_HEIGHT);
+        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_WIDTH, DataInputObjectExtension.DEFAULT_WIDTH);
+        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_HEIGHT, DataInputObjectExtension.DEFAULT_HEIGHT);
 
         node.getLayoutOptions().put(H_GRAB, true);
         node.getLayoutOptions().put(V_GRAB, true);

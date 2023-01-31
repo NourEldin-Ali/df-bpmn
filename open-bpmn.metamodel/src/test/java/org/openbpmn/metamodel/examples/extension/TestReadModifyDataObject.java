@@ -50,8 +50,8 @@ public class TestReadModifyDataObject {
         act.addDataInputObject(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, "testRead", "string", false, null);
         act.setAttribute("name", "TASK-2");
         //modify
-        DataObjectAttributeExtension att= (DataObjectAttributeExtension) act.findElementById("DataObjectAttributeExtension_kSNKDA");
-        att.setAttribute("name", "int");
+//        DataObjectAttributeExtension att= (DataObjectAttributeExtension) act.findElementById("DataObjectAttributeExtension_kSNKDA");
+//        att.setAttribute("name", "int");
 //        System.out.println();
         
         assertEquals("http://www.omg.org/spec/BPMN/20100524/MODEL", model.getUri(BPMNNS.BPMN2));

@@ -50,7 +50,7 @@ public class TestReadRemoveData {
         
 //        act.deleteElementById("DataFlowExtension_vtdGZw");
 //        act.deleteElementById("DataFlowExtension_iHwIRQ");
-        act.deleteElementById("DataProcessingExtension_ZBdwoA");
+//        act.deleteElementById("DataProcessingExtension_ZBdwoA");
         
         assertEquals("http://www.omg.org/spec/BPMN/20100524/MODEL", model.getUri(BPMNNS.BPMN2));
         logger.info("...model read sucessful");

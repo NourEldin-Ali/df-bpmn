@@ -86,13 +86,6 @@ public class BPMNCreateDataAttributeExtensionHandler extends CreateBPMNNodeOpera
                     DataInputObjectExtension data = (DataInputObjectExtension) dataObject;
                     DataObjectAttributeExtension attribute = data.addAttributeObject(getLabel(), "any");
                     if (point.isPresent()) {
-//                        double elementX = point.get().getX();
-//                        double elementY = point.get().getY();
-//                        // compute relative center position...
-//                        elementX = elementX - (DataObjectAttributeExtension.DEFAULT_WIDTH / 2);
-//                        elementY = elementY - (DataObjectAttributeExtension.DEFAULT_HEIGHT / 2);
-
-                        // get
 
                         double elementX = data.getBounds().getPosition().getX() + 25;
                         double elementY = data.getBounds().getPosition().getY()

@@ -70,16 +70,18 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
     @Override
     public void buildPropertiesForm(final BPMNElement bpmnElement, final DataBuilder dataBuilder,
             final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
-
+        boolean expand = (bpmnElement.getAttribute("expand") != null
+                && bpmnElement.getAttribute("expand").contentEquals("true"));
+//        System.out.println(bpmnElement.getAttribute("expand"));
         dataBuilder //
                 .addData("name", bpmnElement.getName()) //
-                // .addData("execution", "exec") //
+                .addData("expand", expand) //
                 .addData("documentation", bpmnElement.getDocumentation());
 
         schemaBuilder. //
                 addProperty("name", "string", null). //
-                // addProperty("execution", "string", null). //
-                addProperty("documentation", "string", "Task description.");
+                addProperty("expand", "boolean", null). //
+                addProperty("documentation", "string", "Task description...");
 
         Map<String, String> multilineOption = new HashMap<>();
         multilineOption.put("multi", "true");
@@ -87,6 +89,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 addCategory("General"). //
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name"). //
+                addElements("expand"). //
                 addLayout(Layout.VERTICAL). //
                 addElement("documentation", "Documentation", multilineOption);
 
@@ -134,8 +137,11 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 bpmnElement.setDocumentation(json.getString(feature));
                 continue;
             }
-
             logger.debug("...update feature = " + feature);
+            if ("expand".equals(feature)) {
+                bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
+                continue;
+            }
 
             if ("scriptformat".equals(feature)) {
                 bpmnElement.setAttribute("scriptFormat", json.getString(feature));

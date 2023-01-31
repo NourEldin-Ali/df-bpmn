@@ -2,44 +2,44 @@
 <bpmn2:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="demo" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL">
     <bpmn2:process id="process_1" name="Default Process" processType="Public">
         <bpmn2:task id="task_1" name="Task-1">
-            <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_Xcd88Q" isMultiple="true" name="inputTest" type="Sting">
-                <bpmn2:outgoing>DataFlowExtension_w2wp7g</bpmn2:outgoing>
+            <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_onDOyw" isMultiple="true" name="inputTest" type="Sting">
+                <bpmn2:outgoing>DataFlowExtension_kJxo8g</bpmn2:outgoing>
             </bpmn2:dataInputObjectProcess>
-            <bpmn2:dataOutputObjectEnvironmentData id="DataOutputObjectExtension_2CQWqw" isMultiple="true" name="outTest" state="state" type="Sting">
-                <bpmn2:attribute id="DataObjectAttributeExtension_12odCw" name="attOutputTest" type="string">
-                    <bpmn2:incoming>DataFlowExtension_xPBr4g</bpmn2:incoming>
+            <bpmn2:dataOutputObjectEnvironmentData id="DataOutputObjectExtension_6E7t0w" isMultiple="true" name="outTest" state="state" type="Sting">
+                <bpmn2:attribute id="DataObjectAttributeExtension_y3qeCg" name="attOutputTest" type="string">
+                    <bpmn2:incoming>DataFlowExtension_J2b2Vg</bpmn2:incoming>
                 </bpmn2:attribute>
             </bpmn2:dataOutputObjectEnvironmentData>
-            <bpmn2:dataProcessing id="DataProcessingExtension_Ghx0Jg" name="Data operation">
-                <bpmn2:incoming>DataFlowExtension_w2wp7g</bpmn2:incoming>
-                <bpmn2:outgoing>DataFlowExtension_xPBr4g</bpmn2:outgoing>
+            <bpmn2:dataProcessing id="DataProcessingExtension_6dvVOw" name="Data operation">
+                <bpmn2:incoming>DataFlowExtension_kJxo8g</bpmn2:incoming>
+                <bpmn2:outgoing>DataFlowExtension_J2b2Vg</bpmn2:outgoing>
             </bpmn2:dataProcessing>
-            <bpmn2:dataFlow id="DataFlowExtension_w2wp7g" sourceRef="DataInputObjectExtension_Xcd88Q" targetRef="DataProcessingExtension_Ghx0Jg"/>
-            <bpmn2:dataFlow id="DataFlowExtension_xPBr4g" sourceRef="DataProcessingExtension_Ghx0Jg" targetRef="DataObjectAttributeExtension_12odCw"/>
+            <bpmn2:dataFlow id="DataFlowExtension_kJxo8g" sourceRef="DataInputObjectExtension_onDOyw" targetRef="DataProcessingExtension_6dvVOw"/>
+            <bpmn2:dataFlow id="DataFlowExtension_J2b2Vg" sourceRef="DataProcessingExtension_6dvVOw" targetRef="DataObjectAttributeExtension_y3qeCg"/>
         </bpmn2:task>
     </bpmn2:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
         <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
-            <bpmndi:BPMNShape bpmnElement="task_1" id="BPMNShape_JQhl6w">
+            <bpmndi:BPMNShape bpmnElement="task_1" id="BPMNShape_fJFyrw">
+                <dc:Bounds height="50.0" width="150.0" x="0.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_onDOyw" id="BPMNShape_xgBuag">
                 <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_Xcd88Q" id="BPMNShape_pmApxA">
+            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_6E7t0w" id="BPMNShape_KV5dXg">
                 <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_2CQWqw" id="BPMNShape_SlWD1A">
-                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_y3qeCg" id="BPMNShape_h1ysnw">
+                <dc:Bounds height="25.0" width="110.0" x="0.0" y="0.0"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_12odCw" id="BPMNShape_ir7pWg">
-                <dc:Bounds height="50.0" width="110.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_Ghx0Jg" id="BPMNShape_3zuQog">
+            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_6dvVOw" id="BPMNShape_NmBLFA">
                 <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
-                <bpmndi:BPMNLabel id="BPMNLabel_mQIfEA">
+                <bpmndi:BPMNLabel id="BPMNLabel_YHSf5w">
                     <dc:Bounds x="0.0" y="0.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_w2wp7g" id="BPMNEdge_Mj7Apw"/>
-            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_xPBr4g" id="BPMNEdge_eZqgBg"/>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_kJxo8g" id="BPMNEdge_rN3HIw"/>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_J2b2Vg" id="BPMNEdge_wT0RpA"/>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

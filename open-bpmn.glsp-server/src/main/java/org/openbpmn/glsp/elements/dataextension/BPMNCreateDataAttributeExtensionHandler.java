@@ -142,7 +142,7 @@ public class BPMNCreateDataAttributeExtensionHandler extends CreateBPMNNodeOpera
     public String getLabel() {
         int nodeCounter = GModelUtil.generateId(BpmnPackage.Literals.DATA_ATTRIBUTE_EXTENSION_GNODE, elementTypeId,
                 modelState);
-        return "DataAttribute-" + (nodeCounter + 1);
+        return "attribute-" + (nodeCounter + 1);
     }
 
 }

@@ -5,45 +5,91 @@
     </bpmn2:collaboration>
     <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_1" name="Default Processvb" processType="Public">
         <bpmn2:documentation id="documentation_JOldbw"/>
-        <bpmn2:task expand="true" id="task_MxUKQA" name="Task-1">
-            <bpmn2:documentation id="documentation_Wt7qPw"/>
-            <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_ZymF8g" isMultiple="false" name="DataOutput-1" state="init" type="any">
-                <bpmn2:attribute id="DataObjectAttributeExtension_pCKYjg" name="DataAttribute-1" type="any">
-                    <bpmn2:incoming>DataFlowExtension_bBO3mg</bpmn2:incoming>
-                </bpmn2:attribute>
-            </bpmn2:dataOutputObjectDataStore>
-            <bpmn2:dataProcessing id="DataProcessingExtension_VafREw" name="dataProcessing-1">
-                <bpmn2:documentation id="documentation_Hkq1EA"/>
-                <bpmn2:outgoing>DataFlowExtension_bBO3mg</bpmn2:outgoing>
+        <bpmn2:task expand="true" id="task_eTgzxw" name="Task-1">
+            <bpmn2:documentation id="documentation_a9S7GA"/>
+            <bpmn2:outgoing>SequenceFlow_o0hknw</bpmn2:outgoing>
+            <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_yyC2Mw" isMultiple="false" name="DataInput-1" type="any">
+                <bpmn2:outgoing>DataFlowExtension_r6KDzg</bpmn2:outgoing>
+            </bpmn2:dataInputObjectProcess>
+            <bpmn2:dataProcessing id="DataProcessingExtension_zrfiEg" name="dataProcessing-1">
+                <bpmn2:documentation id="documentation_OXd2rw"/>
+                <bpmn2:incoming>DataFlowExtension_r6KDzg</bpmn2:incoming>
+                <bpmn2:outgoing>DataFlowExtension_RoPKIw</bpmn2:outgoing>
+                <bpmn2:incoming>DataFlowExtension_lvnRKw</bpmn2:incoming>
             </bpmn2:dataProcessing>
-            <bpmn2:dataFlow id="DataFlowExtension_bBO3mg" sourceRef="DataProcessingExtension_VafREw" targetRef="DataObjectAttributeExtension_pCKYjg">
-                <bpmn2:documentation id="documentation_quXkWg"/>
+            <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_FNVxFQ" isMultiple="false" name="DataOutput-3" state="init" type="any">
+                <bpmn2:incoming>DataFlowExtension_RoPKIw</bpmn2:incoming>
+            </bpmn2:dataOutputObjectDataStore>
+            <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_uSHfWQ" isMultiple="false" name="DataInput-3" type="any">
+                <bpmn2:attribute id="DataObjectAttributeExtension_PUYYIQ" name="attribute-1" type="any">
+                    <bpmn2:outgoing>DataFlowExtension_lvnRKw</bpmn2:outgoing>
+                </bpmn2:attribute>
+            </bpmn2:dataInputObjectDataStore>
+            <bpmn2:dataFlow id="DataFlowExtension_r6KDzg" sourceRef="DataInputObjectExtension_yyC2Mw" targetRef="DataProcessingExtension_zrfiEg">
+                <bpmn2:documentation id="documentation_q8qHmQ"/>
+            </bpmn2:dataFlow>
+            <bpmn2:dataFlow id="DataFlowExtension_RoPKIw" sourceRef="DataProcessingExtension_zrfiEg" targetRef="DataOutputObjectExtension_FNVxFQ">
+                <bpmn2:documentation id="documentation_R0r6CQ"/>
+            </bpmn2:dataFlow>
+            <bpmn2:dataFlow id="DataFlowExtension_lvnRKw" sourceRef="DataObjectAttributeExtension_PUYYIQ" targetRef="DataProcessingExtension_zrfiEg">
+                <bpmn2:documentation id="documentation_rvhexw"/>
             </bpmn2:dataFlow>
         </bpmn2:task>
+        <bpmn2:task expand="true" id="task_JAaojA" name="Task-2">
+            <bpmn2:documentation id="documentation_JN0rSQ"/>
+            <bpmn2:incoming>SequenceFlow_o0hknw</bpmn2:incoming>
+        </bpmn2:task>
+        <bpmn2:sequenceFlow id="SequenceFlow_o0hknw" sourceRef="task_eTgzxw" targetRef="task_JAaojA">
+            <bpmn2:documentation id="documentation_0Oxwjw"/>
+        </bpmn2:sequenceFlow>
     </bpmn2:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
         <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
-            <bpmndi:BPMNShape bpmnElement="task_MxUKQA" id="BPMNShape_f0gmBA">
-                <dc:Bounds height="302.0" width="629.0" x="317.7795715332031" y="47.40480041503906"/>
+            <bpmndi:BPMNShape bpmnElement="task_eTgzxw" id="BPMNShape_rxuKcw">
+                <dc:Bounds height="261.91522216796875" width="631.9179077148438" x="102.50283813476562" y="181.5198974609375"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_ZymF8g" id="BPMNShape_wY0cqA">
-                <dc:Bounds height="50.0" width="130.0" x="760.279541015625" y="119.90478515625"/>
+            <bpmndi:BPMNShape bpmnElement="task_JAaojA" id="BPMNShape_n0ItRQ">
+                <dc:Bounds height="55.0" width="165.0" x="797.0129078942815" y="298.0198974609375"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_pCKYjg" id="BPMNShape_u9lTgA">
-                <dc:Bounds height="25.0" width="110.0" x="785.279541015625" y="169.90478515625"/>
+            <bpmndi:BPMNEdge bpmnElement="SequenceFlow_o0hknw" id="BPMNEdge_F06CBg" sourceElement="BPMNShape_rxuKcw" targetElement="BPMNShape_n0ItRQ">
+                <di:waypoint x="418.4617919921875" y="181.5198974609375"/>
+                <di:waypoint x="418.4617919921875" y="164.56228637695312"/>
+                <di:waypoint x="879.5128784179688" y="164.56228637695312"/>
+                <di:waypoint x="879.5128784179688" y="298.0198974609375"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_yyC2Mw" id="BPMNShape_Z6E0iw">
+                <dc:Bounds height="50.0" width="130.0" x="122.00283813476562" y="214.08416748046875"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_VafREw" id="BPMNShape_0FQMaQ">
-                <dc:Bounds height="50.0" width="50.0" x="571.5391845703125" y="119.90478515625"/>
-                <bpmndi:BPMNLabel id="BPMNLabel_tzml3g">
-                    <dc:Bounds height="16.0" width="100.0" x="546.5391845703125" y="169.90478515625"/>
+            <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_zrfiEg" id="BPMNShape_245qmA">
+                <dc:Bounds height="50.0" width="50.0" x="391.0028381347656" y="303.0198974609375"/>
+                <bpmndi:BPMNLabel id="BPMNLabel_CvnVkg">
+                    <dc:Bounds height="16.0" width="100.0" x="366.0028381347656" y="353.0198974609375"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_bBO3mg" id="BPMNEdge_BFrjAw">
-                <di:waypoint x="303.7595977783203" y="97.5"/>
-                <di:waypoint x="385.6297912597656" y="97.5"/>
-                <di:waypoint x="385.6297912597656" y="233.99998474121094"/>
-                <di:waypoint x="522.4999694824219" y="233.99998474121094"/>
-                <di:waypoint x="522.4999694824219" y="147.49998474121094"/>
+            <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_FNVxFQ" id="BPMNShape_pjSmmQ">
+                <dc:Bounds height="50.0" width="130.0" x="548.0028076171875" y="303.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_uSHfWQ" id="BPMNShape_q77C9Q">
+                <dc:Bounds height="50.0" width="130.0" x="134.00283813476562" y="331.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_r6KDzg" id="BPMNEdge_St7q0Q">
+                <di:waypoint x="149.5" y="51.56427001953125"/>
+                <di:waypoint x="228.3394317626953" y="51.56427001953125"/>
+                <di:waypoint x="228.3394317626953" y="146.5"/>
+                <di:waypoint x="288.5" y="146.5"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_RoPKIw" id="BPMNEdge_HFxtig">
+                <di:waypoint x="338.5" y="146.5"/>
+                <di:waypoint x="445.4999694824219" y="146.5"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_PUYYIQ" id="BPMNShape_aXh7HQ">
+                <dc:Bounds height="25.0" width="110.0" x="159.00283813476562" y="381.0198974609375"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_lvnRKw" id="BPMNEdge_a5ByIg">
+                <di:waypoint x="166.5" y="212.0"/>
+                <di:waypoint x="227.5" y="212.0"/>
+                <di:waypoint x="227.5" y="146.5"/>
+                <di:waypoint x="288.5" y="146.5"/>
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

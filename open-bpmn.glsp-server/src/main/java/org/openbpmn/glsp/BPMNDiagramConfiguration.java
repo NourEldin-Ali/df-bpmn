@@ -160,6 +160,11 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
         nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA));
         nodeHints.add(createDataObjectExtensionHint(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA_USER));
 
+//        // attribute
+//        nodeHints.add(new ShapeTypeHint(BPMNTypes.DATA_OBJECT_ATTRIBUTE, true, true, false, false));
+//        // data processing
+//        nodeHints.add(new ShapeTypeHint(BPMNTypes.DATA_PROCESSING, true, true, false, true));
+
         return nodeHints;
     }
 

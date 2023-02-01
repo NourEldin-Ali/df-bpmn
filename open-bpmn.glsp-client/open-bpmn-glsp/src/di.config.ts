@@ -16,26 +16,21 @@
 import {
     boundsFeature,
     CircularNodeView,
-    CollapseExpandAction,
-    configureActionHandler,
     configureCommand,
     configureDefaultModelElements,
     configureModelElement,
     configureView,
     ConsoleLogger,
     createDiagramContainer,
-    DefaultTypes,
     DeleteElementContextMenuItemProvider,
     DiamondNodeView,
     editLabelFeature,
-    ExpandButtonView,
     ForeignObjectView,
     LogLevel,
     moveFeature,
     overrideViewerOptions,
     RevealNamedElementActionProvider,
     RoundedCornerNodeView,
-    SButton,
     SCompartment,
     SCompartmentView,
     selectFeature,
@@ -50,7 +45,6 @@ import {
     DataObjectNode,
     DataProcessingExtensionNode,
     EventNode,
-    ExpandableNode,
     GatewayNode,
     Icon,
     LabelNode,
@@ -73,8 +67,6 @@ import {
     DataInputNodeExtensionNodeView,
     DataObjectNodeView,
     DataOutputNodeExtensionNodeView,
-    ExpandableNodeView,
-    ExpandHandler,
     IconView,
     LabelNodeView,
     MessageNodeView,
@@ -112,12 +104,12 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     configureDefaultModelElements(context);
 
     // collapse
-    configureModelElement(context, 'node:expandable', ExpandableNode, ExpandableNodeView);
-    configureModelElement(context, DefaultTypes.BUTTON_EXPAND, SButton, ExpandButtonView);
-    bind(ExpandHandler).toSelf().inSingletonScope();
-    configureActionHandler(context, CollapseExpandAction.KIND, ExpandHandler);
+    // configureModelElement(context, 'node:expandable', ExpandableNode, ExpandableNodeView);
+    // configureModelElement(context, DefaultTypes.BUTTON_EXPAND, SButton, ExpandButtonView);
+    // bind(ExpandHandler).toSelf().inSingletonScope();
+    // configureActionHandler(context, CollapseExpandAction.KIND, ExpandHandler);
 
-    configureModelElement(context, 'task', TaskNode, RoundedCornerNodeView);
+    configureModelElement(context, 'task', TaskNode, RoundedCornerNodeView, { disable: [moveFeature] });
     configureModelElement(context, 'manualTask', TaskNode, RoundedCornerNodeView);
     configureModelElement(context, 'userTask', TaskNode, RoundedCornerNodeView);
     configureModelElement(context, 'scriptTask', TaskNode, RoundedCornerNodeView);

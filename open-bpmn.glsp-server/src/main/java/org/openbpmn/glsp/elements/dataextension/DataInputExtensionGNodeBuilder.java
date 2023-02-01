@@ -48,11 +48,13 @@ public class DataInputExtensionGNodeBuilder
     private static final String V_GRAB = "vGrab";
     private static final String H_GRAB = "hGrab";
     private final String name;
+    private final String type;
 
     public DataInputExtensionGNodeBuilder(final DataInputObjectExtension data) {
         super(data.getType());
         this.name = data.getName();
         this.id = data.getId();
+        this.type = data.getAttribute("type");
 
         try {
             BPMNBounds bpmnBounds = data.getBounds();
@@ -120,6 +122,7 @@ public class DataInputExtensionGNodeBuilder
         node.getChildren().add(taskIcon2);
         // node.getChildren().add(BPMNGraphUtil.createCompartmentHeader(node));
 
+//        node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name + ":" + type));
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name));
 
     }

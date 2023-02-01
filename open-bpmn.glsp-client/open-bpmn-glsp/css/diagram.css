@@ -67,6 +67,7 @@
 
 .task > .sprotty-node {
     fill: #30568f;
+    pointer-events: none;
 }
 
 .task.bpmnextension-imixs > .sprotty-node {

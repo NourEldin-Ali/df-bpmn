@@ -117,5 +117,35 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
 //        node.getChildren().add(b);
 
     }
+//    @Override
+//    public void setProperties(final TaskGNode node) {
+//        super.setProperties(node);
+//        node.setName(name);
+//
+//        node.setLayout(GConstants.Layout.VBOX);
+//        // Set min width/height for the Pool element
+//        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_WIDTH, Participant.MIN_WIDTH);
+//        node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_HEIGHT, Participant.MIN_HEIGHT);
+////        node.getLayoutOptions().put(GLayoutOptions.KEY_PREF_WIDTH, size.getWidth());
+////        node.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, size.getHeight());
+//
+//        node.getChildren().add(BPMNGraphUtil.createBPMNContainerHeader(node));
+//        node.getChildren().add(createContainerCompartment(node));
+//
+//    }
+//
+//    /**
+//     * Creates the Container compartment used for the process BPMNFlowElements
+//     *
+//     * @param node
+//     * @return
+//     */
+//    private GCompartment createContainerCompartment(final TaskGNode node) {
+//        // DefaultTypes.NODE ModelTypes.CONTAINER
+//        return new GCompartmentBuilder(ModelTypes.CONTAINER) //
+//                .id(node.getId() + "_container") //
+//                .layout(GConstants.Layout.FREEFORM) //
+//                .build();
+//    }
 
 }

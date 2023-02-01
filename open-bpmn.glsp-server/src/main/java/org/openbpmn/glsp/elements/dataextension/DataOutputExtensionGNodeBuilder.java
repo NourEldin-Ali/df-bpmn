@@ -49,12 +49,14 @@ public class DataOutputExtensionGNodeBuilder
     private static final String H_GRAB = "hGrab";
     private final String name;
     private final String state;
+    private final String type;
 
     public DataOutputExtensionGNodeBuilder(final DataOutputObjectExtension data) {
         super(data.getType());
         this.name = data.getName();
         this.id = data.getId();
         this.state = data.getAttribute("state");
+        this.type = data.getAttribute("type");
 
         try {
             BPMNBounds bpmnBounds = data.getBounds();
@@ -115,7 +117,7 @@ public class DataOutputExtensionGNodeBuilder
 
         // node.getChildren().add(BPMNGraphUtil.createCompartmentHeader(node));
 //        node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_state", state));
-
+//        node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name + ":" + type, state));
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name, state));
         node.getChildren().add(taskIcon);
 

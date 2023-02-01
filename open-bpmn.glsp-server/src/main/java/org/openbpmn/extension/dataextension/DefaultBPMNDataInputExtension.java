@@ -115,11 +115,23 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
         for (String feature : features) {
             if ("name".equals(feature)) {
                 String text = json.getString(feature);
-                bpmnElement.setName(text);
-                // update the bpmn-text-node of the GNodeElement
-                GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
-                if (gnode != null) {
-                    gnode.getArgs().put("text", text);
+                if (text.contains(":")) {
+                    bpmnElement.setName(text.split(":")[0]);
+                    bpmnElement.setAttribute("type", text.split(":")[1]);
+                    // update the bpmn-text-node of the GNodeElement
+                    GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
+                    if (gnode != null) {
+                        gnode.getArgs().put("text", text.split(":")[0]);
+                    }
+
+                } else {
+                    bpmnElement.setName(text);
+                    // update the bpmn-text-node of the GNodeElement
+                    GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
+                    if (gnode != null) {
+                        gnode.getArgs().put("text", text);
+                    }
+
                 }
                 continue;
             }

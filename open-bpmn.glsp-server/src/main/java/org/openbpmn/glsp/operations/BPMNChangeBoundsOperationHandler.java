@@ -48,6 +48,7 @@ import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
 import org.openbpmn.bpmn.exceptions.BPMNMissingElementException;
 import org.openbpmn.glsp.bpmn.PoolGNode;
+import org.openbpmn.glsp.bpmn.TaskGNode;
 import org.openbpmn.glsp.model.BPMNGModelState;
 import org.openbpmn.glsp.utils.BPMNGraphUtil;
 
@@ -145,8 +146,8 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                         if (bpmnElementNode instanceof Activity) {
                             ((Activity) bpmnElementNode).getBpmnProcess().getModel().openDefaultProcess();
 //                            System.out.println(bpmnElementNode.getId());
-                            updateEmbeddedActivityElementNodes(((Activity) bpmnElementNode).getAllNodes(), offsetX,
-                                    offsetY);
+                            updateEmbeddedActivityElementNodes(gNode, ((Activity) bpmnElementNode).getAllNodes(),
+                                    offsetX, offsetY);
                         }
 
                     }
@@ -343,7 +344,7 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
             BPMNPoint oldBpmnPoint = bpmnBounds.getPosition();
             BPMNPoint newBpmnPoint = new BPMNPoint(oldBpmnPoint.getX() + offsetX, oldBpmnPoint.getY() + offsetY);
 
-            System.out.println(bpmnElementNode.getId());
+//            System.out.println(bpmnElementNode.getId());
             BPMNElementNode elementNode = (BPMNElementNode) modelState.getBpmnModel()
                     .findElementExtensionNodeById(bpmnElementNode.getId());
             if (elementNode.getBounds().getPosition().getX() > newBpmnPoint.getX() //
@@ -363,9 +364,9 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                 gNode.setPosition(newPoint);
                 // The BPMN Position is always absolute so we can simply update the element
                 // BPMN Position by the new offset and new dimensions.
-                System.out.println("X1=" + newBpmnPoint.getX());
-                System.out.println("Y1=" + newBpmnPoint.getY());
-                System.out.println("-----");
+//                System.out.println("X1=" + newBpmnPoint.getX());
+//                System.out.println("Y1=" + newBpmnPoint.getY());
+//                System.out.println("-----");
                 bpmnBounds.setPosition(newBpmnPoint);
             }
 
@@ -478,6 +479,11 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
             GPoint poolPosition = ((GNode) parent).getPosition();
             double relativeX = absoluteX - poolPosition.getX();
             double relativeY = absoluteY - poolPosition.getY();
+            newLabelGPoint = GraphUtil.point(relativeX, relativeY);
+        } else if (parent instanceof TaskGNode) {
+            GPoint taskPosition = ((GNode) parent).getPosition();
+            double relativeX = absoluteX - taskPosition.getX();
+            double relativeY = absoluteY - taskPosition.getY();
             newLabelGPoint = GraphUtil.point(relativeX, relativeY);
         } else {
             // parent is the root plane
@@ -666,14 +672,16 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
      * are absolute and in GLSP the position of a element embedded in a container is
      * relative.
      *
-     * @param activity - the bpmnProcess containing the bpmn element nodes.
+     * @param gActivityNode
+     *
+     * @param activity      - the bpmnProcess containing the bpmn element nodes.
      * @param gNode
-     * @param offsetX  - new X offset
-     * @param offsetY  - new Y offset
+     * @param offsetX       - new X offset
+     * @param offsetY       - new Y offset
      * @throws BPMNMissingElementException
      */
-    void updateEmbeddedActivityElementNodes(final Set<BPMNElementNode> bpmnFlowElements, final double offsetX,
-            final double offsetY) throws BPMNMissingElementException {
+    void updateEmbeddedActivityElementNodes(final GNode gActivityNode, final Set<BPMNElementNode> bpmnFlowElements,
+            final double offsetX, final double offsetY) throws BPMNMissingElementException {
 
 //        System.out.println(bpmnFlowElements.size());
         for (BPMNElementNode flowElement : bpmnFlowElements) {
@@ -690,10 +698,14 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                         continue;
                     }
 
-                    GNode gNode = _node.get();
-                    gNode.getPosition().setX(bounds.getPosition().getX());
-                    gNode.getPosition().setY(bounds.getPosition().getY());
-
+//                    GNode gNode = _node.get();
+//                    gNode.getPosition().setX(bounds.getPosition().getX());
+//                    gNode.getPosition().setY(bounds.getPosition().getY());
+//                    gNode.setParent(gActivityNode);
+                    if (flowElement instanceof DataInputObjectExtension
+                            || flowElement instanceof DataOutputObjectExtension) {
+                        updateEmbeddedAttributeElementNodes(flowElement, offsetX, offsetY);
+                    }
                 }
 
                 // if the flowElemen has a BPMNLabel element we adjust position of the label too
@@ -710,12 +722,10 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
 
                     Optional<GNode> _labelnode = modelState.getIndex()
                             .findElementByClass(flowElement.getId() + "_bpmnlabel", GNode.class);
+//                    _labelnode.get().setParent(gActivityNode);
                     updateLabel(_labelnode.get(), bpmnLabel, offsetX, offsetY);
                 }
-                if (flowElement instanceof DataInputObjectExtension
-                        || flowElement instanceof DataOutputObjectExtension) {
-                    updateEmbeddedAttributeElementNodes(flowElement, offsetX, offsetY);
-                }
+
             } catch (BPMNMissingElementException e) {
                 logger.warn("Failed to update FlowElement bounds for : " + flowElement.getId());
             }
@@ -740,32 +750,34 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
                 BPMNBounds bounds = flowElement.getBounds();
                 if (bounds != null) {
                     // get data object
-                    Optional<GNode> _node_data_node = modelState.getIndex().findElementByClass(bpmnElementNode.getId(),
-                            GNode.class);
-                    if (!_node_data_node.isPresent()) {
-                        // this case should not happen!
-                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
-                        continue;
-                    }
+//                    Optional<GNode> _node_data_node = modelState.getIndex().findElementByClass(bpmnElementNode.getId(),
+//                            GNode.class);
+//                    if (!_node_data_node.isPresent()) {
+//                        // this case should not happen!
+//                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+//                        continue;
+//                    }
+//
+//                    GNode gNodeData = _node_data_node.get();
+//
+//                    // find the corresponding GNode Element
+//                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
+//                    if (!_node.isPresent()) {
+//                        // this case should not happen!
+//                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
+//                        continue;
+//                    }
 
-                    GNode gNodeData = _node_data_node.get();
+//                    GNode gNode = _node.get();
+//                    gNode.setParent(gNode);
+                    double newX = bpmnElementNode.getBounds().getPosition().getX() + 25;
 
-                    // find the corresponding GNode Element
-                    Optional<GNode> _node = modelState.getIndex().findElementByClass(flowElement.getId(), GNode.class);
-                    if (!_node.isPresent()) {
-                        // this case should not happen!
-                        logger.error("GNode '" + flowElement.getId() + "' not found in current modelState!");
-                        continue;
-                    }
-
-                    GNode gNode = _node.get();
-
-                    double newY = gNodeData.getPosition().getY() + gNodeData.getSize().getHeight()
+                    double newY = bpmnElementNode.getBounds().getPosition().getY()
+                            + bpmnElementNode.getBounds().getDimension().getHeight()
                             + DataObjectAttributeExtension.DEFAULT_HEIGHT * count;
-                    gNode.getPosition().setY(newY);
+//                    gNode.getPosition().setY(newY);
 
-                    double newX = gNodeData.getPosition().getX() + 25;
-                    gNode.getPosition().setX(newX);
+//                    gNode.getPosition().setX(newX);
 
                     bounds.setPosition(newX, newY);
                 }

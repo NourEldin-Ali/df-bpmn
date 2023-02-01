@@ -15,6 +15,8 @@
  ********************************************************************************/
 package org.openbpmn.extension.dataextension;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.json.JsonObject;
@@ -72,20 +74,21 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 
         dataBuilder //
                 .addData("name", bpmnElement.getName()) //
-
+                .addData("desciption", bpmnElement.getDocumentation()) //
         ;
 
         schemaBuilder //
                 .addProperty("name", "string", null) //
+                .addProperty("description", "string", "Add data processing description");
 
-        ;
-
-//Map<String, String> multilineOption = new HashMap<>();
-//multilineOption.put("multi", "true");
+        Map<String, String> multilineOption = new HashMap<>();
+        multilineOption.put("multi", "true");
         uiSchemaBuilder. //
                 addCategory("General") //
                 .addLayout(Layout.HORIZONTAL) //
                 .addElements("name") //
+                .addLayout(Layout.VERTICAL) //
+                .addElement("description", "Documentation", multilineOption) //
         ;
 
     }
@@ -108,9 +111,10 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
                 }
                 continue;
             }
-
-            bpmnElement.setAttribute(feature, json.getString(feature));
-
+            if ("documentation".equals(feature)) {
+                bpmnElement.setDocumentation(json.getString(feature));
+                continue;
+            }
         }
 
     }

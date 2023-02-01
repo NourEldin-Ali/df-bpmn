@@ -23,4 +23,9 @@ public class DataFlowExtension extends BPMNElementEdge {
         return bpmnProcess;
     }
 
+
+	public Activity getActivity() {
+		return activity;
+	}
+
 }

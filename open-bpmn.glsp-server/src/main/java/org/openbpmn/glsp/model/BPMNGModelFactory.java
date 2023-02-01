@@ -337,6 +337,25 @@ public class BPMNGModelFactory implements GModelFactory {
     }
 
     /**
+     * Finds an GModelElement by its ID in a given List of GModelElements. The
+     * method returns null if not element with the given ID exists.
+     *
+     * @param entityNodes - List of GModelElements
+     * @param id          - id to search for
+     * @return GModelElement - or null if no elment was found.
+     */
+    GModelElement findElementAttributeById(final List<GModelElement> entityNodes, final String id) {
+        for (GModelElement element : entityNodes) {
+            for (GModelElement childOfchild : element.getChildren()) {
+                if (childOfchild.getId().equals(id)) {
+                    return childOfchild;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * This helper method returns a GModelElement list from all BPMNLanes and
      * BPMNFlowElements contained in a given BPMNProcess.
      * <p>
@@ -383,7 +402,7 @@ public class BPMNGModelFactory implements GModelFactory {
              * @author Ali Nour Eldin
              */
 
-            computeGModelActivityElements(activity, gNodeList, participant);
+            computeGModelActivityElements(taskNode, activity, gNodeList, participant);
 
         }
 
@@ -522,102 +541,100 @@ public class BPMNGModelFactory implements GModelFactory {
      * Compute all activity data
      *
      * @author Ali Nour Eldin
+     * @param taskNode
      */
-    private void computeGModelActivityElements(final Activity activity, final List<GModelElement> gNodeList,
-            final Participant participant) throws BPMNMissingElementException {
+    private void computeGModelActivityElements(final TaskGNode taskNode, final Activity activity,
+            final List<GModelElement> gNodeList, final Participant participant) throws BPMNMissingElementException {
         // Add all Tasks
         for (DataInputObjectExtension data : activity.getDataInputObjects()) {
             logger.debug("dataInput: " + data.getName());
             // compute relative position
-            GPoint point = computeRelativeGPoint(data.getBounds(), participant);
-            // build GNode
-//            TaskGNode taskNode = new TaskGNodeBuilder(activity) //
-//                    .position(point) //
-//                    .build();
+            GPoint point = GraphUtil.point(data.getBounds().getPosition().getX() - taskNode.getPosition().getX(),
+                    data.getBounds().getPosition().getY() - taskNode.getPosition().getY());
+
             DataObjectExtensionGNode dataNode = new DataInputExtensionGNodeBuilder(data)//
                     .position(point) //
                     .build();
+            dataNode.setParent(taskNode);
             // apply BPMN Extensions
             applyBPMNExtensions(dataNode, data);
-            gNodeList.add(dataNode);
-            computeGModelDataExtensionElements(data.getDataAttributes(), gNodeList, participant, dataNode);
+//            gNodeList.add(dataNode);
+            computeGModelDataExtensionElements(taskNode, data.getDataAttributes(), gNodeList, participant, dataNode);
         }
 
         for (DataOutputObjectExtension data : activity.getDataOutputObjects()) {
             logger.debug("dataInput: " + data.getName());
             // compute relative position
-            GPoint point = computeRelativeGPoint(data.getBounds(), participant);
+            GPoint point = GraphUtil.point(data.getBounds().getPosition().getX() - taskNode.getPosition().getX(),
+                    data.getBounds().getPosition().getY() - taskNode.getPosition().getY());
+
             // build GNode
-//            TaskGNode taskNode = new TaskGNodeBuilder(activity) //
-//                    .position(point) //
-//                    .build();
             DataObjectExtensionGNode dataNode = new DataOutputExtensionGNodeBuilder(data)//
                     .position(point) //
                     .build();
+            dataNode.setParent(taskNode);
             // apply BPMN Extensions
             applyBPMNExtensions(dataNode, data);
-            gNodeList.add(dataNode);
-            computeGModelDataExtensionElements(data.getDataAttributes(), gNodeList, participant, dataNode);
+//            gNodeList.add(dataNode);
+            computeGModelDataExtensionElements(taskNode, data.getDataAttributes(), gNodeList, participant, dataNode);
         }
         // Add all Gateways...
         for (DataProcessingExtension data : activity.getDataProcessing()) {
             logger.debug("Gateway: " + data.getName() + " x=" + data.getBounds().getPosition().getX() + " y="
                     + data.getBounds().getPosition().getY());
-            GPoint point = computeRelativeGPoint(data.getBounds(), participant);
-
+            GPoint point = GraphUtil.point(data.getBounds().getPosition().getX() - taskNode.getPosition().getX(),
+                    data.getBounds().getPosition().getY() - taskNode.getPosition().getY());
             // Build the GLSP Node....
             DataProcessingExtenstionGNode dataNode = new DataProcessingGNodeBuilder(data) //
                     .position(point) //
                     .build();
-
-            gNodeList.add(dataNode);
+            dataNode.setParent(taskNode);
+//            gNodeList.add(dataNode);
             // apply BPMN Extensions
             applyBPMNExtensions(dataNode, data);
 
             // now add a GLabel
             BPMNLabel bpmnLabel = data.getLabel();
-            LabelGNode labelNode = createLabelNode(bpmnLabel, data, participant);
-
-            gNodeList.add(labelNode);
+            LabelGNode labelNode = createLabelNodeForDataExtension(bpmnLabel, data, taskNode);
+            labelNode.setParent(taskNode);
+//            gNodeList.add(labelNode);
         }
 
         // Add all SequenceFlows
         Set<BPMNElementEdge> list = new LinkedHashSet<>();
         list.addAll(activity.getDataFlows());
-        readEdgesExtension(list, gNodeList, participant, activity);
+        readEdgesExtension(taskNode, list, gNodeList, participant, activity);
 
         list = new LinkedHashSet<>();
         list.addAll(activity.getDataReferences());
-        readEdgesExtension(list, gNodeList, participant, activity);
+        readEdgesExtension(taskNode, list, gNodeList, participant, activity);
 
     }
 
-    private void computeGModelDataExtensionElements(final Set<DataObjectAttributeExtension> listDataAtt,
-            final List<GModelElement> gNodeList, final Participant participant,
-            final DataObjectExtensionGNode dataObjectNode) {
-        int count = 0;
+    private void computeGModelDataExtensionElements(final TaskGNode taskNode,
+            final Set<DataObjectAttributeExtension> listDataAtt, final List<GModelElement> gNodeList,
+            final Participant participant, final DataObjectExtensionGNode dataObjectNode) {
+
         for (DataObjectAttributeExtension data : listDataAtt) {
             logger.debug("dataInput: " + data.getName());
             // compute relative position
             GPoint point;
             try {
-                point = computeRelativeGPoint(data.getBounds(), participant);
+                point = GraphUtil.point(
+                        data.getBounds().getPosition().getX() - dataObjectNode.getPosition().getX()
+                                - taskNode.getPosition().getX(),
+                        data.getBounds().getPosition().getY() - dataObjectNode.getPosition().getY()
+                                - taskNode.getPosition().getY());
 
                 // build GNode
-//            TaskGNode taskNode = new TaskGNodeBuilder(activity) //
-//                    .position(point) //
-//                    .build();
-
-//                point.setY(dataObjectNode.getPosition().getY() + dataObjectNode.getSize().getHeight()
-//                        + DataObjectAttributeExtension.DEFAULT_HEIGHT * count);
-//                point.setX(dataObjectNode.getPosition().getX() + 25);
                 DataAttributeExtensionGNode dataNode = new DataAttributeExtensionGNodeBuilder(data)//
                         .position(point) //
                         .build();
                 // apply BPMN Extensions
+                dataNode.setParent(dataObjectNode);
                 applyBPMNExtensions(dataNode, data);
-                gNodeList.add(dataNode);
-                count++;
+//                gNodeList.add(dataNode);
+
             } catch (BPMNMissingElementException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -625,23 +642,29 @@ public class BPMNGModelFactory implements GModelFactory {
         }
     }
 
-    private void readEdgesExtension(final Set<BPMNElementEdge> bpmnEdges, final List<GModelElement> gNodeList,
-            final Participant participant, final Activity activity) {
+    private void readEdgesExtension(final TaskGNode taskNode, final Set<BPMNElementEdge> bpmnEdges,
+            final List<GModelElement> gNodeList, final Participant participant, final Activity activity) {
         // Add all SequenceFlows
         for (BPMNElementEdge flowExtension : bpmnEdges) {
             // first we need to verify if the target and source objects exist in our model
             // if not we need to skip this sequenceFlow element!
-            GModelElement source = findElementById(gNodeList, flowExtension.getSourceRef());
-            GModelElement target = findElementById(gNodeList, flowExtension.getTargetRef());
+            GModelElement source = findElementById(taskNode.getChildren(), flowExtension.getSourceRef());
+            GModelElement target = findElementById(taskNode.getChildren(), flowExtension.getTargetRef());
             if (source == null) {
-                logger.warn("Source element '" + flowExtension.getSourceRef() + "' not found - skip SequenceFlow id="
-                        + flowExtension.getId());
-                continue;
+                source = findElementAttributeById(taskNode.getChildren(), flowExtension.getSourceRef());
+                if (source == null) {
+                    logger.warn("Source element '" + flowExtension.getSourceRef()
+                            + "' not found - skip SequenceFlow id=" + flowExtension.getId());
+                    continue;
+                }
             }
             if (target == null) {
-                logger.warn("Target element '" + flowExtension.getTargetRef() + "' not found - skip SequenceFlow id="
-                        + flowExtension.getId());
-                continue;
+                target = findElementAttributeById(taskNode.getChildren(), flowExtension.getTargetRef());
+                if (target == null) {
+                    logger.warn("Target element '" + flowExtension.getTargetRef()
+                            + "' not found - skip SequenceFlow id=" + flowExtension.getId());
+                    continue;
+                }
             }
 
             // now construct the GNode and add it to the model....
@@ -656,11 +679,11 @@ public class BPMNGModelFactory implements GModelFactory {
                 GPoint point = computeRelativeGPoint(wayPoint, participant);
                 bpmnGEdge.getRoutingPoints().add(point);
             }
-
+            bpmnGEdge.setParent(taskNode);
             // apply BPMN Extensions
             applyBPMNExtensions(bpmnGEdge, flowExtension);
 
-            gNodeList.add(bpmnGEdge);
+//            gNodeList.add(bpmnGEdge);
         }
     }
 //    private void computeGModelDataExtensionElements(final Data activity, final List<GModelElement> gNodeList,
@@ -851,6 +874,26 @@ public class BPMNGModelFactory implements GModelFactory {
         GPoint labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX(), bpmnLabel.getPosition().getY());
         // compute relative point...
         labelPoint = computeRelativeGPoint(labelPoint, participant);
+        labelPoint.setX(labelPoint.getX() - 0);
+        // now we build the LabelGNode
+        logger.debug("label GPoint: x=" + labelPoint.getX() + " y=" + labelPoint.getY());
+        LabelGNode labelNode = new LabelGNodeBuilder(flowElement) //
+                .position(labelPoint) //
+                // .size(bpmnLabel.getBounds().getDimension().getWidth(),
+                // bpmnLabel.getBounds().getDimension().getHeight()) //
+                .build();
+
+        return labelNode;
+    }
+
+    private LabelGNode createLabelNodeForDataExtension(final BPMNLabel bpmnLabel, final BPMNElementNode flowElement,
+            final TaskGNode taskNode) throws BPMNMissingElementException {
+        logger.debug("BPMNLabel: x=" + bpmnLabel.getBounds().getPosition().getX() + " y="
+                + bpmnLabel.getBounds().getPosition().getY());
+        GPoint labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX(), bpmnLabel.getPosition().getY());
+        // compute relative point...
+        labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX() - taskNode.getPosition().getX(),
+                bpmnLabel.getPosition().getY() - taskNode.getPosition().getY());
         labelPoint.setX(labelPoint.getX() - 0);
         // now we build the LabelGNode
         logger.debug("label GPoint: x=" + labelPoint.getX() + " y=" + labelPoint.getY());

@@ -44,7 +44,7 @@ export class BPMNEdgeView extends PolylineEdgeViewWithGapsOnIntersections {
         const additionals = super.renderAdditionals(edge, segments, context);
         const p1 = segments[segments.length - 2];
         const p2 = segments[segments.length - 1];
-
+        console.warn(edge.type);
         // arrow depends on the type of the BPMNEdge
         if ('sequenceFlow' === edge.type || 'messageFlow' === edge.type || 'dataFlow' === edge.type) {
             const arrow: any = (

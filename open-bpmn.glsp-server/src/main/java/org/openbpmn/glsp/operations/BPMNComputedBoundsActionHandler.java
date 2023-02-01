@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2022 Imixs Software Solutions GmbH and others.
+8 * Copyright (c) 2022 Imixs Software Solutions GmbH and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -55,7 +55,9 @@ public class BPMNComputedBoundsActionHandler extends AbstractActionHandler<Compu
 
     @Override
     protected List<Action> executeAction(final ComputedBoundsAction actualAction) {
+
         List<ElementAndRoutingPoints> routings = actualAction.getRoutes();
+
         try {
             for (ElementAndRoutingPoints routingInfo : routings) {
                 String id = routingInfo.getElementId();
@@ -67,13 +69,18 @@ public class BPMNComputedBoundsActionHandler extends AbstractActionHandler<Compu
                 }
                 // do we have a BPMNSequenceFlow ?
                 if (element != null && element instanceof BPMNElementEdge) {
+
                     BPMNElementEdge bpmnElementEdge = (BPMNElementEdge) element;
+
                     // update the BPMN WayPoints.
                     List<GPoint> newGLSPRoutingPoints = routingInfo.getNewRoutingPoints();
+
                     logger.fine("...updating " + newGLSPRoutingPoints.size() + " BPMN WayPoints for element " + id
                             + "....");
+
                     bpmnElementEdge.clearWayPoints();
-                    // add the new routing points
+//                    System.out.println(newGLSPRoutingPoints.size());
+//                     add the new routing points
                     for (GPoint point : newGLSPRoutingPoints) {
                         BPMNPoint bpmnPoint = null;
                         Participant participant = null;
@@ -101,9 +108,9 @@ public class BPMNComputedBoundsActionHandler extends AbstractActionHandler<Compu
                                 // if we have a participant/pool we can compute the relative position...
                                 xOffset = participant.getBounds().getPosition().getX();
                                 yOffset = participant.getBounds().getPosition().getY();
+
                             }
                         }
-
                         bpmnPoint = new BPMNPoint(xOffset + point.getX(), yOffset + point.getY());
                         logger.fine("...add new waypoint: " + point.getX() + "," + point.getY());
                         bpmnElementEdge.addWayPoint(bpmnPoint);

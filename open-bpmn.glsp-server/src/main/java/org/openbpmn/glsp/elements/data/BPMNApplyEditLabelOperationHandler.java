@@ -137,9 +137,15 @@ public class BPMNApplyEditLabelOperationHandler extends AbstractOperationHandler
                 }
                 act = (Activity) modelState.getBpmnModel().findElementExtensionNodeById(elementId);
                 bpmnElementNode = (BPMNElementNode) act.findElementById(elementId);
-                bpmnElementNode.setName(operation.getText());
-                // update gNode
                 String text = operation.getText();
+                if (text.contains(":")) {
+                    bpmnElementNode.setAttribute("type", text.split(":")[1]);
+                    text = text.split(":")[0];
+
+                }
+                bpmnElementNode.setName(text);
+                // update gNode
+
                 gNodeElement.getArgs().put("text", text);
 
                 GModelElement parent = gNodeElement.getParent();

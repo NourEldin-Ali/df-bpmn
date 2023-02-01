@@ -23,4 +23,9 @@ public class DataReferenceExtension extends BPMNElementEdge {
         return bpmnProcess;
     }
 
+
+	public Activity getActivity() {
+		return activity;
+	}
+
 }

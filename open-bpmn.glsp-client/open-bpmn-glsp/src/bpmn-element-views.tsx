@@ -224,7 +224,7 @@ export class IconView extends ShapeView {
 
         if (element.id.includes('icon2') && dataObjectExtensionNode) {
             scaleFactor = 1.3;
-            translateX = 15.0;
+            translateX = 25.0;
             translateY = 3.0;
             rotate = 90;
             // console.warn(dataObjectExtensionNode.id);

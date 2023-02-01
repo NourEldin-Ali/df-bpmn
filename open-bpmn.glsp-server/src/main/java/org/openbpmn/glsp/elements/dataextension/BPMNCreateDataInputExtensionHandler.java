@@ -29,7 +29,6 @@ import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
-import org.openbpmn.bpmn.elements.DataOutputObjectExtension;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.glsp.bpmn.BpmnPackage;
 import org.openbpmn.glsp.elements.CreateBPMNNodeOperationHandler;
@@ -80,71 +79,45 @@ public class BPMNCreateDataInputExtensionHandler extends CreateBPMNNodeOperation
                 GPoint dropPoint = operation.getLocation().orElse(null);
                 Activity task = bpmnProcess.findActivityByPoint(BPMNGraphUtil.createBPMNPoint(dropPoint));
                 Optional<GPoint> point = operation.getLocation();
-                if (BPMNTypes.BPMN_DATA_INPUT_EXTENSION.contains(elementTypeId)) {
-                    DataInputObjectExtension data = task.addDataInputObject(elementTypeId, getLabel(), "any", false,
-                            getLabel());
-                    if (point.isPresent()) {
-                        double elementX = point.get().getX();
-                        double elementY = point.get().getY();
-                        // compute relative center position...
-                        elementX = elementX - (DataInputObjectExtension.DEFAULT_WIDTH / 2);
-                        elementY = elementY - (DataInputObjectExtension.DEFAULT_HEIGHT / 2);
 
-                        if (task.getBounds().getPosition().getX() > elementX) {
-                            elementX = task.getBounds().getPosition().getX();
-                        }
-                        if (task.getBounds().getPosition().getY() > elementY) {
-                            elementY = task.getBounds().getPosition().getY();
-                        }
-
-                        double width = DataInputObjectExtension.DEFAULT_WIDTH;
-                        double height = DataInputObjectExtension.DEFAULT_HEIGHT;
-
-                        if (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX() < //
-                                width + elementX) {
-                            double x = (width + elementX) - (task.getBounds().getDimension().getWidth()
-                                    + task.getBounds().getPosition().getX());
-                            elementX = elementX - x - 35;
-                        }
-
-                        if (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY() < //
-                                height + elementY) {
-                            double y = (height + elementY) - //
-                                    (task.getBounds().getDimension().getHeight()
-                                            + task.getBounds().getPosition().getY());
-                            elementY = elementY - y - 5;
-                        }
-
-                        data.getBounds().setPosition(elementX, elementY);
-                        data.getBounds().setDimension(width, height);
-
-                        logger.debug("new BPMN Data Position = " + elementX + "," + elementY);
+                DataInputObjectExtension data = task.addDataInputObject(elementTypeId, getLabel(), "any", false,
+                        getLabel());
+                if (point.isPresent()) {
+                    double elementX = point.get().getX();
+                    double elementY = point.get().getY();
+                    // compute relative center position...
+                    elementX = elementX - (DataInputObjectExtension.DEFAULT_WIDTH / 2);
+                    elementY = elementY - (DataInputObjectExtension.DEFAULT_HEIGHT / 2);
+                    double width = DataInputObjectExtension.DEFAULT_WIDTH;
+                    double height = DataInputObjectExtension.DEFAULT_HEIGHT;
+                    if (task.getBounds().getPosition().getX() > elementX) {
+                        elementX = task.getBounds().getPosition().getX();
                     }
-                    modelState.reset();
-                    actionDispatcher.dispatchAfterNextUpdate(new SelectAction(),
-                            new SelectAction(List.of(data.getId())));
-                } else if (BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.contains(elementTypeId)) {
-                    DataOutputObjectExtension data = task.addDataOutputObject(elementTypeId, getLabel(), "any", false,
-                            "init");
-                    if (point.isPresent()) {
-                        double elementX = point.get().getX();
-                        double elementY = point.get().getY();
-                        // compute relative center position...
-                        elementX = elementX - (DataOutputObjectExtension.DEFAULT_WIDTH / 2);
-                        elementY = elementY - (DataOutputObjectExtension.DEFAULT_HEIGHT / 2);
-
-                        data.getBounds().setPosition(elementX, elementY);
-                        data.getBounds().setDimension(DataOutputObjectExtension.DEFAULT_WIDTH,
-                                DataOutputObjectExtension.DEFAULT_HEIGHT);
-
-                        logger.debug("new BPMNActivity Position = " + elementX + "," + elementY);
+                    if (task.getBounds().getPosition().getY() > elementY) {
+                        elementY = task.getBounds().getPosition().getY();
                     }
-                    modelState.reset();
-                    actionDispatcher.dispatchAfterNextUpdate(new SelectAction(),
-                            new SelectAction(List.of(data.getId())));
-                } else {
-                    // not supported element
+
+                    if (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX() < //
+                            width + elementX) {
+                        double x = (width + elementX)
+                                - (task.getBounds().getDimension().getWidth() + task.getBounds().getPosition().getX());
+                        elementX = elementX - x - 35;
+                    }
+
+                    if (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY() < //
+                            height + elementY) {
+                        double y = (height + elementY) - //
+                                (task.getBounds().getDimension().getHeight() + task.getBounds().getPosition().getY());
+                        elementY = elementY - y - 5;
+                    }
+
+                    data.getBounds().setPosition(elementX, elementY);
+                    data.getBounds().setDimension(width, height);
+
+                    logger.debug("new BPMN Data Position = " + elementX + "," + elementY);
                 }
+                modelState.reset();
+                actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(data.getId())));
 
             } else {
                 // should not happen

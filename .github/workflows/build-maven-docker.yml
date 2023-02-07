@@ -1,4 +1,4 @@
-# This workflow will build a Java project with Maven, and the DA-BPMN Docker image
+# This workflow will build a Java project with Maven, and the Open-BPMN Docker image
 # containing the node.js client part based on Theia Platform 
 
 name: Build and create Docker Image
@@ -8,7 +8,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  
 
 jobs:
   build:
@@ -24,15 +23,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Building DA-BPMN Server with Maven
+    - name: Building Open-BPMN Server with Maven
       run: mvn -B package --file pom.xml
 
     - name: Building Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/NourEldin-Ali/da-bpmn:latest
-          docker run ghcr.io/NourEldin-Ali/da-bpmn:latest
-          docker push ghcr.io/NourEldin-Ali/da-bpmn:latest
-    
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)

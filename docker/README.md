@@ -14,14 +14,14 @@ setting the environment param `--hostname=0.0.0.0` is important to allow access 
 
 To build the docker image from sources run:
 
-	$ docker build . -t da-bpmn
+	$ docker build . -t alinoureldin/da-bpmn
 
 	
 ## Run
 
 To run the docker image locally run:
 
-	$ docker run --name="da-bpmn" --rm -p 3000:3000 da-bpmn
+	$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn
       
 After starting the container the applicaiton is available on 
 
@@ -36,6 +36,6 @@ To stop the container run:
 
 To push the image manually to a docker repo:
 
-	$ docker build . -t imixs/open-bpmn:latest
-	$ docker push imixs/open-bpmn:latest
+	$ docker build . -t alinoureldin/open-bpmn:latest
+	$ docker push alinoureldin/open-bpmn:latest
 

@@ -1,4 +1,4 @@
-# This workflow will build a Java project with Maven, and the Open-BPMN Docker image
+# This workflow will build a Java project with Maven, and the DA-BPMN Docker image
 # containing the node.js client part based on Theia Platform 
 
 name: Build and create Docker Image

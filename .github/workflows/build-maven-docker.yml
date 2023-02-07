@@ -23,9 +23,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Building Open-BPMN Server with Maven
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Building DA-BPMN Server with Maven
       run: mvn -B package --file pom.xml
 
     - name: Building Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/NourEldin-Ali/da-bpmn:latest
+          docker run ghcr.io/NourEldin-Ali/da-bpmn:latest
+          docker push ghcr.io/NourEldin-Ali/da-bpmn:latest
     

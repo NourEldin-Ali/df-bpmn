@@ -14,17 +14,14 @@ setting the environment param `--hostname=0.0.0.0` is important to allow access 
 
 To build the docker image from sources run:
 
-	$ docker build . -t imixs/open-bpmn
+	$ docker build . -t da-bpmn
 
 	
 ## Run
 
 To run the docker image locally run:
 
-	$ docker run --name="open-bpmn" \
-	  --rm \
-      -p 3000:3000 \
-      imixs/open-bpmn
+	$ docker run --name="da-bpmn" --rm -p 3000:3000 da-bpmn
       
 After starting the container the applicaiton is available on 
 
@@ -32,7 +29,7 @@ After starting the container the applicaiton is available on
 	      
 To stop the container run:
 
-	$ docker stop open-bpmn
+	$ docker stop da-bpmn
 
 	
 # Push to Docker-Hub

@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
  */
 public class DataInputObjectExtension extends BPMNElementNode {
 
-    public final static double DEFAULT_WIDTH = 130.0;
+    public final static double DEFAULT_WIDTH = 160.0;
     public final static double DEFAULT_HEIGHT = 50.0;
 	public Activity activity = null;
     

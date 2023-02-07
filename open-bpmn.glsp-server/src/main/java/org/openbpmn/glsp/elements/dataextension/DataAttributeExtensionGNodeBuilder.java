@@ -27,8 +27,6 @@ import org.openbpmn.bpmn.elements.core.BPMNBounds;
 import org.openbpmn.bpmn.exceptions.BPMNMissingElementException;
 import org.openbpmn.glsp.bpmn.BpmnFactory;
 import org.openbpmn.glsp.bpmn.DataAttributeExtensionGNode;
-import org.openbpmn.glsp.bpmn.IconGCompartment;
-import org.openbpmn.glsp.elements.IconGCompartmentBuilder;
 import org.openbpmn.glsp.model.BPMNGModelFactory;
 import org.openbpmn.glsp.utils.BPMNGraphUtil;
 
@@ -106,12 +104,12 @@ public class DataAttributeExtensionGNodeBuilder
 
         node.getLayoutOptions().put(GLayoutOptions.KEY_V_GAP, 1);
 
-        IconGCompartment taskIcon = new IconGCompartmentBuilder(). //
-                id(node.getId() + "_icon"). //
-                layoutOptions(new GLayoutOptions().hAlign(GConstants.HAlign.LEFT)). //
-                build();
-
-        node.getChildren().add(taskIcon);
+//        IconGCompartment taskIcon = new IconGCompartmentBuilder(). //
+//                id(node.getId() + "_icon"). //
+//                layoutOptions(new GLayoutOptions().hAlign(GConstants.HAlign.LEFT)). //
+//                build();
+//
+//        node.getChildren().add(taskIcon);
         // node.getChildren().add(BPMNGraphUtil.createCompartmentHeader(node));
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name + ":" + type));
 //        node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name));

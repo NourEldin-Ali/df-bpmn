@@ -34,6 +34,9 @@
             <bpmn2:dataFlow id="DataFlowExtension_lvnRKw" sourceRef="DataObjectAttributeExtension_PUYYIQ" targetRef="DataProcessingExtension_zrfiEg">
                 <bpmn2:documentation id="documentation_rvhexw"/>
             </bpmn2:dataFlow>
+            <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_viHd0w" isMultiple="false" name="DataInput-4" type="any">
+                <bpmn2:attribute id="DataObjectAttributeExtension_1FP9hg" name="test" type="int"/>
+            </bpmn2:dataInputObjectDataStore>
         </bpmn2:task>
         <bpmn2:task expand="true" id="task_JAaojA" name="Task-2">
             <bpmn2:documentation id="documentation_JN0rSQ"/>
@@ -46,51 +49,74 @@
     <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
         <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
             <bpmndi:BPMNShape bpmnElement="task_eTgzxw" id="BPMNShape_rxuKcw">
-                <dc:Bounds height="261.91522216796875" width="631.9179077148438" x="102.50283813476562" y="181.5198974609375"/>
+                <dc:Bounds height="438.91522216796875" width="661.9179077148438" x="220.6538848876953" y="14.378204345703125"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="task_JAaojA" id="BPMNShape_n0ItRQ">
-                <dc:Bounds height="55.0" width="165.0" x="797.0129078942815" y="298.0198974609375"/>
+                <dc:Bounds height="55.0" width="165.0" x="955.0128784179688" y="217.3358154296875"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="SequenceFlow_o0hknw" id="BPMNEdge_F06CBg" sourceElement="BPMNShape_rxuKcw" targetElement="BPMNShape_n0ItRQ">
-                <di:waypoint x="418.4617919921875" y="181.5198974609375"/>
-                <di:waypoint x="418.4617919921875" y="164.56228637695312"/>
-                <di:waypoint x="879.5128784179688" y="164.56228637695312"/>
-                <di:waypoint x="879.5128784179688" y="298.0198974609375"/>
+                                
+                
+            
+                <di:waypoint x="882.5717926025391" y="233.8358154296875"/>
+                <di:waypoint x="913.7923355102539" y="233.8358154296875"/>
+                <di:waypoint x="913.7923355102539" y="243.3358154296875"/>
+                <di:waypoint x="955.0128784179688" y="243.3358154296875"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_yyC2Mw" id="BPMNShape_Z6E0iw">
-                <dc:Bounds height="50.0" width="130.0" x="122.00283813476562" y="214.08416748046875"/>
+                <dc:Bounds height="50.0" width="160.0" x="254.15386962890625" y="58.942474365234375"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_zrfiEg" id="BPMNShape_245qmA">
-                <dc:Bounds height="50.0" width="50.0" x="391.0028381347656" y="303.0198974609375"/>
+                <dc:Bounds height="50.0" width="50.0" x="534.1538696289062" y="158.87820434570312"/>
                 <bpmndi:BPMNLabel id="BPMNLabel_CvnVkg">
-                    <dc:Bounds height="16.0" width="100.0" x="366.0028381347656" y="353.0198974609375"/>
+                    <dc:Bounds height="16.0" width="100.0" x="509.15386962890625" y="208.87820434570312"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_FNVxFQ" id="BPMNShape_pjSmmQ">
-                <dc:Bounds height="50.0" width="130.0" x="548.0028076171875" y="303.0198974609375"/>
+                <dc:Bounds height="50.0" width="130.0" x="666.1538696289062" y="180.87820434570312"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_uSHfWQ" id="BPMNShape_q77C9Q">
-                <dc:Bounds height="50.0" width="130.0" x="134.00283813476562" y="331.0198974609375"/>
+                <dc:Bounds height="50.0" width="160.0" x="254.15386962890625" y="158.87820434570312"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_r6KDzg" id="BPMNEdge_St7q0Q">
-                <di:waypoint x="149.5" y="51.56427001953125"/>
-                <di:waypoint x="228.3394317626953" y="51.56427001953125"/>
+                                
+                
+            
+                <di:waypoint x="193.49998474121094" y="69.56427001953125"/>
+                <di:waypoint x="224.5" y="69.56427001953125"/>
+                <di:waypoint x="228.3394317626953" y="69.56427001953125"/>
                 <di:waypoint x="228.3394317626953" y="146.5"/>
-                <di:waypoint x="288.5" y="146.5"/>
+                <di:waypoint x="336.49998474121094" y="146.5"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_RoPKIw" id="BPMNEdge_HFxtig">
-                <di:waypoint x="338.5" y="146.5"/>
-                <di:waypoint x="445.4999694824219" y="146.5"/>
+                                
+            
+                <di:waypoint x="360.49998474121094" y="172.5"/>
+                <di:waypoint x="421.4999694824219" y="172.5"/>
+                <di:waypoint x="421.4999694824219" y="191.5"/>
+                <di:waypoint x="445.49998474121094" y="191.5"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_PUYYIQ" id="BPMNShape_aXh7HQ">
-                <dc:Bounds height="25.0" width="110.0" x="159.00283813476562" y="381.0198974609375"/>
+                <dc:Bounds height="25.0" width="110.0" x="279.15386962890625" y="208.87820434570312"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_lvnRKw" id="BPMNEdge_a5ByIg">
-                <di:waypoint x="166.5" y="212.0"/>
+                                
+                
+                
+            
+                <di:waypoint x="168.49998474121094" y="207.0"/>
+                <di:waypoint x="168.5" y="207.0"/>
+                <di:waypoint x="168.5" y="212.0"/>
                 <di:waypoint x="227.5" y="212.0"/>
                 <di:waypoint x="227.5" y="146.5"/>
-                <di:waypoint x="288.5" y="146.5"/>
+                <di:waypoint x="336.49998474121094" y="146.5"/>
             </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_viHd0w" id="BPMNShape_9zoH0g">
+                <dc:Bounds height="50.0" width="160.0" x="401.0284423828125" y="296.5225830078125"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_1FP9hg" id="BPMNShape_k4BN0g">
+                <dc:Bounds height="25.0" width="110.0" x="426.0284423828125" y="346.5225830078125"/>
+            </bpmndi:BPMNShape>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

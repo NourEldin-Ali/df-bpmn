@@ -5,9 +5,10 @@ name: Build and create Docker Image
 
 on:
   push:
-    branches: [ "NourEldin-Ali:master" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "NourEldin-Ali:master" ]
+    branches: [ "master" ]
+  
 
 jobs:
   build:

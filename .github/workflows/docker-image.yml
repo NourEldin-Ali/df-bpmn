@@ -3,11 +3,7 @@
 
 name: Build and create Docker Image
 
-on:
-  push:
-    branches: [ "NourEldin-Ali:master" ]
-  pull_request:
-    branches: [ "NourEldin-Ali:master" ]
+on:  [workflow_dispatch]
 
 jobs:
   build:

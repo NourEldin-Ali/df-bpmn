@@ -36,6 +36,6 @@ To stop the container run:
 
 To push the image manually to a docker repo:
 
-	$ docker build . -t alinoureldin/open-bpmn:latest
-	$ docker push alinoureldin/open-bpmn:latest
+	$ docker build . -t alinoureldin/da-bpmn:latest
+	$ docker push alinoureldin/da-bpmn:latest
 

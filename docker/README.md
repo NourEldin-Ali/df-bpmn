@@ -25,7 +25,7 @@ To run the docker image locally run:
       
 After starting the container the applicaiton is available on 
 
-	[http://localhost:3000/#/usr/src/app/workspace](http://localhost:3000/#/usr/src/app/workspace)
+	http://localhost:3000/#/usr/src/app/workspace
 	      
 To stop the container run:
 

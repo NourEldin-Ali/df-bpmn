@@ -130,6 +130,10 @@ public class BPMNGModelFactory implements GModelFactory {
      * Create a GModelRoot from a BPMNModel specified in the modelState. This method
      * also produces and sets a GModelIndex in the model state that allows mapping
      * from graph model elements to source model elements and vice versa.
+     *
+     * I comment the setRevsion(-1)
+     *
+     * @author Ali Nour Eldin
      */
     @Override
     public void createGModel() {
@@ -142,7 +146,7 @@ public class BPMNGModelFactory implements GModelFactory {
             long l = System.currentTimeMillis();
             GGraph newGModel = buildGGraph(getBpmnModel());
             modelState.updateRoot(newGModel);
-            modelState.getRoot().setRevision(-1);
+//            modelState.getRoot().setRevision(-1);
 
             if (newGModel == null) {
                 logger.warn("Unable to create model - no processes found - creating an empty model");

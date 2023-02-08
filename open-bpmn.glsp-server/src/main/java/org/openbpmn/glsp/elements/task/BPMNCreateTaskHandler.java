@@ -98,6 +98,7 @@ public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
         } catch (BPMNModelException e) {
             e.printStackTrace();
         }
+
         modelState.reset();
         actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(taskID)));
     }

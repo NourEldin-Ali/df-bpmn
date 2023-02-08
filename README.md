@@ -47,7 +47,7 @@ The [DA-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) is the GLSP Client 
 
 
 # Requirement
-## NodeJS (linux)
+### NodeJS (linux)
 
 We use nodejs on Linux Debian during development. To manage version of nodejs in debian see: https://phoenixnap.com/kb/update-node-js-version
 
@@ -62,7 +62,7 @@ To install typescript run:
 
 	$ sudo npm install -g typescript 
 
-## NodeJS (winodws)
+### NodeJS (winodws)
 we use nodejs on windows 11 and windows 10. 
 
 For development with Eclipse Theia the expected version is ">=10.11.0 <17". For that reason we tested with following version  16.11.0. You can list all current versions [here](https://nodejs.org/en/download/releases/). 
@@ -82,16 +82,24 @@ The Application can be started from a Web Browser
 
 # Build and Run (Windows)
 
-$ mvn clean install  -DskipTests
-$ cd  open-bpmn.glsp-client/
-$ yarn
-$ yarn start 
+	$ mvn clean install  -DskipTests
+	$ cd  open-bpmn.glsp-client/
+	$ yarn
+	$ yarn start 
 
+The Application can be started from a Web Browser
+
+	http://localhost:3000/
+	
 # Download, Build and Run (docker)
 
-$ docker pull alinoureldin/da-bpmn:latest
-$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn
+	$ docker pull alinoureldin/da-bpmn:latest
+	$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn
+	
+The Application can be started from a Web Browser
 
+	http://localhost:3000/#/usr/src/app/workspace
+	
 More detail about build your own code in docker [here](./docker/README.md)
 
 ## Locally build for Development

@@ -68,8 +68,9 @@ we use nodejs on windows 11 and windows 10.
 For development with Eclipse Theia the expected version is ">=10.11.0 <17". For that reason we tested with following version  16.11.0. You can list all current versions [here](https://nodejs.org/en/download/releases/). 
 
 
-# Build and Run (Linux)
+# Build and Run 
 
+## On Linux
 To build the complete project run 
 
 	$ ./build.sh
@@ -80,7 +81,7 @@ The Application can be started from a Web Browser
 
 	http://localhost:3000/
 
-# Build and Run (Windows)
+## On Windows
 
 	$ mvn clean install  -DskipTests
 	$ cd  open-bpmn.glsp-client/
@@ -91,7 +92,7 @@ The Application can be started from a Web Browser
 
 	http://localhost:3000/
 	
-# Download, Build and Run (docker)
+## Using docker
 
 	$ docker pull alinoureldin/da-bpmn:latest
 	$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn

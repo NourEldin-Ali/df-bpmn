@@ -37,7 +37,7 @@ RUN mvn --version
 # Create app directory
 # WORKDIR /usr/src/app/open-bpmn
 WORKDIR /usr/src/app
-RUN mkdir /usr/src/app/workflow
+RUN mkdir /usr/src/app/workspace
 
 # Copy GLSP PROJECTS
 # COPY . /usr/src/app/open-bpmn

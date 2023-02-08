@@ -35,20 +35,24 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 RUN mvn --version
 
 # Create app directory
+# WORKDIR /usr/src/app/open-bpmn
 WORKDIR /usr/src/app
 
+
 # Copy GLSP PROJECTS
-COPY . /usr/src/app/
+# COPY . /usr/src/app/open-bpmn
+RUN git clone https://github.com/NourEldin-Ali/open-bpmn.git
+
 # BUILD GLSP Server part
-WORKDIR /usr/src/app/
+WORKDIR /usr/src/app/open-bpmn/
 RUN mvn clean install -DskipTest
-WORKDIR /usr/src/app/open-bpmn.glsp-server
+WORKDIR /usr/src/app/open-bpmn/open-bpmn.glsp-server
 RUN mvn clean install -DskipTest
 
-RUN rm -r /usr/src/app/open-bpmn.glsp-client/workspace/
+RUN rm -r /usr/src/app/open-bpmn/open-bpmn.glsp-client/workspace/
 
 # Build GLSP Client part
-WORKDIR /usr/src/app/open-bpmn.glsp-client
+WORKDIR /usr/src/app/open-bpmn/open-bpmn.glsp-client
 RUN yarn
 
 EXPOSE 3000

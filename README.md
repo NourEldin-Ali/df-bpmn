@@ -47,8 +47,8 @@ The [DA-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) is the GLSP Client 
 
 
 # Requirement
-### NodeJS (linux)
-
+## NodeJS 
+### On linux
 We use nodejs on Linux Debian during development. To manage version of nodejs in debian see: https://phoenixnap.com/kb/update-node-js-version
 
 For development with Eclipse Theia the expected version is ">=10.11.0 <17". For that reason we tested with following version  16.11.0. You can list all current versions [here](https://nodejs.org/en/download/releases/). 
@@ -62,12 +62,12 @@ To install typescript run:
 
 	$ sudo npm install -g typescript 
 
-### NodeJS (winodws)
+### On winodws
 We use nodejs 16.11.0 on windows 11 and windows 10. 
 
 For development with Eclipse Theia the expected version is ">=10.11.0 <17". For that reason we tested with following version  16.11.0. You can list all current versions [here](https://nodejs.org/en/download/releases/). 
 
-### Others
+## Other requirements
 In our build on widowns we use maven 3.8.6 and yarn 1.22.19.
 
 You need to download [maven](https://maven.apache.org/download.cgi) and [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) from official sites.

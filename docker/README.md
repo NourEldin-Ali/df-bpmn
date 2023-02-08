@@ -1,8 +1,8 @@
 # Docker
 
-Open-BPMN provides a Docker image to run the BPMN modeler as a Container in Docker or Kubernetes. 
+DA-BPMN provides a Docker image to run the BPMN modeler as a Container in Docker or Kubernetes. 
 
-The Open-BPMN Docker image is based on the [official NodeJS image (node:16-buster)](https://hub.docker.com/_/node). The container image contains a prebuild appliction and exposes the port 3000
+The DA-BPMN Docker image is based on the [official NodeJS image (node:16-buster)](https://hub.docker.com/_/node). The container image contains a prebuild appliction and exposes the port 3000
 
 In the Dockerfile we are using the entrypoint:
 
@@ -25,7 +25,7 @@ To run the docker image locally run:
       
 After starting the container the applicaiton is available on 
 
-	http://localhost:3000
+	[http://localhost:3000/#/usr/src/app/workspace](http://localhost:3000/#/usr/src/app/workspace)
 	      
 To stop the container run:
 

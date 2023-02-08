@@ -63,9 +63,14 @@ To install typescript run:
 	$ sudo npm install -g typescript 
 
 ### NodeJS (winodws)
-we use nodejs on windows 11 and windows 10. 
+We use nodejs 16.11.0 on windows 11 and windows 10. 
 
 For development with Eclipse Theia the expected version is ">=10.11.0 <17". For that reason we tested with following version  16.11.0. You can list all current versions [here](https://nodejs.org/en/download/releases/). 
+
+### Others
+In our build on widowns we use maven 3.8.6 and yarn 1.22.19.
+
+You need to download [maven](https://maven.apache.org/download.cgi) and [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) from official sites.
 
 
 # Build and Run 

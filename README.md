@@ -1,7 +1,7 @@
-**Data-Aware BPMN** is a free BPMN 2.0 modeling platform that can be extended and customized by any BPMN 2.0 compliant execution engine.
-DA-BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](https://www.eclipse.org/glsp/) and on [Open BPMN project](https://github.com/imixs/open-bpmn) providing an open-source framework for building diagram editors based on modern web technologies.
+**DataFlow BPMN** is a free BPMN 2.0 modeling platform that can be extended and customized by any BPMN 2.0 compliant execution engine.
+DF-BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](https://www.eclipse.org/glsp/) and on [Open BPMN project](https://github.com/imixs/open-bpmn) providing an open-source framework for building diagram editors based on modern web technologies.
 
-The primary goal of this project is to provide a graphical BPMN editing framework that can be extended in various ways by different solutions to create an agile and innovative  community around the BPMN standard. 
+![Screenshot (20)](https://user-images.githubusercontent.com/61513661/225958345-bfc13903-fa42-45ee-b59c-dd783cbfb5ea.png)
 
 ## What is BPMN 2.0?
 

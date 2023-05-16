@@ -13,15 +13,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { TYPES } from '@eclipse-glsp/client';
+import { EnableToolPaletteAction, TYPES } from '@eclipse-glsp/client';
 import { ContainerModule } from 'inversify';
-import { BPMNPropertyPanel } from './bpmn-property-panel';
+import { configureActionHandler } from 'sprotty';
+import { BPMNPropertyPanel, BPMNPropertyPanelToggleAction, BPMNPropertyPanelUpdateAction } from './bpmn-property-panel';
 // css styles
 import '../css/bpmn-properties.css';
 import '../css/jsonforms-theia.css';
 
-export const bpmnPropertyModule = new ContainerModule((bind, unbind, isBound,rebind) => {
-    bind(TYPES.IUIExtension)
-        .to(BPMNPropertyPanel)
-        .inSingletonScope();
+export const BPMNPropertyModule = new ContainerModule((bind, _unbind, isBound, rebind) => {
+    bind(BPMNPropertyPanel).toSelf().inSingletonScope();
+    bind(TYPES.IUIExtension).toService(BPMNPropertyPanel);
+    configureActionHandler({ bind, isBound }, EnableToolPaletteAction.KIND, BPMNPropertyPanel);
+    configureActionHandler({ bind, isBound }, BPMNPropertyPanelToggleAction.KIND, BPMNPropertyPanel);
+    configureActionHandler({ bind, isBound }, BPMNPropertyPanelUpdateAction.KIND, BPMNPropertyPanel);
 });
+export { BPMNPropertyPanel, BPMNPropertyPanelToggleAction, BPMNPropertyPanelUpdateAction } from './bpmn-property-panel';
+

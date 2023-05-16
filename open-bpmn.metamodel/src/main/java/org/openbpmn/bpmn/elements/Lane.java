@@ -105,7 +105,7 @@ public class Lane extends BPMNElementNode {
     }
 
     /**
-     * This method insets a given BPMNFlowElment to this lane
+     * This method inserts a given BPMNFlowElement to this lane
      * <p>
      * {@code
      *  <bpmn2:laneSet id="LaneSet_1" name="Lane Set 1">
@@ -117,12 +117,14 @@ public class Lane extends BPMNElementNode {
      * @param laneId
      * @throws BPMNInvalidReferenceException
      */
-    public void insert(BPMNElementNode bpmnEementNode) throws BPMNInvalidReferenceException {
-        // append flowNodeRef
-        Element flowNodeRef = model.createElement(BPMNNS.BPMN2, "flowNodeRef");
-        Text textNode = this.getDoc().createTextNode(bpmnEementNode.getId());
-        flowNodeRef.appendChild(textNode);
-        this.getElementNode().appendChild(flowNodeRef);
+    public void insert(BPMNElementNode bpmnElementNode) {
+        // append flowNodeRef if not yet listed
+        if (!contains(bpmnElementNode)) {
+            Element flowNodeRef = model.createElement(BPMNNS.BPMN2, "flowNodeRef");
+            Text textNode = this.getDoc().createTextNode(bpmnElementNode.getId());
+            flowNodeRef.appendChild(textNode);
+            this.getElementNode().appendChild(flowNodeRef);
+        }
     }
 
     /**
@@ -133,8 +135,7 @@ public class Lane extends BPMNElementNode {
      */
     public boolean contains(BPMNElementNode bpmnElement) {
         // get all bpmn2:flowNodeRef
-        Set<Element> refs = BPMNModel.findChildNodesByName(this.getElementNode(),
-                getModel().getPrefix(BPMNNS.BPMN2) + ":flowNodeRef");
+        Set<Element> refs = model.findChildNodesByName(this.getElementNode(), BPMNNS.BPMN2, "flowNodeRef");
         for (Element element : refs) {
             if (bpmnElement.getId().equals(element.getTextContent())) {
                 return true;
@@ -145,19 +146,63 @@ public class Lane extends BPMNElementNode {
     }
 
     /**
+     * This method removes a given BPMNFlowElement from this lane
+     * <p>
+     * {@code
+     *  <bpmn2:laneSet id="LaneSet_1" name="Lane Set 1">
+          <bpmn2:lane id="Lane_1" name="Lane 1">
+             <bpmn2:flowNodeRef>StartEvent_4</bpmn2:flowNodeRef>
+        }
+     * 
+     * @param element
+     * @param laneId
+     * @throws BPMNInvalidReferenceException
+     */
+    public void remove(BPMNElementNode bpmnElement) {
+        // remove flowNodeRef if listed
+        if (contains(bpmnElement)) {
+            Set<Element> refs = model.findChildNodesByName(this.getElementNode(), BPMNNS.BPMN2, "flowNodeRef");
+            for (Element element : refs) {
+                if (bpmnElement.getId().equals(element.getTextContent())) {
+                    this.elementNode.removeChild(element);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Returns a list of a all BPMNFlowElement IDs contained by this lane
      * 
      * @return - list of ids
      */
     public Set<String> getFlowElementIDs() {
         Set<String> result = new LinkedHashSet<String>();
-        Set<Element> refs = BPMNModel.findChildNodesByName(this.getElementNode(),
-                getModel().getPrefix(BPMNNS.BPMN2) + ":flowNodeRef");
+        Set<Element> refs = model.findChildNodesByName(this.getElementNode(), BPMNNS.BPMN2, "flowNodeRef");
         for (Element element : refs) {
             result.add(element.getTextContent());
         }
         return result;
     }
+
+    /**
+     * This method adds a flowElementID to the lane
+     * 
+     * @param id
+     */
+    /*
+     * public void addFlowElementID(String id) {
+     * // test if the id is already listed...
+     * Set<String> refList = getFlowElementIDs();
+     * if (refList.contains(id)) {
+     * // already listed - no op
+     * return;
+     * }
+     * // add id....
+     * model.createElement(null, id)
+     * 
+     * }
+     */
 
     @Override
     public double getDefaultWidth() {
@@ -165,8 +210,25 @@ public class Lane extends BPMNElementNode {
     }
 
     @Override
-    public double getDefaultHeigth() {
+    public double getDefaultHeight() {
         return DEFAULT_HEIGHT;
+    }
+
+    /**
+     * Remove any embedded bpmndi:BPMNLabel element within the bpmndi:BPMNShape
+     * 
+     * Positioning of the label is part of the client. Any position update should
+     * ignore these settings in Open-BPMN.
+     * 
+     */
+    @Override
+    public void setPosition(double x, double y) {
+        super.setPosition(x, y);
+        // remove optional BPMNLabel
+        Element bpmnLabel = getModel().findChildNodeByName(this.bpmnShape, BPMNNS.BPMNDI, "BPMNLabel");
+        if (bpmnLabel != null) {
+            this.bpmnShape.removeChild(bpmnLabel);
+        }
     }
 
 }

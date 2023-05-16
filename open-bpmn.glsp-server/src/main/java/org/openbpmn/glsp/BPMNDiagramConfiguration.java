@@ -42,19 +42,11 @@ import com.google.inject.Inject;
  * implementation is identified via its diagram type.
  */
 public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
+
+    public static String DIAGRAM_TYPE = "bpmn-diagram";
+
     @Inject
     protected Set<BPMNExtension> extensions;
-
-    /**
-     * Returns the diagram type of the diagram implementation that corresponds to
-     * this configuration.
-     *
-     * @return The diagram type.
-     */
-    @Override
-    public String getDiagramType() {
-        return "BPMN 2.0";
-    }
 
     /**
      * Returns the type mappings for the diagram implementation. Type mappings are
@@ -174,9 +166,6 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
      * edges are allowed without having to query the server again.
      * <p>
      * Note: here we need to add the :bpmn prefix which is used in the diagram.
-     * <p>
-     * TODO We need to define a EdgeTypeHint for all types of flows in BPMN.
-     * Currently we only support the SequenceFlow
      *
      * @return List of all edge type hints for the diagram implementation.
      */
@@ -186,8 +175,8 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
 
         // SequenceFLow
         EdgeTypeHint sequenceFlowHint = createDefaultEdgeTypeHint(BPMNTypes.SEQUENCE_FLOW);
-        sequenceFlowHint.setSourceElementTypeIds(BPMNTypes.BPMN_FLOWELEMENTS);
-        sequenceFlowHint.setTargetElementTypeIds(BPMNTypes.BPMN_FLOWELEMENTS);
+        sequenceFlowHint.setSourceElementTypeIds(BPMNTypes.BPMN_FLOWELEMENT_NODES);
+        sequenceFlowHint.setTargetElementTypeIds(BPMNTypes.BPMN_FLOWELEMENT_NODES);
         edgeHints.add(sequenceFlowHint);
 
         // MessageFLow
@@ -230,7 +219,7 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
     private ShapeTypeHint createRootHint() {
         ShapeTypeHint rootHint = new ShapeTypeHint(DefaultTypes.GRAPH, false, false, false, false);
         List<String> elementList = new ArrayList<>();
-        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENTS);
+        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENT_NODES);
         // remove Boundary Event
         elementList.remove(BPMNTypes.BOUNDARY_EVENT);
 
@@ -249,7 +238,7 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
     private ShapeTypeHint createPoolHint() {
         ShapeTypeHint poolHint = new ShapeTypeHint(BPMNTypes.POOL, true, true, true, true);
         List<String> elementList = new ArrayList<>();
-        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENTS);
+        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENT_NODES);
         // remove Boundary Event
         elementList.remove(BPMNTypes.BOUNDARY_EVENT);
         // add lane
@@ -269,7 +258,7 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
     private ShapeTypeHint createLaneHint() {
         ShapeTypeHint laneHint = new ShapeTypeHint(BPMNTypes.LANE, false, true, false, true);
         List<String> elementList = new ArrayList<>();
-        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENTS);
+        elementList.addAll(BPMNTypes.BPMN_FLOWELEMENT_NODES);
         // remove Boundary Event
         elementList.remove(BPMNTypes.BOUNDARY_EVENT);
 

@@ -17,6 +17,7 @@ package org.openbpmn.glsp;
 
 import java.util.logging.Logger;
 
+import org.eclipse.glsp.server.actions.Action;
 import org.eclipse.glsp.server.actions.ActionHandler;
 import org.eclipse.glsp.server.di.DiagramModule;
 import org.eclipse.glsp.server.di.MultiBinding;
@@ -30,9 +31,9 @@ import org.eclipse.glsp.server.features.validation.ModelValidator;
 import org.eclipse.glsp.server.model.GModelState;
 import org.eclipse.glsp.server.operations.CutOperationHandler;
 import org.eclipse.glsp.server.operations.OperationHandler;
-import org.imixs.openbpmn.ImixsBPMNTaskExtension;
 import org.openbpmn.extension.BPMNCreateExtensionHandler;
 import org.openbpmn.extension.BPMNExtension;
+import org.openbpmn.extension.ConditionalEventDefinitionExtension;
 import org.openbpmn.extension.DefaultBPMNDataObjectExtension;
 import org.openbpmn.extension.DefaultBPMNDefinitionsExtension;
 import org.openbpmn.extension.DefaultBPMNEdgeExtension;
@@ -40,12 +41,12 @@ import org.openbpmn.extension.DefaultBPMNEventExtension;
 import org.openbpmn.extension.DefaultBPMNGatewayExtension;
 import org.openbpmn.extension.DefaultBPMNMessageExtension;
 import org.openbpmn.extension.DefaultBPMNParticipantExtension;
+import org.openbpmn.extension.DefaultBPMNSequenceFlowExtension;
 import org.openbpmn.extension.DefaultBPMNTaskExtension;
 import org.openbpmn.extension.DefaultBPMNTextAnnotationExtension;
-import org.openbpmn.extension.dataextension.DefaultBPMNDataAttributeExtension;
-import org.openbpmn.extension.dataextension.DefaultBPMNDataInputExtension;
-import org.openbpmn.extension.dataextension.DefaultBPMNDataOutputExtension;
-import org.openbpmn.extension.dataextension.DefaultBPMNDataProcessingExtension;
+import org.openbpmn.extension.LinkEventDefinitionExtension;
+import org.openbpmn.extension.SignalEventDefinitionExtension;
+import org.openbpmn.extension.TimerEventDefinitionExtension;
 import org.openbpmn.glsp.elements.data.BPMNApplyEditLabelOperationHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateDataObjectHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateMessageHandler;
@@ -68,8 +69,12 @@ import org.openbpmn.glsp.model.BPMNSourceModelStorage;
 import org.openbpmn.glsp.operations.BPMNApplyPropertiesUpdateOperationHandler;
 import org.openbpmn.glsp.operations.BPMNChangeBoundsOperationHandler;
 import org.openbpmn.glsp.operations.BPMNChangeRoutingPointsOperationHandler;
+import org.openbpmn.glsp.operations.BPMNClipboardDataActionHandler;
 import org.openbpmn.glsp.operations.BPMNComputedBoundsActionHandler;
 import org.openbpmn.glsp.operations.BPMNDeleteNodeHandler;
+import org.openbpmn.glsp.operations.BPMNPasteOperationHandler;
+import org.openbpmn.glsp.operations.BPMNPropertyPanelUpdateAction;
+import org.openbpmn.glsp.operations.BPMNReconnectEdgeOperationHandler;
 import org.openbpmn.glsp.provider.BPMNCommandPaletteActionProvider;
 import org.openbpmn.glsp.provider.BPMNToolPaletteItemProvider;
 import org.openbpmn.glsp.validators.BPMNModelValidator;
@@ -109,31 +114,44 @@ public class BPMNDiagramModule extends DiagramModule {
     @Override
     protected void configureActionHandlers(final MultiBinding<ActionHandler> binding) {
         super.configureActionHandlers(binding);
-        // binding.add(RequestClipboardDataActionHandler.class);
+
+        // Clipboard
+        binding.add(BPMNClipboardDataActionHandler.class);
 
         // Edit lable actions..
         binding.add(BPMNComputedBoundsActionHandler.class);
 
+        // configure panelupdate action which is send from the server to the client
+        // binding.add(BPMNPropertyPanelUpdateAction.class);
+
     }
+
+    // @Override
+    // protected void configureClientActions(final MultiBinding<Action> binding) {
+    // //super.configureClientAction(binding);
+    // binding.add(BPMNPropertyPanelUpdateAction.class);
+    // }
+    // protected void configureClientActions(final MultiBinding<Action> binding) {
+    // }
 
     @Override
     protected void configureOperationHandlers(final MultiBinding<OperationHandler> binding) {
         super.configureOperationHandlers(binding);
 
         // Inline Edit
-
         binding.add(BPMNApplyEditLabelOperationHandler.class);
 
-//        binding.add(ChangeBoundsOperationHandler.class);
-//        binding.add(ChangeRoutingPointsHandler.class);
         binding.add(CutOperationHandler.class);
         // binding.add(DeleteOperationHandler.class);
-//        binding.add(LayoutOperationHandler.class);
-//        binding.add(PasteOperationHandler.class);
-//        binding.add(ReconnectEdgeOperationHandler.class);
+        // binding.add(LayoutOperationHandler.class);
 
+        // Clipboard
+        binding.add(BPMNPasteOperationHandler.class);
+
+        // Bounds & Routing Points
         binding.add(BPMNChangeBoundsOperationHandler.class);
         binding.add(BPMNChangeRoutingPointsOperationHandler.class);
+        binding.add(BPMNReconnectEdgeOperationHandler.class);
 
         // Tasks
         binding.add(BPMNCreateTaskHandler.class);
@@ -175,6 +193,20 @@ public class BPMNDiagramModule extends DiagramModule {
         binding.add(BPMNGEdgeFlowCreateHandler.class);
         binding.add(BPMNCreateDataAttributeExtensionHandler.class);
 
+    }
+
+    /**
+     * Each handler that should be handled by the GLSP client has to be
+     * configured as dedicated client action to indicate that it needs to be
+     * dispatched to the client.
+     * 
+     * The BPMNPropertyPanelUpdateAction is used by Extensions to signal the
+     * propertyPanel that we have an update of the current selected element
+     */
+    @Override
+    protected void configureClientActions(MultiBinding<Action> binding) {
+        super.configureClientActions(binding);
+        binding.add(BPMNPropertyPanelUpdateAction.class);
     }
 
     /**
@@ -223,7 +255,8 @@ public class BPMNDiagramModule extends DiagramModule {
 
     @Override
     public String getDiagramType() {
-        return "bpmn-diagram";
+        // return "bpmn-diagram";
+        return BPMNDiagramConfiguration.DIAGRAM_TYPE;
     }
 
     /**
@@ -244,15 +277,11 @@ public class BPMNDiagramModule extends DiagramModule {
         binding.addBinding().to(DefaultBPMNMessageExtension.class);
         binding.addBinding().to(DefaultBPMNTextAnnotationExtension.class);
         binding.addBinding().to(DefaultBPMNEdgeExtension.class);
-
-        // Imixs Extensions (just for testing)
-        binding.addBinding().to(ImixsBPMNTaskExtension.class);
-
-        // DA-BPMN extension
-        binding.addBinding().to(DefaultBPMNDataInputExtension.class);
-        binding.addBinding().to(DefaultBPMNDataOutputExtension.class);
-        binding.addBinding().to(DefaultBPMNDataProcessingExtension.class);
-        binding.addBinding().to(DefaultBPMNDataAttributeExtension.class);
+        binding.addBinding().to(DefaultBPMNSequenceFlowExtension.class);
+        binding.addBinding().to(TimerEventDefinitionExtension.class);
+        binding.addBinding().to(SignalEventDefinitionExtension.class);
+        binding.addBinding().to(ConditionalEventDefinitionExtension.class);
+        binding.addBinding().to(LinkEventDefinitionExtension.class);
 
     }
 }

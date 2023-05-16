@@ -14,8 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import {
-    angleOfPoint,
-    isIntersectingRoutedPoint,
+    angleOfPoint, hasArguments, isIntersectingRoutedPoint,
     IViewArgs,
     Point,
     PolylineEdgeViewWithGapsOnIntersections,
@@ -30,9 +29,15 @@ import { VNode } from 'snabbdom';
 /****************************************************************************
  * This module provides BPMN Routings views for sequence flows
  *
- * Layout for the bpmn sequence flow. The View extends the `PolylineEdgeView` that renders gaps on intersections,
- * and the `JumpingPolylineEdgeView` that renders jumps over intersections.
- * In addition the view render rounded corners for a manhattan routing and an arrow on the edge end point
+ * Layout for the bpmn sequence flow. The View extends the `PolylineEdgeView`,
+ * that renders gaps on intersections, and the `JumpingPolylineEdgeView` that
+ * renders jumps over intersections.
+ *
+ * In addition the view render rounded corners for a manhattan routing and an
+ * arrow on the edge end point
+ *
+ * For conditional SequenceFlows the view also adds the BPMN default symbol
+ *
  ****************************************************************************/
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,22 +47,44 @@ const JSX = { createElement: svg };
 export class BPMNEdgeView extends PolylineEdgeViewWithGapsOnIntersections {
     protected override renderAdditionals(edge: SEdge, segments: Point[], context: RenderingContext): VNode[] {
         const additionals = super.renderAdditionals(edge, segments, context);
-        const p1 = segments[segments.length - 2];
-        const p2 = segments[segments.length - 1];
-        // console.warn(edge.type);
+        const endP1 = segments[segments.length - 2];
+        const endP2 = segments[segments.length - 1];
+        const startP1=segments[0];
+        const startP2=segments[1];
+
         // arrow depends on the type of the BPMNEdge
-        if ('sequenceFlow' === edge.type || 'messageFlow' === edge.type || 'dataFlow' === edge.type) {
-            const arrow: any = (
-                <path
-                    class-sprotty-edge={true}
-                    class-arrow={true}
-                    d='M 1,0 L 14,-4 L 14,4 Z'
-                    transform={`rotate(${toDegrees(angleOfPoint({ x: p1.x - p2.x, y: p1.y - p2.y }))} ${p2.x} ${p2.y}) translate(${p2.x} ${
-                        p2.y
-                    })`}
-                />
-            );
-            additionals.push(arrow);
+        if ('sequenceFlow'===edge.type || 'messageFlow'===edge.type || 'dataFlow' === edge.type) {
+          const arrow: any = (
+            <path
+                class-sprotty-edge={true}
+                class-arrow={true}
+                d='M 1,0 L 14,-4 L 14,4 Z'
+                transform={`rotate(${toDegrees(angleOfPoint({ x: endP1.x - endP2.x, y: endP1.y - endP2.y }))}
+                    ${endP2.x} ${endP2.y}) translate(${endP2.x} ${endP2.y}
+                )`}
+            />
+          );
+
+        // Conditional default Sequence flow?
+        const defaultSymbol: any = (
+            <path
+                class-sprotty-edge={true}
+                class-default-symbol={true}
+                d='M 5,-4 L 10,4 Z'
+                transform={`rotate(${toDegrees(angleOfPoint({ x: startP2.x - startP1.x, y: startP2.y - startP1.y }))} 
+                    ${startP1.x} ${startP1.y}) translate(${startP1.x} ${startP1.y}
+                )`}
+            />
+          );
+
+          // if the edge is a sequence flow with the default property than add the default symbol
+          if (hasArguments(edge)) {
+            if (edge.args.default && 'true'===edge.args.default) {
+                additionals.push(defaultSymbol);
+             }
+          }
+
+          additionals.push(arrow);
         }
         return additionals;
     }
@@ -116,7 +143,7 @@ export class BPMNEdgeView extends PolylineEdgeViewWithGapsOnIntersections {
                         path += ` L ${p.x},${p.y}`;
                     }
                 } else {
-                    // default behaviour
+                    // default behavior
                     path += ` L ${p.x},${p.y}`;
                 }
             }
@@ -128,12 +155,12 @@ export class BPMNEdgeView extends PolylineEdgeViewWithGapsOnIntersections {
 
     /**
      * Helper method to compute the maximum possible radius.
-     * If two poins are very close the radius need to be reduced
+     * If two points are very close the radius need to be reduced
      */
     protected computeMaxRadius(pCurrent: Point, pLast: Point, pNext: Point): number {
         let radius = 10;
         const dRef = 0.5;
-        // verfiy last point
+        // verify last point
         let xDif = Math.abs(pCurrent.x - pLast.x);
         let yDif = Math.abs(pCurrent.y - pLast.y);
         if (xDif > 0 && xDif < 10) {

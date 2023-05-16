@@ -145,8 +145,8 @@ public class BPMNCreateEventHandler extends CreateBPMNNodeOperationHandler {
                     }
                 }
                 // set event bounds
-                event.getBounds().setPosition(elementX, elementY);
-                event.getBounds().setDimension(Event.DEFAULT_WIDTH, Event.DEFAULT_HEIGHT);
+                event.setPosition(elementX, elementY);
+                event.setDimension(Event.DEFAULT_WIDTH, Event.DEFAULT_HEIGHT);
                 // set label bounds
                 event.getLabel().updateLocation(labelX, labelY);
                 event.getLabel().updateDimension(BPMNLabel.DEFAULT_WIDTH, BPMNLabel.DEFAULT_HEIGHT);
@@ -155,7 +155,7 @@ public class BPMNCreateEventHandler extends CreateBPMNNodeOperationHandler {
             e.printStackTrace();
         }
         modelState.reset();
-        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(eventID)));
+        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(List.of(eventID)));
     }
 
     @Override

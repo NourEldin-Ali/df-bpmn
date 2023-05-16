@@ -55,5 +55,10 @@ RUN rm -r /usr/src/app/open-bpmn/open-bpmn.glsp-client/workspace/
 WORKDIR /usr/src/app/open-bpmn/open-bpmn.glsp-client
 RUN yarn
 
+# Copy Start script
+WORKDIR /usr/src/app
+COPY scripts/start.sh start.sh
+
 EXPOSE 3000
-ENTRYPOINT [ "yarn", "start", "--hostname=0.0.0.0" ]
+
+ENTRYPOINT [ "/usr/src/app/start.sh" ]

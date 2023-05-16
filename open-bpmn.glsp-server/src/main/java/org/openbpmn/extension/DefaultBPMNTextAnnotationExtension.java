@@ -15,15 +15,10 @@
  ********************************************************************************/
 package org.openbpmn.extension;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.json.JsonObject;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.glsp.graph.GModelElement;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.TextAnnotation;
@@ -32,10 +27,6 @@ import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder.Layout;
-import org.openbpmn.glsp.model.BPMNGModelFactory;
-import org.openbpmn.glsp.model.BPMNGModelState;
-
-import com.google.inject.Inject;
 
 /**
  * This is the Default TextAnnotation extension providing the JSONForms
@@ -45,10 +36,6 @@ import com.google.inject.Inject;
  *
  */
 public class DefaultBPMNTextAnnotationExtension extends AbstractBPMNElementExtension {
-    private static Logger logger = LogManager.getLogger(BPMNGModelFactory.class);
-
-    @Inject
-    protected BPMNGModelState modelState;
 
     public DefaultBPMNTextAnnotationExtension() {
         super();
@@ -76,11 +63,6 @@ public class DefaultBPMNTextAnnotationExtension extends AbstractBPMNElementExten
     public void buildPropertiesForm(final BPMNElement bpmnElement, final DataBuilder dataBuilder,
             final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
 
-        if (!(bpmnElement instanceof TextAnnotation)) {
-            logger.warn("invalid BPMN element - TextAnnotation expected!");
-            return;
-        }
-
         String text = ((TextAnnotation) bpmnElement).getText();
 
         dataBuilder //
@@ -93,51 +75,39 @@ public class DefaultBPMNTextAnnotationExtension extends AbstractBPMNElementExten
                 addProperty("documentation", "string", null). //
                 addProperty("text", "string", "Content");
 
-        Map<String, String> multilineOption = new HashMap<>();
-        multilineOption.put("multi", "true");
         uiSchemaBuilder. //
                 addCategory("General"). //
                 addLayout(Layout.VERTICAL). //
-                addElement("text", "Text", multilineOption). //
+                addElement("text", "Text", this.getFileEditorOption()). //
                 addElement("textFormat", "textformat", null). //
-                addElement("documentation", "Documentation", multilineOption);
+                addElement("documentation", "Documentation", this.getFileEditorOption());
 
     }
 
+    /**
+     * Updates the textAnnotation properties
+     */
     @Override
-    public void updatePropertiesData(final JsonObject json, final BPMNElement bpmnElement,
+    public void updatePropertiesData(final JsonObject json, final String category, final BPMNElement bpmnElement,
             final GModelElement gNodeElement) {
 
-        if (!(bpmnElement instanceof TextAnnotation)) {
-            logger.warn("invalid BPMN element - TextAnnotation expected!");
+        // we are only interested in category general
+        if (!"General".equals(category)) {
             return;
         }
 
-        // default update of name and documentation
-        Set<String> features = json.keySet();
-        for (String feature : features) {
+        // update attributes and tags
+        bpmnElement.setDocumentation(json.getString("documentation", ""));
+        bpmnElement.setAttribute("textFormat", json.getString("textFormat", ""));
 
-            if ("textFormat".equals(feature)) {
-                bpmnElement.setAttribute("textFormat", json.getString(feature));
-                continue;
-            }
-            if ("text".equals(feature)) {
-                String text = json.getString(feature);
-                ((TextAnnotation) bpmnElement).setText(text);
-                // Update GModelElement Text Node...
-                Optional<GModelElement> textNode = modelState.getIndex().get(gNodeElement.getId() + "_bpmntext");
-                if (!textNode.isEmpty()) {
-                    textNode.get().getArgs().put("text", text);
-                }
-                continue;
-            }
-            if ("documentation".equals(feature)) {
-                bpmnElement.setDocumentation(json.getString(feature));
-                continue;
-            }
-
+        // Update the text property
+        String text = json.getString("text", "");
+        ((TextAnnotation) bpmnElement).setText(text);
+        // Update GModelElement Text Node...
+        Optional<GModelElement> textNode = modelState.getIndex().get(gNodeElement.getId() + "_bpmntext");
+        if (!textNode.isEmpty()) {
+            textNode.get().getArgs().put("text", text);
         }
-
     }
 
 }

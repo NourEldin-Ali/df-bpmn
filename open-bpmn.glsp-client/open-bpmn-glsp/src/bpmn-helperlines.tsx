@@ -15,32 +15,27 @@
  ********************************************************************************/
 import {
 	Action,
-	FeedbackCommand,
-	hasObjectProp,
-	isBoundsAware,
-	ISnapper,
-	hasArguments,
-	MouseListener,
-	SModelElement,
-	SModelRoot
+	FeedbackCommand, findParentByFeature, hasArguments, hasObjectProp,
+	isBoundsAware, ISnapper, MouseListener,
+	SModelElement, SModelRoot, SParentElement
 } from '@eclipse-glsp/client';
-import { isBPMNNode, isBPMNLabelNode, LabelNode, isBoundaryEvent, TaskNode, EventNode } from '@open-bpmn/open-bpmn-model';
+import { EventNode, isBoundaryEvent, isBPMNLabelNode, isBPMNNode, isTaskNode, LabelNode, TaskNode } from '@open-bpmn/open-bpmn-model';
 import { inject, injectable } from 'inversify';
 import { VNode } from 'snabbdom';
-import { CommandExecutionContext, CommandReturn, getAbsoluteBounds, IView, RenderingContext, SChildElement, svg, TYPES } from 'sprotty';
+import { CommandExecutionContext, CommandReturn, IView, RenderingContext, SChildElement, svg, TYPES } from 'sprotty';
 import { Bounds, Point } from 'sprotty-protocol';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const JSX = { createElement: svg };
 
 /****************************************************************************
  * This module extends the mouseListener to support helper lines.
- * HelperLines are displayed when a element is selected and draged on the diagram pane.
+ * HelperLines are displayed when a element is selected and dragged on the diagram pane.
  *
- * If the moved element is alligned to the center of another element on the diagram
- * the helper line is shown. There are can be up to two helperlines be displayed
+ * If the moved element is aligned to the center of another element on the diagram
+ * the helper line is shown. There are can be up to two helper-lines be displayed
  * - horizontal and vertical
  *
- * The method 'findHelperLines' can be extended to proivde more helper lines
+ * The method 'findHelperLines' can be extended to provide more helper lines
  * to show a different behavior.
  ****************************************************************************/
 
@@ -67,10 +62,10 @@ export interface HelperLine {
 }
 
 /**
- * Snapper implementation to allign elements
+ * Snapper implementation to align elements.
  * The snapper finds surrounding elements and snaps the
- * current position if the alligment is not grater than 10 pixles.
- * This leads to a magnetic snap behaviour.
+ * current position if the alignment is not grater than 10 pixels.
+ * This leads to a magnetic snap behavior.
  */
 @injectable()
 export class BPMNElementSnapper implements ISnapper {
@@ -226,7 +221,7 @@ export class BPMNElementSnapper implements ISnapper {
 
 /*
  * The HelperLineListener reacts on mouseDown and mouseMove and searches for
- * matching elements acording to the current  possition of the draged element.
+ * matching elements according to the current  position of the dragged element.
  */
 @injectable()
 export class HelperLineListener extends MouseListener {
@@ -234,7 +229,7 @@ export class HelperLineListener extends MouseListener {
 
 	override mouseDown(target: SModelElement, event: MouseEvent): Action[] {
 		// check if target is relevant....
-		if (isBPMNNode(target) || target.type === 'icon') {
+		if (isBPMNNode(target) || target.type === 'icon' || target.type === 'bpmn-text-node') {
 			// switch into active mode
 			this.isActive = true;
 		} else {
@@ -251,6 +246,13 @@ export class HelperLineListener extends MouseListener {
 	 */
 	override mouseMove(target: SModelElement, event: MouseEvent): Action[] {
 		if (this.isActive) {
+			// if  we have a bpmn-text-node we need ot find the corresponding Task node...
+			if (target.type === 'bpmn-text-node') {
+				const task = findParentByFeature(target, isTaskNode);
+				if (task) {
+					target=task;
+				}
+			}
 			// first test if we have a mouseMove on a BPMNNode
 			// const bpmnNode = isBPMNNode(target);
 			if (isBPMNNode(target)) {
@@ -276,25 +278,53 @@ export class HelperLineListener extends MouseListener {
 	}
 
 	/*
+	 * Helper Method to find an optional parent pool of a given element.
+	 * If the element is not part of a Pool the method returns undefined.
+	 */
+	private findPool(element: SModelElement): SModelElement | undefined {
+		const boundsAware = findParentByFeature(element, isBoundsAware);
+		if (boundsAware !== undefined) {
+			let current: SModelElement = boundsAware;
+			while (current instanceof SChildElement) {
+				const parent = current.parent;
+				if ('pool' === parent.type) {
+					return parent;
+				}
+				current = parent;
+			}
+		}
+		// no pool found
+		return undefined;
+	}
+
+	/*
 	 * This helper method searches the model for model elements
-	 * matching the horizontal and/or vertical alligment of the given modelElement.
+	 * matching the horizontal and/or vertical alignment of the given modelElement.
 	 *
-	 * A ModelElement is a alligned to another element if its center point matches
-	 * the same x or y axis. The method retuns up to two helper lines. The helper lines
+	 * A ModelElement is a aligned to another element if its center point matches
+	 * the same x or y axis. The method returns up to two helper lines. The helper lines
 	 * go through the full dimensions of the canvas.
 	 *
-	 * The method can be extended to find  more helper lines with a differnt algorythm.
+	 * The method can be extended to find  more helper lines with a different algorithm.
 	 */
 	private findHelperLines(modelElement: SModelElement): HelperLine[] | undefined {
 		const root: SModelRoot = modelElement.root;
 		const helperLines: HelperLine[] = [];
+		let xOffset=0;
+		let yOffset=0;
 		if (root && isBoundsAware(modelElement)) {
-			const childs = root.children;
-			const canvasBounds = root.canvasBounds;
-			// compute absolute center bounds of the model element. This is needed to compute the
-			// dimensions of the drawing canvas.
-			const absoluteCenterBounds = Bounds.center(getAbsoluteBounds(modelElement));
-			// const modelElementCenter = Bounds.center(modelElement.bounds);
+			let childs=root.children;
+			let canvasBounds = root.canvasBounds;
+			// test if we are in a pool...
+			const pool=this.findPool(modelElement);
+			if (pool) {
+				if (pool instanceof SParentElement) {
+					childs=pool.children;
+				}
+				if (isBoundsAware(pool)) {
+					canvasBounds=pool.bounds;
+				}
+			}
 			const modelElementCenter = Bounds.center(modelElement.bounds);
 			// In the following we iterate over all model elements
 			// and compare the x and y axis of the center points
@@ -302,27 +332,40 @@ export class HelperLineListener extends MouseListener {
 			let foundVertical = false;
 			for (const element of childs) {
 				if (element.id !== modelElement.id && isBPMNNode(element) && isBoundsAware(element)) {
-					// const elementCenter = Bounds.center(element.bounds);
 					const elementCenter = Bounds.center(element.bounds);
 					if (elementCenter && modelElementCenter) {
-						// test vertical alligment...
+						// test vertical alignment...
 						if (!foundHorizontal && elementCenter.y === modelElementCenter.y) {
+							if (pool && isBoundsAware(pool)) {
+								yOffset=canvasBounds.y;
+								xOffset=0;
+							} else {
+								xOffset=canvasBounds.x;
+								yOffset=0;
+							}
 							const horizontalLine: HelperLine = {
-								x1: modelElementCenter.x - absoluteCenterBounds.x,
-								y1: elementCenter.y,
-								x2: modelElementCenter.x - absoluteCenterBounds.x + canvasBounds.width,
-								y2: elementCenter.y
+								x1: canvasBounds.x - xOffset,
+								y1: elementCenter.y + yOffset,
+								x2: canvasBounds.x +canvasBounds.width -xOffset,
+								y2: elementCenter.y + yOffset
 							};
 							foundHorizontal = true;
 							helperLines.push(horizontalLine);
 						}
-						// test horizontal alligment...
+						// test horizontal alignment...
 						if (!foundVertical && elementCenter.x === modelElementCenter.x) {
+							if (pool && isBoundsAware(pool)) {
+								xOffset=canvasBounds.x;
+								yOffset=0;
+							} else {
+								yOffset=canvasBounds.y;
+								xOffset=0;
+							}
 							const verticalLine: HelperLine = {
-								y1: modelElementCenter.y - absoluteCenterBounds.y,
-								x1: elementCenter.x,
-								y2: modelElementCenter.y - absoluteCenterBounds.y + canvasBounds.height,
-								x2: elementCenter.x
+								x1: elementCenter.x + xOffset,
+								y1: canvasBounds.y - yOffset,
+								x2: elementCenter.x + xOffset,
+								y2: canvasBounds.y + canvasBounds.height - yOffset
 							};
 							foundVertical = true;
 							helperLines.push(verticalLine);
@@ -429,9 +472,9 @@ export function removeHelperLines(root: SModelRoot): void {
 
 /*
  * The HelperLineView shows the helper lines.
- * The mothod draws either one line (horizontal|vertical) or both if two matching points are available.
+ * The method draws either one line (horizontal|vertical) or both if two matching points are available.
  *
- * This View can be extended to display more helper lines in a differnt layout if needed.
+ * This View can be extended to display more helper lines in a different layout if needed.
  */
 @injectable()
 export class HelperLineView implements IView {

@@ -22,16 +22,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.glsp.server.actions.ActionDispatcher;
 import org.eclipse.glsp.server.actions.SaveModelAction;
+import org.eclipse.glsp.server.actions.SetDirtyStateAction;
 import org.eclipse.glsp.server.features.core.model.RequestModelAction;
 import org.eclipse.glsp.server.features.core.model.SourceModelStorage;
 import org.eclipse.glsp.server.model.GModelState;
 import org.eclipse.glsp.server.utils.ClientOptionsUtil;
+import org.eclipse.glsp.server.utils.MapUtil;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.bpmn.util.BPMNModelFactory;
+import org.openbpmn.glsp.BPMNDiagramConfiguration;
 
 import com.google.inject.Inject;
 
@@ -46,31 +51,48 @@ import com.google.inject.Inject;
  * @version 1.0
  */
 public class BPMNSourceModelStorage implements SourceModelStorage {
-    private static Logger logger = Logger.getLogger(BPMNSourceModelStorage.class.getName());
+    private static Logger logger = LogManager.getLogger(BPMNSourceModelStorage.class);
 
     @Inject
     protected BPMNGModelState modelState;
+
+    @Inject
+    protected ActionDispatcher actionDispatcher;
 
     /**
      * Loads a source model into the modelState.
      */
     @Override
     public void loadSourceModel(final RequestModelAction action) {
-        logger.fine("loading BPMN Meta model....");
+        logger.debug("loading BPMN Meta model....");
         Map<String, String> options = action.getOptions();
         boolean bNeedsClientLayout = Boolean.parseBoolean(options.get("needsClientLayout"));
-        String uri = options.get("uri");
+        // resolve file location....
+        String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+        if (uri == null || uri.isEmpty()) {
+            // fallback
+            uri = options.get("uri");
+        }
+
         String diagramType = options.get("diagramType");
-        if (bNeedsClientLayout && uri != null && "bpmn-diagram".equals(diagramType)) {
+        if (bNeedsClientLayout && uri != null && BPMNDiagramConfiguration.DIAGRAM_TYPE.equals(diagramType)) {
             final File file = convertToFile(modelState);
             BPMNModel model;
             try {
                 model = BPMNModelFactory.read(file);
                 // we store the BPMN meta model into the modelState
                 modelState.setBpmnModel(model);
+                // if the model is dirty (because linked-file content has change) we send a
+                // DirtyState action...
+                if (model.isDirty()) {
+                    logger.info("....external model content has changed.");
+                    SetDirtyStateAction dirtyAction = new SetDirtyStateAction();
+                    dirtyAction.setDirty(true);
+                    dirtyAction.setReason("Updated linked File Content");
+                    actionDispatcher.dispatchAfterNextUpdate(dirtyAction);
+                }
             } catch (BPMNModelException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Failed to load model source: " + e.getMessage());
             }
 
         }
@@ -78,20 +100,28 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 
     @Override
     public void saveSourceModel(final SaveModelAction action) {
-
         Map<String, String> options = modelState.getClientOptions();
-        String filePath = options.get("uri");
+        // resolve file location....
+        String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+        if (uri == null || uri.isEmpty()) {
+            // fallback
+            uri = options.get("uri");
+        }
         Optional<String> uriOpt = action.getFileUri();
         if (uriOpt.isPresent() && !uriOpt.isEmpty()) {
             // we got a new URI which means we have a 'saveAs' situaiton!
-            filePath = uriOpt.get();
+            uri = uriOpt.get();
         }
         BPMNModel model = modelState.getBpmnModel();
         try {
-            java.net.URI targetURI = new URI(filePath);
+            // check protocol
+            if (!uri.contains("://")) {
+                uri = "file://" + uri;
+            }
+            java.net.URI targetURI = new URI(uri);
             model.save(targetURI);
         } catch (URISyntaxException e) {
-            logger.severe("Invalid Target URI: " + e.getMessage());
+            logger.error("Invalid Target URI: " + e.getMessage());
         }
 
     }

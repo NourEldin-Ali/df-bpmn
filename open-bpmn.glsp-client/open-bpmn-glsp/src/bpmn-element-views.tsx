@@ -36,10 +36,7 @@ import {
     SPort,
     SShapeElement,
     svg,
-    TYPES
-} from '@eclipse-glsp/client';
-import { SelectionListener, SelectionService } from '@eclipse-glsp/client/lib/features/select/selection-service';
-import {
+    TYPES,
     ExpandableNode,
     Icon,
     isBoundaryEvent,
@@ -47,6 +44,11 @@ import {
     isContainerNode,
     isDataObjectExtensionNode,
     isDataProcessingExtensionNode,
+} from '@eclipse-glsp/client';
+import { SelectionListener, SelectionService } from '@eclipse-glsp/client/lib/features/select/selection-service';
+import {
+    Icon,
+    isContainerNode,
     isEventNode,
     isGatewayNode,
     isTaskNode
@@ -125,8 +127,7 @@ export class IconView extends ShapeView {
                     // eslint-disable-next-line max-len
                     'M8.25 1.57h-.51L1 5.56v7.94l.5.5h13l.5-.5V5.56L8.25 1.57zM8 2.58l5.63 3.32-1.37 1.59H3.74L2.43 5.9 8 2.58zM14 13H2V6.92L3.11 8.3l.39.19h9l.39-.19L14 6.92V13z';
             } else {
-                // dummy place holder
-                icon = 'M6';
+                // no icon defined at all - See Issue #215
             }
         }
 

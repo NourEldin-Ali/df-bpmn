@@ -85,8 +85,8 @@ public class BPMNCreateGatewayHandler extends CreateBPMNNodeOperationHandler { /
                 elementX = elementX - (Gateway.DEFAULT_WIDTH / 2);
                 elementY = elementY - (Gateway.DEFAULT_HEIGHT / 2);
 
-                gateway.getBounds().setPosition(elementX, elementY);
-                gateway.getBounds().setDimension(Gateway.DEFAULT_WIDTH, Gateway.DEFAULT_HEIGHT);
+                gateway.setPosition(elementX, elementY);
+                gateway.setDimension(Gateway.DEFAULT_WIDTH, Gateway.DEFAULT_HEIGHT);
                 // set label bounds
                 double labelX = elementX + (Gateway.DEFAULT_WIDTH / 2) - (BPMNLabel.DEFAULT_WIDTH / 2);
                 double labelY = elementY + Gateway.DEFAULT_HEIGHT + Gateway.LABEL_OFFSET;
@@ -98,7 +98,7 @@ public class BPMNCreateGatewayHandler extends CreateBPMNNodeOperationHandler { /
             e.printStackTrace();
         }
         modelState.reset();
-        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(gatewayID)));
+        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(List.of(gatewayID)));
     }
 
     @Override

@@ -83,8 +83,8 @@ public class BPMNCreateMessageHandler extends CreateBPMNNodeOperationHandler {
                 elementX = elementX - (Message.DEFAULT_WIDTH / 2);
                 elementY = elementY - (Message.DEFAULT_HEIGHT / 2);
 
-                message.getBounds().setPosition(elementX, elementY);
-                message.getBounds().setDimension(Message.DEFAULT_WIDTH, Message.DEFAULT_HEIGHT);
+                message.setPosition(elementX, elementY);
+                message.setDimension(Message.DEFAULT_WIDTH, Message.DEFAULT_HEIGHT);
                 // set label bounds
 
                 // set label bounds
@@ -99,7 +99,7 @@ public class BPMNCreateMessageHandler extends CreateBPMNNodeOperationHandler {
             e.printStackTrace();
         }
         modelState.reset();
-        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(messageID)));
+        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(List.of(messageID)));
     }
 
     @Override

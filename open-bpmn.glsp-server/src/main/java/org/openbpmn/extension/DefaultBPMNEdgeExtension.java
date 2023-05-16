@@ -15,16 +15,10 @@
  ********************************************************************************/
 package org.openbpmn.extension;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import javax.json.JsonObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.glsp.graph.GLabel;
 import org.eclipse.glsp.graph.GModelElement;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
@@ -61,7 +55,7 @@ public class DefaultBPMNEdgeExtension extends AbstractBPMNElementExtension {
      */
     @Override
     public boolean handlesElementTypeId(final String elementTypeId) {
-        return BPMNTypes.BPMN_EDGES.contains(elementTypeId);
+        return BPMNTypes.BPMN_EDGE_ELEMENTS.contains(elementTypeId);
     }
 
     /**
@@ -89,47 +83,30 @@ public class DefaultBPMNEdgeExtension extends AbstractBPMNElementExtension {
                 addProperty("name", "string", null). //
                 addProperty("documentation", "string", null);
 
-        Map<String, String> multilineOption = new HashMap<>();
-        multilineOption.put("multi", "true");
         uiSchemaBuilder. //
                 addCategory("General"). //
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name"). //
                 addLayout(Layout.VERTICAL). //
-                addElement("documentation", "Data", multilineOption);
+                addElement("documentation", "Documentation", this.getFileEditorOption());
 
     }
 
     /**
-     * This Helper Method updates the BPMNElement data properties.
-     * <p>
+     * Update the default edge properties.
+     *
      */
     @Override
-    public void updatePropertiesData(final JsonObject json, final BPMNElement bpmnElement,
+    public void updatePropertiesData(final JsonObject json, final String category, final BPMNElement bpmnElement,
             final GModelElement gNodeElement) {
 
-        Set<String> features = json.keySet();
-        for (String feature : features) {
-
-            if ("name".equals(feature)) {
-                bpmnElement.setName(json.getString(feature));
-                // Update Label...
-                Optional<GModelElement> label = modelState.getIndex().get(gNodeElement.getId() + "_bpmnlabel");
-                if (!label.isEmpty()) {
-                    GLabel glabel = (GLabel) label.get();
-                    if (glabel != null) {
-                        glabel.setText(json.getString(feature));
-                    }
-                }
-                continue;
-            }
-            if ("documentation".equals(feature)) {
-                bpmnElement.setDocumentation(json.getString(feature));
-                continue;
-            }
-
+        // we are only interested in category general
+        if (!"General".equals(category)) {
+            return;
         }
 
+        updateNameProperty(json, bpmnElement, gNodeElement);
+        // update attributes and tags
+        bpmnElement.setDocumentation(json.getString("documentation", ""));
     }
-
 }

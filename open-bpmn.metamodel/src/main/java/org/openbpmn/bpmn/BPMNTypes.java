@@ -294,5 +294,48 @@ public class BPMNTypes {
             BPMNTypes.EVENTBASED_GATEWAY, //
             BPMNTypes.COMPLEX_GATEWAY //
     });
+    public final static List<String> BPMN_FLOWELEMENT_NODES = Arrays.asList(//
+            BPMNTypes.TASK, //
+            BPMNTypes.MANUAL_TASK, //
+            BPMNTypes.USER_TASK, //
+            BPMNTypes.SCRIPT_TASK, //
+            BPMNTypes.BUSINESSRULE_TASK, //
+            BPMNTypes.SERVICE_TASK, //
+            BPMNTypes.SEND_TASK, //
+            BPMNTypes.RECEIVE_TASK, //
 
+            BPMNTypes.EXCLUSIVE_GATEWAY, //
+            BPMNTypes.PARALLEL_GATEWAY, //
+            BPMNTypes.EVENTBASED_GATEWAY, //
+            BPMNTypes.COMPLEX_GATEWAY, //
+            BPMNTypes.INCLUSIVE_GATEWAY, //
+
+            BPMNTypes.START_EVENT, //
+            BPMNTypes.END_EVENT, //
+            BPMNTypes.CATCH_EVENT, //
+            BPMNTypes.THROW_EVENT, //
+            BPMNTypes.BOUNDARY_EVENT //
+    );
+
+    /**
+     * Returns true if the given element is a FlowElement, which are all
+     * BPMNElementNodes from the type Event, Gateway or Activity.
+     * SequenceFlows are not included as this is a Edge type!
+     */
+    public static boolean isFlowElementNode(BPMNElement element) {
+        if (element instanceof BPMNElementNode) {
+            return BPMN_FLOWELEMENT_NODES.contains(((BPMNElementNode) element).getType());
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the given element is a SequenceFlow
+     */
+    public static boolean isSequenceFlow(BPMNElement element) {
+        if (element instanceof SequenceFlow) {
+            return true;
+        }
+        return false;
+    }
 }

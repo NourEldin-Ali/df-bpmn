@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,6 +66,7 @@ import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.elements.TextAnnotation;
 import org.openbpmn.bpmn.elements.core.BPMNBounds;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
+import org.openbpmn.bpmn.elements.core.BPMNElementEdge;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.elements.core.BPMNLabel;
 import org.openbpmn.bpmn.elements.core.BPMNPoint;
@@ -794,6 +796,22 @@ public class BPMNGModelFactory implements GModelFactory {
                 e.printStackTrace();
             }
         }
+    }
+    /**
+     * Finds an GModelElement by its ID in a given List of GModelElements. The
+     * method returns null if not element with the given ID exists.
+     *
+     * @param entityNodes - List of GModelElements
+     * @param id          - id to search for
+     * @return GModelElement - or null if no elment was found.
+     */
+    GModelElement findElementById(final List<GModelElement> entityNodes, final String id) {
+        for (GModelElement element : entityNodes) {
+            if (element.getId().equals(id)) {
+                return element;
+            }
+        }
+        return null;
     }
 
     private void readEdgesExtension(final TaskGNode taskNode, final Set<BPMNElementEdge> bpmnEdges,

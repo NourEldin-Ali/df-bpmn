@@ -45,7 +45,7 @@ public class TestReadRemoveData {
 //        }
 
         // next validate the BPMN Default Namespaces
-        BPMNProcess bpmnModel =  model.openDefaultProcess();
+        BPMNProcess bpmnModel =  model.openDefaultProces();
         Activity act = (Activity) bpmnModel.findElementById("task_1");
         
 //        act.deleteElementById("DataFlowExtension_vtdGZw");

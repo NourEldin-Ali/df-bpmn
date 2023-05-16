@@ -46,7 +46,7 @@ public class TestCreateDataObject {
         BPMNModel model = BPMNModelFactory.createInstance(exporter, version, targetNameSpace);
 
         try {
-            BPMNProcess process = model.openDefaultProcess();
+            BPMNProcess process = model.openDefaultProces();
             Activity activity =  process.addTask("task_1", "Task-1", BPMNTypes.TASK);
             
             //add input with attribute

@@ -100,7 +100,7 @@ public class DefaultBPMNDataOutputExtension extends AbstractBPMNElementExtension
     }
 
     @Override
-    public void updatePropertiesData(final JsonObject json, final BPMNElement bpmnElement,
+    public void updatePropertiesData(final JsonObject json, String category,final BPMNElement bpmnElement,
             final GModelElement gNodeElement) {
 
         // default update of name and documentation

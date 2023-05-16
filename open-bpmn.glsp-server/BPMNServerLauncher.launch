@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/org.imixs.bpmn.glsp/src/main/java/org/imixs/bpmn/glsp/BPMNServerLauncher.java"/>
+        <listEntry value="/open-bpmn.glsp-server/src/main/java/org/openbpmn/glsp/BPMNServerLauncher.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -11,7 +11,7 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.openbpmn.glsp.BPMNServerLauncher"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="org.imixs.bpmn.glsp"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.imixs.bpmn.glsp"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="open-bpmn.glsp-server"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="open-bpmn.glsp-server"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 </launchConfiguration>

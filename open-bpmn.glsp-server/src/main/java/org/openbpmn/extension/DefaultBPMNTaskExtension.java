@@ -15,17 +15,22 @@
  ********************************************************************************/
 package org.openbpmn.extension;
 
+import java.util.Set;
+
 import javax.json.JsonObject;
 
 import org.eclipse.glsp.graph.GModelElement;
+import org.eclipse.glsp.graph.GNode;
 import org.openbpmn.bpmn.BPMNNS;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
+import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder.Layout;
+import org.openbpmn.glsp.utils.BPMNGraphUtil;
 import org.w3c.dom.Element;
 
 /**
@@ -130,7 +135,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 bpmnElement.setDocumentation(json.getString(feature));
                 continue;
             }
-            logger.debug("...update feature = " + feature);
+//            logger.debug("...update feature = " + feature);
             if ("expand".equals(feature)) {
                 bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
                 continue;
@@ -142,7 +147,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
             }
 
             if ("script".equals(feature)) {
-                bpmnElement.setChildNodeContent("script", json.getString(feature));
+                bpmnElement.setChildNodeContent(BPMNNS.BPMN2,"script", json.getString(feature),false);
                 continue;
             }
         if ("General".equals(category)) {

@@ -110,20 +110,20 @@ public class DataBuilder {
      * @param value - value of the data property
      *
      */
-    public DataBuilder addData(final String name, final Boolean value) {
-
-        if (objectArrayBuilder != null) {
-            if (objectArrayItemBuilder == null) {
-                objectArrayItemBuilder = Json.createObjectBuilder();
-            }
-            objectArrayItemBuilder.add(name, value);
-
-        } else {
-            jsonObjectBuilder.add(name, value);
-        }
-        return this;
-
-    }
+//    public DataBuilder addData(final String name, final Boolean value) {
+//
+//        if (objectArrayBuilder != null) {
+//            if (objectArrayItemBuilder == null) {
+//                objectArrayItemBuilder = Json.createObjectBuilder();
+//            }
+//            objectArrayItemBuilder.add(name, value);
+//
+//        } else {
+//            jsonObjectBuilder.add(name, value);
+//        }
+//        return this;
+//
+//    }
 
     /**
      * Adds a new property array type

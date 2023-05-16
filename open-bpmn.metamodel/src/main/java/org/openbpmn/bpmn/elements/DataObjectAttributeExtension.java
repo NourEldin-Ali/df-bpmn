@@ -60,7 +60,7 @@ public class DataObjectAttributeExtension extends BPMNElementNode {
 
 
     @Override
-    public double getDefaultHeigth() {
+    public double getDefaultHeight() {
         return DEFAULT_HEIGHT;
     }
     

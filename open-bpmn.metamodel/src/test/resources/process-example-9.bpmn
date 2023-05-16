@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="11.1.0" id="Definitions_1urtxx2" targetNamespace="http://bpmn.io/schema/bpmn">
-    <bpmn:process id="Process_1d8xrz2" isExecutable="false" processType="Public">
-        <bpmn:startEvent id="StartEvent_0g138at"/>
-        <bpmn:task id="Activity_0oquuo1" name="task"/>
-        <bpmn:task id="task-2" name="Task 2"/>
-    </bpmn:process>
-    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane bpmnElement="Process_1d8xrz2" id="BPMNPlane_1">
-            <bpmndi:BPMNShape bpmnElement="StartEvent_0g138at" id="_BPMNShape_StartEvent_2">
-                <dc:Bounds height="36" width="36" x="156" y="82"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="Activity_0oquuo1" id="Activity_0oquuo1_di">
-                <dc:Bounds height="80" width="100" x="260" y="60"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="task-2" id="BPMNShape_nB0yqg">
-                <dc:Bounds height="50.0" width="150.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNShape>
-        </bpmndi:BPMNPlane>
-    </bpmndi:BPMNDiagram>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="11.1.0" id="Definitions_1urtxx2" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1d8xrz2" isExecutable="false" processType="Public">
+    <bpmn:startEvent id="StartEvent_0g138at"/>
+    <bpmn:task id="Activity_0oquuo1" name="task"/>
+    <bpmn:task expand="true" id="task-2" name="Task 2"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane bpmnElement="Process_1d8xrz2" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="StartEvent_0g138at" id="_BPMNShape_StartEvent_2">
+        <dc:Bounds height="36" width="36" x="156" y="82"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Activity_0oquuo1" id="Activity_0oquuo1_di">
+        <dc:Bounds height="80" width="100" x="260" y="60"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task-2" id="BPMNShape_MuGjWw">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>

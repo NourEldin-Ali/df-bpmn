@@ -45,7 +45,7 @@ public class TestReadModifyDataObject {
 //        }
 
         // next validate the BPMN Default Namespaces
-        BPMNProcess bpmnModel =  model.openDefaultProcess();
+        BPMNProcess bpmnModel =  model.openDefaultProces();
         Activity act = (Activity) bpmnModel.findElementById("task_1");
         act.addDataInputObject(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY, "testRead", "string", false, null);
         act.setAttribute("name", "TASK-2");

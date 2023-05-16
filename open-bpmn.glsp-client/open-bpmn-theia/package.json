@@ -1,6 +1,6 @@
 {
   "name": "@open-bpmn/open-bpmn-theia",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "Theia extension for the BPMN GLSP Client",
   "license": "(GPL-3.0)",
   "keywords": [
@@ -27,19 +27,15 @@
     "server"
   ],
   "dependencies": {
-    "@open-bpmn/open-bpmn-glsp": "0.8.0",
+    "@open-bpmn/open-bpmn-glsp": "1.0.0",
     "@eclipse-glsp/theia-integration": "1.1.0-RC04"
   },
   "scripts": {
-    "build": "tsc -b",
-    "clean": "rimraf lib tsconfig.tsbuildinfo server/*.log",
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "build": "tsc && yarn run lint",
     "lint": "eslint --ext .ts,.tsx ./src",
-    "lint:ci": "yarn lint -o eslint.xml -f checkstyle",
-    "prepare": "yarn clean && yarn build",
     "watch": "tsc -w"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "theiaExtensions": [
     {

@@ -17,7 +17,7 @@ public class Event extends BPMNElementNode {
 
     public final static double DEFAULT_WIDTH = 36.0;
     public final static double DEFAULT_HEIGHT = 36.0;
-    public static final double LABEL_OFFSET = 0;
+    public static final double LABEL_OFFSET = 3;
 
     protected Event(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess) throws BPMNModelException {
         super(model, node, type, bpmnProcess);
@@ -29,7 +29,7 @@ public class Event extends BPMNElementNode {
     }
 
     @Override
-    public double getDefaultHeigth() {
+    public double getDefaultHeight() {
         return DEFAULT_HEIGHT;
     }
 
@@ -55,28 +55,28 @@ public class Event extends BPMNElementNode {
         // existing Signal.
         if (BPMNTypes.EVENT_DEFINITION_SIGNAL.equals(type)) {
             // do we have at least one signal ?
-            if ( model.getSignals().size()==0) {
+            if (model.getSignals().size() == 0) {
                 // create a dummy signal
                 model.addSignal("signal_1", "Signal 1");
             }
-             // take the first one
-             Signal signal= model.getSignals().iterator().next();
-             eventDefintion.setAttribute("signalRef", signal.getId());
-            
+            // take the first one
+            Signal signal = model.getSignals().iterator().next();
+            eventDefintion.setAttribute("signalRef", signal.getId());
+
         }
 
         // in case of a Message Definition we need to add a reference to the first
         // existing Message.
         if (BPMNTypes.EVENT_DEFINITION_MESSAGE.equals(type)) {
             // do we have at least one message ?
-            if ( model.getMessages().size()==0) {
+            if (model.getMessages().size() == 0) {
                 // create a dummy message
                 model.addMessage("message_1", "Message 1");
             }
-             // take the first one
-             Message message= model.getMessages().iterator().next();
-             eventDefintion.setAttribute("messageRef", message.getId());
-            
+            // take the first one
+            Message message = model.getMessages().iterator().next();
+            eventDefintion.setAttribute("messageRef", message.getId());
+
         }
         this.getElementNode().appendChild(eventDefintion);
 
@@ -91,11 +91,11 @@ public class Event extends BPMNElementNode {
      * @throws BPMNMissingElementException
      */
     public void deleteEventDefinition(String id) throws BPMNModelException {
-        this.deleteChild(id);
+        this.deleteChildNodeByID(id);
     }
 
     /**
-     * Returns a list of EventDefintions associated with this element.
+     * Returns a list of all EventDefinitions associated with this element.
      * <p>
      * The return type is a list of eventDefinition Nodes
      * <p>
@@ -106,6 +106,28 @@ public class Event extends BPMNElementNode {
      * @throws BPMNModelException
      */
     public Set<Element> getEventDefinitions() {
+        return getEventDefinitionsByType(null);
+
+    }
+
+    /**
+     * Returns a list of all EventDefinitions of a given type, associated with this
+     * element.
+     * <p>
+     * The return type is a list of eventDefinition Nodes of this type.
+     * <p>
+     * If the element has no EventDefinitions of this type, the method returns an
+     * empty list.
+     * <p>
+     * E.g:
+     * 
+     * bpmn2:conditionalEventDefinition
+     * 
+     * @return - list of EventDefinitions - can be empty if no EventDefinitions
+     *         exist or no EventDefintion is matching the type
+     * @throws BPMNModelException
+     */
+    public Set<Element> getEventDefinitionsByType(String definitionType) {
 
         Set<Element> result = new LinkedHashSet<Element>();
 
@@ -122,8 +144,17 @@ public class Event extends BPMNElementNode {
                 if (!child.getNodeName().isEmpty() && child.hasAttributes()) {
                     String name = child.getNodeName();
                     // check if this is a EventDefinition
-                    if (name.endsWith("EventDefinition")) {
-                        result.add((Element) child);
+                    // if we have a definitionType than we check the full name
+                    if (definitionType != null && !definitionType.isEmpty()) {
+                        if (name.endsWith(definitionType)) {
+                            result.add((Element) child);
+                        }
+                    } else {
+                        // We do not have a definition type, so we return all EventDefinitions
+                        if (name.endsWith("EventDefinition")) {
+                            result.add((Element) child);
+                        }
+
                     }
                 }
             }

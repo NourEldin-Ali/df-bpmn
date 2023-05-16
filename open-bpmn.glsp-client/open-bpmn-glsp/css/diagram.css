@@ -14,18 +14,17 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+ .tool-palette .palette-body .group-header {
+    background: var(--theia-editorHoverWidget-statusBarBackground);
+ }
 .sprotty-graph {
     font-size: 15pt;
     border: none;
     height: 100%;
     background-size: 10px 10px;
 
-    background-image: linear-gradient(to right, #e4e4e4 1px, transparent 1px), linear-gradient(to bottom, #e4e4e4 1px, transparent 1px);
-}
-
-.vs-dark .sprotty-graph {
-    /* vs-dark dark-theia theia-dark    vs light-theia theia-light  */
-    background-image: linear-gradient(to right, #2a2a2a 1px, transparent 1px), linear-gradient(to bottom, #2a2a2a 1px, transparent 1px);
+	background-image: linear-gradient(to right, var(--theia-titleBar-activeBackground) 1px, transparent 1px), linear-gradient(to bottom, var(--theia-titleBar-activeBackground) 1px, transparent 1px);
+    
 }
 
 .sprotty-text {
@@ -141,20 +140,27 @@
     fill: #57a14c;
 }
 .event.endEvent > circle {
-    fill: #be5961;
+	fill: #BE5961;
+    stroke-width: 3px;
+    stroke: #922828;
 }
 
 .event.intermediateCatchEvent > circle {
-    fill: #82848a;
+	fill: #6f8dab;
+    stroke-width: 0px;
+    stroke: var(--theia-editor-foreground);;
 }
 .event.intermediateThrowEvent > circle {
-    fill: #82848a;
+	fill: #6f8dab;
+    stroke-width: 0px;
+    stroke: var(--theia-editor-foreground);;
 }
 
 .event.boundaryEvent > circle {
-    fill: #627ea5;
-    stroke-width: 1;
-    stroke: #354152a8;
+	fill: #627ea5;
+    opacity: 80%;
+	stroke-width: 1;
+	stroke: #354152a8
 }
 
 /*** Gateways ***/
@@ -164,24 +170,24 @@
 }
 
 .dataObject > .sprotty-node {
-    opacity: 80%;
-    stroke: var(--theia-focusBorder);
-    outline-color: #ccc;
+	opacity: 80%;
+	stroke: var(--theia-focusBorder);
+    outline-color: var(--theia-editor-foreground);
     outline-style: solid;
-    outline-width: 1px;
+    outline-width: 2px;
     fill: #82848a;
 }
 
 .message > .sprotty-node {
-    opacity: 80%;
-    stroke: var(--theia-focusBorder);
-    outline-color: #ccc;
+	opacity: 80%;
+	stroke: var(--theia-focusBorder);
+    outline-color: var(--theia-editor-foreground);
     outline-style: solid;
-    outline-width: 1px;
-    fill: #cfe9f5;
+    outline-width: 2px;
+    fill: #6083a6;
 }
 .message > polyline {
-    stroke: #eee;
+    stroke: var(--theia-editor-foreground);
     stroke-width: 2;
     fill: none;
 }
@@ -213,6 +219,12 @@
     margin: 7px 20px 0px 20px;
 }
 
+.task > .extension .label {
+	fill: #f0f3f8;
+    font-size: 7pt;
+}
+
+
 .BPMNLabel > .sprotty-node {
     fill: transparent;
 }
@@ -221,16 +233,16 @@
     fill: var(--theia-titleBar-activeForeground);
 }
 .BPMNLabel > .sprotty-node.mouseover {
-    fill: var(--theia-activityBar-background);
+	fill: var(--theia-sideBar-background);
 }
 
 .BPMNLabel > .bpmn-text-node pre {
-    color: #f0f3f8;
-    text-align: center;
-    font-size: 0.6em;
-    font-family: sans-serif;
-    white-space: pre-wrap;
-    margin: 0;
+	color: var(--theia-titleBar-activeForeground);
+	text-align: center;
+	font-size: 0.6em;
+	font-family: sans-serif;
+	white-space: pre-wrap;
+	margin: 0;
 }
 
 .label-edit textarea {
@@ -240,8 +252,9 @@
 
 /*** Pool and Lances **/
 
+/* --theia-titleBar-activeBackground */
 .pool > .sprotty-node {
-    fill: var(--theia-titleBar-activeBackground);
+    fill: var(--theia-sideBar-background);
     pointer-events: none;
     opacity: 70%;
     stroke: var(--theia-focusBorder);
@@ -280,10 +293,20 @@
 /* selected sequence flow */
 .sprotty-edge.bpmnedge.selected .line,
 .sprotty-edge.bpmnedge.selected .arrow {
-    stroke: #ffdf8b;
+ 
 }
 
-/* messageFlow */
+.sequenceFlow .default-symbol {
+    stroke-width: 3;
+}
+
+/* SequenceFlow */
+.bpmnedge > .sprotty-label {
+    fill: var(--theia-titleBar-activeForeground);
+    text-align: center;
+}
+
+/* MessageFlow */
 .sprotty-edge.messageFlow .line {
     stroke-dasharray: 6, 4;
 }
@@ -293,11 +316,24 @@
 }
 
 .helper-line {
-    stroke: #f18e00;
-    stroke-width: 1;
+    stroke: var(--theia-focusBorder);
+	stroke-width:0.5;
 }
 
 .sprotty-comp {
     stroke: transparent;
     fill: transparent;
 }
+
+
+/* Extension Draft */
+.intermediateCatchEvent.bpmnextension-imixs > circle {
+    stroke-width: 2px;
+    stroke: #d48729;
+}
+
+.task.bpmnextension-imixs > .sprotty-node {
+    stroke-width: 2px;
+    stroke: #d48729;  
+}
+

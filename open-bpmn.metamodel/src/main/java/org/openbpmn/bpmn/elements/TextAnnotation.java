@@ -1,6 +1,7 @@
 package org.openbpmn.bpmn.elements;
 
 import org.openbpmn.bpmn.BPMNModel;
+import org.openbpmn.bpmn.BPMNNS;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Element;
@@ -34,7 +35,7 @@ public class TextAnnotation extends BPMNElementNode {
     }
 
     @Override
-    public double getDefaultHeigth() {
+    public double getDefaultHeight() {
         return DEFAULT_HEIGHT;
     }
 
@@ -44,7 +45,7 @@ public class TextAnnotation extends BPMNElementNode {
      * @return String - can be empty
      */
     public String getText() {
-        return this.getChildNodeContent("text");
+        return this.getChildNodeContent(BPMNNS.BPMN2, "text");
 
     }
 
@@ -54,7 +55,34 @@ public class TextAnnotation extends BPMNElementNode {
      * @param content
      */
     public void setText(String content) {
-        this.setChildNodeContent("text", content);
+        this.setChildNodeContent(BPMNNS.BPMN2, "text", content, true);
+
+        // if we have a file:// link than we create an additional open-bpmn attribute
+        Element childElement = this.getChildNode(BPMNNS.BPMN2, "text");
+        if (childElement != null) {
+            if (content.startsWith("file://")) {
+                childElement.setAttribute("open-bpmn:file-link", content);
+            } else {
+                childElement.removeAttribute("open-bpmn:file-link");
+            }
+        }
     }
 
+    /**
+     * Remove any embedded bpmndi:BPMNLabel element within the bpmndi:BPMNShape
+     * 
+     * Positioning of the label is part of the client. Any position update should
+     * ignore these settings in Open-BPMN.
+     * 
+     */
+    @Override
+    public void setPosition(double x, double y) {
+        super.setPosition(x, y);
+
+        // remove optional BPMNLabel
+        Element bpmnLabel = getModel().findChildNodeByName(this.bpmnShape, BPMNNS.BPMNDI, "BPMNLabel");
+        if (bpmnLabel != null) {
+            this.bpmnShape.removeChild(bpmnLabel);
+        }
+    }
 }

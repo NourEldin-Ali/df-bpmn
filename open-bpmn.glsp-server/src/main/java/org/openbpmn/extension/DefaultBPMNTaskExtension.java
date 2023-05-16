@@ -15,35 +15,26 @@
  ********************************************************************************/
 package org.openbpmn.extension;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import javax.json.JsonObject;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.glsp.graph.GModelElement;
-import org.eclipse.glsp.graph.GNode;
+import org.openbpmn.bpmn.BPMNNS;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
-import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder;
 import org.openbpmn.glsp.jsonforms.UISchemaBuilder.Layout;
-import org.openbpmn.glsp.utils.BPMNGraphUtil;
+import org.w3c.dom.Element;
 
 /**
- * This is the Default BPMNEvent extension providing the JSONForms shemata.
+ * This is the Default BPMNEvent extension providing the JSONForms schemata.
  *
  * @author rsoika
  *
  */
 public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
-
-    private static Logger logger = LogManager.getLogger(DefaultBPMNTaskExtension.class);
 
     public DefaultBPMNTaskExtension() {
         super();
@@ -78,27 +69,28 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 .addData("expand", expand) //
                 .addData("documentation", bpmnElement.getDocumentation());
 
+        String documentation = "A Task is work that is performed within the Business Process." +
+                " It describes an atomic action performed by an end-user or application which cannot be broken down to a finer level of detail.";
         schemaBuilder. //
                 addProperty("name", "string", null). //
                 addProperty("expand", "boolean", null). //
-                addProperty("documentation", "string", "Task description...");
+                addProperty("documentation", "string", documentation);
 
-        Map<String, String> multilineOption = new HashMap<>();
-        multilineOption.put("multi", "true");
         uiSchemaBuilder. //
                 addCategory("General"). //
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name"). //
                 addElements("expand"). //
                 addLayout(Layout.VERTICAL). //
-                addElement("documentation", "Documentation", multilineOption);
+                addElement("documentation", "Documentation", this.getFileEditorOption());
 
         // Script-Task?
         Activity taskElement = (Activity) bpmnElement;
         if (BPMNTypes.SCRIPT_TASK.equals(taskElement.getType())) {
             dataBuilder //
                     .addData("scriptformat", taskElement.getAttribute("scriptFormat")) //
-                    .addData("script", taskElement.getChildNodeContent("script"));
+                    .addData("script", taskElement
+                            .getChildNodeContent(BPMNNS.BPMN2, "script"));
 
             schemaBuilder. //
                     addProperty("scriptformat", "string", "Format of the script"). //
@@ -108,15 +100,16 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                     addCategory("Script"). //
                     addLayout(Layout.VERTICAL). //
                     addElements("scriptformat"). //
-                    addElement("script", "Script", multilineOption); //
+                    addElement("script", "Script", this.getFileEditorOption());
+
         }
-
-        // update corresponding GModelElement....
-
     }
 
+    /**
+     * Update the default activity properties.
+     */
     @Override
-    public void updatePropertiesData(final JsonObject json, final BPMNElement bpmnElement,
+    public void updatePropertiesData(final JsonObject json, final String category, final BPMNElement bpmnElement,
             final GModelElement gNodeElement) {
 
         // default update of name and documentation
@@ -152,8 +145,30 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 bpmnElement.setChildNodeContent("script", json.getString(feature));
                 continue;
             }
+        if ("General".equals(category)) {
+            updateNameProperty(json, bpmnElement, gNodeElement);
+            // update attributes and tags
+            bpmnElement.setDocumentation(json.getString("documentation", ""));
         }
 
+        // Update script data
+        // we are only interested in category condition
+        if ("Script".equals(category)) {
+            Activity taskElement = (Activity) bpmnElement;
+            if (BPMNTypes.SCRIPT_TASK.equals(taskElement.getType())) {
+                String dataValue = json.getString("script", "");
+                bpmnElement.setAttribute("scriptFormat", json.getString("scriptformat", ""));
+                Element childElement = bpmnElement.setChildNodeContent(BPMNNS.BPMN2, "script", dataValue, true);
+                // if we have a file:// link than we create an additional open-bpmn attribute
+                if (dataValue.startsWith("file://")) {
+                    childElement.setAttribute("open-bpmn:file-link", dataValue);
+                } else {
+                    childElement.removeAttribute("open-bpmn:file-link");
+                }
+
+            }
+        }
     }
 
+}
 }

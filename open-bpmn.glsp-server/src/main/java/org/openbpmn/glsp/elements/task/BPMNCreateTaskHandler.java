@@ -86,8 +86,8 @@ public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
                     elementX = elementX - (Activity.DEFAULT_WIDTH / 2);
                     elementY = elementY - (Activity.DEFAULT_HEIGHT / 2);
 
-                    task.getBounds().setPosition(elementX, elementY);
-                    task.getBounds().setDimension(Activity.DEFAULT_WIDTH, Activity.DEFAULT_HEIGHT);
+                    task.setPosition(elementX, elementY);
+                    task.setDimension(Activity.DEFAULT_WIDTH, Activity.DEFAULT_HEIGHT);
 
                     logger.debug("new BPMNActivity Position = " + elementX + "," + elementY);
                 }
@@ -100,7 +100,7 @@ public class BPMNCreateTaskHandler extends CreateBPMNNodeOperationHandler {
         }
 
         modelState.reset();
-        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(), new SelectAction(List.of(taskID)));
+        actionDispatcher.dispatchAfterNextUpdate(new SelectAction(List.of(taskID)));
     }
 
     @Override

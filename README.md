@@ -9,10 +9,10 @@ DF-BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](http
 
 The [Business Process Model and Notation](https://www.omg.org/spec/BPMN/) (BPMN 2.0) is an open standard to describe business processes that can be visualized in diagram editors and executed by process engines compliant with the BPMN 2.0 standard. This makes BPMN an interoperable, interchangeable and open standard in the field of business process management.
 
-BPMN was intended for users at all levels, from the business analysts who create the initial design, to the developers who implement the technical details, and finally, to the business users responsible for managing and monitoring the processes. 
+BPMN was intended for users at all levels, from the business analysts who create the initial design, to the developers who implement the technical details, and finally, to the business users responsible for managing and monitoring the processes.
 
 As a XML language proposed by the [Object Management Group](https://www.omg.org/spec/BPMN/) (OMG), BPMN
-is not only  a notation for describing  business workflows but also higher-level collaborations between business partners and the choreography of information flows between applications, microservices and cloud platforms. 
+is not only a notation for describing business workflows but also higher-level collaborations between business partners and the choreography of information flows between applications, microservices and cloud platforms.
 
 
 ## Extensibility 
@@ -26,10 +26,9 @@ One goal of *DA BPMN* is to allow the developer to model BPMN includes all the d
 
 DA BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](https://www.eclipse.org/glsp/) and provides the following building blocks:
 
- - [open-bpmn.metamodel](./open-bpmn.metamodel/README.md) - an open BPMN 2.0 metamodel
- - [open-bpmn.glsp-server](./open-bpmn.glsp-server/README.md) - the GLSP Server implementation
- - [open-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) - the GLSP Client components and Theia integration
-
+- [open-bpmn.metamodel](./open-bpmn.metamodel/README.md) - an open BPMN 2.0 metamodel
+- [open-bpmn.glsp-server](./open-bpmn.glsp-server/README.md) - the GLSP Server implementation
+- [open-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) - the GLSP Client components and Theia integration
 
 ### DA-BPMN - BPMN 2.0 Metamodel
 
@@ -37,6 +36,7 @@ DA-BPMN provides a BPMN 2.0 Metamodel based on pure java. This library can be us
 
  - [DA-BPMN Metamodel](./open-bpmn.metamodel/README.md)
 
+- [OpenBPMN Metamodel](./open-bpmn.metamodel/README.md)
 
 ### DA-BPMN GLSP-Server
 
@@ -47,6 +47,7 @@ The [open-bpmn.glsp-server](./open-bpmn.glsp-server/README.md) provides the GLSP
 
 The [DA-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) is the GLSP Client part of DA-BPMN providing the graphical modeling tool. 
 
+# Tutorials
 
 # Requirement
 ## NodeJS 
@@ -80,13 +81,13 @@ You need to download [maven](https://maven.apache.org/download.cgi) and [yarn](h
 ## On Linux
 To build the complete project run 
 
-	$ ./build.sh
+    $ ./build.sh
 
 This will build the server module with maven and the client modules with yarn. The script finally automatically starts the application.
 
 The Application can be started from a Web Browser
 
-	http://localhost:3000/
+    http://localhost:3000/
 
 ## On Windows
 
@@ -112,23 +113,23 @@ More detail about build your own code in docker [here](./docker/README.md)
 
 ## Locally build for Development
 
-During development you can run the frontend and backend in separate tasks. This gives you more control over the CLient and the Backend Component. 
+During development you can run the frontend and backend in separate tasks. This gives you more control over the CLient and the Backend Component.
 
 To build & start the GLSP Server only, run:
 
-	$ ./build.sh -b
+    $ ./build.sh -b
 
 To build & start the GLSP Client only, run:
 
-	$ ./build.sh -f
+    $ ./build.sh -f
 
 To start the GLSP Client without building, run:
 
-	$ ./build.sh -s
-	
+    $ ./build.sh -s
+
 For a full clean & reinstall of the GLSP Client (after upgrades), run:
 
-	$ ./build.sh -c -i
+    $ ./build.sh -c -i
 
 You will find more details in the [Client Section](./open-bpmn.glsp-client/README.md) and the [Server Section](./open-bpmn.glsp-server/README.md).
 

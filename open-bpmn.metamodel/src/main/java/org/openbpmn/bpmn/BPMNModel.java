@@ -3,7 +3,12 @@ package org.openbpmn.bpmn;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -17,15 +22,12 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
@@ -46,6 +48,8 @@ import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
 import org.openbpmn.bpmn.exceptions.BPMNMissingElementException;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
+import org.openbpmn.bpmn.util.BPMNXMLUtil;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -77,6 +81,7 @@ public class BPMNModel {
     protected Set<Signal> signals = null;
     protected Set<Message> messages = null;
     protected Element collaborationElement = null;
+    private boolean isDirty = false;
 
     private final Map<BPMNNS, String> URI_BY_NAMESPACE = new HashMap<>();
     private final Map<BPMNNS, String> PREFIX_BY_NAMESPACE = new HashMap<>();
@@ -252,6 +257,25 @@ public class BPMNModel {
         }
     }
 
+    /**
+     * Returns an internal isDirty flag
+     * 
+     * @return
+     */
+    public boolean isDirty() {
+        return isDirty;
+    }
+
+    /**
+     * Set the internal isDirty flag. This flag can be used to mark a model as
+     * dirty.
+     * 
+     * @param isDirty
+     */
+    public void setDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+    }
+
     public Set<Participant> getParticipants() {
         if (participants == null) {
             participants = new LinkedHashSet<Participant>();
@@ -378,7 +402,7 @@ public class BPMNModel {
 
                 collaborationElement.appendChild(migratedParticipantNode);
                 existingProcess.setAttribute("definitionalCollaborationRef", collaborationElement.getAttribute("id"));
-                // finally add a new BPMNParticipatn to the paticipant list
+                // finally add a new BPMNParticipant to the participant list
                 getParticipants().add(new Participant(this, migratedParticipantNode));
             }
 
@@ -401,6 +425,8 @@ public class BPMNModel {
         BPMNProcess process = buildProcess(BPMNModel.generateShortID("process"), "Process " + processNumber,
                 BPMNTypes.PROCESS_TYPE_PRIVATE);
         process.setAttribute("definitionalCollaborationRef", collaborationElement.getAttribute("id"));
+        process.setName(name);
+
         bpmnParticipant.setProcessRef(process.getId());
         bpmnParticipant.setBpmnProcess(process);
         // create the pool shape
@@ -571,7 +597,7 @@ public class BPMNModel {
      * elements of the Process. The default process always exists and is not
      * embedded in a Pool.
      */
-    public BPMNProcess openDefaultProcess() {
+    public BPMNProcess openDefaultProces() {
         try {
             return openProcess(null);
         } catch (BPMNModelException e) {
@@ -614,6 +640,9 @@ public class BPMNModel {
 
     }
 
+    /**
+     * Creates an element with a given namespace
+     */
     public Element createElement(BPMNNS ns, String type) {
         Element element = this.getDoc().createElementNS(getUri(ns), getPrefix(ns) + ":" + type);
         return element;
@@ -688,7 +717,7 @@ public class BPMNModel {
         }
 
         String targetRef = bpmnEdge.getTargetRef();
-        String soureRef = bpmnEdge.getSourceRef();
+        String sourceRef = bpmnEdge.getSourceRef();
         // first we need to update the elements still connected with this flow
         // <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
         // <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
@@ -707,7 +736,7 @@ public class BPMNModel {
                 }
             }
         }
-        BPMNElementNode sourceElement = findElementNodeById(soureRef);
+        BPMNElementNode sourceElement = findElementNodeById(sourceRef);
         if (sourceElement != null) {
             NodeList childs = sourceElement.getElementNode().getChildNodes();
             for (int j = 0; j < childs.getLength(); j++) {
@@ -789,7 +818,7 @@ public class BPMNModel {
 
         this.definitions.insertBefore(bpmnElement, this.getBpmnDiagram());
 
-        Message message = new Message(this, bpmnElement, BPMNTypes.MESSAGE, this.openDefaultProcess());
+        Message message = new Message(this, bpmnElement, BPMNTypes.MESSAGE, this.openDefaultProces());
         getMessages().add(message);
 
         return message;
@@ -877,6 +906,7 @@ public class BPMNModel {
     /**
      * Deletes a Message element from this diagram.
      * <p>
+     * The method removes the message element and the corresponding shape element.
      * 
      * @param id
      */
@@ -919,10 +949,13 @@ public class BPMNModel {
             }
         }
 
-        // delete the element from teh definitions
+        // delete the element from the definitions and also the shape
         this.definitions.removeChild(message.getElementNode());
+        if (message.getBpmnShape() != null) {
+            getBpmnPlane().removeChild(message.getBpmnShape());
+        }
 
-        // finally we remove the signal object form the signals list
+        // finally we remove the message object form the message list
         getMessages().remove(message);
 
     }
@@ -987,7 +1020,7 @@ public class BPMNModel {
      * <p>
      * If no event exists, the method returns an empty list.
      * 
-     * @return
+     * @return the list of events or an empty is if no events exist.
      */
     public Set<Event> findAllEvents() {
         LinkedHashSet<Event> result = new LinkedHashSet<Event>();
@@ -1073,7 +1106,7 @@ public class BPMNModel {
      * given ID. This finder method can be used to just adjust the Bounds in the
      * Diagram section of a model.
      * <p>
-     * In case of a process diagram, the method verfies all FlowElements within the
+     * In case of a process diagram, the method verifies all FlowElements within the
      * default process.
      * <p>
      * In case of a collaboration diagram, the method verifies all Participants and
@@ -1107,7 +1140,7 @@ public class BPMNModel {
                 }
             } else {
                 // just analyze the default process
-                BPMNElementNode baseElement = openDefaultProcess().findElementNodeById(id);
+                BPMNElementNode baseElement = openDefaultProces().findElementNodeById(id);
                 if (baseElement != null) {
                     return baseElement.getBounds();
                 }
@@ -1156,7 +1189,7 @@ public class BPMNModel {
             }
         }
         // no participant - return the default Participant
-        Participant defaultParticipant = findParticipantByProcessId(this.openDefaultProcess().getId());
+        Participant defaultParticipant = findParticipantByProcessId(this.openDefaultProces().getId());
         return defaultParticipant;
     }
 
@@ -1209,20 +1242,28 @@ public class BPMNModel {
 
     /**
      * This helper method returns a set of child nodes by name from a given parent
-     * node.
+     * node. If no nodes were found, the method returns an empty list.
+     * <p>
+     * The method compares the Name including the namespace of the child elements.
+     * <p>
+     * See also {@link #findChildNodeByName(Element parent, String nodeName)
+     * findChildNodeByName}
      * 
      * @param parent
      * @param nodeName
      * @return - list of nodes. If no nodes were found, the method returns an empty
      *         list
      */
-    public static Set<Element> findChildNodesByName(Element parent, String nodeName) {
+    public Set<Element> findChildNodesByName(Element parent, BPMNNS ns, String nodeName) {
         Set<Element> result = new LinkedHashSet<Element>();
+        // resolve the tag name
+        String tagName = getPrefix(ns) + ":" + nodeName;
         if (parent != null && nodeName != null) {
             NodeList childs = parent.getChildNodes();
             for (int i = 0; i < childs.getLength(); i++) {
                 Node childNode = childs.item(i);
-                if (childNode.getNodeType() == Node.ELEMENT_NODE && nodeName.equals(childNode.getNodeName())) {
+
+                if (childNode.getNodeType() == Node.ELEMENT_NODE && tagName.equals(childNode.getNodeName())) {
                     result.add((Element) childNode);
                 }
             }
@@ -1231,7 +1272,33 @@ public class BPMNModel {
     }
 
     /**
+     * This helper method returns the first child node by name from a given parent
+     * node. If no nodes were found the method returns null.
+     * 
+     * See also {@link #findChildNodesByName(Element parent, String nodeName)
+     * findChildNodesByName}
+     * 
+     * @param parent
+     * @param nodeName
+     * @return - Child Element matching the given node name. If no nodes were found,
+     *         the method returns null
+     */
+    public Element findChildNodeByName(Element parent, BPMNNS ns, String nodeName) {
+        Set<Element> elementList = findChildNodesByName(parent, ns, nodeName);
+        if (elementList.iterator().hasNext()) {
+            // return first element
+            return elementList.iterator().next();
+        } else {
+            // no child elements with the given name found!
+            return null;
+        }
+    }
+
+    /**
      * Writes the current instance to the file system.
+     * 
+     * The method also resolves all open-bpmn:file-link elements and updates the
+     * corresponding content.
      * 
      * @param file
      */
@@ -1240,7 +1307,9 @@ public class BPMNModel {
             if (doc == null) {
                 logger.severe("...unable to save file - doc is null!");
             }
-            
+            // resolve open-bpmn:file-link....
+            resolveFileLinksOnSave(Paths.get(file));
+
             writeXml(doc, output);
         } catch (TransformerException | IOException e) {
             e.printStackTrace();
@@ -1249,6 +1318,152 @@ public class BPMNModel {
 
     public void save(URI targetURI) {
         save(Paths.get(targetURI).toString());
+    }
+
+    /**
+     * This helper method is called during the save method. The method resolves all
+     * elements with the attribute 'open-bpmn:file-link'
+     * e.g.
+     * <bpmn2:script id="script_1" open-bpmn:file-link="file://imixs.script.js">
+     * <![CDATA[file://imixs.script.js]]></bpmn2:script>
+     * 
+     * The method opens the corresponding file and replaces the element content.
+     * If no file was found, the method creates an empty one.
+     */
+    public void resolveFileLinksOnSave(Path path) {
+        // Resolve the parent path
+        Path parent = path.getParent();
+        long l = System.currentTimeMillis();
+
+        // Find all elements with the attribute "x"
+        NodeList elements = doc.getElementsByTagName("*");
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element element = (Element) elements.item(i);
+            if (element.hasAttribute("open-bpmn:file-link")) {
+                String fileLink = element.getAttribute("open-bpmn:file-link");
+                fileLink = fileLink.substring(6);
+                fileLink = parent + fileLink;
+                Path pathLinkFileContent = Paths.get(fileLink);
+                try {
+                    // read content...
+                    logger.fine(element.getNodeName() + " has attribute open-bpmn:file-link: "
+                            + fileLink);
+
+                    byte[] bytes = Files.readAllBytes(pathLinkFileContent);
+                    String fileData = new String(bytes, StandardCharsets.UTF_8);
+
+                    // remove old sub_child nodes of this childNode...
+                    while (element.hasChildNodes()) {
+                        element.removeChild(element.getFirstChild());
+                    }
+                    // create new cdata section for this child node and add the content....
+                    CDATASection cdataSection = getDoc().createCDATASection(fileData);
+                    element.appendChild(cdataSection);
+
+                } catch (IOException e) {
+                    logger.warning(
+                            "Failed to read content of open-bpmn:file-link '" + fileLink + "' - creating empty file ");
+                    try {
+                        Files.createFile(pathLinkFileContent);
+                    } catch (IOException e1) {
+                        logger.warning(
+                                "Failed creating empty open-bpmn:file-link '" + fileLink + "' : " + e1.getMessage());
+                    }
+
+                }
+
+            }
+        }
+        logger.fine("...resolveFileLinksOnSave took " + (System.currentTimeMillis() - l) + "ms");
+
+    }
+
+    /**
+     * This helper method is called during the load method from the
+     * BPMNModelFactory. The method resolves all elements with the attribute
+     * 'open-bpmn:file-link'
+     * e.g.
+     * <bpmn2:script id="script_1" open-bpmn:file-link="file://imixs.script.js">
+     * <![CDATA[file://imixs.script.js]]></bpmn2:script>
+     * 
+     * The method compares the content of the corresponding file. In case of a
+     * mismatch we assume that the file content is actual and so we
+     * mark the model immediately as dirty.
+     * 
+     * The method marks the model as dirty if linked file content has changed
+     * 
+     * @param path - file path
+     * @return boolean - true if the linked file content has changed.
+     */
+    public void resolveFileLinksOnLoad(Path path) {
+        // Resolve the parent path
+        Path parent = path.getParent();
+        long l = System.currentTimeMillis();
+
+        // Find all elements with the attribute "x"
+        NodeList elements = doc.getElementsByTagName("*");
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element element = (Element) elements.item(i);
+            if (element.hasAttribute("open-bpmn:file-link")) {
+                String fileLinkRelative = element.getAttribute("open-bpmn:file-link");
+                String fileLink = fileLinkRelative.substring(6);
+                fileLink = parent + fileLink;
+                Path pathLinkFileContent = Paths.get(fileLink);
+                try {
+                    // read content...
+                    logger.fine(element.getNodeName() + " has attribute open-bpmn:file-link: "
+                            + fileLink);
+
+                    byte[] bytes = Files.readAllBytes(pathLinkFileContent);
+                    String fileData = new String(bytes, StandardCharsets.UTF_8);
+                    // Now we compare the content with the content of the CDATA Tag. If not equal we
+                    // update the file!! Because we assume the .bpmn file is always right.
+                    String bpmnContent = getElementContent(element);
+
+                    if (!bpmnContent.equals(fileData)) {
+                        logger.fine(
+                                "File content of open-bpmn:file-link '" + fileLink + "' updated.");
+                        // mark model as dirty
+                        this.setDirty(true);
+                    }
+
+                    // Now replace the content with the filename
+                    while (element.hasChildNodes()) {
+                        element.removeChild(element.getFirstChild());
+                    }
+                    // create new cdata section for this child node and add the content....
+                    CDATASection cdataSection = getDoc().createCDATASection(fileLinkRelative);
+                    element.appendChild(cdataSection);
+
+                } catch (IOException e) {
+                    logger.warning(
+                            "Failed to read content of open-bpmn:file-link '" + fileLink + "' : " + e.getMessage());
+                }
+            }
+        }
+        logger.fine("...resolveFileLinksOnLoad took " + (System.currentTimeMillis() - l) + "ms");
+    }
+
+    /**
+     * Helper method that gets the content of an element and supports an optional
+     * CDATA node
+     * 
+     * @param element
+     * @return
+     */
+    private String getElementContent(Element element) {
+        // search CDATA node
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node instanceof CDATASection) {
+                return node.getNodeValue();
+            } else {
+                // normal text node
+                return node.getTextContent();
+            }
+        }
+        return "";
     }
 
     /**
@@ -1270,7 +1485,7 @@ public class BPMNModel {
     }
 
     /**
-     * Generates a random short 6 byte id with a prafix
+     * Generates a random short 6 byte id with a prefix
      * <p>
      * HEX: 0-9, a-f. For example: BPMNShape_a55ac5, BPMNShape_1382c1
      * 
@@ -1364,7 +1579,7 @@ public class BPMNModel {
     }
 
     /**
-     * Returns true if the node is a textAnnotaion node.
+     * Returns true if the node is a textAnnotation node.
      * 
      * @param node
      * @return
@@ -1398,7 +1613,7 @@ public class BPMNModel {
     }
 
     /**
-     * Returns true if the node is a Accociation.
+     * Returns true if the node is a Association.
      * 
      * @param node
      * @return
@@ -1448,7 +1663,7 @@ public class BPMNModel {
     }
 
     /**
-     * Returns the central loger instance
+     * Returns the central logger instance
      * 
      * @return
      */
@@ -1557,7 +1772,8 @@ public class BPMNModel {
                 processes.add(bpmnProcess);
 
                 // we need to update the containing Participant
-                // This assignment can only be done now because the loadParticpantList is called
+                // This assignment can only be done now because the loadParticipantList is
+                // called
                 // before this method.
                 Participant participant = bpmnProcess.findParticipant();
                 if (participant != null) {
@@ -1589,7 +1805,6 @@ public class BPMNModel {
         messageFlows = new LinkedHashSet<MessageFlow>();
         NodeList collaborationNodeList = definitions.getElementsByTagName(getPrefix(BPMNNS.BPMN2) + ":collaboration");
         if (collaborationNodeList != null && collaborationNodeList.getLength() > 0) {
-
             // we only take the first collaboration element (this is what is expected)
             collaborationElement = (Element) collaborationNodeList.item(0);
             // now find all messageFlows...
@@ -1634,7 +1849,7 @@ public class BPMNModel {
         if (signalNodeList != null && signalNodeList.getLength() > 0) {
             for (int i = 0; i < signalNodeList.getLength(); i++) {
                 Element item = (Element) signalNodeList.item(i);
-                Message message = new Message(this, item, BPMNTypes.MESSAGE, this.openDefaultProcess());
+                Message message = new Message(this, item, BPMNTypes.MESSAGE, this.openDefaultProces());
                 messages.add(message);
             }
         }
@@ -1643,51 +1858,65 @@ public class BPMNModel {
     /**
      * Helper method to write the dom document to an output stream
      * <p>
-     * We also call the helper method 'clearBlankLines' to get rid of unnecessary
-     * white space. See also discussion here
-     * https://stackoverflow.com/questions/12669686/how-to-remove-extra-empty-lines-from-xml-file/12670194#12670194
+     * The output file is prettified with an indent of 2 spaces
      * 
      * @param doc
      * @param output
      * @throws TransformerException
      */
     private void writeXml(Document doc, OutputStream output) throws TransformerException {
-        // clenup blank lines
-        clearBlankLines();
-
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(output);
+
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(source, result);
-    }
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-    /**
-     * This helper method use XPath to find all whitespace-only TEXT nodes in the
-     * current doucment, iterate through them and remove each one from its parent
-     * (using getParentNode().removeChild()). Something like this would do (doc
-     * would be your DOM document object):
-     * 
-     * See:
-     * https://stackoverflow.com/questions/12669686/how-to-remove-extra-empty-lines-from-xml-file/12670194#12670194
-     * 
-     * @param element
-     */
-    private void clearBlankLines() {
+        /*
+         * The following code section is to handle a bad implementation in the
+         * Imixs-BPMN (Eclipse-BPMN2) implementation
+         * 
+         * To ensure that the Open-BPMN model file is still readable by eclipse-bpmn we
+         * need to remove the whitespace before and after CDATA tags.
+         * 
+         * See details: https://github.com/imixs/open-bpmn/issues/194
+         * 
+         * Otherwise we could just do here:
+         * 
+         * StreamResult result = new StreamResult(output);
+         * transformer.transform(source, result);
+         */
+        // === BUGFIX START ===
+
+        // first transform the result xml into a string
+        StringWriter w = new StringWriter();
+        Result dest = new StreamResult(w);
+        transformer.transform(source, dest);
+        String xmlString = w.toString();
+        // No indentation (whitespace) for elements with a CDATA section.
+        // See
+        // https://stackoverflow.com/questions/55853220/handling-change-in-newlines-by-xml-transformation-for-cdata-from-java-8-to-java/75568933
+        // xmlString =
+        // xmlString.replaceAll(">\\s*+(<\\!\\[CDATA\\[(.|\\n|\\r\\n)*?]\\]>)\\s*</",
+        // ">$1</");
+        xmlString = BPMNXMLUtil.cleanCDATAWhiteSpace(xmlString);
+
+        // write output
         try {
-            XPath xp = XPathFactory.newInstance().newXPath();
-            NodeList nl;
-            nl = (NodeList) xp.evaluate("//text()[normalize-space(.)='']", doc, XPathConstants.NODESET);
-            for (int i = 0; i < nl.getLength(); ++i) {
-                Node node = nl.item(i);
-                node.getParentNode().removeChild(node);
-            }
-        } catch (XPathExpressionException e) {
-            logger.warning("Failed to clean blank up lines during save: " + e.getMessage());
+            output.write(xmlString.getBytes(Charset.forName("UTF-8")));
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-    }
 
+        // === BUGFIX END ===
+    }
 }

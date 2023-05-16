@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -15,6 +17,9 @@ import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
@@ -28,7 +33,7 @@ public class BPMNModelFactory {
 
     public static final String DEFAULT_EXPORTER = "org.openbpmn";
     public static final String DEFAULT_VERSION = "1.0.0";
-    public static final String DEFAULT_TARGETNAMESPACE = "http://org.openbpmn";
+    public static final String DEFAULT_TARGETNAMESPACE = "http://open-bpmn.org";
 
     /**
      * This method creates a new empty BPMNModel instance. The BPMNModel is
@@ -69,25 +74,20 @@ public class BPMNModelFactory {
             definitions.setAttribute("xmlns:dc", "http://www.omg.org/spec/DD/20100524/DC");
             definitions.setAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema");
             definitions.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            setOpenBPMNNameSpace(definitions);
 
             // set definitions attributes
             definitions.setAttribute("exporter", exporter);
             definitions.setAttribute("exporterVersion", exporterVersion);
             definitions.setAttribute("targetNamespace", targetNamespace);
             doc.appendChild(definitions);
-            
-            BPMNModel model = new BPMNModel(doc);
-            
-            // add an empty public default process
-          //  model.buildProcess("process_1", "Default Process", BPMNTypes.PROCESS_TYPE_PUBLIC);
-          
 
+            BPMNModel model = new BPMNModel(doc);
             return model;
         } catch (ParserConfigurationException | BPMNModelException e1) {
 
             e1.printStackTrace();
         }
-
         return null;
     }
 
@@ -96,13 +96,14 @@ public class BPMNModelFactory {
      * 
      * @param modelFile
      * @return a BPMNModel instance
-     * @throws BPMNModelException 
+     * @throws BPMNModelException
      * @throws FileNotFoundException
      * @throws IOException
      */
     public static BPMNModel read(File modelFile) throws BPMNModelException {
         try {
-            return read(new FileInputStream(modelFile));
+            Path path = modelFile.toPath();
+            return read(new FileInputStream(modelFile), path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -114,34 +115,38 @@ public class BPMNModelFactory {
      * 
      * @param modelFile
      * @return a BPMNModel instance
-     * @throws BPMNModelException 
+     * @throws BPMNModelException
      * @throws IOException
      */
     public static BPMNModel read(String modelFilePath) throws BPMNModelException {
-        return read(BPMNModel.class.getResourceAsStream(modelFilePath));
+        Path path = Paths.get(modelFilePath);
+        return read(BPMNModel.class.getResourceAsStream(modelFilePath), path);
     }
 
     /**
      * Reads a BPMNModel instance from an InputStream
+     * <p>
+     * The method cleans whitespace after reading the file for a better handling and
+     * later output format.
      * 
      * @param modelFile
      * @return a BPMNModel instance
-     * @throws BPMNModelException 
+     * @throws BPMNModelException
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static BPMNModel read(InputStream is) throws BPMNModelException {
+    public static BPMNModel read(InputStream is, Path path) throws BPMNModelException {
         logger.fine("read from inputStream...");
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        docFactory.setIgnoringElementContentWhitespace(true); // because of a bug this does not have any effect!
         docFactory.setNamespaceAware(true);
+
         try {
             if (is.available() == 0) {
-                logger.warning("Emtpy BPMN file - creating a default process");
+                logger.warning("Empty BPMN file - creating a default process");
                 // create a default model
                 BPMNModel defaultModel = BPMNModelFactory
                         .createInstance(DEFAULT_EXPORTER, DEFAULT_VERSION, DEFAULT_TARGETNAMESPACE);
-                // add an empty public default process
-                //defaultModel.buildProcess("process_1", "Default Process", BPMNTypes.PROCESS_TYPE_PUBLIC);
                 return defaultModel;
             }
 
@@ -150,18 +155,29 @@ public class BPMNModelFactory {
             // read from a project's resources folder
             Document doc = db.parse(is);
             Element root = doc.getDocumentElement();
-                      
+
+            // explicit remove whitespace
+            removeWhitespaceNodes(root);
+
             if (!"bpmn2:definitions".equals(root.getNodeName())
-                  && 
-                  !"bpmn:definitions".equals(root.getNodeName())) {
-                logger.severe("Missing root element 'bpmn2:definitions'!");
+                    &&
+                    !"bpmn:definitions".equals(root.getNodeName())) {
+                logger.severe("Invalid BPMN File: Missing root element 'bpmn2:definitions'!");
                 return null;
             } else {
-                return new BPMNModel(doc);
+                BPMNModel model = new BPMNModel(doc);
+                setOpenBPMNNameSpace(model.getDefinitions());
+
+                // resolve open-bpmn:file-link....
+                model.resolveFileLinksOnLoad(path);
+
+                return model;
             }
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
+            // create a runtimeException to show a error message in the client
+            throw new RuntimeException(e);
         } finally {
             if (is != null) {
                 try {
@@ -171,6 +187,39 @@ public class BPMNModelFactory {
                 }
             }
         }
-        return null;
+    }
+
+    /**
+     * Helper Method to add the open-bpmn namespace to the definitions element
+     * 
+     * @param definitions
+     */
+    private static void setOpenBPMNNameSpace(Element definitions) {
+        if (!definitions.hasAttribute("xmlns:open-bpmn")) {
+            definitions.setAttribute("xmlns:open-bpmn", "http://open-bpmn.org/XMLSchema");
+        }
+    }
+
+    /**
+     * Removes whitespace from an Element
+     * <p>
+     * This helper method is needed as the Dom XML parser does not remove
+     * whitespaces despite the hint enabled.
+     *
+     * @see https://coderbyheart.com/jaxp-dom-whitespace-aus-xml-entfernen
+     * @see http://forums.java.net/jive/thread.jspa?messageID=345459
+     * @param e
+     */
+    private static void removeWhitespaceNodes(Element e) {
+        NodeList children = e.getChildNodes();
+        for (int i = children.getLength() - 1; i >= 0; i--) {
+            Node child = children.item(i);
+            if (child instanceof Text && ((Text) child).getData().trim().length() == 0) {
+                e.removeChild(child);
+            } else if (child instanceof Element) {
+                removeWhitespaceNodes((Element) child);
+            }
+        }
+
     }
 }

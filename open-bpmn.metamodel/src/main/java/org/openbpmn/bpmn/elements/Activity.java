@@ -69,10 +69,6 @@ public class Activity extends BPMNElementNode {
 		return DEFAULT_WIDTH;
 	}
 
-	@Override
-	public double getDefaultHeigth() {
-		return DEFAULT_HEIGHT;
-	}
 
 	/*
 	 * initialize all data in the activity
@@ -1018,4 +1014,27 @@ public class Activity extends BPMNElementNode {
 		}
 		return results;
 	}
+    @Override
+    public double getDefaultHeight() {
+        return DEFAULT_HEIGHT;
+    }
+
+    /**
+     * Remove any embedded bpmndi:BPMNLabel element within the bpmndi:BPMNShape
+     * 
+     * Positioning of the label is part of the client. Any position update should
+     * ignore these settings in Open-BPMN.
+     * 
+     */
+    @Override
+    public void setPosition(double x, double y) {
+        super.setPosition(x, y);
+
+        // remove optional BPMNLabel
+        Element bpmnLabel = getModel().findChildNodeByName(this.bpmnShape, BPMNNS.BPMNDI, "BPMNLabel");
+        if (bpmnLabel != null) {
+            this.bpmnShape.removeChild(bpmnLabel);
+        }
+    }
+
 }

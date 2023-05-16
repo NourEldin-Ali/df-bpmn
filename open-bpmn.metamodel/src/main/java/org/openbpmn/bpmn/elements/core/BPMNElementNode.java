@@ -1,14 +1,25 @@
 package org.openbpmn.bpmn.elements.core;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.openbpmn.bpmn.BPMNModel;
+import org.openbpmn.bpmn.BPMNNS;
 import org.openbpmn.bpmn.BPMNTypes;
+import org.openbpmn.bpmn.elements.Activity;
+import org.openbpmn.bpmn.elements.Association;
 import org.openbpmn.bpmn.elements.BPMNProcess;
+import org.openbpmn.bpmn.elements.Event;
+import org.openbpmn.bpmn.elements.Gateway;
+import org.openbpmn.bpmn.elements.Lane;
 import org.openbpmn.bpmn.elements.Participant;
+import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
 import org.openbpmn.bpmn.exceptions.BPMNMissingElementException;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * The BPMNNode is the abstract super class for most BPMN elements like Task,
@@ -29,7 +40,7 @@ public abstract class BPMNElementNode extends BPMNElement {
     protected BPMNBounds bounds = null;
 
     /**
-     * Create a new BPMN Base Element. The constructor expects a model instnace and
+     * Create a new BPMN Base Element. The constructor expects a model instance and
      * a node.
      * 
      * @param node
@@ -57,7 +68,7 @@ public abstract class BPMNElementNode extends BPMNElement {
         if (bpmnShape == null) {
             // create shape element
             bpmnShape = model.buildBPMNShape(this);
-            this.setBounds(0.0, 0.0, getDefaultWidth(), getDefaultHeigth());
+            this.setBounds(0.0, 0.0, getDefaultWidth(), getDefaultHeight());
             // create BPMNLabel
             label = this.getLabel();
             if (label != null) {
@@ -82,22 +93,6 @@ public abstract class BPMNElementNode extends BPMNElement {
         return bounds;
     }
 
-    public void setPosition(double x, double y) {
-        try {
-            this.getBounds().setPosition(x, y);
-        } catch (BPMNMissingElementException e) {
-            BPMNModel.error("Failed to update bounds position for element '" + this.getId() + "'");
-        }
-    }
-
-    public void setDimension(double width, double height) {
-        try {
-            this.getBounds().setDimension(width, height);
-        } catch (BPMNMissingElementException e) {
-            BPMNModel.error("Failed to update bounds position for element '" + this.getId() + "'");
-        }
-    }
-
     /**
      * Updates the BPMN Shape bounds.
      * 
@@ -109,14 +104,187 @@ public abstract class BPMNElementNode extends BPMNElement {
      * @throws BPMNMissingElementException
      */
     public BPMNBounds setBounds(double x, double y, double width, double height) throws BPMNMissingElementException {
-        // init bound if not yet loaded
-        getBounds();
-
         // update bounds
-        bounds.setDimension(width, height);
-        bounds.setPosition(x, y);
-
+        setDimension(width, height);
+        setPosition(x, y);
         return bounds;
+    }
+
+    /**
+     * Update the absolute position of a BPMNElementNode.
+     * 
+     * When BPMNElementNode is part of a participant with lanes, this method
+     * automatically updates the containing participant and/or the bpmn2:flowNodeRef
+     * of the containing lane.
+     * 
+     * 
+     * 
+     * @param x
+     * @param y
+     */
+    public void setPosition(double x, double y) {
+        try {
+            this.getBounds().setPosition(x, y);
+            // update containment only if position is not 0,0
+            if (x != 0 && y != 0) {
+                updateContainment(x, y);
+            }
+        } catch (BPMNMissingElementException e) {
+            BPMNModel.error("Failed to update bounds position for element '" + this.getId() + "'");
+        }
+    }
+
+    /**
+     * This helper method verifies the current containment and updates the
+     * participant and/or lane in case the containment has changed.
+     * 
+     * The method first verifies if the BPMNElementNode is still contained by the
+     * current Participant or is moved from the default process into a pool. In this
+     * cases the method updates the process ref of the element.
+     * 
+     */
+    private void updateContainment(double x, double y) {
+        // update is only needed for collaboration diagrams and FlowElement Nodes
+        if (!this.model.isCollaborationDiagram() || !BPMNTypes.isFlowElementNode(this)) {
+            return;
+        }
+        try {
+            // first test if the participant need to be updated...
+            Set<Participant> participants = this.model.getParticipants();
+            BPMNProcess newProcess = this.model.openDefaultProces(); // default process
+            for (Participant participant : participants) {
+                if (participant.bounds == null) {
+                    continue; // no bounds!
+                }
+                BPMNBounds participantBounds = participant.getBounds();
+                if (participantBounds.containsPoint(new BPMNPoint(x, y))) {
+                    newProcess = participant.bpmnProcess;
+                    break;
+                }
+            }
+            if (!this.getProcessId().equals(newProcess.getId())) {
+                // change process!
+                updateBPMNProcess(newProcess);
+            }
+
+            // In any case we finally update the lane flowNodeRef if the element is or was
+            // part of a pool with lanes....
+            // For this we iterate over all lanes and test if a lane is the containing lane
+            // according to the position.
+            Set<Lane> lanes = this.getBpmnProcess().getLanes();
+            for (Lane lane : lanes) {
+                BPMNBounds laneBounds = lane.getBounds();
+                if (laneBounds.containsPoint(new BPMNPoint(x, y))) {
+                    // found containing lane!
+                    lane.insert(this);
+                } else {
+                    // remove if listed in this lane....
+                    lane.remove(this);
+                }
+            }
+
+        } catch (BPMNMissingElementException | BPMNInvalidTypeException e) {
+            BPMNModel.error("Failed to update bounds position for element '" + this.getId() + "' - " + e.getMessage());
+        }
+    }
+
+    /**
+     * This method updates the process assignment of a FlowElement Node. The element
+     * will be removed form the current process and added to the new process. All
+     * edges will be removed.
+     * 
+     * Also the element will be removed from an optional laneSet of the old process.
+     * 
+     * @param newProcess
+     * @throws BPMNInvalidTypeException
+     */
+    public void updateBPMNProcess(BPMNProcess newProcess) throws BPMNInvalidTypeException {
+
+        if (!BPMNTypes.isFlowElementNode(this)) {
+            throw new BPMNInvalidTypeException(
+                    "updateBPMNProcess can only be applied for BPMN FlowElements (Event, Gateway, Activity)");
+        }
+
+        // remove element from an optional laneSet
+        Set<Lane> lanes = this.bpmnProcess.getLanes();
+        for (Lane lane : lanes) {
+            lane.remove(this);
+        }
+
+        // remove all flows...
+        this.bpmnProcess.removeAllEdgesFromElement(this.getId());
+
+        // ...remove the element from the corresponding element list
+        // and add it to the new process
+        if (this instanceof Activity) {
+            this.bpmnProcess.getActivities().remove(this);
+            newProcess.getActivities().add((Activity) this);
+        }
+        if (this instanceof Gateway) {
+            this.bpmnProcess.getGateways().remove(this);
+            newProcess.getGateways().add((Gateway) this);
+        }
+        if (this instanceof Event) {
+            this.bpmnProcess.getEvents().remove(this);
+            newProcess.getEvents().add((Event) this);
+        }
+
+        // remove element from old process and assign it ot the new
+        this.bpmnProcess.elementNode.removeChild(this.elementNode);
+        this.bpmnProcess = newProcess;
+        this.bpmnProcess.elementNode.appendChild(this.elementNode);
+    }
+
+    /**
+     * This method updates the bpmn2:incoming and bpmn2:outgoing references of a
+     * BPMNElement.
+     * During cloning a element it may happen that invalid references are copied as
+     * child elements. This method can be called to clean up such references.
+     * 
+     */
+    public void updateSequenceFlowReferences() {
+        // only possible if a bpmnProcess is defined
+        if (bpmnProcess == null) {
+            return; // no op!
+        }
+        // remove incoming childs...
+        NodeList incomingSequenceFlows = getElementNode()
+                .getElementsByTagName(bpmnProcess.getModel().getPrefix(BPMNNS.BPMN2) + ":incoming");
+        for (int i = 0; i < incomingSequenceFlows.getLength(); i++) {
+            Element item = (Element) incomingSequenceFlows.item(i);
+            // test if the sequence flow exists...
+            BPMNElementEdge flow = bpmnProcess.findElementEdgeById(item.getTextContent());
+            if (flow != null &&
+                    (!getId().equals(flow.getElementNode().getAttribute("sourceRef"))
+                            && !getId().equals(flow.getElementNode().getAttribute("targetRef")))) {
+                // invalid element
+                getElementNode().removeChild(item);
+            }
+
+        }
+        // remove outgoing childs...
+        NodeList outgoingSequenceFlows = getElementNode()
+                .getElementsByTagName(bpmnProcess.getModel().getPrefix(BPMNNS.BPMN2) + ":outgoing");
+        for (int i = 0; i < outgoingSequenceFlows.getLength(); i++) {
+            Element item = (Element) outgoingSequenceFlows.item(i);
+            // test if the sequence flow exists...
+            BPMNElementEdge flow = bpmnProcess.findElementEdgeById(item.getTextContent());
+            if (flow != null &&
+                    (!getId().equals(flow.getElementNode().getAttribute("sourceRef"))
+                            && !getId().equals(flow.getElementNode().getAttribute("targetRef")))) {
+                // invalid element
+                getElementNode().removeChild(item);
+            }
+        }
+
+    }
+
+    public void setDimension(double width, double height) {
+        try {
+            this.getBounds().setDimension(width, height);
+        } catch (BPMNMissingElementException e) {
+            BPMNModel.error("Failed to update bounds position for element '" + this.getId() + "'");
+        }
     }
 
     /**
@@ -201,7 +369,7 @@ public abstract class BPMNElementNode extends BPMNElement {
      * 
      * @return
      */
-    public abstract double getDefaultHeigth();
+    public abstract double getDefaultHeight();
 
     /**
      * Returns the BPMN sub type
@@ -267,4 +435,48 @@ public abstract class BPMNElementNode extends BPMNElement {
         return false;
     }
 
+    /**
+     * Returns a List of all outgoing SequenceFlows associated with this element
+     * 
+     * @return
+     */
+    public Set<SequenceFlow> getOutgoingSequenceFlows() {
+        // filter all sequenceFlows with a sourceRef to this elementNode
+        Set<SequenceFlow> result = this.bpmnProcess.getSequenceFlows()
+                .stream()
+                .filter(c -> c.sourceRef.equals(this.getId()))
+                .collect(Collectors.toSet());
+        return result;
+
+    }
+
+    /**
+     * Returns a List of all ingoing SequenceFlows associated with this element
+     * 
+     * @return
+     */
+    public Set<SequenceFlow> getIngoingSequenceFlows() {
+        // filter all sequenceFlows with a sourceRef to this elementNode
+        Set<SequenceFlow> result = this.bpmnProcess.getSequenceFlows()
+                .stream()
+                .filter(c -> c.targetRef.equals(this.getId()))
+                .collect(Collectors.toSet());
+        return result;
+
+    }
+
+    /**
+     * Returns a List of all Associations associated with this element
+     * 
+     * @return
+     */
+    public Set<Association> getAssociations() {
+        // filter all Associations with a sourceRef or targetRef to this elementNode
+        Set<Association> result = this.bpmnProcess.getAssociations()
+                .stream()
+                .filter(c -> c.getSourceRef().equals(this.getId()) || c.getTargetRef().equals(this.getId()))
+                .collect(Collectors.toSet());
+        return result;
+
+    }
 }

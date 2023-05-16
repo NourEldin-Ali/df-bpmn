@@ -23,6 +23,7 @@ import org.eclipse.glsp.server.operations.CreateEdgeOperation;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.BPMNProcess;
+import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.elements.CreateBPMNEdgeOperationHandler;
@@ -47,7 +48,7 @@ public class BPMNGEdgeCreateHandler extends CreateBPMNEdgeOperationHandler {
      * We use this constructor to overwrite the handledElementTypeIds
      */
     public BPMNGEdgeCreateHandler() {
-        super(BPMNTypes.BPMN_EDGES);
+        super(BPMNTypes.BPMN_EDGE_ELEMENTS);
         this.label = "Sequence Flow";
     }
 
@@ -92,17 +93,28 @@ public class BPMNGEdgeCreateHandler extends CreateBPMNEdgeOperationHandler {
                 }
                 // open the process and create the sequence flow...
                 BPMNProcess bpmnProcess = modelState.getBpmnModel().openProcess(targetProcessId);
-                bpmnProcess.addSequenceFlow(BPMNModel.generateShortID("SequenceFlow"), sourceId, targetId);
+                bpmnProcess.addSequenceFlow(BPMNModel.generateShortID("sequenceFlow"), sourceId, targetId);
             }
 
             if (BPMNTypes.ASSOCIATION.equals(edgeType)) {
-                String targetProcessId = modelState.getBpmnModel().findElementNodeById(targetId).getProcessId();
-                BPMNProcess bpmnProcess = modelState.getBpmnModel().openProcess(targetProcessId);
-                bpmnProcess.addAssociation(BPMNModel.generateShortID("Association"), sourceId, targetId);
+                // if one of the element nodes is assigned to the default process, than we
+                // assign the association also to the default process
+                BPMNElementNode sourceElementNode = (BPMNElementNode) modelState.getBpmnModel()
+                        .findElementById(sourceId);
+                BPMNElementNode targetElementNode = (BPMNElementNode) modelState.getBpmnModel()
+                        .findElementById(targetId);
+                BPMNProcess sourceProcess = sourceElementNode.getBpmnProcess();
+                BPMNProcess targetProcess = targetElementNode.getBpmnProcess();
+                if (sourceProcess.isPublicProcess()) {
+                    sourceProcess.addAssociation(BPMNModel.generateShortID("association"), sourceId, targetId);
+                } else {
+                    // in any case this is the best match now
+                    targetProcess.addAssociation(BPMNModel.generateShortID("association"), sourceId, targetId);
+                }
             }
 
             if (BPMNTypes.MESSAGE_FLOW.equals(edgeType)) {
-                modelState.getBpmnModel().addMessageFlow(BPMNModel.generateShortID("MessageFlow"), sourceId, targetId);
+                modelState.getBpmnModel().addMessageFlow(BPMNModel.generateShortID("messageFlow"), sourceId, targetId);
             }
 
             modelState.reset();

@@ -64,7 +64,8 @@ public class BPMNApplyPropertiesUpdateOperationHandler
     protected void executeOperation(final BPMNApplyPropertiesUpdateOperation operation) {
         long l = System.currentTimeMillis();
         String jsonData = operation.getJsonData();
-//        System.out.println(jsonData);
+        String category = operation.getCategory();
+
         // validate GModel id
         String elementID = operation.getId();
         GModelElement gModelElement = null;
@@ -73,7 +74,7 @@ public class BPMNApplyPropertiesUpdateOperationHandler
         if (modelState.getRoot().getId().equals(elementID)) {
 
             gModelElement = modelState.getRoot();
-            bpmnElement = modelState.getBpmnModel().openDefaultProcess();
+            bpmnElement = modelState.getBpmnModel().openDefaultProces();
         } else {
             // find the corresponding bpmn element....
             Optional<BPMNGNode> _baseElement = modelState.getIndex().findElementByClass(elementID, BPMNGNode.class);
@@ -117,11 +118,14 @@ public class BPMNApplyPropertiesUpdateOperationHandler
             for (BPMNExtension extension : extensions) {
                 // validate if the extension can handle this BPMN element
                 if (extension.handlesBPMNElement(bpmnElement)) {
-                    extension.updatePropertiesData(json, bpmnElement, gModelElement);
+                    extension.updatePropertiesData(json, category, bpmnElement, gModelElement);
                 }
             }
         }
-        modelState.reset();
+
+        // finally we need to update the JSONFormsData property of the selected element
+        // See also issue #164
+        gModelElement.getArgs().put("JSONFormsData", json.toString());
         logger.debug("....execute Update " + operation.getId() + " in " + (System.currentTimeMillis() - l) + "ms");
 
     }

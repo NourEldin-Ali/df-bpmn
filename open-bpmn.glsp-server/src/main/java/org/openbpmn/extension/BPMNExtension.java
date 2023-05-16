@@ -45,6 +45,8 @@ import org.openbpmn.glsp.jsonforms.UISchemaBuilder;
  */
 public interface BPMNExtension {
 
+    public final static String INFO = "bpmnExtensionInfo";
+
     /**
      * Unique identifier specifying the Extension namespace. The default namespace
      * is 'bpmn2'. Implementations should overwrite this method.
@@ -67,6 +69,16 @@ public interface BPMNExtension {
     String getLabel();
 
     /**
+     * Returns an optional Extension information label to be displayed within the
+     * diagram plane
+     *
+     * @return String
+     */
+    default String getInfo(final BPMNElement bpmnElement) {
+        return ""; // return empty string as default
+    }
+
+    /**
      * Returns true if the given ElementTypeID can be handled by this extension.
      * This method is used to verify if a custom implementation of an extension can
      * be applied to a BPMNModelElement.
@@ -78,16 +90,15 @@ public interface BPMNExtension {
 
     /**
      * Validates whether the given {@link BPMNElement} can be handled by this BPMN
-     * extension. The default implementation returns true. Implementations can
-     * accept only specific BPMN element types or elements containing specific BPMN
-     * 2.0 extensions.
+     * extension.
+     * 
+     * Implementations must overwrite this method and accept only specific BPMN
+     * element types or elements containing specific BPMN 2.0 extensions.
      *
-     * @param bpmnElement The BPMNBaseElement that should be handled.
+     * @param bpmnElement - the BPMNBaseElement that should be handled.
      * @return `true` if the given bpmnElement can be handled by this extension.
      */
-    default boolean handlesBPMNElement(final BPMNElement bpmnElement) {
-        return true;
-    }
+    boolean handlesBPMNElement(final BPMNElement bpmnElement);
 
     /**
      * Returns the priority of this action handler. The priority is used to derive
@@ -121,7 +132,7 @@ public interface BPMNExtension {
                 addCategory("General"). //
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name", "category"). //
-
+    
          schemaBuilder.addProperty("name", "string", "Please enter your name");
      *
      * }
@@ -136,13 +147,20 @@ public interface BPMNExtension {
     /**
      * Updates the properties data of a BPMN Element.
      * <p>
+     * The new data is provided in the JsonObject 'json'.
+     * <p>
+     * The parameter 'category' is optional and specifies a part of the data
+     * structure to be updated. This can be useful for complex BPMN objects to
+     * updated only parts of the data, which can have a positive performance issue.
+     * <p>
      * An extension can also update the given json object during this operation if
      * needed.
      *
      * @param json         - a JSON structure representing the data
+     * @param category     - an optional data category
      * @param bpmnElement  - the BPMN element to be updated
      * @param gNodeElement - the GModelElement element
      */
-    void updatePropertiesData(JsonObject json, BPMNElement bpmnElement, GModelElement gNodeElement);
+    void updatePropertiesData(JsonObject json, String category, BPMNElement bpmnElement, GModelElement gNodeElement);
 
 }

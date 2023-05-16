@@ -3,12 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.imixs.bpmn</groupId>
 	<artifactId>open-bpmn</artifactId>
-	<description>Imixs Open BPMN</description>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
-	<name>Imixs Open BPMN</name>
-
+	<name>Open BPMN</name>
+	<description>The Open BPMN Modeling Platform</description>
+	
 	<modules>
 		<module>open-bpmn.metamodel</module>
 		<module>open-bpmn.glsp-server</module>
@@ -50,11 +49,12 @@
 
 	<licenses>
 		<license>
-			<name>GNU General Public License</name>
-			<url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+			<name>Eclipse Public License - v 2.0</name>
+			<url>LICENSE</url>
 			<distribution>repo</distribution>
 			<comments>
-			All the results of the imixs workflow project are subject to the GPL licensing model.
+			This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v. 2.0
 			</comments>
 		</license>
 	</licenses>
@@ -134,7 +134,22 @@
 
 
 	<reporting>
-		<plugins>
+		
+	     <plugins>
+	         <plugin>
+	             <groupId>org.apache.maven.plugins</groupId>
+	             <artifactId>maven-project-info-reports-plugin</artifactId>
+	             <version>3.4.0</version>
+	             <reportSets>
+	                 <reportSet>
+	                     <configuration>
+	                         <!-- Just disable the generation of default files like index.html -->
+	                         <skip>true</skip>
+	                     </configuration>
+	                 </reportSet>
+	             </reportSets>
+	         </plugin>
+		
 			<!-- java doc -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -150,9 +165,10 @@
 				<version>3.0.0</version>
 			</plugin>
 		</plugins>
-	</reporting>
+
+	 </reporting>
 	
-<profiles>
+	<profiles>
 		<!-- Activate using the release property -->
 		<profile>
 			<id>release</id>

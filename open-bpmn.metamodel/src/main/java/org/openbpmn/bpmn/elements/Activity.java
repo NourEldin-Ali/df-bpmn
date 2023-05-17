@@ -1036,5 +1036,13 @@ public class Activity extends BPMNElementNode {
             this.bpmnShape.removeChild(bpmnLabel);
         }
     }
-
+     public boolean hasData() {
+    	 if(this.dataInputObjects.size()>0) {
+    		 return true;
+    	 }
+    	 if(this.dataOutputObjects.size()>0) {
+    		 return true;
+    	 }
+    	 return false;
+     }
 }

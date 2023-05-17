@@ -94,7 +94,6 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 			} catch (BPMNModelException e) {
 				logger.error("Failed to load model source: " + e.getMessage());
 			}
-
 		}
 	}
 

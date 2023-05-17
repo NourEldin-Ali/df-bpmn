@@ -51,91 +51,95 @@ import com.google.inject.Inject;
  * @version 1.0
  */
 public class BPMNSourceModelStorage implements SourceModelStorage {
-    private static Logger logger = LogManager.getLogger(BPMNSourceModelStorage.class);
+	private static Logger logger = LogManager.getLogger(BPMNSourceModelStorage.class);
 
-    @Inject
-    protected BPMNGModelState modelState;
+	@Inject
+	protected BPMNGModelState modelState;
 
-    @Inject
-    protected ActionDispatcher actionDispatcher;
+	@Inject
+	protected ActionDispatcher actionDispatcher;
 
-    /**
-     * Loads a source model into the modelState.
-     */
-    @Override
-    public void loadSourceModel(final RequestModelAction action) {
-        logger.debug("loading BPMN Meta model....");
-        Map<String, String> options = action.getOptions();
-        boolean bNeedsClientLayout = Boolean.parseBoolean(options.get("needsClientLayout"));
-        // resolve file location....
-        String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
-        if (uri == null || uri.isEmpty()) {
-            // fallback
-            uri = options.get("uri");
-        }
+	/**
+	 * Loads a source model into the modelState.
+	 */
+	@Override
+	public void loadSourceModel(final RequestModelAction action) {
+		logger.debug("loading BPMN Meta model....");
+		Map<String, String> options = action.getOptions();
+		boolean bNeedsClientLayout = Boolean.parseBoolean(options.get("needsClientLayout"));
+		// resolve file location....
+		String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+		if (uri == null || uri.isEmpty()) {
+			// fallback
+			uri = options.get("uri");
+		}
 
-        String diagramType = options.get("diagramType");
-        if (bNeedsClientLayout && uri != null && BPMNDiagramConfiguration.DIAGRAM_TYPE.equals(diagramType)) {
-            final File file = convertToFile(modelState);
-            BPMNModel model;
-            try {
-                model = BPMNModelFactory.read(file);
-                // we store the BPMN meta model into the modelState
-                modelState.setBpmnModel(model);
-                // if the model is dirty (because linked-file content has change) we send a
-                // DirtyState action...
-                if (model.isDirty()) {
-                    logger.info("....external model content has changed.");
-                    SetDirtyStateAction dirtyAction = new SetDirtyStateAction();
-                    dirtyAction.setDirty(true);
-                    dirtyAction.setReason("Updated linked File Content");
-                    actionDispatcher.dispatchAfterNextUpdate(dirtyAction);
-                }
-            } catch (BPMNModelException e) {
-                logger.error("Failed to load model source: " + e.getMessage());
-            }
+		String diagramType = options.get("diagramType");
+		if (bNeedsClientLayout && uri != null && BPMNDiagramConfiguration.DIAGRAM_TYPE.equals(diagramType)) {
+			final File file = convertToFile(modelState);
+			BPMNModel model;
+			try {
+				model = BPMNModelFactory.read(file);
+				// we store the BPMN meta model into the modelState
+				modelState.setBpmnModel(model);
+				// if the model is dirty (because linked-file content has change) we send a
+				// DirtyState action...
+				if (model.isDirty()) {
+					logger.info("....external model content has changed.");
+					SetDirtyStateAction dirtyAction = new SetDirtyStateAction();
+					dirtyAction.setDirty(true);
+					dirtyAction.setReason("Updated linked File Content");
+					actionDispatcher.dispatchAfterNextUpdate(dirtyAction);
+				}
+			} catch (BPMNModelException e) {
+				logger.error("Failed to load model source: " + e.getMessage());
+			}
 
-        }
-    }
+		}
+	}
 
-    @Override
-    public void saveSourceModel(final SaveModelAction action) {
-        Map<String, String> options = modelState.getClientOptions();
-        // resolve file location....
-        String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
-        if (uri == null || uri.isEmpty()) {
-            // fallback
-            uri = options.get("uri");
-        }
-        Optional<String> uriOpt = action.getFileUri();
-        if (uriOpt.isPresent() && !uriOpt.isEmpty()) {
-            // we got a new URI which means we have a 'saveAs' situaiton!
-            uri = uriOpt.get();
-        }
-        BPMNModel model = modelState.getBpmnModel();
-        try {
-            // check protocol
-            if (!uri.contains("://")) {
-                uri = "file://" + uri;
-            }
-            java.net.URI targetURI = new URI(uri);
-            model.save(targetURI);
-        } catch (URISyntaxException e) {
-            logger.error("Invalid Target URI: " + e.getMessage());
-        }
+	@Override
+	public void saveSourceModel(final SaveModelAction action) {
+		Map<String, String> options = modelState.getClientOptions();
+		// resolve file location....
+		String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+		if (uri == null || uri.isEmpty()) {
+			// fallback
+			uri = options.get("uri");
+		}
+		Optional<String> uriOpt = action.getFileUri();
+		if (uriOpt.isPresent() && !uriOpt.isEmpty()) {
+			// we got a new URI which means we have a 'saveAs' situaiton!
+			uri = uriOpt.get();
+		}
+		BPMNModel model = modelState.getBpmnModel();
+		try {
+			// check protocol
+//			if (!uri.contains("://")) {
+//				uri = "file://" + uri;
+//			}
 
-    }
+			File f = new File(uri);
+//			logger.info(f.toURI());
+			java.net.URI targetURI =f.toURI();
+//			java.net.URI targetURI = new URI(uri);
+			model.save(targetURI);
+		} catch (Exception e) {
+			logger.error("Invalid Target URI: " + e.getMessage());
+		}
 
-    /**
-     * This helper method opens the corresponding java.io.File form the given
-     * clientOptions
-     *
-     * @param modelState
-     * @return
-     */
-    protected File convertToFile(final GModelState modelState) {
-        return getOrThrow(ClientOptionsUtil.getSourceUriAsFile(modelState.getClientOptions()),
-                "Invalid file URI:" + ClientOptionsUtil.getSourceUri(modelState.getClientOptions()));
-    }
+	}
+
+	/**
+	 * This helper method opens the corresponding java.io.File form the given
+	 * clientOptions
+	 *
+	 * @param modelState
+	 * @return
+	 */
+	protected File convertToFile(final GModelState modelState) {
+		return getOrThrow(ClientOptionsUtil.getSourceUriAsFile(modelState.getClientOptions()),
+				"Invalid file URI:" + ClientOptionsUtil.getSourceUri(modelState.getClientOptions()));
+	}
 
 }

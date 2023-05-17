@@ -491,6 +491,7 @@ public class BPMNGModelFactory implements GModelFactory {
         }
         return null;
     }
+    
 
     private GModelElement xxxfindGElementById(final List<GModelElement> entityNodes, final String id) {
         if (entityNodes != null) {
@@ -1031,11 +1032,12 @@ public class BPMNGModelFactory implements GModelFactory {
             if (sequenceFlow.isDefault()) {
                 bpmnGEdge.getArgs().put("default", "true");
             }
-
+            
+            gNodeList.add(bpmnGEdge);
             // apply BPMN Extensions
             applyBPMNExtensions(bpmnGEdge, sequenceFlow);
 
-            gNodeList.add(bpmnGEdge);
+            
         }
     }
 

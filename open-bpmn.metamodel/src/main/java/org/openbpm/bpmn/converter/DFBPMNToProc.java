@@ -3,10 +3,12 @@ package org.openbpm.bpmn.converter;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,9 +23,14 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.openbpmn.bpmn.BPMNModel;
+import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
+import org.openbpmn.bpmn.elements.DataInputObjectExtension;
+import org.openbpmn.bpmn.elements.Event;
+import org.openbpmn.bpmn.elements.Gateway;
 import org.openbpmn.bpmn.elements.Participant;
+import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Document;
@@ -35,6 +42,14 @@ public class DFBPMNToProc {
 
 	enum ActivityType {
 		SERVICE, HUMAN
+	}
+
+	enum EventType {
+		START, END
+	}
+
+	enum GatewayType {
+		INCLUSIVE, AND, XOR
 	}
 
 	private static Logger logger = Logger.getLogger(DFBPMNToProc.class.getName());
@@ -66,7 +81,7 @@ public class DFBPMNToProc {
 
 			mainProcess.getAttributes().getNamedItem("name").setNodeValue(outputName);
 			logger.info("get notation diagram");
-			Node diagram = doc.getElementsByTagName("notation:Diagram").item(0);
+			Node mainDiagram = doc.getElementsByTagName("notation:Diagram").item(0);
 
 			// read data from bpmn file
 			model.getParticipants().stream().forEach(participant -> {
@@ -74,38 +89,49 @@ public class DFBPMNToProc {
 				try {
 					openProcess = model.openProcess(participant.getProcessRef());
 
-					System.out.println(openProcess.getActivities().size());
+//					System.out.println(openProcess.getActivities().size());
 					if (openProcess.isPublicProcess()) {
 						if (openProcess.getAllElementNodes().size() != 0) {
-							Map<String, Element> pool = addPoolToProc(doc, mainProcess, diagram, openProcess.getName(),
-									"1320", "250");
-							Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250");
-							addActivityFromBPMN(lane, null, doc, openProcess.getActivities());
+							Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
+									openProcess.getName(), "1320", "250");
+							Element actor = addActor(pool,doc);
+							Map<String, Element> lane = addLaneToProc(pool,actor.getAttribute("xmi:id"), doc, "Default Lane", "1320", "250");
+							System.out.println(openProcess.getActivities().size());
+							addElementsToLane(lane, null, doc, openProcess.getActivities(), openProcess.getEvents(),
+									openProcess.getGateways());
 						}
 					} else {
 						if (openProcess.getAllElementNodes().size() > 0) {
 //				
-							Map<String, Element> pool = addPoolToProc(doc, mainProcess, diagram, participant.getName(),
+							Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
+									participant.getName(),
 									String.valueOf(getAttributeBoundsValue(participant, "width")),
 									String.valueOf(getAttributeBoundsValue(participant, "height")));
+							Element actor = addActor(pool,doc);
 							if (openProcess.getLanes().size() == 0) {
 								try {
-									Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane",
+									
+									Map<String, Element> lane = addLaneToProc(pool,actor.getAttribute("xmi:id"), doc, "Default Lane",
 											String.valueOf(getAttributeBoundsValue(participant, "width")),
 											String.valueOf(getAttributeBoundsValue(participant, "height")));
-									addActivityFromBPMN(lane, participant, doc, openProcess.getActivities());
+									addElementsToLane(lane, participant, doc, openProcess.getActivities(),
+											openProcess.getEvents(), openProcess.getGateways());
 								} catch (XPathExpressionException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								addSquenceFlowFromBPMN(pool,mainDiagram, doc, openProcess.getSequenceFlows());
+
 							} else {
+//								System.out.println(openProcess.getAllElementNodes().size());
 								openProcess.getLanes().stream().forEach(laneBpmn -> {
 
 									try {
 
 										int widthParserLane = getAttributeBoundsValue(participant, "width")
 												/ openProcess.getLanes().size();
-										Map<String, Element> lane = addLaneToProc(pool, doc, laneBpmn.getName(),
+
+										Map<String, Element> lane = addLaneToProc(pool, actor.getAttribute("xmi:id"),doc, laneBpmn.getName(),
 												String.valueOf(widthParserLane), String.valueOf(
 														String.valueOf(getAttributeBoundsValue(laneBpmn, "height"))));
 
@@ -116,12 +142,32 @@ public class DFBPMNToProc {
 											}
 
 										});
-										addActivityFromBPMN(lane, laneBpmn, doc, activityList);
+
+										Set<Event> eventsList = new HashSet();
+										openProcess.getEvents().stream().forEach(event -> {
+											if (laneBpmn.contains(event)) {
+												eventsList.add(event);
+											}
+
+										});
+
+										Set<Gateway> gatwayList = new HashSet();
+										openProcess.getGateways().stream().forEach(gateway -> {
+											if (laneBpmn.contains(gateway)) {
+												gatwayList.add(gateway);
+											}
+										});
+										addElementsToLane(lane, laneBpmn, doc, activityList, eventsList, gatwayList);
+
+//										addSequenceFlowToProc(mainProcess,diagram,)
 									} catch (XPathExpressionException e) {
 										e.printStackTrace();
 									}
 								});
+
 							}
+							addSquenceFlowFromBPMN(pool, mainDiagram,doc, openProcess.getSequenceFlows());
+
 						}
 					}
 
@@ -132,20 +178,30 @@ public class DFBPMNToProc {
 
 			});
 
-//			// Add a new element to the XML document
-//			// addDataElement(doc, mainProcess,diagram);
-//			Map<String, Element> pool = addPool(doc, mainProcess, diagram, "Pool1", "1320", "250");
-//			Map<String, Element> lane = addLane(pool, doc, "Lane1", "153", "122");
-//			addLane(pool, doc, "Lane3", "175", "131");
-//			addActivity(lane, doc, "testActivity", "10", "10", ActivityType.SERVICE);
-//			addActivity(lane, doc, "testActivity2", "120", "20", ActivityType.HUMAN);
-
 			createProcFile(doc);
 
 		} catch (Exception e) {
 			return null;
 		}
 		return null;
+	}
+
+	Element addActor(Map<String, Element> pool, Document doc) {
+		// Create the root element <elements>
+		Element actor = doc.createElement("actors");
+		actor.setAttribute("xmi:type", "process:Actor");
+		actor.setAttribute("xmi:id", generateXmiId());
+		actor.setAttribute("name", "test");
+		pool.get(PROCESS).appendChild(actor);
+		return actor;
+	}
+
+	void addElementsToLane(Map<String, Element> lane, BPMNElementNode laneBpmn, Document doc,
+			Set<Activity> activityList, Set<Event> eventList, Set<Gateway> gatewayList)
+			throws XPathExpressionException {
+		addActivityFromBPMN(lane, laneBpmn, doc, activityList);
+		addEventFromBPMN(lane, laneBpmn, doc, eventList);
+		addGatewayFromBPMN(lane, laneBpmn, doc, gatewayList);
 	}
 
 	private int getAttributeBoundsValue(BPMNElementNode elementNode, String attribute) {
@@ -155,13 +211,38 @@ public class DFBPMNToProc {
 		return valueParser;
 	}
 
+	private void addEventFromBPMN(Map<String, Element> lane, BPMNElementNode laneBmn, Document doc, Set<Event> events)
+			throws XPathExpressionException {
+		events.stream().forEach(event -> {
+			try {
+//				System.out.println(event.getType());
+				if (event.getType().equals("startEvent")) {
+					addEventToProc(lane, doc, event,
+							String.valueOf(getAttributeBoundsValue(event, "x")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
+							String.valueOf(getAttributeBoundsValue(event, "y")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
+							EventType.START);
+				} else if (event.getType().equals("endEvent")) {
+					addEventToProc(lane, doc, event,
+							String.valueOf(getAttributeBoundsValue(event, "x")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
+							String.valueOf(getAttributeBoundsValue(event, "y")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
+							EventType.END);
+				}
+
+			} catch (XPathExpressionException e) {
+			}
+		});
+	}
+
 	private void addActivityFromBPMN(Map<String, Element> lane, BPMNElementNode laneBmn, Document doc,
 			Set<Activity> activities) throws XPathExpressionException {
 		activities.stream().forEach(activity -> {
-//			System.out.println(xParser);
 			try {
-				if (activity.hasData()) {
-					addActivityToProc(lane, doc, activity.getName(),
+				if (activity.isHuman()) {
+					addActivityToProc(lane, doc, activity,
 							String.valueOf(getAttributeBoundsValue(activity, "x")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(activity, "y")
@@ -169,7 +250,7 @@ public class DFBPMNToProc {
 							ActivityType.HUMAN);
 				} else {
 
-					addActivityToProc(lane, doc, activity.getName(),
+					addActivityToProc(lane, doc, activity,
 							String.valueOf(getAttributeBoundsValue(activity, "x")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(activity, "y")
@@ -179,6 +260,51 @@ public class DFBPMNToProc {
 			} catch (XPathExpressionException e) {
 				// TODO Auto-generated catch block
 //				e.printStackTrace();
+			}
+		});
+	}
+
+	private void addSquenceFlowFromBPMN(Map<String,Element> pool,Node diagram, Document doc,
+			Set<SequenceFlow> sequenceFlowList) throws XPathExpressionException {
+		sequenceFlowList.stream().forEach(sequenceFlow -> {
+			try {
+				addSequenceFlowToProc(pool,diagram, doc, sequenceFlow, "0", "0");
+//					addActivityToProc(lane, doc, activity,
+//							String.valueOf(getAttributeBoundsValue(activity, "x")
+//									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
+//							String.valueOf(getAttributeBoundsValue(activity, "y")
+//									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
+//							ActivityType.SERVICE);
+
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+			}
+		});
+	}
+
+	private void addGatewayFromBPMN(Map<String, Element> lane, BPMNElementNode laneBmn, Document doc,
+			Set<Gateway> gateways) throws XPathExpressionException {
+		gateways.stream().forEach(gateway -> {
+			try {
+//				
+				GatewayType type = null;
+				if (gateway.getType().equals("parallelGateway")) {
+					type = GatewayType.AND;
+				} else if (gateway.getType().equals("exclusiveGateway")) {
+					type = GatewayType.XOR;
+				} else if (gateway.getType().equals("inclusiveGateway")) {
+					type = GatewayType.INCLUSIVE;
+				}
+				if (type != null)
+					addGatewayToProc(lane, doc, gateway,
+							String.valueOf(getAttributeBoundsValue(gateway, "x")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
+							String.valueOf(getAttributeBoundsValue(gateway, "y")
+									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
+							type);
+
+			} catch (XPathExpressionException e) {
 			}
 		});
 	}
@@ -307,8 +433,8 @@ public class DFBPMNToProc {
 		return pool;
 	}
 
-	private Map<String, Element> addLaneToProc(Map<String, Element> pool, Document doc, String laneName, String width,
-			String height) throws XPathExpressionException {
+	private Map<String, Element> addLaneToProc(Map<String, Element> pool, String actorID, Document doc, String laneName,
+			String width, String height) throws XPathExpressionException {
 		logger.info("add lane element");
 
 		// add lane to pool (element)
@@ -316,6 +442,7 @@ public class DFBPMNToProc {
 		elementsLane.setAttribute("xmi:type", "process:Lane");
 		elementsLane.setAttribute("xmi:id", generateXmiId());
 		elementsLane.setAttribute("name", laneName);
+		elementsLane.setAttribute("actor", actorID);
 		pool.get(PROCESS).appendChild(elementsLane);
 
 		// Diagram lane
@@ -378,7 +505,7 @@ public class DFBPMNToProc {
 		return lane;
 	}
 
-	private Element addActivityToProc(Map<String, Element> lane, Document doc, String activityName, String x, String y,
+	private Element addActivityToProc(Map<String, Element> lane, Document doc, Activity activity, String x, String y,
 			ActivityType type) throws XPathExpressionException {
 		logger.info("add activity element");
 
@@ -388,8 +515,8 @@ public class DFBPMNToProc {
 			elementsActivity.setAttribute("xmi:type", "process:Task");
 		else
 			elementsActivity.setAttribute("xmi:type", "process:ServiceTask");
-		elementsActivity.setAttribute("xmi:id", generateXmiId());
-		elementsActivity.setAttribute("name", activityName);
+		elementsActivity.setAttribute("xmi:id", activity.getId());
+		elementsActivity.setAttribute("name", activity.getName());
 		if (type == ActivityType.HUMAN)
 			elementsActivity.setAttribute("overrideActorsOfTheLane", "false");
 
@@ -434,6 +561,26 @@ public class DFBPMNToProc {
 			contractElement.setAttribute("xmi:id", generateXmiId());
 			elementsActivity.appendChild(contractElement);
 
+			List<DataInputObjectExtension> dataList = activity.getDataInputObjects().stream().filter(data -> data
+					.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER))
+					.collect(Collectors.toList());
+
+			dataList.stream().forEach(objectData -> {
+				// Create root element
+				Element dataElement = doc.createElement("inputs");
+				dataElement.setAttribute("xmi:type", "process:ContractInput");
+				dataElement.setAttribute("xmi:id", generateXmiId());
+				dataElement.setAttribute("name", objectData.getName());
+				if (objectData.getAttribute("isMultiple").equals("true"))
+					dataElement.setAttribute("multiple", "true");
+				contractElement.appendChild(dataElement);
+
+				// Create mapping element
+				Element mapping = doc.createElement("mapping");
+				mapping.setAttribute("xmi:type", "process:ContractInputMapping");
+				mapping.setAttribute("xmi:id", generateXmiId());
+				dataElement.appendChild(mapping);
+			});
 			// <expectedDuration>
 			Element expectedDurationElement = doc.createElement("expectedDuration");
 			expectedDurationElement.setAttribute("xmi:type", "expression:Expression");
@@ -450,10 +597,20 @@ public class DFBPMNToProc {
 			addDiagramForActivity(doc, lane, elementsActivity.getAttribute("xmi:id"), x, y, ActivityType.SERVICE);
 		}
 
+		// add incoming and outgoing
+		activity.getIngoingSequenceFlows().stream().forEach(incoming -> {
+			elementsActivity.setAttribute("incoming",
+					elementsActivity.getAttribute("incoming") + " " + incoming.getId());
+		});
+		activity.getOutgoingSequenceFlows().stream().forEach(outgoing -> {
+			elementsActivity.setAttribute("outgoing",
+					elementsActivity.getAttribute("outgoing") + " " + outgoing.getId());
+		});
+
 		return elementsActivity;
 	}
 
-	void addDiagramForActivity(Document doc, Map<String, Element> lane, String elementID, String x, String y,
+	Element addDiagramForActivity(Document doc, Map<String, Element> lane, String elementID, String x, String y,
 			ActivityType type) throws XPathExpressionException {
 
 		// Create the <children> element
@@ -503,6 +660,350 @@ public class DFBPMNToProc {
 		layoutConstraintElement.setAttribute("x", x);
 		layoutConstraintElement.setAttribute("y", y);
 		childrenElement.appendChild(layoutConstraintElement);
+		return childrenElement;
+	}
+
+	private Element addEventToProc(Map<String, Element> lane, Document doc, Event event, String x, String y,
+			EventType type) throws XPathExpressionException {
+
+		logger.info("add event element");
+
+		// Create the <elements> element
+		Element elementsEvent = doc.createElement("elements");
+
+		if (type == EventType.START)
+			elementsEvent.setAttribute("xmi:type", "process:StartEvent");
+		else if (type == EventType.END)
+			elementsEvent.setAttribute("xmi:type", "process:EndEvent");
+
+		elementsEvent.setAttribute("xmi:id", event.getId());
+		elementsEvent.setAttribute("name", event.getName());
+
+		lane.get(PROCESS).appendChild(elementsEvent);
+
+		// dynamicLabel element
+		Element dynamicLabel = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(dynamicLabel);
+
+		// set attribute to dynamicLabel element
+		dynamicLabel.setAttribute("xmi:type", "expression:Expression");
+		dynamicLabel.setAttribute("xmi:id", generateXmiId());
+		dynamicLabel.setAttribute("name", "");
+		dynamicLabel.setAttribute("content", "");
+		dynamicLabel.setAttribute("returnTypeFixed", "true");
+
+		// dynamicDescription element
+		Element dynamicDescription = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(dynamicDescription);
+
+		// set attribute to dynamicLabel element
+		dynamicDescription.setAttribute("xmi:type", "expression:Expression");
+		dynamicDescription.setAttribute("xmi:id", generateXmiId());
+		dynamicDescription.setAttribute("name", "");
+		dynamicDescription.setAttribute("content", "");
+		dynamicDescription.setAttribute("returnTypeFixed", "true");
+
+		// dynamicLabel element
+		Element stepSummary = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(stepSummary);
+
+		// set attribute to dynamicLabel element
+		stepSummary.setAttribute("xmi:type", "expression:Expression");
+		stepSummary.setAttribute("xmi:id", generateXmiId());
+		stepSummary.setAttribute("name", "");
+		stepSummary.setAttribute("content", "");
+		stepSummary.setAttribute("returnTypeFixed", "true");
+
+		addDiagramForEvent(doc, lane, elementsEvent.getAttribute("xmi:id"), x, y, type);
+
+		// add incoming and outgoing
+		event.getIngoingSequenceFlows().stream().forEach(incoming -> {
+			elementsEvent.setAttribute("incoming", elementsEvent.getAttribute("incoming") + " " + incoming.getId());
+		});
+		event.getOutgoingSequenceFlows().stream().forEach(outgoing -> {
+			elementsEvent.setAttribute("outgoing", elementsEvent.getAttribute("outgoing") + " " + outgoing.getId());
+		});
+
+		return elementsEvent;
+	}
+
+	Element addDiagramForEvent(Document doc, Map<String, Element> lane, String elementID, String x, String y,
+			EventType type) throws XPathExpressionException {
+
+		// Create the <children> element
+		Element childrenElement = doc.createElement("children");
+		childrenElement.setAttribute("xmi:type", "notation:Shape");
+		childrenElement.setAttribute("xmi:id", generateXmiId());
+		if (type == EventType.START)
+			childrenElement.setAttribute("type", "3002");
+		else if (type == EventType.END)
+			childrenElement.setAttribute("type", "3003");
+		childrenElement.setAttribute("element", elementID);
+		childrenElement.setAttribute("fontName", "Segoe UI");
+
+		// get lane child with type 7002
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		String xpathExpression = "//children[@element='" + lane.get(PROCESS).getAttribute("xmi:id")
+				+ "']/children[@type='7002']";
+		// Evaluate the XPath expression and get the matching node
+		Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+		if (node != null) {
+			Element diagram = (Element) node;
+			diagram.appendChild(childrenElement);
+		}
+
+		// Child element
+		Element child = doc.createElement("children");
+		child.setAttribute("xmi:type", "notation:DecorationNode");
+		child.setAttribute("xmi:id", generateXmiId());
+		if (type == EventType.START)
+			child.setAttribute("type", "5024");
+		else if (type == EventType.END)
+			child.setAttribute("type", "5025");
+		childrenElement.appendChild(child);
+
+		// Child's child element
+		Element layoutConstraint = doc.createElement("layoutConstraint");
+		layoutConstraint.setAttribute("xmi:type", "notation:Location");
+		layoutConstraint.setAttribute("xmi:id", generateXmiId());
+		layoutConstraint.setAttribute("y", "5");
+		child.appendChild(layoutConstraint);
+
+		// Root's child element
+		Element layoutConstraintRoot = doc.createElement("layoutConstraint");
+		layoutConstraintRoot.setAttribute("xmi:type", "notation:Bounds");
+		layoutConstraintRoot.setAttribute("xmi:id", generateXmiId());
+		layoutConstraintRoot.setAttribute("x", x);
+		layoutConstraintRoot.setAttribute("y", y);
+		childrenElement.appendChild(layoutConstraintRoot);
+
+		return childrenElement;
+	}
+
+	private Element addSequenceFlowToProc(Map<String,Element> pool, Node diagram, Document doc, SequenceFlow sequenceFlow,
+			String x, String y) throws XPathExpressionException {
+		logger.info("add sequence flow");
+
+		// Create the <elements> element
+		// Create root element
+		Element sequenceFlowElement = doc.createElement("connections");
+		sequenceFlowElement.setAttribute("xmi:type", "process:SequenceFlow");
+		sequenceFlowElement.setAttribute("xmi:id", sequenceFlow.getId());
+		sequenceFlowElement.setAttribute("target", sequenceFlow.getTargetRef());
+		sequenceFlowElement.setAttribute("source", sequenceFlow.getSourceRef());
+		pool.get(PROCESS).appendChild(sequenceFlowElement);
+
+		// Create decisionTable element
+		Element decisionTable = doc.createElement("decisionTable");
+		decisionTable.setAttribute("xmi:type", "decision:DecisionTable");
+		decisionTable.setAttribute("xmi:id", generateXmiId());
+		sequenceFlowElement.appendChild(decisionTable);
+
+		// Create condition element
+		Element condition = doc.createElement("condition");
+		condition.setAttribute("xmi:type", "expression:Expression");
+		condition.setAttribute("xmi:id", generateXmiId());
+		condition.setAttribute("name", "");
+		condition.setAttribute("returnType", "java.lang.Boolean");
+		condition.setAttribute("returnTypeFixed", "true");
+		sequenceFlowElement.appendChild(condition);
+
+		addDiagramForSequenceFlow(doc, diagram, sequenceFlow, x, y);
+		return sequenceFlowElement;
+	}
+
+	Element addDiagramForSequenceFlow(Document doc, Node diagram, SequenceFlow squenceFlow, String x, String y)
+			throws XPathExpressionException {
+
+		// get source node
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		String xpathExpression = "//children[@element='" + squenceFlow.getSourceRef() + "' and @type='notation:Shape']";
+		// Evaluate the XPath expression and get the matching node
+		Node source = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+
+		// get target node
+		xPathFactory = XPathFactory.newInstance();
+		xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		xpathExpression = "//children[@element='" + squenceFlow.getTargetRef() + "' and @type='notation:Shape']";
+		// Evaluate the XPath expression and get the matching node
+		Node target = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+
+		/// Create root element
+		Element childrenElement = doc.createElement("edges");
+		childrenElement.setAttribute("xmi:type", "notation:Connector");
+		childrenElement.setAttribute("xmi:id", generateXmiId());
+		childrenElement.setAttribute("type", "4001");
+		childrenElement.setAttribute("element", squenceFlow.getId());
+		childrenElement.setAttribute("source", source.getAttributes().getNamedItem("xmi:id").getNodeValue());
+		childrenElement.setAttribute("target", target.getAttributes().getNamedItem("xmi:id").getNodeValue());
+		childrenElement.setAttribute("roundedBendpointsRadius", "10");
+		childrenElement.setAttribute("routing", "Rectilinear");
+		diagram.appendChild(childrenElement);
+
+		// Create children element
+		Element children = doc.createElement("children");
+		children.setAttribute("xmi:type", "notation:DecorationNode");
+		children.setAttribute("xmi:id", generateXmiId());
+		children.setAttribute("type", "6001");
+		children.setAttribute("element", squenceFlow.getId());
+		childrenElement.appendChild(children);
+
+		// Create layoutConstraint element
+		Element layoutConstraint = doc.createElement("layoutConstraint");
+		layoutConstraint.setAttribute("xmi:type", "notation:Location");
+		layoutConstraint.setAttribute("xmi:id", generateXmiId());
+		layoutConstraint.setAttribute("y", "-10");
+		children.appendChild(layoutConstraint);
+
+		// Create styles element
+		Element styles = doc.createElement("styles");
+		styles.setAttribute("xmi:type", "notation:FontStyle");
+		styles.setAttribute("xmi:id", generateXmiId());
+		styles.setAttribute("fontName", "Segoe UI");
+		childrenElement.appendChild(styles);
+
+		// Create bendpoints element
+		Element bendpoints = doc.createElement("bendpoints");
+		bendpoints.setAttribute("xmi:type", "notation:RelativeBendpoints");
+		bendpoints.setAttribute("xmi:id", generateXmiId());
+		bendpoints.setAttribute("points", "[0, 0, 0, 0]$[0, 0, 0, 0]");
+		childrenElement.appendChild(bendpoints);
+
+		return childrenElement;
+	}
+
+	private Element addGatewayToProc(Map<String, Element> lane, Document doc, Gateway gateway, String x, String y,
+			GatewayType type) throws XPathExpressionException {
+
+		logger.info("add gateway element");
+
+		// Create the <elements> element
+		Element elementsEvent = doc.createElement("elements");
+
+		if (type == GatewayType.AND)
+			elementsEvent.setAttribute("xmi:type", "process:ANDGateway");
+		else if (type == GatewayType.XOR)
+			elementsEvent.setAttribute("xmi:type", "process:XORGateway");
+		else if (type == GatewayType.INCLUSIVE)
+			elementsEvent.setAttribute("xmi:type", "process:InclusiveGateway");
+
+		elementsEvent.setAttribute("xmi:id", gateway.getId());
+		elementsEvent.setAttribute("name", gateway.getName());
+
+		lane.get(PROCESS).appendChild(elementsEvent);
+
+		// dynamicLabel element
+		Element dynamicLabel = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(dynamicLabel);
+
+		// set attribute to dynamicLabel element
+		dynamicLabel.setAttribute("xmi:type", "expression:Expression");
+		dynamicLabel.setAttribute("xmi:id", generateXmiId());
+		dynamicLabel.setAttribute("name", "");
+		dynamicLabel.setAttribute("content", "");
+		dynamicLabel.setAttribute("returnTypeFixed", "true");
+
+		// dynamicDescription element
+		Element dynamicDescription = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(dynamicDescription);
+
+		// set attribute to dynamicLabel element
+		dynamicDescription.setAttribute("xmi:type", "expression:Expression");
+		dynamicDescription.setAttribute("xmi:id", generateXmiId());
+		dynamicDescription.setAttribute("name", "");
+		dynamicDescription.setAttribute("content", "");
+		dynamicDescription.setAttribute("returnTypeFixed", "true");
+
+		// dynamicLabel element
+		Element stepSummary = doc.createElement("dynamicLabel");
+		elementsEvent.appendChild(stepSummary);
+
+		// set attribute to dynamicLabel element
+		stepSummary.setAttribute("xmi:type", "expression:Expression");
+		stepSummary.setAttribute("xmi:id", generateXmiId());
+		stepSummary.setAttribute("name", "");
+		stepSummary.setAttribute("content", "");
+		stepSummary.setAttribute("returnTypeFixed", "true");
+
+		addDiagramForGateway(doc, lane, elementsEvent.getAttribute("xmi:id"), x, y, type);
+
+		// add incoming and outgoing
+		gateway.getIngoingSequenceFlows().stream().forEach(incoming -> {
+			elementsEvent.setAttribute("incoming", elementsEvent.getAttribute("incoming") + " " + incoming.getId());
+		});
+		gateway.getOutgoingSequenceFlows().stream().forEach(outgoing -> {
+			elementsEvent.setAttribute("outgoing", elementsEvent.getAttribute("outgoing") + " " + outgoing.getId());
+		});
+
+		return elementsEvent;
+	}
+
+	Element addDiagramForGateway(Document doc, Map<String, Element> lane, String elementID, String x, String y,
+			GatewayType type) throws XPathExpressionException {
+
+		// Create the <children> element
+		Element childrenElement = doc.createElement("children");
+		childrenElement.setAttribute("xmi:type", "notation:Shape");
+		childrenElement.setAttribute("xmi:id", generateXmiId());
+		if (type == GatewayType.AND)
+			childrenElement.setAttribute("type", "3009");
+		else if (type == GatewayType.XOR)
+			childrenElement.setAttribute("type", "3008");
+		else if (type == GatewayType.INCLUSIVE)
+			childrenElement.setAttribute("type", "3051");
+
+		childrenElement.setAttribute("element", elementID);
+		childrenElement.setAttribute("fontName", "Segoe UI");
+
+		// get lane child with type 7002
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		String xpathExpression = "//children[@element='" + lane.get(PROCESS).getAttribute("xmi:id")
+				+ "']/children[@type='7002']";
+		// Evaluate the XPath expression and get the matching node
+		Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+		if (node != null) {
+			Element diagram = (Element) node;
+			diagram.appendChild(childrenElement);
+		}
+
+		// Child element
+		Element child = doc.createElement("children");
+		child.setAttribute("xmi:type", "notation:DecorationNode");
+		child.setAttribute("xmi:id", generateXmiId());
+		if (type == GatewayType.AND)
+			child.setAttribute("type", "5020");
+		else if (type == GatewayType.XOR)
+			child.setAttribute("type", "5026");
+		else if (type == GatewayType.INCLUSIVE)
+			child.setAttribute("type", "5075");
+		childrenElement.appendChild(child);
+
+		// Child's child element
+		Element layoutConstraint = doc.createElement("layoutConstraint");
+		layoutConstraint.setAttribute("xmi:type", "notation:Location");
+		layoutConstraint.setAttribute("xmi:id", generateXmiId());
+		layoutConstraint.setAttribute("y", "5");
+		child.appendChild(layoutConstraint);
+
+		// Root's child element
+		Element layoutConstraintRoot = doc.createElement("layoutConstraint");
+		layoutConstraintRoot.setAttribute("xmi:type", "notation:Bounds");
+		layoutConstraintRoot.setAttribute("xmi:id", generateXmiId());
+		layoutConstraintRoot.setAttribute("x", x);
+		layoutConstraintRoot.setAttribute("y", y);
+		childrenElement.appendChild(layoutConstraintRoot);
+
+		return childrenElement;
 	}
 
 	private void createProcFile(Document doc) {

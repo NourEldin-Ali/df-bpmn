@@ -286,6 +286,11 @@ public class BPMNDiagramModule extends DiagramModule {
         binding.addBinding().to(SignalEventDefinitionExtension.class);
         binding.addBinding().to(ConditionalEventDefinitionExtension.class);
         binding.addBinding().to(LinkEventDefinitionExtension.class);
+        
+        binding.addBinding().to(DefaultBPMNDataAttributeExtension.class);
+        binding.addBinding().to(DefaultBPMNDataInputExtension.class);
+        binding.addBinding().to(DefaultBPMNDataOutputExtension.class);
+        binding.addBinding().to(DefaultBPMNDataProcessingExtension.class);
 
     }
 }

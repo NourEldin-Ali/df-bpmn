@@ -45,89 +45,89 @@ import com.google.inject.Inject;
  *
  */
 public class BPMNApplyPropertiesUpdateOperationHandler
-        extends AbstractOperationHandler<BPMNApplyPropertiesUpdateOperation> {
-    private static Logger logger = LogManager.getLogger(BPMNApplyPropertiesUpdateOperationHandler.class);
+		extends AbstractOperationHandler<BPMNApplyPropertiesUpdateOperation> {
+	private static Logger logger = LogManager.getLogger(BPMNApplyPropertiesUpdateOperationHandler.class);
 
-    @Inject
-    protected ActionDispatcher actionDispatcher;
+	@Inject
+	protected ActionDispatcher actionDispatcher;
 
-    @Inject
-    protected BPMNGModelState modelState;
+	@Inject
+	protected BPMNGModelState modelState;
 
-    @Inject
-    protected Set<BPMNExtension> extensions;
+	@Inject
+	protected Set<BPMNExtension> extensions;
 
-    /**
-     *
-     */
-    @Override
-    protected void executeOperation(final BPMNApplyPropertiesUpdateOperation operation) {
-        long l = System.currentTimeMillis();
-        String jsonData = operation.getJsonData();
-        String category = operation.getCategory();
+	/**
+	 *
+	 */
+	@Override
+	protected void executeOperation(final BPMNApplyPropertiesUpdateOperation operation) {
+		long l = System.currentTimeMillis();
+		String jsonData = operation.getJsonData();
+		String category = operation.getCategory();
 
-        // validate GModel id
-        String elementID = operation.getId();
-        GModelElement gModelElement = null;
-        BPMNElement bpmnElement = null;
-        // is the root element selected?
-        if (modelState.getRoot().getId().equals(elementID)) {
+		// validate GModel id
+		String elementID = operation.getId();
+		GModelElement gModelElement = null;
+		BPMNElement bpmnElement = null;
+		// is the root element selected?
+		if (modelState.getRoot().getId().equals(elementID)) {
 
-            gModelElement = modelState.getRoot();
-            bpmnElement = modelState.getBpmnModel().openDefaultProces();
-        } else {
-            // find the corresponding bpmn element....
-            Optional<BPMNGNode> _baseElement = modelState.getIndex().findElementByClass(elementID, BPMNGNode.class);
-            if (!_baseElement.isEmpty()) {
-                gModelElement = _baseElement.get();
-                bpmnElement = modelState.getBpmnModel().findElementNodeById(elementID);
-                if (bpmnElement == null) {
-                    BPMNElement bpmnElementEx = modelState.getBpmnModel().findElementExtensionNodeById(elementID);
-                    if (bpmnElementEx != null) {
-                        bpmnElement = ((Activity) bpmnElementEx).findElementById(elementID);
-                    }
-                }
-            }
-            if (bpmnElement == null) {
-                // not yet found - check Edges....
-                Optional<BPMNGEdge> _baseEdge = modelState.getIndex().findElementByClass(elementID, BPMNGEdge.class);
-                if (!_baseEdge.isEmpty()) {
-                    gModelElement = _baseEdge.get();
-                    bpmnElement = modelState.getBpmnModel().findElementEdgeById(elementID);
-                }
-            }
-        }
+			gModelElement = modelState.getRoot();
+			bpmnElement = modelState.getBpmnModel().openDefaultProces();
+		} else {
+			// find the corresponding bpmn element....
+			Optional<BPMNGNode> _baseElement = modelState.getIndex().findElementByClass(elementID, BPMNGNode.class);
+			if (!_baseElement.isEmpty()) {
+				gModelElement = _baseElement.get();
+				bpmnElement = modelState.getBpmnModel().findElementNodeById(elementID);
+				if (bpmnElement == null) {
+					BPMNElement bpmnElementEx = modelState.getBpmnModel().findElementExtensionNodeById(elementID);
+					if (bpmnElementEx != null) {
+						bpmnElement = ((Activity) bpmnElementEx).findElementById(elementID);
+					}
+				}
+			}
+			if (bpmnElement == null) {
+				// not yet found - check Edges....
+				Optional<BPMNGEdge> _baseEdge = modelState.getIndex().findElementByClass(elementID, BPMNGEdge.class);
+				if (!_baseEdge.isEmpty()) {
+					gModelElement = _baseEdge.get();
+					bpmnElement = modelState.getBpmnModel().findElementEdgeById(elementID);
+				}
+			}
+		}
 
-        // validate BPMN element
-        if (bpmnElement == null) {
-            throw new IllegalArgumentException(
-                    "BPMN Element with id " + operation.getId() + " is not defined in current model!");
-        }
-        // parse json....
-        JsonObject json = null;
-        String jsonDataClone = String.valueOf(jsonData);
-        try (JsonReader reader = Json.createReader(new StringReader(jsonDataClone))) {
-            json = reader.readObject();
-        } catch (JsonException e) {
-            throw new RuntimeException("Cannot read json data : " + e.getMessage());
-        }
+		// validate BPMN element
+		if (bpmnElement == null) {
+			throw new IllegalArgumentException(
+					"BPMN Element with id " + operation.getId() + " is not defined in current model!");
+		}
+		// parse json....
+		JsonObject json = null;
+		String jsonDataClone = String.valueOf(jsonData);
+		try (JsonReader reader = Json.createReader(new StringReader(jsonDataClone))) {
+			json = reader.readObject();
+		} catch (JsonException e) {
+			throw new RuntimeException("Cannot read json data : " + e.getMessage());
+		}
 
-        // Now call the extensions to update the property data according to the BPMN
-        // element. The updatePropertiesData can also update the given JSON object!
-        if (extensions != null) {
-            for (BPMNExtension extension : extensions) {
-                // validate if the extension can handle this BPMN element
-                if (extension.handlesBPMNElement(bpmnElement)) {
-                    extension.updatePropertiesData(json, category, bpmnElement, gModelElement);
-                }
-            }
-        }
+		// Now call the extensions to update the property data according to the BPMN
+		// element. The updatePropertiesData can also update the given JSON object!
+		if (extensions != null) {
+			for (BPMNExtension extension : extensions) {
+				// validate if the extension can handle this BPMN element
+				if (extension.handlesBPMNElement(bpmnElement)) {
+					extension.updatePropertiesData(json, category, bpmnElement, gModelElement);
+				}
+			}
+		}
+		modelState.reset();
+		// finally we need to update the JSONFormsData property of the selected element
+		// See also issue #164
+		gModelElement.getArgs().put("JSONFormsData", json.toString());
+		logger.debug("....execute Update " + operation.getId() + " in " + (System.currentTimeMillis() - l) + "ms");
 
-        // finally we need to update the JSONFormsData property of the selected element
-        // See also issue #164
-        gModelElement.getArgs().put("JSONFormsData", json.toString());
-        logger.debug("....execute Update " + operation.getId() + " in " + (System.currentTimeMillis() - l) + "ms");
-
-    }
+	}
 
 }

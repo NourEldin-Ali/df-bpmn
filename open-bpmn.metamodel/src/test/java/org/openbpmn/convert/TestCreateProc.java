@@ -22,22 +22,17 @@ public class TestCreateProc {
 	 */
 	@Test
 	public void testCreateEmptyModel() throws BPMNModelException {
-
 		logger.info("...creating new empty proc");
 		BPMNModel model = BPMNModelFactory.read("/df-bpmn.bpmn");
-		
-//		System.out.println(model);
-//		for(BPMNProcess bpmnProcess:model.getProcesses()) {
-//			System.out.println( model.openProcess(bpmnProcess.getId()).getActivities().size());
-//		}
-//		
-//		logger.info( model.openDefaultProcess().getId());
-//		for (Activity activity : model.openDefaultProcess().getActivities()) {
-//			System.out.println(activity.getBpmnShape().getFirstChild().getNextSibling().getAttributes().getNamedItem("x").getNodeValue());
-//		}
-//		Element e=(Element) model.findBPMNPlaneElement("BPMNShape",..getId());
-
-		DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,"DFBPMN","C:\\BonitaStudioCommunity-2022.2-u0\\workspace\\procurement-example1");
+//		System.out.println(model.openProcess("process_5Pr7ZQ").getActivities().stream().anyMatch(activity-> activity.getDataInputObjects().stream().anyMatch(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER))));
+//		model.openProcess("process_5Pr7ZQ").getActivities().stream().forEach(activity -> {
+//			activity.getDataInputObjects().stream().forEach(data ->{
+//System.out.println(data.getName());
+//System.out.println(data.getElementNode().getLocalName());
+//			});
+//		});
+//		System.out.println(model.openProcess("process_UCR5cw").getGateways().size());
+		DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
 		dfbpmnToProc.createDiagrame();
 		logger.info("...proc creation sucessful");
 	}

@@ -1045,4 +1045,9 @@ public class Activity extends BPMNElementNode {
     	 }
     	 return false;
      }
+     
+     
+     public boolean isHuman() {
+    	 return this.dataInputObjects.stream().anyMatch(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
+     }
 }

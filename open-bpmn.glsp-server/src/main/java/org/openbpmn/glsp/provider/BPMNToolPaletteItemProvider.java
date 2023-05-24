@@ -69,8 +69,8 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
                 PaletteItem.createPaletteGroup("task-group", "Tasks", createPaletteTaskItems(), "symbol-property", "B"),
                 PaletteItem.createPaletteGroup("event-group", "Events", createPaletteEventItems(), "symbol-property",
                         "C"),
-                PaletteItem.createPaletteGroup("event-group", "Event Definitions", createPaletteEventDefinitions(),
-                        "symbol-property", "D"),
+//                PaletteItem.createPaletteGroup("event-group", "Event Definitions", createPaletteEventDefinitions(),
+//                        "symbol-property", "D"),
                 PaletteItem.createPaletteGroup("gateway-group", "Gateways", createPaletteGatewayItems(),
                         "symbol-property", "E"),
 
@@ -80,8 +80,8 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
                 PaletteItem.createPaletteGroup("edge-group", "Edges", createPaletteSequenceFlowItems(),
                         "symbol-property", "G"),
 
-                PaletteItem.createPaletteGroup("extension-group", "Extensions", createPaletteExtensions(),
-                        "symbol-property", "H"),
+//                PaletteItem.createPaletteGroup("extension-group", "Extensions", createPaletteExtensions(),
+//                        "symbol-property", "H"),
 
                 PaletteItem.createPaletteGroup("input-group", "Input Extension",
                         createPaletteDataInputObjectExtensions(), "symbol-property", "I"),
@@ -273,38 +273,38 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("A");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.MANUAL_TASK, "Manual Task",
-                new TriggerNodeCreationAction(BPMNTypes.MANUAL_TASK));
-        item.setSortString("B");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.USER_TASK, "User Task", new TriggerNodeCreationAction(BPMNTypes.USER_TASK));
-        item.setSortString("C");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.SCRIPT_TASK, "Script Task",
-                new TriggerNodeCreationAction(BPMNTypes.SCRIPT_TASK));
-        item.setSortString("D");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.BUSINESSRULE_TASK, "Business Rule Task",
-                new TriggerNodeCreationAction(BPMNTypes.BUSINESSRULE_TASK));
-        item.setSortString("E");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.SERVICE_TASK, "Service Task",
-                new TriggerNodeCreationAction(BPMNTypes.SERVICE_TASK));
-        item.setSortString("F");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.SEND_TASK, "Send Task", new TriggerNodeCreationAction(BPMNTypes.SEND_TASK));
-        item.setSortString("G");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.RECEIVE_TASK, "Receive Task",
-                new TriggerNodeCreationAction(BPMNTypes.RECEIVE_TASK));
-        item.setSortString("H");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.MANUAL_TASK, "Manual Task",
+//                new TriggerNodeCreationAction(BPMNTypes.MANUAL_TASK));
+//        item.setSortString("B");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.USER_TASK, "User Task", new TriggerNodeCreationAction(BPMNTypes.USER_TASK));
+//        item.setSortString("C");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.SCRIPT_TASK, "Script Task",
+//                new TriggerNodeCreationAction(BPMNTypes.SCRIPT_TASK));
+//        item.setSortString("D");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.BUSINESSRULE_TASK, "Business Rule Task",
+//                new TriggerNodeCreationAction(BPMNTypes.BUSINESSRULE_TASK));
+//        item.setSortString("E");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.SERVICE_TASK, "Service Task",
+//                new TriggerNodeCreationAction(BPMNTypes.SERVICE_TASK));
+//        item.setSortString("F");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.SEND_TASK, "Send Task", new TriggerNodeCreationAction(BPMNTypes.SEND_TASK));
+//        item.setSortString("G");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.RECEIVE_TASK, "Receive Task",
+//                new TriggerNodeCreationAction(BPMNTypes.RECEIVE_TASK));
+//        item.setSortString("H");
+//        result.add(item);
 
         return result;
     }
@@ -327,20 +327,20 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("B");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.CATCH_EVENT, "Catch Event",
-                new TriggerNodeCreationAction(BPMNTypes.CATCH_EVENT));
-        item.setSortString("C");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.THROW_EVENT, "Throw Event",
-                new TriggerNodeCreationAction(BPMNTypes.THROW_EVENT));
-        item.setSortString("D");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.BOUNDARY_EVENT, "Boundary Event",
-                new TriggerNodeCreationAction(BPMNTypes.BOUNDARY_EVENT));
-        item.setSortString("E");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.CATCH_EVENT, "Catch Event",
+//                new TriggerNodeCreationAction(BPMNTypes.CATCH_EVENT));
+//        item.setSortString("C");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.THROW_EVENT, "Throw Event",
+//                new TriggerNodeCreationAction(BPMNTypes.THROW_EVENT));
+//        item.setSortString("D");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.BOUNDARY_EVENT, "Boundary Event",
+//                new TriggerNodeCreationAction(BPMNTypes.BOUNDARY_EVENT));
+//        item.setSortString("E");
+//        result.add(item);
         return result;
     }
 
@@ -386,9 +386,9 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         result.add(item);
 
         // Add Message
-        item = new PaletteItem(BPMNTypes.MESSAGE, "Message", new TriggerNodeCreationAction(BPMNTypes.MESSAGE));
-        item.setSortString("B");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.MESSAGE, "Message", new TriggerNodeCreationAction(BPMNTypes.MESSAGE));
+//        item.setSortString("B");
+//        result.add(item);
 
         // Add TextAnnotation
         item = new PaletteItem(BPMNTypes.TEXTANNOTATION, "Text Annotation",
@@ -433,20 +433,20 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("B");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.EVENTBASED_GATEWAY, "Event-Based",
-                new TriggerNodeCreationAction(BPMNTypes.EVENTBASED_GATEWAY));
-        item.setSortString("C");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.EVENTBASED_GATEWAY, "Event-Based",
+//                new TriggerNodeCreationAction(BPMNTypes.EVENTBASED_GATEWAY));
+//        item.setSortString("C");
+//        result.add(item);
 
         item = new PaletteItem(BPMNTypes.INCLUSIVE_GATEWAY, "Inclusive",
                 new TriggerNodeCreationAction(BPMNTypes.INCLUSIVE_GATEWAY));
         item.setSortString("D");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.COMPLEX_GATEWAY, "Complex",
-                new TriggerNodeCreationAction(BPMNTypes.COMPLEX_GATEWAY));
-        item.setSortString("E");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.COMPLEX_GATEWAY, "Complex",
+//                new TriggerNodeCreationAction(BPMNTypes.COMPLEX_GATEWAY));
+//        item.setSortString("E");
+//        result.add(item);
 
         return result;
     }

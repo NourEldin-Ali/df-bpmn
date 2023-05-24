@@ -111,14 +111,18 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
                 .addData("documentation", bpmnElement.getDocumentation()) //
                 .addData("targetNamespace", definitions.getAttribute("targetNamespace")) //
                 .addData("exporter", definitions.getAttribute("exporter")) //
-                .addData("exporterVersion", definitions.getAttribute("exporterVersion"));
+                .addData("exporterVersion", definitions.getAttribute("exporterVersion"))
+                .addData("bonitaProjectPath", bpmnElement.getAttribute("bonitaProjectPath"))
+                .addData("exportName", bpmnElement.getAttribute("exportName"));
 
         schemaBuilder. //
                 addProperty("name", "string", null). //
                 addProperty("targetNamespace", "string", null). //
                 addProperty("exporter", "string", null). //
                 addProperty("exporterVersion", "string", null). //
-                addProperty("documentation", "string", "Model description.");
+                addProperty("documentation", "string", "Model description.").
+                addProperty("bonitaProjectPath", "string", null).
+                addProperty("exportName", "string", null);
 
         Map<String, String> multilineOption = new HashMap<>();
         multilineOption.put("multi", "true");
@@ -131,7 +135,11 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
                 // Category Definitions...
                 addCategory("Definitions"). //
                 addLayout(Layout.VERTICAL). //
-                addElements("targetNamespace", "exporter", "exporterVersion"); //
+                addElements("targetNamespace", "exporter", "exporterVersion").
+                // Category Bonita Project...
+                addCategory("Bonita Integration"). //
+                addLayout(Layout.VERTICAL). //
+                addElements("bonitaProjectPath","exportName"); //
 
         // Signal List
         buildSignalProperties(modelState.getBpmnModel(), dataBuilder, schemaBuilder, uiSchemaBuilder);
@@ -214,6 +222,10 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
             definitions.setAttribute("exporterVersion", json.getString("exporterVersion", ""));
         }
 
+        if ("Bonita Integration".equals(category)) {
+        	bpmnElement.setAttribute("bonitaProjectPath", json.getString("bonitaProjectPath", ""));
+        	bpmnElement.setAttribute("exportName", json.getString("exportName", ""));
+        }
         if ("Signals".equals(category)) {
             // update signal properties...
             boolean update = false;

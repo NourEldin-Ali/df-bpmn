@@ -143,6 +143,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
 
             if ("scriptformat".equals(feature)) {
                 bpmnElement.setAttribute("scriptFormat", json.getString(feature));
+//                modelState.reset();
                 continue;
             }
 

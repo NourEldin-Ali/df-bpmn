@@ -22,6 +22,7 @@
     </bpmn2:laneSet>
     <bpmn2:task expand="true" id="task_bsOgnA" name="Task-1">
       <bpmn2:documentation id="documentation_WyqOxw"/>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_RQ6mxw" isMultiple="false" name="DataInput-1" type="any"/>
     </bpmn2:task>
     <bpmn2:task expand="true" id="task_SaQ1Kw" name="Task-2">
       <bpmn2:documentation id="documentation_3nDFcw"/>
@@ -39,10 +40,13 @@
         <dc:Bounds height="200.0" width="770.0" x="146.0" y="259.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_bsOgnA" id="BPMNShape_y0Ju0w">
-        <dc:Bounds height="55.0" width="165.0" x="243.5" y="79.5"/>
+        <dc:Bounds height="183.0" width="505.0" x="275.5" y="75.5"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_SaQ1Kw" id="BPMNShape_Xc8zmA">
         <dc:Bounds height="55.0" width="165.0" x="300.5" y="335.5"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_RQ6mxw" id="BPMNShape_pDilSg">
+        <dc:Bounds height="50.0" width="160.0" x="300.0" y="115.0"/>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

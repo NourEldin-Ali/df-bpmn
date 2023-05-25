@@ -795,7 +795,11 @@ public class BPMNGModelFactory implements GModelFactory {
 								- taskNode.getPosition().getX(),
 						data.getBounds().getPosition().getY() - dataObjectNode.getPosition().getY()
 								- taskNode.getPosition().getY());
+				if (participant != null) {
 
+					point.setX(point.getX() - participant.getBounds().getPosition().getX());
+					point.setY(point.getY() - participant.getBounds().getPosition().getY());
+				}
 				// build GNode
 				DataAttributeExtensionGNode dataNode = new DataAttributeExtensionGNodeBuilder(data)//
 						.position(point) //

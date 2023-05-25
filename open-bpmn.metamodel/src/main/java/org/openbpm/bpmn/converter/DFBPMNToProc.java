@@ -29,13 +29,12 @@ import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
 import org.openbpmn.bpmn.elements.Event;
 import org.openbpmn.bpmn.elements.Gateway;
-import org.openbpmn.bpmn.elements.Participant;
 import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
-import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class DFBPMNToProc {
 	BPMNModel model;
@@ -67,7 +66,6 @@ public class DFBPMNToProc {
 
 	public File createDiagrame() {
 		try {
-			logger.info("get info from proc");
 
 			File file = new File("src/main/resources/initDiagram.proc");
 			// an instance of factory that gives a document builder
@@ -76,11 +74,11 @@ public class DFBPMNToProc {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document doc = db.parse(file);
 			doc.getDocumentElement().normalize();
-			logger.info("get main process");
+//			logger.info("get main process");
 			Node mainProcess = doc.getElementsByTagName("process:MainProcess").item(0);
 
 			mainProcess.getAttributes().getNamedItem("name").setNodeValue(outputName);
-			logger.info("get notation diagram");
+//			logger.info("get notation diagram");
 			Node mainDiagram = doc.getElementsByTagName("notation:Diagram").item(0);
 
 			// read data from bpmn file
@@ -94,8 +92,11 @@ public class DFBPMNToProc {
 						if (openProcess.getAllElementNodes().size() != 0) {
 							Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
 									openProcess.getName(), "1320", "250");
-							Element actor = addActor(pool,doc);
-							Map<String, Element> lane = addLaneToProc(pool,actor.getAttribute("xmi:id"), doc, "Default Lane", "1320", "250");
+							Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
+							addProcessVariableToProc(pool, processVariable, doc);
+							Element actor = addActor(pool, doc);
+							Map<String, Element> lane = addLaneToProc(pool, actor.getAttribute("xmi:id"), doc,
+									"Default Lane", "1320", "250");
 							System.out.println(openProcess.getActivities().size());
 							addElementsToLane(lane, null, doc, openProcess.getActivities(), openProcess.getEvents(),
 									openProcess.getGateways());
@@ -107,11 +108,14 @@ public class DFBPMNToProc {
 									participant.getName(),
 									String.valueOf(getAttributeBoundsValue(participant, "width")),
 									String.valueOf(getAttributeBoundsValue(participant, "height")));
-							Element actor = addActor(pool,doc);
+							Element actor = addActor(pool, doc);
+							Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
+							addProcessVariableToProc(pool, processVariable, doc);
 							if (openProcess.getLanes().size() == 0) {
 								try {
-									
-									Map<String, Element> lane = addLaneToProc(pool,actor.getAttribute("xmi:id"), doc, "Default Lane",
+
+									Map<String, Element> lane = addLaneToProc(pool, actor.getAttribute("xmi:id"), doc,
+											"Default Lane",
 											String.valueOf(getAttributeBoundsValue(participant, "width")),
 											String.valueOf(getAttributeBoundsValue(participant, "height")));
 									addElementsToLane(lane, participant, doc, openProcess.getActivities(),
@@ -120,7 +124,7 @@ public class DFBPMNToProc {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								addSquenceFlowFromBPMN(pool,mainDiagram, doc, openProcess.getSequenceFlows());
+								addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
 
 							} else {
 //								System.out.println(openProcess.getAllElementNodes().size());
@@ -131,59 +135,95 @@ public class DFBPMNToProc {
 										int widthParserLane = getAttributeBoundsValue(participant, "width")
 												/ openProcess.getLanes().size();
 
-										Map<String, Element> lane = addLaneToProc(pool, actor.getAttribute("xmi:id"),doc, laneBpmn.getName(),
-												String.valueOf(widthParserLane), String.valueOf(
+										Map<String, Element> lane = addLaneToProc(pool, actor.getAttribute("xmi:id"),
+												doc, laneBpmn.getName(), String.valueOf(widthParserLane),
+												String.valueOf(
 														String.valueOf(getAttributeBoundsValue(laneBpmn, "height"))));
 
-										Set<Activity> activityList = new HashSet();
+										Set<Activity> activityList = new HashSet<Activity>();
 										openProcess.getActivities().stream().forEach(activity -> {
 											if (laneBpmn.contains(activity)) {
 												activityList.add(activity);
 											}
-
 										});
 
-										Set<Event> eventsList = new HashSet();
+										Set<Event> eventsList = new HashSet<Event>();
 										openProcess.getEvents().stream().forEach(event -> {
 											if (laneBpmn.contains(event)) {
 												eventsList.add(event);
 											}
-
 										});
 
-										Set<Gateway> gatwayList = new HashSet();
+										Set<Gateway> gatwayList = new HashSet<Gateway>();
 										openProcess.getGateways().stream().forEach(gateway -> {
 											if (laneBpmn.contains(gateway)) {
 												gatwayList.add(gateway);
 											}
 										});
 										addElementsToLane(lane, laneBpmn, doc, activityList, eventsList, gatwayList);
-
 //										addSequenceFlowToProc(mainProcess,diagram,)
 									} catch (XPathExpressionException e) {
 										e.printStackTrace();
 									}
 								});
-
 							}
-							addSquenceFlowFromBPMN(pool, mainDiagram,doc, openProcess.getSequenceFlows());
-
+							addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
 						}
 					}
-
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			});
-
-			createProcFile(doc);
-
+			File procFile = createProcFile(doc);
+			if (procFile == null) {
+				logger.info("Generate failed to Bonita Proc");
+			}
+			return procFile;
 		} catch (Exception e) {
+			logger.info("Generate failed to Bonita Proc");
+			System.out.println(e.getMessage());
 			return null;
 		}
-		return null;
+	}
+
+	void addProcessVariableToProc(Map<String, Element> pool, Map<String, String> processVariable, Document doc)
+			throws XPathExpressionException {
+
+		Map<String, String> types = new HashMap<>();
+
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7001"
+		String xpathExpression = "//datatypes";
+
+		// Evaluate the XPath expression and get the matching node
+		NodeList listNode = (NodeList) xPath.evaluate(xpathExpression, doc, XPathConstants.NODESET);
+		if (listNode != null) {
+			for (int i = 0; i < listNode.getLength(); i++) {
+				types.put(listNode.item(i).getAttributes().getNamedItem("name").getNodeValue().toLowerCase(),
+						listNode.item(i).getAttributes().getNamedItem("xmi:id").getNodeValue());
+			}
+		}
+//		System.out.println(types);
+		processVariable.forEach((dataName, dataType) -> {
+			Element data = doc.createElement("data");
+			data.setAttribute("xmi:type", "process:Data");
+			data.setAttribute("xmi:id", generateXmiId());
+			data.setAttribute("name", dataName);
+			if (types.keySet().contains(dataType.toLowerCase()))
+				data.setAttribute("dataType", types.get(dataType.toLowerCase()));
+			else
+				data.setAttribute("dataType", types.get("text") );
+			pool.get(PROCESS).appendChild(data);
+
+			Element defaultValue = doc.createElement("defaultValue");
+			defaultValue.setAttribute("xmi:type", "expression:Expression");
+			defaultValue.setAttribute("xmi:id", generateXmiId());
+			defaultValue.setAttribute("content", "");
+			data.appendChild(defaultValue);
+		});
 	}
 
 	Element addActor(Map<String, Element> pool, Document doc) {
@@ -264,11 +304,11 @@ public class DFBPMNToProc {
 		});
 	}
 
-	private void addSquenceFlowFromBPMN(Map<String,Element> pool,Node diagram, Document doc,
+	private void addSquenceFlowFromBPMN(Map<String, Element> pool, Node diagram, Document doc,
 			Set<SequenceFlow> sequenceFlowList) throws XPathExpressionException {
 		sequenceFlowList.stream().forEach(sequenceFlow -> {
 			try {
-				addSequenceFlowToProc(pool,diagram, doc, sequenceFlow, "0", "0");
+				addSequenceFlowToProc(pool, diagram, doc, sequenceFlow, "0", "0");
 //					addActivityToProc(lane, doc, activity,
 //							String.valueOf(getAttributeBoundsValue(activity, "x")
 //									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
@@ -316,7 +356,7 @@ public class DFBPMNToProc {
 
 	private Map<String, Element> addPoolToProc(Document doc, Node mainProcess, Node diagram, String poolName,
 			String width, String heigth) {
-		logger.info("add pool element");
+//		logger.info("add pool element");
 
 		// Create the root element <elements>
 		Element elementsPool = doc.createElement("elements");
@@ -435,7 +475,7 @@ public class DFBPMNToProc {
 
 	private Map<String, Element> addLaneToProc(Map<String, Element> pool, String actorID, Document doc, String laneName,
 			String width, String height) throws XPathExpressionException {
-		logger.info("add lane element");
+//		logger.info("add lane element");
 
 		// add lane to pool (element)
 		Element elementsLane = doc.createElement("elements");
@@ -507,7 +547,7 @@ public class DFBPMNToProc {
 
 	private Element addActivityToProc(Map<String, Element> lane, Document doc, Activity activity, String x, String y,
 			ActivityType type) throws XPathExpressionException {
-		logger.info("add activity element");
+//		logger.info("add activity element");
 
 		// Create the <elements> element
 		Element elementsActivity = doc.createElement("elements");
@@ -564,15 +604,18 @@ public class DFBPMNToProc {
 			List<DataInputObjectExtension> dataList = activity.getDataInputObjects().stream().filter(data -> data
 					.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER))
 					.collect(Collectors.toList());
+			Set<String> dataType = Set.of("text", "boolean", "decimal", "integer", "date");
 
 			dataList.stream().forEach(objectData -> {
 				// Create root element
+
 				Element dataElement = doc.createElement("inputs");
 				dataElement.setAttribute("xmi:type", "process:ContractInput");
 				dataElement.setAttribute("xmi:id", generateXmiId());
 				dataElement.setAttribute("name", objectData.getName());
 				if (objectData.getAttribute("isMultiple").equals("true"))
 					dataElement.setAttribute("multiple", "true");
+
 				contractElement.appendChild(dataElement);
 
 				// Create mapping element
@@ -580,6 +623,26 @@ public class DFBPMNToProc {
 				mapping.setAttribute("xmi:type", "process:ContractInputMapping");
 				mapping.setAttribute("xmi:id", generateXmiId());
 				dataElement.appendChild(mapping);
+
+				if (objectData.getDataAttributes().size() > 0) {
+					dataElement.setAttribute("type", "COMPLEX");
+					objectData.getDataAttributes().stream().forEach(dataAttribute -> {
+
+						Element elementAttribute = doc.createElement("inputs");
+						elementAttribute.setAttribute("xmi:type", "process:ContractInput");
+						elementAttribute.setAttribute("xmi:id", generateXmiId());
+						elementAttribute.setAttribute("name", dataAttribute.getName());
+						if (dataType.contains(dataAttribute.getAttribute("type").toLowerCase())) {
+							elementAttribute.setAttribute("type", dataAttribute.getAttribute("type").toUpperCase());
+						}
+						dataElement.appendChild(elementAttribute);
+
+					});
+				} else {
+					if (dataType.contains(objectData.getAttribute("type").toLowerCase())) {
+						dataElement.setAttribute("type", objectData.getAttribute("type").toUpperCase());
+					}
+				}
 			});
 			// <expectedDuration>
 			Element expectedDurationElement = doc.createElement("expectedDuration");
@@ -666,7 +729,7 @@ public class DFBPMNToProc {
 	private Element addEventToProc(Map<String, Element> lane, Document doc, Event event, String x, String y,
 			EventType type) throws XPathExpressionException {
 
-		logger.info("add event element");
+//		logger.info("add event element");
 
 		// Create the <elements> element
 		Element elementsEvent = doc.createElement("elements");
@@ -783,9 +846,9 @@ public class DFBPMNToProc {
 		return childrenElement;
 	}
 
-	private Element addSequenceFlowToProc(Map<String,Element> pool, Node diagram, Document doc, SequenceFlow sequenceFlow,
-			String x, String y) throws XPathExpressionException {
-		logger.info("add sequence flow");
+	private Element addSequenceFlowToProc(Map<String, Element> pool, Node diagram, Document doc,
+			SequenceFlow sequenceFlow, String x, String y) throws XPathExpressionException {
+//		logger.info("add sequence flow");
 
 		// Create the <elements> element
 		// Create root element
@@ -882,7 +945,7 @@ public class DFBPMNToProc {
 	private Element addGatewayToProc(Map<String, Element> lane, Document doc, Gateway gateway, String x, String y,
 			GatewayType type) throws XPathExpressionException {
 
-		logger.info("add gateway element");
+//		logger.info("add gateway element");
 
 		// Create the <elements> element
 		Element elementsEvent = doc.createElement("elements");
@@ -1006,7 +1069,7 @@ public class DFBPMNToProc {
 		return childrenElement;
 	}
 
-	private void createProcFile(Document doc) {
+	private File createProcFile(Document doc) {
 		try {
 
 			// Save the modified XML document
@@ -1016,9 +1079,12 @@ public class DFBPMNToProc {
 //			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(projectPath + "\\diagrams\\" + outputName + "-0.0.proc"));
+			File outfile = new File(projectPath + "\\diagrams\\" + outputName + "-0.0.proc");
+			StreamResult result = new StreamResult(outfile);
 			transformer.transform(source, result);
+			return outfile;
 		} catch (Exception e) {
+			return null;
 		}
 
 	}

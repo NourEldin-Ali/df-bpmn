@@ -33,6 +33,7 @@ import org.eclipse.glsp.server.features.core.model.SourceModelStorage;
 import org.eclipse.glsp.server.model.GModelState;
 import org.eclipse.glsp.server.utils.ClientOptionsUtil;
 import org.eclipse.glsp.server.utils.MapUtil;
+import org.openbpm.bpmn.converter.DFBPMNToProc;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.bpmn.util.BPMNModelFactory;
@@ -123,6 +124,10 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 			java.net.URI targetURI =f.toURI();
 //			java.net.URI targetURI = new URI(uri);
 			model.save(targetURI);
+			
+			
+			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
+			dfbpmnToProc.createDiagrame();
 		} catch (Exception e) {
 			logger.error("Invalid Target URI: " + e.getMessage());
 		}

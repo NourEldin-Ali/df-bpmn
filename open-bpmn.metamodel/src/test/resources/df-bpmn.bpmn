@@ -6,7 +6,7 @@
       <bpmn2:documentation id="documentation_kSGDGA"/>
     </bpmn2:participant>
   </bpmn2:collaboration>
-  <bpmn2:process bonitaProjectPath="C:\\BonitaStudioCommunity-2022.2-u0\\workspace\\procurement-example1" definitionalCollaborationRef="collaboration_1" exportName="DFBPMN" id="process_1" name="Default Process" processType="Public">
+  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2022.2-u0\workspace\procurement-example1" definitionalCollaborationRef="collaboration_1" exportName="DFBPMN" id="process_1" name="Default Process" processType="Public">
     <bpmn2:documentation id="documentation_iupHcQ"/>
   </bpmn2:process>
   <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_i6KS2g" name="Pool-1" processType="Private">
@@ -14,12 +14,33 @@
       <bpmn2:lane id="lane_hUv1yQ" name="Lane 1">
         <bpmn2:documentation id="documentation_3tlBfA"/>
         <bpmn2:flowNodeRef>task_NTrPZA</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_fzKiQw</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_1EFZyQ</bpmn2:flowNodeRef>
       </bpmn2:lane>
     </bpmn2:laneSet>
     <bpmn2:task expand="true" id="task_NTrPZA" name="Task-1">
       <bpmn2:documentation id="documentation_9F7mWg"/>
-      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_PkLaqw" isMultiple="false" name="DataInput-1" type="any"/>
+      <bpmn2:incoming>sequenceFlow_SJrC3Q</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_nR0stA</bpmn2:outgoing>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_dpxPOQ" isMultiple="false" name="DataInput-1" type="an">
+        <bpmn2:attribute id="DataObjectAttributeExtension_6227ZQ" name="attribute-1" type="any"/>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_V6kIoQ" isMultiple="false" name="testtt" type="any"/>
     </bpmn2:task>
+    <bpmn2:startEvent id="event_fzKiQw" name="Event-1">
+      <bpmn2:documentation id="documentation_QeAmhQ"/>
+      <bpmn2:outgoing>sequenceFlow_SJrC3Q</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_SJrC3Q" sourceRef="event_fzKiQw" targetRef="task_NTrPZA">
+      <bpmn2:documentation id="documentation_PotMyQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="event_1EFZyQ" name="Event-2">
+      <bpmn2:documentation id="documentation_MwoViQ"/>
+      <bpmn2:incoming>sequenceFlow_nR0stA</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_nR0stA" sourceRef="task_NTrPZA" targetRef="event_1EFZyQ">
+      <bpmn2:documentation id="documentation_FbeCgQ"/>
+    </bpmn2:sequenceFlow>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
     <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
@@ -30,16 +51,47 @@
         <dc:Bounds height="50.0" width="160.0" x="723.2404174804688" y="22.0865478515625"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="participant_k0ylhA" id="BPMNShape_9rZxfw">
-        <dc:Bounds height="472.0" width="848.0" x="51.30703313216311" y="65.70446067031645"/>
+        <dc:Bounds height="472.0" width="848.0" x="-263.90399169921875" y="-324.3539337585967"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="lane_hUv1yQ" id="BPMNShape_Lane_oECKew">
-        <dc:Bounds height="472.0" width="818.0" x="81.0" y="65.0"/>
+        <dc:Bounds height="472.0" width="818.0" x="-233.0" y="-324.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_NTrPZA" id="BPMNShape_lbD9XQ">
-        <dc:Bounds height="131.0" width="266.0" x="206.4886474609375" y="128.515869140625"/>
+        <dc:Bounds height="253.00538635253906" width="389.6540832519531" x="-30.44783592224121" y="-204.3583984375"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_PkLaqw" id="BPMNShape_TJvknw">
-        <dc:Bounds height="50.0" width="160.0" x="266.0318298339844" y="159.009765625"/>
+      <bpmndi:BPMNShape bpmnElement="event_fzKiQw" id="BPMNShape_WqqP0Q">
+        <dc:Bounds height="36.0" width="36.0" x="-122.78082275390625" y="-177.23795170293266"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7I0iDw">
+          <dc:Bounds height="16.0" width="100.0" x="-154.78082275390625" y="-138.23795170293266"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_SJrC3Q" id="BPMNEdge_bJhlpA" sourceElement="BPMNShape_WqqP0Q" targetElement="BPMNShape_lbD9XQ">
+        <di:waypoint x="-86.78082275391273" y="-159.2379608154297"/>
+        <di:waypoint x="-58.61433410644531" y="-159.2379608154297"/>
+        <di:waypoint x="-58.61433410644531" y="-77.85572814941406"/>
+        <di:waypoint x="-30.44783592224121" y="-77.85572814941406"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="event_1EFZyQ" id="BPMNShape_OR0kRw">
+        <dc:Bounds height="36.0" width="36.0" x="414.7023010253906" y="-180.53539127812797"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_hSaEOg">
+          <dc:Bounds height="16.0" width="100.0" x="382.7023010253906" y="-141.53539127812797"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_nR0stA" id="BPMNEdge_rhCFcA" sourceElement="BPMNShape_lbD9XQ" targetElement="BPMNShape_OR0kRw">
+        <di:waypoint x="359.2062473297119" y="-188.35842895507812"/>
+        <di:waypoint x="378.2644958496094" y="-188.35842895507812"/>
+        <di:waypoint x="378.2644958496094" y="-159.2379608154297"/>
+        <di:waypoint x="378.2644958496094" y="-162.535400390625"/>
+        <di:waypoint x="414.7023010253971" y="-162.535400390625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_dpxPOQ" id="BPMNShape_8N7Ylw">
+        <dc:Bounds height="50.0" width="160.0" x="-8.663177490234375" y="-114.59272766113281"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_6227ZQ" id="BPMNShape_86hxtw">
+        <dc:Bounds height="25.0" width="110.0" x="16.336822509765625" y="-64.59272766113281"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_V6kIoQ" id="BPMNShape_ubKiyw">
+        <dc:Bounds height="50.0" width="160.0" x="168.0" y="-114.59272766113281"/>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

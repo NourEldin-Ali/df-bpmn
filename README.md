@@ -1,5 +1,9 @@
-**DataFlow BPMN** is a free BPMN 2.0 modeling platform that can be extended and customized by any BPMN 2.0 compliant execution engine.
+[**DataFlow BPMN**](https://www.researchgate.net/publication/371043087_Zooming_in_for_Clarity_Towards_low-code_modeling_for_Activity_Data_Flow) is a free BPMN 2.0 modeling platform that can be extended and customized by any BPMN 2.0 compliant execution engine.
 DF-BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](https://www.eclipse.org/glsp/) and on [Open BPMN project](https://github.com/imixs/open-bpmn) providing an open-source framework for building diagram editors based on modern web technologies.
+
+[*DataFlow BPMN paper*](https://www.researchgate.net/publication/371043087_Zooming_in_for_Clarity_Towards_low-code_modeling_for_Activity_Data_Flow)
+
+[*DataFlow BPMN techninal report (how to use DF-BPMN)*](https://drive.google.com/file/d/1OlyvdmG6lZWu_PqOhf6OgEkZ6cwT6RPa/view?usp=sharing)
 
 <h2 align="center"><a href="http://172.171.161.217:3000/#/usr/src/app/workspace" target="_blank">Start the Online Demo</a></h2>
 

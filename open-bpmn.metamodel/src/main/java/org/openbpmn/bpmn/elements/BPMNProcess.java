@@ -1571,17 +1571,61 @@ public class BPMNProcess extends BPMNElement {
     	
     	activities.stream().forEach(activity->{
     		
-    		List<DataInputObjectExtension> dataInputObjectExtensions =  activity.getDataInputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)).collect(Collectors.toList());
+    		List<DataInputObjectExtension> dataInputObjectExtensions =  activity.getDataInputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS) ).collect(Collectors.toList());
     		dataInputObjectExtensions.stream().forEach(dataObject->{
-    			processVariable.put(dataObject.getName(), dataObject.getType());
+    			if(dataObject.getDataAttributes().size()>0) {
+    				dataObject.getDataAttributes().stream().forEach(attribute->{
+    					processVariable.put(attribute.getName(), attribute.getAttribute("type"));
+    				});
+    			}else {
+    				processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
+    			}
+    			
     		});
     		
     		List<DataOutputObjectExtension> dataOutputObjectExtension =  activity.getDataOutputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS)).collect(Collectors.toList());
     		dataOutputObjectExtension.stream().forEach(dataObject->{
-    			processVariable.put(dataObject.getName(), dataObject.getType());
+    			if(dataObject.getDataAttributes().size()>0) {
+    				dataObject.getDataAttributes().stream().forEach(attribute->{
+    					processVariable.put(attribute.getName(), attribute.getAttribute("type"));
+    				});
+    			}else {
+    				processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
+    			}
     		});
     		
     	});
         return processVariable;
+    }
+    
+    
+	/**
+     * Returns all BPMN DataObject elements contained in this process
+     * 
+     * @return
+     */
+    public Map<String,Map<String,String>> getDataStoresExtensions() {
+    	Map<String,Map<String,String>> dataStores = new HashMap<String,Map<String,String>>();
+    	
+    	activities.stream().forEach(activity->{
+    	
+    		List<DataInputObjectExtension> dataInputObjectExtensions =  activity.getDataInputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ).collect(Collectors.toList());
+    		dataInputObjectExtensions.stream().forEach(dataObject->{
+    			Map<String,String> dataInfo = new HashMap<String,String>();
+    			dataInfo.put("type", dataObject.getAttribute("type"));
+    			dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
+    			dataStores.put(dataObject.getName(), dataInfo);
+    		});
+    		
+    		List<DataOutputObjectExtension> dataOutputObjectExtension =  activity.getDataOutputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)).collect(Collectors.toList());
+    		dataOutputObjectExtension.stream().forEach(dataObject->{
+    			Map<String,String> dataInfo = new HashMap<String,String>();
+    			dataInfo.put("type", dataObject.getAttribute("type"));
+    			dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
+    			dataStores.put(dataObject.getName(), dataInfo);
+    		});
+    		
+    	});
+        return dataStores;
     }
 }

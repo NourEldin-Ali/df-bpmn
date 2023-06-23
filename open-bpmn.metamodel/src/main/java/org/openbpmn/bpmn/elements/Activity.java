@@ -1,10 +1,14 @@
 package org.openbpmn.bpmn.elements;
 
 import java.io.DataOutput;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNNS;
@@ -69,7 +73,6 @@ public class Activity extends BPMNElementNode {
 		return DEFAULT_WIDTH;
 	}
 
-
 	/*
 	 * initialize all data in the activity
 	 * 
@@ -117,11 +120,11 @@ public class Activity extends BPMNElementNode {
 	 * 
 	 * @author Ali Nour Eldin
 	 */
-	private Set<DataInputObjectExtension> dataInputObjects ;
-	private Set<DataOutputObjectExtension> dataOutputObjects ;
-	private Set<DataFlowExtension> dataFlows ;
-	private Set<DataReferenceExtension> dataReferences ;
-	private Set<DataProcessingExtension> dataProcessing ;
+	private Set<DataInputObjectExtension> dataInputObjects;
+	private Set<DataOutputObjectExtension> dataOutputObjects;
+	private Set<DataFlowExtension> dataFlows;
+	private Set<DataReferenceExtension> dataReferences;
+	private Set<DataProcessingExtension> dataProcessing;
 
 	public Set<DataInputObjectExtension> getDataInputObjects() {
 		return dataInputObjects;
@@ -700,42 +703,40 @@ public class Activity extends BPMNElementNode {
 	 */
 	public void deleteAllElements() {
 		Iterator<DataInputObjectExtension> dataInput = this.getDataInputObjects().iterator();
-        while (dataInput.hasNext()) {
-        	DataInputObjectExtension di=dataInput.next();
-        	Iterator<DataObjectAttributeExtension> att = di.getDataAttributes().iterator();
-        	while(att.hasNext()) {
-        		 model.getBpmnPlane().removeChild(att.next().getBpmnShape());
-        	}
-        	 model.getBpmnPlane().removeChild(di.getBpmnShape());
-        }
+		while (dataInput.hasNext()) {
+			DataInputObjectExtension di = dataInput.next();
+			Iterator<DataObjectAttributeExtension> att = di.getDataAttributes().iterator();
+			while (att.hasNext()) {
+				model.getBpmnPlane().removeChild(att.next().getBpmnShape());
+			}
+			model.getBpmnPlane().removeChild(di.getBpmnShape());
+		}
 
-        
-        Iterator<DataOutputObjectExtension> dataOut = this.getDataOutputObjects().iterator();
-        while (dataOut.hasNext()) {
-        	DataOutputObjectExtension d=dataOut.next();
-        	Iterator<DataObjectAttributeExtension> att = d.getDataAttributes().iterator();
-        	while(att.hasNext()) {
-        		model.getBpmnPlane().removeChild(att.next().getBpmnShape());
-        	}
-        	 model.getBpmnPlane().removeChild(d.getBpmnShape());
-        }
-		
-        Iterator<DataProcessingExtension> dataProcessing = this.getDataProcessing().iterator();
-        while (dataProcessing.hasNext()) {
-        	 model.getBpmnPlane().removeChild(dataProcessing.next().getBpmnShape());
-        }
-        
-        Iterator<DataFlowExtension> dataFlow = this.getDataFlows().iterator();
-        while (dataFlow.hasNext()) {
-        	 model.getBpmnPlane().removeChild(dataFlow.next().getBpmnEdge());
-        }
-        
-        Iterator<DataReferenceExtension> dataReferences = this.getDataReferences().iterator();
-        while (dataReferences.hasNext()) {
-        	 model.getBpmnPlane().removeChild(dataReferences.next().getBpmnEdge());
-        }
-        
-        
+		Iterator<DataOutputObjectExtension> dataOut = this.getDataOutputObjects().iterator();
+		while (dataOut.hasNext()) {
+			DataOutputObjectExtension d = dataOut.next();
+			Iterator<DataObjectAttributeExtension> att = d.getDataAttributes().iterator();
+			while (att.hasNext()) {
+				model.getBpmnPlane().removeChild(att.next().getBpmnShape());
+			}
+			model.getBpmnPlane().removeChild(d.getBpmnShape());
+		}
+
+		Iterator<DataProcessingExtension> dataProcessing = this.getDataProcessing().iterator();
+		while (dataProcessing.hasNext()) {
+			model.getBpmnPlane().removeChild(dataProcessing.next().getBpmnShape());
+		}
+
+		Iterator<DataFlowExtension> dataFlow = this.getDataFlows().iterator();
+		while (dataFlow.hasNext()) {
+			model.getBpmnPlane().removeChild(dataFlow.next().getBpmnEdge());
+		}
+
+		Iterator<DataReferenceExtension> dataReferences = this.getDataReferences().iterator();
+		while (dataReferences.hasNext()) {
+			model.getBpmnPlane().removeChild(dataReferences.next().getBpmnEdge());
+		}
+
 	}
 
 	public void deleteElementById(String id) {
@@ -755,20 +756,21 @@ public class Activity extends BPMNElementNode {
 			if (bpmnElement instanceof DataObjectAttributeExtension) {
 				((DataObjectAttributeExtension) bpmnElement).getElementNode().getParentNode()
 						.removeChild(bpmnElementNode.getElementNode());
-				
+
 			} else {
-				if (bpmnElement instanceof DataInputObjectExtension || bpmnElement instanceof DataOutputObjectExtension) {
+				if (bpmnElement instanceof DataInputObjectExtension
+						|| bpmnElement instanceof DataOutputObjectExtension) {
 					Set<DataObjectAttributeExtension> attL = null;
-					if(bpmnElement instanceof DataInputObjectExtension) {
+					if (bpmnElement instanceof DataInputObjectExtension) {
 						attL = ((DataInputObjectExtension) bpmnElement).getDataAttributes();
-					}else {
+					} else {
 						attL = ((DataOutputObjectExtension) bpmnElement).getDataAttributes();
 					}
 
-					for(DataObjectAttributeExtension att:attL) {
+					for (DataObjectAttributeExtension att : attL) {
 						model.getBpmnPlane().removeChild(att.getBpmnShape());
 					}
-					
+
 				}
 				this.getElementNode().removeChild(bpmnElementNode.getElementNode());
 			}
@@ -778,7 +780,7 @@ public class Activity extends BPMNElementNode {
 				model.getBpmnPlane().removeChild(bpmnElementNode.getBpmnShape());
 			}
 			if (bpmnElement instanceof DataInputObjectExtension) {
-				
+
 				this.getDataInputObjects().remove(bpmnElement);
 			}
 			if (bpmnElement instanceof DataOutputObjectExtension) {
@@ -811,20 +813,17 @@ public class Activity extends BPMNElementNode {
 	private void rePosiningAttributes(DataObjectAttributeExtension bpmnElement) throws BPMNMissingElementException {
 		int count = 0;
 		BPMNElementNode data = bpmnElement.getDataParent();
-		
+
 		for (DataObjectAttributeExtension attribute : bpmnElement.getAttributesObject()) {
 			double elementX = data.getBounds().getPosition().getX() + 25;
-	        double elementY = data.getBounds().getPosition().getY()
-	                + data.getBounds().getDimension().getHeight()
-	                + DataObjectAttributeExtension.DEFAULT_HEIGHT * count;
-	        attribute.getBounds().setPosition(elementX, elementY);
-	        attribute.getBounds().setDimension(DataObjectAttributeExtension.DEFAULT_WIDTH,
-	                DataObjectAttributeExtension.DEFAULT_HEIGHT);
-	        count ++;
+			double elementY = data.getBounds().getPosition().getY() + data.getBounds().getDimension().getHeight()
+					+ DataObjectAttributeExtension.DEFAULT_HEIGHT * count;
+			attribute.getBounds().setPosition(elementX, elementY);
+			attribute.getBounds().setDimension(DataObjectAttributeExtension.DEFAULT_WIDTH,
+					DataObjectAttributeExtension.DEFAULT_HEIGHT);
+			count++;
 		}
-		
-		
-		
+
 	}
 
 	/**
@@ -994,6 +993,7 @@ public class Activity extends BPMNElementNode {
 //		}
 		return results;
 	}
+
 	/**
 	 * get All node in the activity without attribute
 	 * 
@@ -1014,40 +1014,72 @@ public class Activity extends BPMNElementNode {
 		}
 		return results;
 	}
-    @Override
-    public double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
-    }
 
-    /**
-     * Remove any embedded bpmndi:BPMNLabel element within the bpmndi:BPMNShape
-     * 
-     * Positioning of the label is part of the client. Any position update should
-     * ignore these settings in Open-BPMN.
-     * 
-     */
-    @Override
-    public void setPosition(double x, double y) {
-        super.setPosition(x, y);
+	@Override
+	public double getDefaultHeight() {
+		return DEFAULT_HEIGHT;
+	}
 
-        // remove optional BPMNLabel
-        Element bpmnLabel = getModel().findChildNodeByName(this.bpmnShape, BPMNNS.BPMNDI, "BPMNLabel");
-        if (bpmnLabel != null) {
-            this.bpmnShape.removeChild(bpmnLabel);
-        }
-    }
-     public boolean hasData() {
-    	 if(this.dataInputObjects.size()>0) {
-    		 return true;
-    	 }
-    	 if(this.dataOutputObjects.size()>0) {
-    		 return true;
-    	 }
-    	 return false;
-     }
-     
-     
-     public boolean isHuman() {
-    	 return this.dataInputObjects.stream().anyMatch(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
-     }
+	/**
+	 * Remove any embedded bpmndi:BPMNLabel element within the bpmndi:BPMNShape
+	 * 
+	 * Positioning of the label is part of the client. Any position update should
+	 * ignore these settings in Open-BPMN.
+	 * 
+	 */
+	@Override
+	public void setPosition(double x, double y) {
+		super.setPosition(x, y);
+
+		// remove optional BPMNLabel
+		Element bpmnLabel = getModel().findChildNodeByName(this.bpmnShape, BPMNNS.BPMNDI, "BPMNLabel");
+		if (bpmnLabel != null) {
+			this.bpmnShape.removeChild(bpmnLabel);
+		}
+	}
+
+	public boolean hasData() {
+		if (this.dataInputObjects.size() > 0) {
+			return true;
+		}
+		if (this.dataOutputObjects.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isHuman() {
+		return this.dataInputObjects.stream().anyMatch(
+				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
+	}
+
+	public boolean dataHasReference(String dataObjectId) {
+		return this.dataReferences.stream()
+				.anyMatch(ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId));
+	}
+
+	public List<DataFlowExtension> getConnectDataFlowTo(BPMNElement dataObject) {
+		if (dataObject instanceof DataOutputObjectExtension) {
+			return dataFlows.stream()
+					.filter(dataflow -> dataflow.getTargetRef().equals(dataObject.getId())
+							|| ((DataOutputObjectExtension) dataObject).getDataAttributes().stream()
+									.anyMatch(att -> att.getId().equals(dataflow.getTargetRef())))
+					.collect(Collectors.toList());
+
+		}
+		return new ArrayList<>();
+	}
+
+	public BPMNElement getFistMultiObjectFor(BPMNElement dataObject) {
+		if (dataObject instanceof DataOutputObjectExtension) {
+			DataFlowExtension element = getConnectDataFlowTo(dataObject).stream().filter(data -> {
+				return findElementById(data.getSourceRef()).getAttribute("isMultiple").equals("true");
+			}).findAny().orElse(null);
+			if (element != null) {
+				return findElementById(element.getSourceRef());
+			}
+			return null;
+		}
+		return null;
+	}
 }

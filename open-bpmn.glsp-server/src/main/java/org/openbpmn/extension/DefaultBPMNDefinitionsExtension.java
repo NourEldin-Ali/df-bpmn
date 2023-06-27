@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.glsp.graph.GModelElement;
 import org.eclipse.glsp.server.actions.ActionDispatcher;
+import org.openbpm.bpmn.converter.DFBPMNToProc;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.BPMNProcess;
@@ -143,12 +144,13 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 
 		//
 		schemaBuilder.addProperty("bonitaProjectPath", "string", null).addProperty("exportName", "string", null)
-				.addProperty("export", "boolean", null);
+//				.addProperty("export", "boolean", null)
+		;
 
-		dataBuilder
-				.addData("bonitaProjectPath", bpmnElement.getAttribute("bonitaProjectPath"))
-				.addData("exportName", bpmnElement.getAttribute("exportName"))
-				.addData("export", false);
+		dataBuilder.addData("bonitaProjectPath", bpmnElement.getAttribute("bonitaProjectPath")).addData("exportName",
+				bpmnElement.getAttribute("exportName"))
+//				.addData("export", false)
+		;
 		// Signal List
 		buildSignalProperties(modelState.getBpmnModel(), dataBuilder, schemaBuilder, uiSchemaBuilder);
 
@@ -232,6 +234,12 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 		if ("Bonita Integration".equals(category)) {
 			bpmnElement.setAttribute("bonitaProjectPath", json.getString("bonitaProjectPath", ""));
 			bpmnElement.setAttribute("exportName", json.getString("exportName", ""));
+		}
+		if ("Export".equals(category)) {
+			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),
+					modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),
+					modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
+			dfbpmnToProc.createDiagrame();
 		}
 		if ("Signals".equals(category)) {
 			// update signal properties...

@@ -67,7 +67,7 @@ public class BPMNApplyPropertiesUpdateOperationHandler
 		long l = System.currentTimeMillis();
 		String jsonData = operation.getJsonData();
 		String category = operation.getCategory();
-
+	
 		// validate GModel id
 		String elementID = operation.getId();
 		GModelElement gModelElement = null;
@@ -114,18 +114,12 @@ public class BPMNApplyPropertiesUpdateOperationHandler
 			throw new RuntimeException("Cannot read json data : " + e.getMessage());
 		}
 		if (json.containsKey("expand")) {
-			
+
 			if (Boolean.parseBoolean(bpmnElement.getAttribute("expand")) != json.getBoolean("expand")) {
 				modelState.reset();
 			}
 		}
-		if (json.containsKey("export")) {
-				if(json.getBoolean("export")) {
-					DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
-					dfbpmnToProc.createDiagrame();
-				}
-//				modelState.reset();				
-		}
+		
 		if (json.containsKey("isMultiple")) {
 			if (Boolean.parseBoolean(bpmnElement.getAttribute("isMultiple")) != json.getBoolean("isMultiple")) {
 				modelState.reset();

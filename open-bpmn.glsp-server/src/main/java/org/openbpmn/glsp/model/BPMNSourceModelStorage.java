@@ -124,10 +124,7 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 			java.net.URI targetURI =f.toURI();
 //			java.net.URI targetURI = new URI(uri);
 			model.save(targetURI);
-			
-			
-			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
-			dfbpmnToProc.createDiagrame();
+
 		} catch (Exception e) {
 			logger.error("Invalid Target URI: " + e.getMessage());
 		}

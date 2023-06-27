@@ -217,7 +217,7 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
      *
      * The EnableToolPaletteAction is used to make the property panel visible
      * If we already have the bodyDiv defined, than we skip this event.
-     * See Discussion: https://github.com/eclipse-glsp/glsp/discussions/910
+     * See Discussion: https://githubs.com/eclipse-glsp/glsp/discussions/910
      *
      * The BPMNPropertyPanelToggleAction is used to show/hide the
      * propertyPanel. This action is called by context menus.

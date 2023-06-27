@@ -56,6 +56,7 @@ const BPMNArrayComponent = ({
         () => findUISchema(uischemas, schema, uischema.scope, path, undefined, uischema, rootSchema),
         [uischemas, schema, uischema.scope, path, uischema, rootSchema]
     );
+    
     return (
         <div className={classNames.wrapper}>
             <fieldset className={classNames.fieldSet}>

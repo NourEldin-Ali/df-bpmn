@@ -248,15 +248,15 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("A");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.MESSAGE_FLOW, "Message Flow",
-                new TriggerEdgeCreationAction(BPMNTypes.MESSAGE_FLOW));
-        item.setSortString("B");
-        result.add(item);
-
-        item = new PaletteItem(BPMNTypes.ASSOCIATION, "Association",
-                new TriggerEdgeCreationAction(BPMNTypes.ASSOCIATION));
-        item.setSortString("C");
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.MESSAGE_FLOW, "Message Flow",
+//                new TriggerEdgeCreationAction(BPMNTypes.MESSAGE_FLOW));
+//        item.setSortString("B");
+//        result.add(item);
+//
+//        item = new PaletteItem(BPMNTypes.ASSOCIATION, "Association",
+//                new TriggerEdgeCreationAction(BPMNTypes.ASSOCIATION));
+//        item.setSortString("C");
+//        result.add(item);
 
         return result;
     }

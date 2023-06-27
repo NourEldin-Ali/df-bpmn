@@ -23,12 +23,14 @@ import javax.json.Json;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonValue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.glsp.graph.GModelElement;
 import org.eclipse.glsp.server.actions.ActionDispatcher;
 import org.eclipse.glsp.server.operations.AbstractOperationHandler;
+import org.openbpm.bpmn.converter.DFBPMNToProc;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.extension.BPMNExtension;
@@ -111,7 +113,26 @@ public class BPMNApplyPropertiesUpdateOperationHandler
 		} catch (JsonException e) {
 			throw new RuntimeException("Cannot read json data : " + e.getMessage());
 		}
-
+		if (json.containsKey("expand")) {
+			
+			if (Boolean.parseBoolean(bpmnElement.getAttribute("expand")) != json.getBoolean("expand")) {
+				modelState.reset();
+			}
+		}
+		if (json.containsKey("export")) {
+				if(json.getBoolean("export")) {
+					DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
+					dfbpmnToProc.createDiagrame();
+				}
+//				modelState.reset();				
+		}
+		if (json.containsKey("isMultiple")) {
+			if (Boolean.parseBoolean(bpmnElement.getAttribute("isMultiple")) != json.getBoolean("isMultiple")) {
+				modelState.reset();
+			}
+		}
+//		System.out.println(bpmnElement.getAttribute("expand"));
+//		System.out.println(json.getBoolean("expand"));
 		// Now call the extensions to update the property data according to the BPMN
 		// element. The updatePropertiesData can also update the given JSON object!
 		if (extensions != null) {
@@ -122,7 +143,8 @@ public class BPMNApplyPropertiesUpdateOperationHandler
 				}
 			}
 		}
-		modelState.reset();
+
+//		modelState.reset();
 		// finally we need to update the JSONFormsData property of the selected element
 		// See also issue #164
 		gModelElement.getArgs().put("JSONFormsData", json.toString());

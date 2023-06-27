@@ -1787,6 +1787,7 @@ public class BPMNModel {
         // the participant list, we create a default process now
         if (processes.size() == 0 || (participants.size() > 0 && publicCount == 0)) {
             buildProcess("process_" + (processes.size() + 1), "Default Process", BPMNTypes.PROCESS_TYPE_PUBLIC);
+            
         } else if (publicCount > 1) {
             getLogger().warning("Invalid model structure! The model contains more than one public process instance!");
         }

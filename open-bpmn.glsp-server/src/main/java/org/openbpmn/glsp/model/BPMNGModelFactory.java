@@ -867,7 +867,7 @@ public class BPMNGModelFactory implements GModelFactory {
 			bpmnGEdge.setKind("");
 			for (BPMNPoint wayPoint : flowExtension.getWayPoints()) {
 				// add the waypoint to the GLSP model....
-				GPoint point = computeRelativeGPoint(wayPoint, participant);
+				GPoint point = computeRelativeGPoint(wayPoint, null);
 				bpmnGEdge.getRoutingPoints().add(point);
 			}
 			bpmnGEdge.setParent(taskNode);

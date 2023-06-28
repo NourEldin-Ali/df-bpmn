@@ -19,7 +19,7 @@ public class TestConvertingProcessVariable {
 	@Test
 	public void testInputProcess() throws BPMNModelException {
 		logger.info("...creating new empty proc");
-		BPMNModel model = BPMNModelFactory.read("/data/dataObject.bpmn");
+		//BPMNModel model = BPMNModelFactory.read("/data/dataObject.bpmn");
 //		System.out.println(model.openProcess("process_5Pr7ZQ").getActivities().stream().anyMatch(activity-> activity.getDataInputObjects().stream().anyMatch(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER))));
 //		model.openProcess("process_5Pr7ZQ").getActivities().stream().forEach(activity -> {
 //			activity.getDataInputObjects().stream().forEach(data ->{
@@ -28,8 +28,8 @@ public class TestConvertingProcessVariable {
 //			});
 //		});
 //		System.out.println(model.openProcess("process_UCR5cw").getGateways().size());
-		DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
-		dfbpmnToProc.createDiagrame();
+		//DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
+		//dfbpmnToProc.createDiagrame();
 		logger.info("...proc creation sucessful");
 
 	}

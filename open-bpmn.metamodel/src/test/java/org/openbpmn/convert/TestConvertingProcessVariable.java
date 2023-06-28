@@ -28,9 +28,9 @@ public class TestConvertingProcessVariable {
 //			});
 //		});
 //		System.out.println(model.openProcess("process_UCR5cw").getGateways().size());
-//		DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
-//		dfbpmnToProc.createDiagrame();
-		logger.info("...proc creation sucessful");
+		//DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(model,model.openDefaultProces().getAttribute("exportName"),model.openDefaultProces().getAttribute("bonitaProjectPath"));
+		//dfbpmnToProc.createDiagrame();
+		// logger.info("...proc creation sucessful");
 
 	}
 }

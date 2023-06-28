@@ -2,45 +2,12 @@
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="0.1232" targetNamespace="http://open-bpmn.org">
   <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
     <bpmn2:participant id="participant_YYfS6Q" name="Default Process" processRef="process_1"/>
-    <bpmn2:participant id="participant_PvliNA" name="Pool-2" processRef="process_cI5fdw">
-      <bpmn2:documentation id="documentation_7xGfyg"/>
-    </bpmn2:participant>
   </bpmn2:collaboration>
   <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.1-u0\workspace\procurement-example" definitionalCollaborationRef="collaboration_1" exportName="DF-BPMN" id="process_1" name="Default Process" processType="Public">
     <bpmn2:documentation id="documentation_LgKuBA"><![CDATA[dfsdsdgg]]></bpmn2:documentation>
   </bpmn2:process>
-  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_cI5fdw" name="Pool-2" processType="Private">
-    <bpmn2:laneSet id="laneset_h6OfLg" name="Lane Set">
-      <bpmn2:lane id="lane_hWT5Dg" name="Lane 2">
-        <bpmn2:documentation id="documentation_4ObEXg"/>
-        <bpmn2:flowNodeRef>task_oKK0ZA</bpmn2:flowNodeRef>
-      </bpmn2:lane>
-      <bpmn2:lane id="lane_yZb21Q" name="Lane 3">
-        <bpmn2:documentation id="documentation_tV0YjQ"/>
-        <bpmn2:flowNodeRef>task_kTypEA</bpmn2:flowNodeRef>
-      </bpmn2:lane>
-    </bpmn2:laneSet>
-    <bpmn2:task expand="true" id="task_oKK0ZA" name="Task-2">
-      <bpmn2:documentation id="documentation_a0UO4w"><![CDATA[xv]]></bpmn2:documentation>
-    </bpmn2:task>
-    <bpmn2:task expand="true" id="task_kTypEA" name="Task-3">
-      <bpmn2:documentation id="documentation_0OOo0g"/>
-    </bpmn2:task>
-  </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
     <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
-      <bpmndi:BPMNShape bpmnElement="participant_PvliNA" id="BPMNShape_eLS2uQ">
-        <dc:Bounds height="600.0" width="800.0" x="312.8731384277344" y="75.43655395507812"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="lane_hWT5Dg" id="BPMNShape_Lane_Rq9iew">
-        <dc:Bounds height="300.0" width="770.0" x="342.0" y="75.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="task_oKK0ZA" id="BPMNShape_JYV17Q">
-        <dc:Bounds height="55.0" width="165.0" x="451.4013977050781" y="137.96481323242188"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="task_kTypEA" id="BPMNShape_urs0ZA">
-        <dc:Bounds height="55.0" width="165.0" x="500.4013671875" y="429.04962158203125"/>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_2IbOxw" id="BPMNShape_SlYEZg">
         <dc:Bounds height="50.0" width="160.0" x="482.0233154296875" y="180.70635986328125"/>
       </bpmndi:BPMNShape>
@@ -53,9 +20,6 @@
         <di:waypoint x="190.25003051757812" y="39.0"/>
         <di:waypoint x="220.50006103515625" y="39.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape bpmnElement="lane_yZb21Q" id="BPMNShape_Lane_30AzFA">
-        <dc:Bounds height="300.0" width="770.0" x="342.0" y="375.0"/>
-      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

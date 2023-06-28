@@ -1,10 +1,10 @@
 package org.openbpm.bpmn.converter;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +29,6 @@ import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
-import org.openbpmn.bpmn.elements.DataFlowExtension;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
 import org.openbpmn.bpmn.elements.DataObjectAttributeExtension;
 import org.openbpmn.bpmn.elements.Event;
@@ -42,7 +41,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 public class DFBPMNToProc {
 	BPMNModel model;
@@ -90,123 +89,126 @@ public class DFBPMNToProc {
 			Node mainDiagram = doc.getElementsByTagName("notation:Diagram").item(0);
 
 			// read data from bpmn file
-			
-			if(model.getParticipants().size()==0) {
+
+			if (model.getParticipants().size() == 0) {
 				BPMNProcess openProcess = model.openDefaultProces();
-					if (openProcess.getAllElementNodes().size() != 0) {
-						Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
-								openProcess.getName(), "1320", "250");
-						Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
-						addProcessVariableToProc(pool, processVariable, doc);
-						Map<String, Map<String, String>> businessDataModel = openProcess.getDataStoresExtensions();
-						addBusinessDataToProc(pool, businessDataModel, doc);
-						Element actor = addActor(pool, doc);
+				if (openProcess.getAllElementNodes().size() != 0) {
+					Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram, openProcess.getName(),
+							"1320", "250");
+					Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
+					addProcessVariableToProc(pool, processVariable, doc);
+					Map<String, Map<String, String>> businessDataModel = openProcess.getDataStoresExtensions();
+					addBusinessDataToProc(pool, businessDataModel, doc);
+					Element actor = addActor(pool, doc);
 //						Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250",
 //								actor.getAttribute("xmi:id"));
 //						System.out.println(openProcess.getActivities().size());
-						addElements(pool,false, null, doc, openProcess.getActivities(), openProcess.getEvents(),
-								openProcess.getGateways());
-					}
-			}else {
-			model.getParticipants().stream().forEach(participant -> {
-				BPMNProcess openProcess;
-				try {
-					openProcess = model.openProcess(participant.getProcessRef());
+					addElements(pool, false, null, doc, openProcess.getActivities(), openProcess.getEvents(),
+							openProcess.getGateways());
+				}
+			} else {
+				model.getParticipants().stream().forEach(participant -> {
+					BPMNProcess openProcess;
+					try {
+						openProcess = model.openProcess(participant.getProcessRef());
 
 //					System.out.println(openProcess.getActivities().size());
-					if (openProcess.isPublicProcess()) {
-						if (openProcess.getAllElementNodes().size() != 0) {
-							Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
-									openProcess.getName(), "1320", "250");
-							Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
-							addProcessVariableToProc(pool, processVariable, doc);
-							Map<String, Map<String, String>> businessDataModel = openProcess.getDataStoresExtensions();
-							addBusinessDataToProc(pool, businessDataModel, doc);
-							Element actor = addActor(pool, doc);
+						if (openProcess.isPublicProcess()) {
+							if (openProcess.getAllElementNodes().size() != 0) {
+								Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
+										openProcess.getName(), "1320", "250");
+								Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
+								addProcessVariableToProc(pool, processVariable, doc);
+								Map<String, Map<String, String>> businessDataModel = openProcess
+										.getDataStoresExtensions();
+								addBusinessDataToProc(pool, businessDataModel, doc);
+								Element actor = addActor(pool, doc);
 //							Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250",
 //									actor.getAttribute("xmi:id"));
 //							System.out.println(openProcess.getActivities().size());
-							addElements(pool,false, null, doc, openProcess.getActivities(), openProcess.getEvents(),
-									openProcess.getGateways());
-						}
-					} else {
-						if (openProcess.getAllElementNodes().size() > 0) {
+								addElements(pool, false, null, doc, openProcess.getActivities(),
+										openProcess.getEvents(), openProcess.getGateways());
+							}
+						} else {
+							if (openProcess.getAllElementNodes().size() > 0) {
 //				
-							Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
-									participant.getName(),
-									String.valueOf(getAttributeBoundsValue(participant, "width")),
-									String.valueOf(getAttributeBoundsValue(participant, "height")));
-							Element actor = addActor(pool, doc);
-							Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
-							addProcessVariableToProc(pool, processVariable, doc);
-							Map<String, Map<String, String>> businessDataModel = openProcess.getDataStoresExtensions();
-							addBusinessDataToProc(pool, businessDataModel, doc);
-							if (openProcess.getLanes().size() == 0) {
-								try {
+								Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
+										participant.getName(),
+										String.valueOf(getAttributeBoundsValue(participant, "width")),
+										String.valueOf(getAttributeBoundsValue(participant, "height")));
+								Element actor = addActor(pool, doc);
+								Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
+								addProcessVariableToProc(pool, processVariable, doc);
+								Map<String, Map<String, String>> businessDataModel = openProcess
+										.getDataStoresExtensions();
+								addBusinessDataToProc(pool, businessDataModel, doc);
+								if (openProcess.getLanes().size() == 0) {
+									try {
 
 //									Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane",
 //											String.valueOf(getAttributeBoundsValue(participant, "width")),
 //											String.valueOf(getAttributeBoundsValue(participant, "height")),
 //											actor.getAttribute("xmi:id"));
-									addElements(pool,false, participant, doc, openProcess.getActivities(),
-											openProcess.getEvents(), openProcess.getGateways());
-								} catch (XPathExpressionException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
-
-							} else {
-//								System.out.println(openProcess.getAllElementNodes().size());
-								openProcess.getLanes().stream().forEach(laneBpmn -> {
-
-									try {
-
-										int widthParserLane = getAttributeBoundsValue(participant, "width")
-												/ openProcess.getLanes().size();
-
-										Map<String, Element> lane = addLaneToProc(pool, doc, laneBpmn.getName(),
-												String.valueOf(widthParserLane),
-												String.valueOf(
-														String.valueOf(getAttributeBoundsValue(laneBpmn, "height"))),
-												actor.getAttribute("xmi:id"));
-
-										Set<Activity> activityList = new HashSet<Activity>();
-										openProcess.getActivities().stream().forEach(activity -> {
-											if (laneBpmn.contains(activity)) {
-												activityList.add(activity);
-											}
-										});
-
-										Set<Event> eventsList = new HashSet<Event>();
-										openProcess.getEvents().stream().forEach(event -> {
-											if (laneBpmn.contains(event)) {
-												eventsList.add(event);
-											}
-										});
-
-										Set<Gateway> gatwayList = new HashSet<Gateway>();
-										openProcess.getGateways().stream().forEach(gateway -> {
-											if (laneBpmn.contains(gateway)) {
-												gatwayList.add(gateway);
-											}
-										});
-										addElements(lane,true, laneBpmn, doc, activityList, eventsList, gatwayList);
-//										addSequenceFlowToProc(mainProcess,diagram,)
+										addElements(pool, false, participant, doc, openProcess.getActivities(),
+												openProcess.getEvents(), openProcess.getGateways());
 									} catch (XPathExpressionException e) {
+										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-								});
+									addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
+
+								} else {
+//								System.out.println(openProcess.getAllElementNodes().size());
+									openProcess.getLanes().stream().forEach(laneBpmn -> {
+
+										try {
+
+											int widthParserLane = getAttributeBoundsValue(participant, "width")
+													/ openProcess.getLanes().size();
+
+											Map<String, Element> lane = addLaneToProc(pool, doc, laneBpmn.getName(),
+													String.valueOf(widthParserLane),
+													String.valueOf(String
+															.valueOf(getAttributeBoundsValue(laneBpmn, "height"))),
+													actor.getAttribute("xmi:id"));
+
+											Set<Activity> activityList = new HashSet<Activity>();
+											openProcess.getActivities().stream().forEach(activity -> {
+												if (laneBpmn.contains(activity)) {
+													activityList.add(activity);
+												}
+											});
+
+											Set<Event> eventsList = new HashSet<Event>();
+											openProcess.getEvents().stream().forEach(event -> {
+												if (laneBpmn.contains(event)) {
+													eventsList.add(event);
+												}
+											});
+
+											Set<Gateway> gatwayList = new HashSet<Gateway>();
+											openProcess.getGateways().stream().forEach(gateway -> {
+												if (laneBpmn.contains(gateway)) {
+													gatwayList.add(gateway);
+												}
+											});
+											addElements(lane, true, laneBpmn, doc, activityList, eventsList,
+													gatwayList);
+//										addSequenceFlowToProc(mainProcess,diagram,)
+										} catch (XPathExpressionException e) {
+											e.printStackTrace();
+										}
+									});
+								}
+								addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
 							}
-							addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
 						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-		}
+				});
+			}
 			File procFile = createProcFile(doc);
 			if (procFile == null) {
 				logger.info("Generate failed to Bonita Proc");
@@ -309,12 +311,12 @@ public class DFBPMNToProc {
 		return actor;
 	}
 
-	void addElements(Map<String, Element> lane,boolean isLane, BPMNElementNode laneBpmn, Document doc,
+	void addElements(Map<String, Element> lane, boolean isLane, BPMNElementNode laneBpmn, Document doc,
 			Set<Activity> activityList, Set<Event> eventList, Set<Gateway> gatewayList)
 			throws XPathExpressionException {
-		addActivityFromBPMN(lane, laneBpmn, doc, activityList,isLane);
-		addEventFromBPMN(lane, laneBpmn, doc, eventList,isLane);
-		addGatewayFromBPMN(lane, laneBpmn, doc, gatewayList,isLane);
+		addActivityFromBPMN(lane, laneBpmn, doc, activityList, isLane);
+		addEventFromBPMN(lane, laneBpmn, doc, eventList, isLane);
+		addGatewayFromBPMN(lane, laneBpmn, doc, gatewayList, isLane);
 	}
 
 	private int getAttributeBoundsValue(BPMNElementNode elementNode, String attribute) {
@@ -324,8 +326,8 @@ public class DFBPMNToProc {
 		return valueParser;
 	}
 
-	private void addEventFromBPMN(Map<String, Element> parentElement, BPMNElementNode laneBmn, Document doc, Set<Event> events,boolean isLane)
-			throws XPathExpressionException {
+	private void addEventFromBPMN(Map<String, Element> parentElement, BPMNElementNode laneBmn, Document doc,
+			Set<Event> events, boolean isLane) throws XPathExpressionException {
 		events.stream().forEach(event -> {
 			try {
 //				System.out.println(event.getType());
@@ -335,14 +337,14 @@ public class DFBPMNToProc {
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(event, "y")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
-							EventType.START,isLane);
+							EventType.START, isLane);
 				} else if (event.getType().equals("endEvent")) {
 					addEventToProc(parentElement, doc, event,
 							String.valueOf(getAttributeBoundsValue(event, "x")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(event, "y")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
-							EventType.END,isLane);
+							EventType.END, isLane);
 				}
 
 			} catch (XPathExpressionException e) {
@@ -351,7 +353,7 @@ public class DFBPMNToProc {
 	}
 
 	private void addActivityFromBPMN(Map<String, Element> parentElement, BPMNElementNode laneBmn, Document doc,
-			Set<Activity> activities,boolean isLane) throws XPathExpressionException {
+			Set<Activity> activities, boolean isLane) throws XPathExpressionException {
 		activities.stream().forEach(activity -> {
 			try {
 				if (activity.isHuman()) {
@@ -360,7 +362,7 @@ public class DFBPMNToProc {
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(activity, "y")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
-							ActivityType.HUMAN,isLane);
+							ActivityType.HUMAN, isLane);
 				} else {
 
 					addActivityToProc(parentElement, doc, activity,
@@ -368,7 +370,7 @@ public class DFBPMNToProc {
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(activity, "y")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
-							ActivityType.SERVICE,isLane);
+							ActivityType.SERVICE, isLane);
 				}
 			} catch (XPathExpressionException e) {
 				// TODO Auto-generated catch block
@@ -397,7 +399,7 @@ public class DFBPMNToProc {
 	}
 
 	private void addGatewayFromBPMN(Map<String, Element> parentElement, BPMNElementNode laneBmn, Document doc,
-			Set<Gateway> gateways,boolean isLane) throws XPathExpressionException {
+			Set<Gateway> gateways, boolean isLane) throws XPathExpressionException {
 		gateways.stream().forEach(gateway -> {
 			try {
 //				
@@ -415,7 +417,7 @@ public class DFBPMNToProc {
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "x") : 0)),
 							String.valueOf(getAttributeBoundsValue(gateway, "y")
 									- (laneBmn != null ? getAttributeBoundsValue(laneBmn, "y") : 0)),
-							type,isLane);
+							type, isLane);
 
 			} catch (XPathExpressionException e) {
 			}
@@ -618,8 +620,8 @@ public class DFBPMNToProc {
 		return lane;
 	}
 
-	private Element addActivityToProc(Map<String, Element> parentElement, Document doc, Activity activity, String x, String y,
-			ActivityType type,boolean isLane) throws XPathExpressionException {
+	private Element addActivityToProc(Map<String, Element> parentElement, Document doc, Activity activity, String x,
+			String y, ActivityType type, boolean isLane) throws XPathExpressionException {
 //		logger.info("add activity element");
 
 		// Create the <elements> element
@@ -733,9 +735,11 @@ public class DFBPMNToProc {
 		addOperationForActivity(doc, activity, elementsActivity);
 
 		if (type == ActivityType.HUMAN) {
-			addDiagramForActivity(doc, parentElement, elementsActivity.getAttribute("xmi:id"), x, y, ActivityType.HUMAN,isLane);
+			addDiagramForActivity(doc, parentElement, elementsActivity.getAttribute("xmi:id"), x, y, ActivityType.HUMAN,
+					isLane);
 		} else {
-			addDiagramForActivity(doc, parentElement, elementsActivity.getAttribute("xmi:id"), x, y, ActivityType.SERVICE,isLane);
+			addDiagramForActivity(doc, parentElement, elementsActivity.getAttribute("xmi:id"), x, y,
+					ActivityType.SERVICE, isLane);
 		}
 
 		// add incoming and outgoing
@@ -797,7 +801,8 @@ public class DFBPMNToProc {
 		Set<String> addedData = new HashSet<>();
 
 //		Set<Element> operationsSet = new HashSet<>();
-		List<Pair<String, Pair<Element, List<String>>>> operationsSet = new ArrayList<>();
+//		List<Pair<String, Pair<Element, List<String>>>> operationsSet = new ArrayList<>();
+		OperationSet operationsSet = new OperationSet(new ArrayList<>());
 
 		// I supposed that there is only simple way
 		activity.getDataFlows().stream().forEach(dataflow -> {
@@ -812,9 +817,13 @@ public class DFBPMNToProc {
 			operations.setAttribute("xmi:type", "expression:Operation");
 			operations.setAttribute("xmi:id", generateXmiId());
 
-			Pair<String, Pair<Element, List<String>>> operationOrder;
-			Pair<Element, List<String>> inOpertation = new Pair<Element, List<String>>(operations,
-					new ArrayList<String>());
+//			Pair<String, Pair<Element, List<String>>> operationOrder;
+//			Pair<Element, List<String>> inOpertation = new Pair<Element, List<String>>(operations,
+//					new ArrayList<String>());
+			OperationOrder operationOrder;
+			
+			OperationElement inOperation = new OperationElement(operations, new ArrayList<>());
+
 
 			// left operand element
 			Element leftOperand = doc.createElement("leftOperand");
@@ -830,7 +839,8 @@ public class DFBPMNToProc {
 					return;
 				}
 				// to order the operation
-				operationOrder = new Pair<>(parentElement.getName(), inOpertation);
+				operationOrder = new OperationOrder(parentElement.getName(), inOperation);
+//				operationOrder = new Pair<>(parentElement.getName(), inOpertation);
 				if (activity.dataHasReference(parentElement.getId())) {
 					addedData.add(targetElement.getId());
 					leftOperand.setAttribute("name", parentElement.getName()); // name
@@ -900,7 +910,7 @@ public class DFBPMNToProc {
 							script.append(",\n");
 
 							// to add refere object
-							operationOrder.getValue().getValue().add(srcElement.getName());
+							operationOrder.getOperationElement().getStrings().add(srcElement.getName());
 							rightOperand.appendChild(refE);
 						} else if (srcElement.getElementNode().getLocalName()
 								.equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
@@ -921,7 +931,7 @@ public class DFBPMNToProc {
 							rightOperand.appendChild(refE);
 
 							// to add refere object
-							operationOrder.getValue().getValue().add(srcElement.getName());
+							operationOrder.getOperationElement().getStrings().add(srcElement.getName());
 
 						} else if ((srcElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OBJECT_ATTRIBUTE)
 								&& srcElement.getElementNode().getParentNode().getLocalName()
@@ -950,7 +960,7 @@ public class DFBPMNToProc {
 							rightOperand.appendChild(refE);
 
 							// to add refere object
-							operationOrder.getValue().getValue().add(srcElement.getElementNode().getParentNode()
+							operationOrder.getOperationElement().getStrings().add(srcElement.getElementNode().getParentNode()
 									.getAttributes().getNamedItem("name").getNodeValue());
 
 						} else {
@@ -1028,7 +1038,7 @@ public class DFBPMNToProc {
 					operations.appendChild(operator);
 
 					// check best place to insert
-					orderOpertation(operationsSet, operationOrder);
+					orderOperation(operationsSet, operationOrder);
 					return;
 				}
 
@@ -1041,7 +1051,8 @@ public class DFBPMNToProc {
 				leftOperand.setAttribute("type", "TYPE_VARIABLE");
 				addedData.add(targetElement.getId());
 				// to order the operation
-				operationOrder = new Pair<>(targetElement.getName(), inOpertation);
+//				operationOrder = new Pair<>(targetElement.getName(), inOperation);
+				operationOrder = new OperationOrder(targetElement.getName(), inOperation);
 			} else {
 				return;
 			}
@@ -1101,7 +1112,7 @@ public class DFBPMNToProc {
 
 				rightOperand.appendChild(refElemenet);
 				// add refereable object
-				operationOrder.getValue().getValue().add(sourceElement.getName());
+				operationOrder.getOperationElement().getStrings().add(sourceElement.getName());
 
 			} else {
 				boolean userSource = (sourceElement.getElementNode().getLocalName()
@@ -1181,35 +1192,59 @@ public class DFBPMNToProc {
 			operations.appendChild(leftOperand);
 			operations.appendChild(rightOperand);
 			operations.appendChild(operator);
-			orderOpertation(operationsSet, operationOrder);
-		
+			orderOperation(operationsSet, operationOrder);
+
 		});
 
-		operationsSet.forEach(operation -> activityElement.appendChild(operation.getValue().getKey()));
+		operationsSet.getOperationOrders()
+				.forEach(
+				operation -> activityElement.appendChild(operation.getOperationElement().getElement())
+				);
 
 	}
+	void orderOperation(OperationSet operationsSet, OperationOrder operationOrder) {
+	    AtomicInteger index = new AtomicInteger(-1);
+	    operationOrder.getOperationElement().getStrings().forEach(objectName -> {
+	        List<OperationOrder> tempFilter = operationsSet.getOperationOrders().stream()
+	                .filter(data -> data.getName().equals(objectName))
+	                .collect(Collectors.toList());
+	        if (!tempFilter.isEmpty()) {
+	            int x = operationsSet.getOperationOrders().indexOf(tempFilter.get(0));
+	            if (x > index.get()) {
+	                index.set(x);
+	            }
+	        }
+	    });
+	    if (index.get() == -1) {
+	        operationsSet.getOperationOrders().add(operationOrder);
 
-	void orderOpertation(List<Pair<String, Pair<Element, List<String>>>> operationsSet ,Pair<String, Pair<Element, List<String>>> operationOrder) {
-		AtomicInteger  index = new AtomicInteger (-1);
-		operationOrder.getValue().getValue().forEach(objectName -> {
-			List tempFilter = operationsSet.stream().filter(data -> data.getKey().equals(objectName))
-					.collect(Collectors.toList());
-			if (tempFilter.size() != 0) {
-				int x = operationsSet.indexOf(tempFilter.get(0));
-				if (x > index.get()) {
-					index.set(x);
-				}
-			}
-		});
-		if (index .get()== -1) {
-			operationsSet.add(operationOrder);
-
-		} else {
-			operationsSet.add(index.get()+1, operationOrder);
-		}
+	    } else {
+	        operationsSet.getOperationOrders().add(index.get() + 1, operationOrder);
+	    }
 	}
-	Element addDiagramForActivity(Document doc, Map<String, Element> parentElement, String elementID, String x, String y,
-			ActivityType type, boolean isLane) throws XPathExpressionException {
+//	void orderOperation(List<Pair<String, Pair<Element, List<String>>>> operationsSet,
+//			Pair<String, Pair<Element, List<String>>> operationOrder) {
+//		AtomicInteger index = new AtomicInteger(-1);
+//		operationOrder.getValue().getValue().forEach(objectName -> {
+//			List tempFilter = operationsSet.stream().filter(data -> data.getKey().equals(objectName))
+//					.collect(Collectors.toList());
+//			if (tempFilter.size() != 0) {
+//				int x = operationsSet.indexOf(tempFilter.get(0));
+//				if (x > index.get()) {
+//					index.set(x);
+//				}
+//			}
+//		});
+//		if (index.get() == -1) {
+//			operationsSet.add(operationOrder);
+//
+//		} else {
+//			operationsSet.add(index.get() + 1, operationOrder);
+//		}
+//	}
+
+	Element addDiagramForActivity(Document doc, Map<String, Element> parentElement, String elementID, String x,
+			String y, ActivityType type, boolean isLane) throws XPathExpressionException {
 
 		// Create the <children> element
 		Element childrenElement = doc.createElement("children");
@@ -1232,15 +1267,15 @@ public class DFBPMNToProc {
 		XPath xPath = xPathFactory.newXPath();
 		// Define the XPath expression to find the <children> element with type="7002"
 		String xpathExpression = "";
-		
-		if(isLane) {
+
+		if (isLane) {
 			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
 					+ "']/children[@type='7002']";
-		}else {
+		} else {
 			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
 					+ "']/children[@type='7001']";
 		}
-		
+
 		// Evaluate the XPath expression and get the matching node
 		Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
 		if (node != null) {
@@ -1270,7 +1305,7 @@ public class DFBPMNToProc {
 	}
 
 	private Element addEventToProc(Map<String, Element> parentElement, Document doc, Event event, String x, String y,
-			EventType type,boolean isLane) throws XPathExpressionException {
+			EventType type, boolean isLane) throws XPathExpressionException {
 
 //		logger.info("add event element");
 
@@ -1320,7 +1355,7 @@ public class DFBPMNToProc {
 		stepSummary.setAttribute("content", "");
 		stepSummary.setAttribute("returnTypeFixed", "true");
 
-		addDiagramForEvent(doc, parentElement, elementsEvent.getAttribute("xmi:id"), x, y, type,isLane);
+		addDiagramForEvent(doc, parentElement, elementsEvent.getAttribute("xmi:id"), x, y, type, isLane);
 
 		// add incoming and outgoing
 		event.getIngoingSequenceFlows().stream().forEach(incoming -> {
@@ -1334,7 +1369,7 @@ public class DFBPMNToProc {
 	}
 
 	Element addDiagramForEvent(Document doc, Map<String, Element> parentElement, String elementID, String x, String y,
-			EventType type,boolean isLane) throws XPathExpressionException {
+			EventType type, boolean isLane) throws XPathExpressionException {
 
 		// Create the <children> element
 		Element childrenElement = doc.createElement("children");
@@ -1348,19 +1383,19 @@ public class DFBPMNToProc {
 		childrenElement.setAttribute("fontName", "Segoe UI");
 
 		// get lane child with type 7002/ pool 7001
-				// Create an XPath instance
-				XPathFactory xPathFactory = XPathFactory.newInstance();
-				XPath xPath = xPathFactory.newXPath();
-				// Define the XPath expression to find the <children> element with type="7002"
-				String xpathExpression = "";
-				
-				if(isLane) {
-					xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
-							+ "']/children[@type='7002']";
-				}else {
-					xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
-							+ "']/children[@type='7001']";
-				}
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		String xpathExpression = "";
+
+		if (isLane) {
+			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
+					+ "']/children[@type='7002']";
+		} else {
+			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
+					+ "']/children[@type='7001']";
+		}
 		// Evaluate the XPath expression and get the matching node
 		Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
 		if (node != null) {
@@ -1492,8 +1527,8 @@ public class DFBPMNToProc {
 		return childrenElement;
 	}
 
-	private Element addGatewayToProc(Map<String, Element> parentElement, Document doc, Gateway gateway, String x, String y,
-			GatewayType type,boolean isLane) throws XPathExpressionException {
+	private Element addGatewayToProc(Map<String, Element> parentElement, Document doc, Gateway gateway, String x,
+			String y, GatewayType type, boolean isLane) throws XPathExpressionException {
 
 //		logger.info("add gateway element");
 
@@ -1545,7 +1580,7 @@ public class DFBPMNToProc {
 		stepSummary.setAttribute("content", "");
 		stepSummary.setAttribute("returnTypeFixed", "true");
 
-		addDiagramForGateway(doc, parentElement, elementsEvent.getAttribute("xmi:id"), x, y, type,isLane);
+		addDiagramForGateway(doc, parentElement, elementsEvent.getAttribute("xmi:id"), x, y, type, isLane);
 
 		// add incoming and outgoing
 		gateway.getIngoingSequenceFlows().stream().forEach(incoming -> {
@@ -1559,7 +1594,7 @@ public class DFBPMNToProc {
 	}
 
 	Element addDiagramForGateway(Document doc, Map<String, Element> parentElement, String elementID, String x, String y,
-			GatewayType type,boolean isLane) throws XPathExpressionException {
+			GatewayType type, boolean isLane) throws XPathExpressionException {
 
 		// Create the <children> element
 		Element childrenElement = doc.createElement("children");
@@ -1576,19 +1611,19 @@ public class DFBPMNToProc {
 		childrenElement.setAttribute("fontName", "Segoe UI");
 
 		// get lane child with type 7002/ pool 7001
-				// Create an XPath instance
-				XPathFactory xPathFactory = XPathFactory.newInstance();
-				XPath xPath = xPathFactory.newXPath();
-				// Define the XPath expression to find the <children> element with type="7002"
-				String xpathExpression = "";
-				
-				if(isLane) {
-					xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
-							+ "']/children[@type='7002']";
-				}else {
-					xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
-							+ "']/children[@type='7001']";
-				}
+		// Create an XPath instance
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+		XPath xPath = xPathFactory.newXPath();
+		// Define the XPath expression to find the <children> element with type="7002"
+		String xpathExpression = "";
+
+		if (isLane) {
+			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
+					+ "']/children[@type='7002']";
+		} else {
+			xpathExpression = "//children[@element='" + parentElement.get(PROCESS).getAttribute("xmi:id")
+					+ "']/children[@type='7001']";
+		}
 		// Evaluate the XPath expression and get the matching node
 		Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
 		if (node != null) {
@@ -1645,4 +1680,72 @@ public class DFBPMNToProc {
 		}
 
 	}
+	
+	public class OperationElement {
+		
+		OperationElement(Element element,List<String> strings){
+			setElement(element);
+			setStrings(strings);
+			
+		}
+	    public Element getElement() {
+			return element;
+		}
+		public void setElement(Element element) {
+			this.element = element;
+		}
+		public List<String> getStrings() {
+			return strings;
+		}
+		public void setStrings(List<String> strings) {
+			this.strings = strings;
+		}
+		private Element element;
+	    private List<String> strings;
+
+	    // constructor, getters, setters...
+	}
+
+	public class OperationOrder {
+		OperationOrder(String name,OperationElement operationElement){
+			setName(name);
+			setOperationElement(operationElement);
+		}
+	    public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public OperationElement getOperationElement() {
+			return operationElement;
+		}
+		public void setOperationElement(OperationElement operationElement) {
+			this.operationElement = operationElement;
+		}
+		private String name;
+	    private OperationElement operationElement;
+
+	    // constructor, getters, setters...
+	}
+
+	public class OperationSet {
+		OperationSet(List<OperationOrder> operationOrders){
+			setOperationOrders(operationOrders);
+		}
+	    public List<OperationOrder> getOperationOrders() {
+			return operationOrders;
+		}
+
+		public void setOperationOrders(List<OperationOrder> operationOrders) {
+			this.operationOrders = operationOrders;
+		}
+
+		private List<OperationOrder> operationOrders;
+
+	    // constructor, getters, setters...
+	}
 }
+
+
+

@@ -15,13 +15,13 @@
 
 		<package-type>eclipse-plugin</package-type>
 		<server-launcher>org.imixs.bpmn.glsp.server.launch.BPMN2ServerLauncher</server-launcher>
-		
+
 		<!-- 1.0.0 | 1.1.0.RC02 | 1.1.0.RC03 | 1.1.0-SNAPSHOT -->
 		<glsp-server-version>1.1.0.RC03</glsp-server-version>
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
@@ -33,19 +33,19 @@
 			<artifactId>org.eclipse.glsp.server</artifactId>
 			<version>${glsp-server-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>2.17.1</version>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.glsp</groupId>
 			<artifactId>org.eclipse.glsp.server.websocket</artifactId>
 			<version>${glsp-server-version}</version>
 		</dependency>
-<!--
+		<!--
 		<dependency>
 			<groupId>org.eclipse.glsp</groupId>
 			<artifactId>org.eclipse.glsp.layout</artifactId>

@@ -23,8 +23,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Building Open-BPMN Server with Maven
-      run: mvn -B package --file pom.xml
+    #- name: Building Open-BPMN Server with Maven
+    # run: mvn -B package --file pom.xml
 
     - name: Building Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)

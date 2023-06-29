@@ -1,5 +1,8 @@
 package org.openbpmn.bpmn.elements;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
@@ -25,5 +28,21 @@ public class DataProcessingExtension extends BPMNElementNode {
     @Override
     public double getDefaultHeight() {
         return DEFAULT_HEIGHT;
+    }
+    
+    
+    /**
+     * Returns a List of all ingoing SequenceFlows associated with this element
+     * 
+     * @return
+     */
+    public Set<DataFlowExtension> getIngoingDataFlows() {
+        // filter all sequenceFlows with a sourceRef to this elementNode
+        Set<DataFlowExtension> result = this.activity.getDataFlows()
+                .stream()
+                .filter(c -> c.getTargetRef().equals(this.getId()))
+                .collect(Collectors.toSet());
+        return result;
+
     }
 }

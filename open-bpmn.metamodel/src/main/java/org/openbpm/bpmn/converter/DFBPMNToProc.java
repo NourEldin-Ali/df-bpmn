@@ -1,10 +1,10 @@
 package org.openbpm.bpmn.converter;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -152,7 +152,6 @@ public class DFBPMNToProc {
 										addElements(pool, false, participant, doc, openProcess.getActivities(),
 												openProcess.getEvents(), openProcess.getGateways());
 									} catch (XPathExpressionException e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 									addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
@@ -204,7 +203,6 @@ public class DFBPMNToProc {
 							}
 						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				});
@@ -373,7 +371,6 @@ public class DFBPMNToProc {
 							ActivityType.SERVICE, isLane);
 				}
 			} catch (XPathExpressionException e) {
-				// TODO Auto-generated catch block
 //				e.printStackTrace();
 			}
 		});
@@ -392,7 +389,6 @@ public class DFBPMNToProc {
 //							ActivityType.SERVICE);
 
 			} catch (XPathExpressionException e) {
-				// TODO Auto-generated catch block
 //				e.printStackTrace();
 			}
 		});
@@ -681,7 +677,16 @@ public class DFBPMNToProc {
 							.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
 							|| data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY))
 					.collect(Collectors.toList());
-			Set<String> dataType = Set.of("text", "boolean", "decimal", "integer", "date");
+			Map<String,String> dataType = new HashMap();
+			dataType.put("text", "text");
+			dataType.put("string", "text");
+			dataType.put("boolean", "boolean");
+			dataType.put("decimal", "decimal");
+			dataType.put("float", "decimal");
+			dataType.put("double", "decimal");
+			dataType.put("integer", "integer");
+			dataType.put("int", "integer");
+			dataType.put("date", "date");
 
 			dataList.stream().forEach(objectData -> {
 				// Create root element
@@ -709,15 +714,21 @@ public class DFBPMNToProc {
 						elementAttribute.setAttribute("xmi:type", "process:ContractInput");
 						elementAttribute.setAttribute("xmi:id", generateXmiId());
 						elementAttribute.setAttribute("name", dataAttribute.getName());
-						if (dataType.contains(dataAttribute.getAttribute("type").toLowerCase())) {
-							elementAttribute.setAttribute("type", dataAttribute.getAttribute("type").toUpperCase());
+						if (dataType.containsKey(dataAttribute.getAttribute("type").toLowerCase())) {
+							elementAttribute.setAttribute("type", dataType.get( dataAttribute.getAttribute("type")).toUpperCase());
+						}else {
+							dataElement.setAttribute("type", dataType.get("text").toUpperCase());
+
 						}
 						dataElement.appendChild(elementAttribute);
 
 					});
 				} else {
-					if (dataType.contains(objectData.getAttribute("type").toLowerCase())) {
-						dataElement.setAttribute("type", objectData.getAttribute("type").toUpperCase());
+					if (dataType.containsKey(objectData.getAttribute("type").toLowerCase())) {
+						dataElement.setAttribute("type", dataType.get( objectData.getAttribute("type")).toUpperCase());
+					}else {
+						dataElement.setAttribute("type", dataType.get("text").toUpperCase());
+
 					}
 				}
 			});
@@ -784,6 +795,10 @@ public class DFBPMNToProc {
 		}
 
 		dataTypes.put("string", dataTypes.get("text"));
+		dataTypes.put("double", dataTypes.get("decimal"));
+		dataTypes.put("float", dataTypes.get("decimal"));
+
+
 
 		// inputTypes
 		Map<String, String> inputDataTypes = new HashMap<>();
@@ -821,9 +836,8 @@ public class DFBPMNToProc {
 //			Pair<Element, List<String>> inOpertation = new Pair<Element, List<String>>(operations,
 //					new ArrayList<String>());
 			OperationOrder operationOrder;
-			
-			OperationElement inOperation = new OperationElement(operations, new ArrayList<>());
 
+			OperationElement inOperation = new OperationElement(operations, new ArrayList<>());
 
 			// left operand element
 			Element leftOperand = doc.createElement("leftOperand");
@@ -960,9 +974,14 @@ public class DFBPMNToProc {
 							rightOperand.appendChild(refE);
 
 							// to add refere object
-							operationOrder.getOperationElement().getStrings().add(srcElement.getElementNode().getParentNode()
-									.getAttributes().getNamedItem("name").getNodeValue());
+							operationOrder.getOperationElement().getStrings().add(srcElement.getElementNode()
+									.getParentNode().getAttributes().getNamedItem("name").getNodeValue());
 
+						} else if (sourceElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+							String content = addOperationFromDataProcessing(doc, activity, operationOrder, rightOperand,
+									sourceElement, parentElement.getAttribute("isMultiple").equals("true"), dataTypes);
+							script.append(content);
+							script.append(",\n");
 						} else {
 							boolean userSource = (srcElement.getElementNode().getLocalName()
 									.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
@@ -1114,6 +1133,13 @@ public class DFBPMNToProc {
 				// add refereable object
 				operationOrder.getOperationElement().getStrings().add(sourceElement.getName());
 
+			} else if (sourceElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+				rightOperand.setAttribute("type", "TYPE_READ_ONLY_SCRIPT");
+				rightOperand.setAttribute("interpreter", "GROOVY");
+				rightOperand.setAttribute("name", "newScript()");
+				String script = addOperationFromDataProcessing(doc, activity, operationOrder, rightOperand,
+						sourceElement, false, dataTypes);
+				rightOperand.setAttribute("content", script);
 			} else {
 				boolean userSource = (sourceElement.getElementNode().getLocalName()
 						.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
@@ -1173,11 +1199,11 @@ public class DFBPMNToProc {
 			if (targetElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OBJECT_ATTRIBUTE) && targetElement
 					.getElementNode().getParentNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
 				operator.setAttribute("expression", "set" + targetElement.getName().substring(0, 1).toUpperCase()
-						+ targetElement.getName().substring(1).toLowerCase()); // name
+						+ targetElement.getName().substring(1)); // name
 				operator.setAttribute("type", "JAVA_METHOD");
 
 				Element inputTypes = doc.createElement("inputTypes");
-				inputTypes.setTextContent(inputDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
+				inputTypes.setTextContent(inputDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
 				operator.appendChild(inputTypes);
 				// process variable
 			} else if (targetElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS)
@@ -1197,30 +1223,145 @@ public class DFBPMNToProc {
 		});
 
 		operationsSet.getOperationOrders()
-				.forEach(
-				operation -> activityElement.appendChild(operation.getOperationElement().getElement())
-				);
+				.forEach(operation -> activityElement.appendChild(operation.getOperationElement().getElement()));
 
 	}
-	void orderOperation(OperationSet operationsSet, OperationOrder operationOrder) {
-	    AtomicInteger index = new AtomicInteger(-1);
-	    operationOrder.getOperationElement().getStrings().forEach(objectName -> {
-	        List<OperationOrder> tempFilter = operationsSet.getOperationOrders().stream()
-	                .filter(data -> data.getName().equals(objectName))
-	                .collect(Collectors.toList());
-	        if (!tempFilter.isEmpty()) {
-	            int x = operationsSet.getOperationOrders().indexOf(tempFilter.get(0));
-	            if (x > index.get()) {
-	                index.set(x);
-	            }
-	        }
-	    });
-	    if (index.get() == -1) {
-	        operationsSet.getOperationOrders().add(operationOrder);
 
-	    } else {
-	        operationsSet.getOperationOrders().add(index.get() + 1, operationOrder);
-	    }
+	String addOperationFromDataProcessing(Document doc, Activity activity, OperationOrder operationOrder,
+			Element rightOperand, BPMNElement sourceElement, boolean isMultiple, Map<String, String> dataTypes) {
+		StringBuilder script = new StringBuilder("");
+		List<BPMNElement> listIncoming = activity.getDataProcessingIncoming(sourceElement.getId());
+		Iterator<BPMNElement> iterator = listIncoming.iterator();
+		while (iterator.hasNext()) {
+			BPMNElement element = iterator.next();
+			if (element.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+				script.append("'" + element.getAttribute("value") + "'");
+			} else if (element.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS) || element
+					.getElementNode().getParentNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+				Element refE = doc.createElement("referencedElements");
+				refE.setAttribute("dataType", dataTypes.get(element.getAttribute("type").toLowerCase()));
+				refE.setAttribute("xmi:id", generateXmiId());
+				refE.setAttribute("xmi:type", "process:Data");
+				refE.setAttribute("name", element.getName());
+
+				script.append(element.getName());
+				operationOrder.getOperationElement().getStrings().add(element.getName());
+
+				rightOperand.appendChild(refE);
+			} else if (element.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
+					|| element.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE)) {
+
+				Element refE = doc.createElement("referencedElements");
+				refE.setAttribute("dataType", dataTypes.get("Business_Object".toLowerCase()));
+				refE.setAttribute("xmi:id", generateXmiId());
+				refE.setAttribute("xmi:type", "process:BusinessObjectData");
+				refE.setAttribute("name", element.getName());
+				refE.setAttribute("className", element.getAttribute("type"));
+				script.append(element.getName());
+
+				rightOperand.appendChild(refE);
+
+				// to add refere object
+				operationOrder.getOperationElement().getStrings().add(element.getName());
+			} else if ((element.getElementNode().getLocalName().equals(BPMNTypes.DATA_OBJECT_ATTRIBUTE) && element
+					.getElementNode().getParentNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE))
+					|| (element.getElementNode().getLocalName().equals(BPMNTypes.DATA_OBJECT_ATTRIBUTE)
+							&& element.getElementNode().getParentNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE))) {
+
+				Element refE = doc.createElement("referencedElements");
+				refE.setAttribute("dataType", dataTypes.get("Business_Object".toLowerCase()));
+				refE.setAttribute("xmi:id", generateXmiId());
+				refE.setAttribute("xmi:type", "process:BusinessObjectData");
+				refE.setAttribute("name",
+						element.getElementNode().getParentNode().getAttributes().getNamedItem("name").getNodeValue());
+				refE.setAttribute("className",
+						element.getElementNode().getParentNode().getAttributes().getNamedItem("type").getNodeValue());
+				script.append(
+						element.getElementNode().getParentNode().getAttributes().getNamedItem("name").getNodeValue());
+				if (isMultiple && element.getAttribute("isMultiple").equals("true")) {
+					script.append("[i]");
+				}
+				isMultiple = false;
+				script.append("." + element.getName().toLowerCase());
+				rightOperand.appendChild(refE);
+
+				// to add refere object
+				operationOrder.getOperationElement().getStrings().add(
+						element.getElementNode().getParentNode().getAttributes().getNamedItem("name").getNodeValue());
+			} else {
+				boolean userSource = (element.getElementNode().getLocalName()
+						.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
+						|| element.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
+
+				boolean parentUserSource = (element.getElementNode().getParentNode().getLocalName()
+						.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
+						|| element.getElementNode().getParentNode().getLocalName()
+								.equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
+
+				// data from user (found a contract)
+				if (userSource || (parentUserSource
+						&& element.getElementNode().getLocalName().equals(BPMNTypes.DATA_OBJECT_ATTRIBUTE))) {
+
+					Element refE = doc.createElement("referencedElements");
+					if (parentUserSource) {
+						script.append(element.getElementNode().getParentNode().getAttributes().getNamedItem("name")
+								.getNodeValue() + ".get(\"" + element.getElementNode().getAttribute("name") + "\")");
+
+						refE.setAttribute("type", "COMPLEX");
+					} else {
+						script.append(element.getAttribute("name"));
+					}
+
+//					rightOperand.setAttribute("returnType",
+//					inputDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+//					leftOperand.setAttribute("returnType",
+//					inputDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
+
+					refE.setAttribute("xmi:id", generateXmiId());
+					refE.setAttribute("xmi:type", "process:ContractInput");
+					refE.setAttribute("name", element.getName());
+
+					rightOperand.appendChild(refE);
+
+					Element mapping = doc.createElement("mapping");
+					mapping.setAttribute("xmi:id", generateXmiId());
+					mapping.setAttribute("xmi:type", "process:ContractInputMapping");
+					refE.appendChild(mapping);
+
+				}
+			}
+
+			if (isMultiple && element.getAttribute("isMultiple").equals("true")) {
+				script.append("[i]");
+			}
+
+			if (iterator.hasNext()) {
+				script.append(" + ");
+			}
+		}
+
+		return script.toString();
+	}
+
+	void orderOperation(OperationSet operationsSet, OperationOrder operationOrder) {
+		AtomicInteger index = new AtomicInteger(-1);
+		operationOrder.getOperationElement().getStrings().forEach(objectName -> {
+			List<OperationOrder> tempFilter = operationsSet.getOperationOrders().stream()
+					.filter(data -> data.getName().equals(objectName)).collect(Collectors.toList());
+			if (!tempFilter.isEmpty()) {
+				int x = operationsSet.getOperationOrders().indexOf(tempFilter.get(0));
+				if (x > index.get()) {
+					index.set(x);
+				}
+			}
+		});
+		if (index.get() == -1) {
+			operationsSet.getOperationOrders().add(operationOrder);
+
+		} else {
+			operationsSet.getOperationOrders().add(index.get() + 1, operationOrder);
+		}
 	}
 //	void orderOperation(List<Pair<String, Pair<Element, List<String>>>> operationsSet,
 //			Pair<String, Pair<Element, List<String>>> operationOrder) {
@@ -1680,60 +1821,71 @@ public class DFBPMNToProc {
 		}
 
 	}
-	
+
 	public class OperationElement {
-		
-		OperationElement(Element element,List<String> strings){
+
+		OperationElement(Element element, List<String> strings) {
 			setElement(element);
 			setStrings(strings);
-			
+
 		}
-	    public Element getElement() {
+
+		public Element getElement() {
 			return element;
 		}
+
 		public void setElement(Element element) {
 			this.element = element;
 		}
+
 		public List<String> getStrings() {
 			return strings;
 		}
+
 		public void setStrings(List<String> strings) {
 			this.strings = strings;
 		}
-		private Element element;
-	    private List<String> strings;
 
-	    // constructor, getters, setters...
+		private Element element;
+		private List<String> strings;
+
+		// constructor, getters, setters...
 	}
 
 	public class OperationOrder {
-		OperationOrder(String name,OperationElement operationElement){
+		OperationOrder(String name, OperationElement operationElement) {
 			setName(name);
 			setOperationElement(operationElement);
 		}
-	    public String getName() {
+
+		public String getName() {
 			return name;
 		}
+
 		public void setName(String name) {
 			this.name = name;
 		}
+
 		public OperationElement getOperationElement() {
 			return operationElement;
 		}
+
 		public void setOperationElement(OperationElement operationElement) {
 			this.operationElement = operationElement;
 		}
-		private String name;
-	    private OperationElement operationElement;
 
-	    // constructor, getters, setters...
+		private String name;
+		private OperationElement operationElement;
+
+		// constructor, getters, setters...
 	}
 
 	public class OperationSet {
-		OperationSet(List<OperationOrder> operationOrders){
+		OperationSet(List<OperationOrder> operationOrders) {
 			setOperationOrders(operationOrders);
 		}
-	    public List<OperationOrder> getOperationOrders() {
+
+		public List<OperationOrder> getOperationOrders() {
 			return operationOrders;
 		}
 
@@ -1743,9 +1895,6 @@ public class DFBPMNToProc {
 
 		private List<OperationOrder> operationOrders;
 
-	    // constructor, getters, setters...
+		// constructor, getters, setters...
 	}
 }
-
-
-

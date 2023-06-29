@@ -1082,4 +1082,22 @@ public class Activity extends BPMNElementNode {
 		}
 		return null;
 	}
+
+	public List<BPMNElement> getDataProcessingIncoming(String dataProcessingId) {
+		List<BPMNElement> listIncomingElement = new ArrayList<>();
+
+		DataProcessingExtension dataProcessing = (DataProcessingExtension) findElementById(dataProcessingId);
+
+		dataProcessing.getIngoingDataFlows().stream().forEach(sequenceFlow -> {
+			BPMNElement dataElementInc = findElementById(sequenceFlow.getSourceRef());
+			if (dataElementInc.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+				listIncomingElement.addAll(getDataProcessingIncoming(dataElementInc.getId()));
+			} else {
+				listIncomingElement.add(dataElementInc);
+			}
+		});
+
+		return listIncomingElement;
+
+	}
 }

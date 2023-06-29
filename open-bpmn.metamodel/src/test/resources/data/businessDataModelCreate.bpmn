@@ -182,19 +182,20 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_B1jElw" id="BPMNEdge_0742kw">
         <di:waypoint x="173.49999237060547" y="136.5"/>
+        <di:waypoint x="173.5" y="136.5"/>
         <di:waypoint x="217.0" y="136.5"/>
         <di:waypoint x="217.0" y="110.0"/>
         <di:waypoint x="380.49999237060547" y="110.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_g1F80Q" id="BPMNEdge_tQDPKA">
         <di:waypoint x="173.49999237060547" y="194.5"/>
+        <di:waypoint x="173.5" y="194.5"/>
         <di:waypoint x="230.0" y="194.5"/>
         <di:waypoint x="230.0" y="135.0"/>
         <di:waypoint x="380.49999237060547" y="135.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_HZrmiA" id="BPMNEdge_6zG00A">
         <di:waypoint x="173.49999237060547" y="254.5"/>
-        <di:waypoint x="173.5" y="254.5"/>
         <di:waypoint x="277.0" y="254.5"/>
         <di:waypoint x="277.0" y="160.0"/>
         <di:waypoint x="380.49999237060547" y="160.0"/>
@@ -332,6 +333,7 @@
         <di:waypoint x="611.0379028320312" y="163.77174377441406"/>
         <di:waypoint x="674.5534057617188" y="163.77174377441406"/>
         <di:waypoint x="674.5534057617188" y="391.477783203125"/>
+        <di:waypoint x="616.037841796875" y="391.477783203125"/>
         <di:waypoint x="616.0378265380859" y="391.477783203125"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_hjOHkA" id="BPMNEdge_t0s9Eg">

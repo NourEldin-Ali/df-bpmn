@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://open-bpmn.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
+    <bpmn2:participant id="participant_dXw2nQ" name="Default Process" processRef="process_1"/>
+    <bpmn2:participant id="participant_N2Qvog" name="Pool-1" processRef="process_yy7yew">
+      <bpmn2:documentation id="documentation_yfDSTQ"/>
+    </bpmn2:participant>
+  </bpmn2:collaboration>
+  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.1-u0\workspace\procurement-example" definitionalCollaborationRef="collaboration_1" exportName="dataProcessing-2" id="process_1" name="Default Process" processType="Public">
+    <bpmn2:documentation id="documentation_esZAJw"/>
+  </bpmn2:process>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_yy7yew" name="Pool-1" processType="Private">
+    <bpmn2:laneSet id="laneset_OhBTHw" name="Lane Set">
+      <bpmn2:lane id="lane_xtFETA" name="Lane 1">
+        <bpmn2:documentation id="documentation_ro0UxA"/>
+        <bpmn2:flowNodeRef>task_sHOK0Q</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_3VFadA</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_DSaIqw</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+    </bpmn2:laneSet>
+    <bpmn2:task expand="true" id="task_sHOK0Q" name="Task-1">
+      <bpmn2:documentation id="documentation_JB5lcA"/>
+      <bpmn2:incoming>sequenceFlow_4Ta0rg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_xDU90Q</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:startEvent id="event_3VFadA" name="Event-1">
+      <bpmn2:documentation id="documentation_l0i6HQ"/>
+      <bpmn2:outgoing>sequenceFlow_4Ta0rg</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="event_DSaIqw" name="Event-2">
+      <bpmn2:documentation id="documentation_Ky0urw"/>
+      <bpmn2:incoming>sequenceFlow_xDU90Q</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_4Ta0rg" sourceRef="event_3VFadA" targetRef="task_sHOK0Q">
+      <bpmn2:documentation id="documentation_ub40VQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_xDU90Q" sourceRef="task_sHOK0Q" targetRef="event_DSaIqw">
+      <bpmn2:documentation id="documentation_LxKWpA"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="participant_N2Qvog" id="BPMNShape_eqrddA">
+        <dc:Bounds height="321.0" width="957.0" x="36.005706787109375" y="114.01988983154297"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_xtFETA" id="BPMNShape_Lane_x5GzPQ">
+        <dc:Bounds height="321.0" width="927.0" x="66.0" y="114.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_sHOK0Q" id="BPMNShape_aqrTAQ">
+        <dc:Bounds height="62.0" width="176.0" x="399.5057067871094" y="207.5198974609375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_3VFadA" id="BPMNShape_hHwAJA">
+        <dc:Bounds height="36.0" width="36.0" x="183.00570678710938" y="232.01988983154297"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_nqsI0g">
+          <dc:Bounds height="16.0" width="100.0" x="151.00570678710938" y="271.01988983154297"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_DSaIqw" id="BPMNShape_bL5JRQ">
+        <dc:Bounds height="36.0" width="36.0" x="702.0057067871094" y="242.01988983154297"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_l51QEA">
+          <dc:Bounds height="16.0" width="100.0" x="670.0057067871094" y="281.01988983154297"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_4Ta0rg" id="BPMNEdge_nv1hgA" sourceElement="BPMNShape_hHwAJA" targetElement="BPMNShape_aqrTAQ">
+        <di:waypoint x="219.00570678710938" y="250.0198974609375"/>
+        <di:waypoint x="295.7557067871094" y="250.0198974609375"/>
+        <di:waypoint x="295.7557067871094" y="207.5198974609375"/>
+        <di:waypoint x="372.5057067871094" y="207.5198974609375"/>
+        <di:waypoint x="372.5057067871094" y="238.5198974609375"/>
+        <di:waypoint x="399.5057067871094" y="238.5198974609375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_xDU90Q" id="BPMNEdge_DWGC4Q" sourceElement="BPMNShape_aqrTAQ" targetElement="BPMNShape_bL5JRQ">
+        <di:waypoint x="575.5057067871094" y="207.5198974609375"/>
+        <di:waypoint x="625.2557220458984" y="207.5198974609375"/>
+        <di:waypoint x="625.2557220458984" y="260.0198974609375"/>
+        <di:waypoint x="702.0057373046875" y="260.0198974609375"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

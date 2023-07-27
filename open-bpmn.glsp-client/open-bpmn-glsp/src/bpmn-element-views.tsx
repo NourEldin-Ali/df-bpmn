@@ -53,6 +53,7 @@ import {
 } from '@open-bpmn/open-bpmn-model';
 import { inject, injectable } from 'inversify';
 import { VNode } from 'snabbdom';
+import { MyCustomResponseAction } from './bpmn-select-listeners';
 
 /****************************************************************************
  * This module provides BPMN element views like Gateways, or Events
@@ -692,4 +693,13 @@ export class ExpandHandler implements IActionHandler {
             }
         }
     }
+}
+
+@injectable()
+export class MyCustomResponseActionHandler implements IActionHandler {
+  handle(action: MyCustomResponseAction): void | Action {
+    // implement your custom logic to handle the action
+    // Optionally issue a response action
+    console.log(action.responseId);
+  }
 }

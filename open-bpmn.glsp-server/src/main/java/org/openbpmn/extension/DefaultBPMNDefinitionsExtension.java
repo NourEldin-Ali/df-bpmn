@@ -134,7 +134,7 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 				// Category Definitions...
 				addCategory("Definitions"). //
 				addLayout(Layout.VERTICAL). //
-				addElements("targetNamespace", "exporter", "exporterVersion"); //
+				addElements("targetNamespace", "exporter", "export"); //
 
 		uiSchemaBuilder.
 		// Category Bonita Project...

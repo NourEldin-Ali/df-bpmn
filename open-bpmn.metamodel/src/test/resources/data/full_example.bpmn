@@ -426,7 +426,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_0rcdlg" id="BPMNEdge_v7r0Pg" sourceElement="BPMNShape_K0WjrA" targetElement="BPMNShape_ZeT3xw">
         <di:waypoint x="917.4285583496094" y="1014.1033935546875"/>
-        <di:waypoint x="917.4285888671875" y="1014.1033935546875"/>
         <di:waypoint x="1006.9109497070312" y="1014.1033935546875"/>
         <di:waypoint x="1006.9109497070312" y="959.7385864257812"/>
         <di:waypoint x="1071.6624755859375" y="959.7385864257812"/>
@@ -516,7 +515,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_GHDIOg" id="BPMNEdge_v7LHKQ" sourceElement="BPMNShape_ZpsLBw" targetElement="BPMNShape_0rshMw">
         <di:waypoint x="2233.1515197753906" y="335.66937255859375"/>
-        <di:waypoint x="2233.151611328125" y="335.66937255859375"/>
         <di:waypoint x="2285.822265625" y="335.66937255859375"/>
         <di:waypoint x="2285.822265625" y="307.1224670410156"/>
         <di:waypoint x="2338.4931640625" y="307.1224670410156"/>
@@ -601,15 +599,17 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_KXhbbA" id="BPMNEdge_TuTe9w">
         <di:waypoint x="81.0538330078125" y="272.2953643798828"/>
+        <di:waypoint x="81.0538330078125" y="272.29534912109375"/>
         <di:waypoint x="81.0538330078125" y="242.2953643798828"/>
         <di:waypoint x="259.59136962890625" y="242.2953643798828"/>
+        <di:waypoint x="259.59136962890625" y="272.29534912109375"/>
         <di:waypoint x="259.59136962890625" y="272.2953643798828"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_HogN5w" id="BPMNEdge_XwK2kg">
-        <di:waypoint x="339.59136962890625" y="297.2953643798828"/>
-        <di:waypoint x="368.56446838378906" y="297.2953643798828"/>
-        <di:waypoint x="368.56446838378906" y="269.11573791503906"/>
-        <di:waypoint x="397.5375671386719" y="269.11573791503906"/>
+        <di:waypoint x="339.59136962890625" y="297.29534912109375"/>
+        <di:waypoint x="368.564453125" y="297.29534912109375"/>
+        <di:waypoint x="368.564453125" y="269.11572265625"/>
+        <di:waypoint x="397.5375671386719" y="269.11572265625"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

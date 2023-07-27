@@ -51,6 +51,8 @@ import org.openbpmn.extension.dataextension.DefaultBPMNDataProcessingExtension;
 import org.openbpmn.extension.LinkEventDefinitionExtension;
 import org.openbpmn.extension.SignalEventDefinitionExtension;
 import org.openbpmn.extension.TimerEventDefinitionExtension;
+import org.openbpmn.glsp.action.MyCustomActionHandler;
+import org.openbpmn.glsp.action.MyCustomRequestAction;
 import org.openbpmn.glsp.elements.data.BPMNApplyEditLabelOperationHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateDataObjectHandler;
 import org.openbpmn.glsp.elements.data.BPMNCreateMessageHandler;
@@ -118,6 +120,8 @@ public class BPMNDiagramModule extends DiagramModule {
     @Override
     protected void configureActionHandlers(final MultiBinding<ActionHandler> binding) {
         super.configureActionHandlers(binding);
+
+        binding.add(MyCustomActionHandler.class);
 
         // Clipboard
         binding.add(BPMNClipboardDataActionHandler.class);
@@ -211,6 +215,7 @@ public class BPMNDiagramModule extends DiagramModule {
     protected void configureClientActions(MultiBinding<Action> binding) {
         super.configureClientActions(binding);
         binding.add(BPMNPropertyPanelUpdateAction.class);
+        binding.add(MyCustomRequestAction.class);
     }
 
     /**

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://open-bpmn.org">
+  <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
+    <bpmn2:participant id="participant_Wtx2gw" name="Default Process" processRef="process_1"/>
+    <bpmn2:participant id="participant_A9p52g" name="Pool-1" processRef="process_9UT00g">
+      <bpmn2:documentation id="documentation_BSUb0A"/>
+    </bpmn2:participant>
+    <bpmn2:participant id="participant_9n2rjA" name="Pool-2" processRef="process_mXO16Q">
+      <bpmn2:documentation id="documentation_NEMq7g"/>
+    </bpmn2:participant>
+  </bpmn2:collaboration>
+  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.1-u0\workspace\procurement-example" definitionalCollaborationRef="collaboration_1" exportName="dataProcessing-1" id="process_1" name="Default Process" processType="Public">
+    <bpmn2:documentation id="documentation_j3lwDg"/>
+  </bpmn2:process>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_9UT00g" name="Pool-1" processType="Private">
+    <bpmn2:startEvent id="event_L6GByQ" name="Event-1">
+      <bpmn2:documentation id="documentation_73rYqA"/>
+      <bpmn2:outgoing>sequenceFlow_95TJkw</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="event_YQJKnQ" name="Event-2">
+      <bpmn2:documentation id="documentation_5LI5fg"/>
+      <bpmn2:incoming>sequenceFlow_kSTJig</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:task expand="true" id="task_qBQSsg" name="claculate salary after tax">
+      <bpmn2:documentation id="documentation_oi0glA"/>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_uCeDmA" isMultiple="false" name="salary" type="double">
+        <bpmn2:outgoing>DataFlowExtension_Y3G58g</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_OL0csw" isMultiple="false" name="salary_after_tax" state="init" type="double">
+        <bpmn2:incoming>DataFlowExtension_9US4Ow</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataProcessing gherkin="&#10;Given an income&#10;When the income is less than or equal to 10,722&#10;Then there is no tax applied&#10;&#10;When the income is greater than 10,722 and less than or equal to 27,478&#10;Then the tax is 11%&#10;&#10;When the income is greater than 27,478 and less than or equal to 78,570&#10;Then the tax is 30%&#10;&#10;When the income is greater than 78,570 and less than or equal to 168,994&#10;Then the tax is 41%&#10;&#10;When the income is greater than 168,994&#10;Then the tax is 45%&#10;" id="DataProcessingExtension_TcO1kw" name="dataProcessing-1">
+        <bpmn2:documentation id="documentation_WvrWJA"><![CDATA[need to calculation the net salary is as follows:
+For an income up to 10,722, there is no tax.
+For an income ranging from 10,777 to 27,478, the tax is 11%.
+For an income ranging from 27,478 to 78,570, the tax is 30%.
+For an income ranging from 78,570 to 168,994, the tax is 41%.
+For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
+        <bpmn2:incoming>DataFlowExtension_Y3G58g</bpmn2:incoming>
+        <bpmn2:outgoing>DataFlowExtension_9US4Ow</bpmn2:outgoing>
+      </bpmn2:dataProcessing>
+      <bpmn2:dataFlow id="DataFlowExtension_Y3G58g" sourceRef="DataInputObjectExtension_uCeDmA" targetRef="DataProcessingExtension_TcO1kw">
+        <bpmn2:documentation id="documentation_47miEw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_9US4Ow" sourceRef="DataProcessingExtension_TcO1kw" targetRef="DataOutputObjectExtension_OL0csw">
+        <bpmn2:documentation id="documentation_mpeWSQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_95TJkw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_kSTJig</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_95TJkw" sourceRef="event_L6GByQ" targetRef="task_qBQSsg">
+      <bpmn2:documentation id="documentation_n00dMw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_kSTJig" sourceRef="task_qBQSsg" targetRef="event_YQJKnQ">
+      <bpmn2:documentation id="documentation_9jPa5w"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_mXO16Q" name="Pool-2" processType="Private">
+    <bpmn2:startEvent id="event_VNJ6RA" name="Event-3">
+      <bpmn2:documentation id="documentation_fIRgyw"/>
+      <bpmn2:outgoing>sequenceFlow_3bVP4w</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="event_4KHi0A" name="Event-4">
+      <bpmn2:documentation id="documentation_CzpGoA"/>
+      <bpmn2:incoming>sequenceFlow_SXzfgA</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:task expand="true" id="task_mE0xsQ" name="price after discount">
+      <bpmn2:documentation id="documentation_s7tOiA"/>
+      <bpmn2:incoming>sequenceFlow_3bVP4w</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_SXzfgA</bpmn2:outgoing>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_LufOuw" isMultiple="false" name="price" type="double">
+        <bpmn2:outgoing>DataFlowExtension_oLh5Ow</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_o9mXTQ" isMultiple="false" name="discount" type="int">
+        <bpmn2:outgoing>DataFlowExtension_FnFKHQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_WfreQQ" isMultiple="false" name="price_after_discount" state="init" type="double">
+        <bpmn2:incoming>DataFlowExtension_Vb9b4w</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataProcessing gherkin="&#10;Given the price is less than 100&#10;When the discount is applied&#10;Then half the discount is applied&#10;&#10;Given the price is more than 100&#10;When the discount is applied&#10;Then the full discount is applied&#10;" id="DataProcessingExtension_aWUtSw" name="dataProcessing-2">
+        <bpmn2:documentation id="documentation_nLRXMw"><![CDATA[calculate the price after discount:
+*if the price is less than 100, we will do half of the discount
+*else do all the discount]]></bpmn2:documentation>
+        <bpmn2:incoming>DataFlowExtension_oLh5Ow</bpmn2:incoming>
+        <bpmn2:incoming>DataFlowExtension_FnFKHQ</bpmn2:incoming>
+        <bpmn2:outgoing>DataFlowExtension_Vb9b4w</bpmn2:outgoing>
+      </bpmn2:dataProcessing>
+      <bpmn2:dataFlow id="DataFlowExtension_oLh5Ow" sourceRef="DataInputObjectExtension_LufOuw" targetRef="DataProcessingExtension_aWUtSw">
+        <bpmn2:documentation id="documentation_mWZxqg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_FnFKHQ" sourceRef="DataInputObjectExtension_o9mXTQ" targetRef="DataProcessingExtension_aWUtSw">
+        <bpmn2:documentation id="documentation_l9RKbQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_Vb9b4w" sourceRef="DataProcessingExtension_aWUtSw" targetRef="DataOutputObjectExtension_WfreQQ">
+        <bpmn2:documentation id="documentation_0FvLYA"/>
+      </bpmn2:dataFlow>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_3bVP4w" sourceRef="event_VNJ6RA" targetRef="task_mE0xsQ">
+      <bpmn2:documentation id="documentation_cmtuMw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_SXzfgA" sourceRef="task_mE0xsQ" targetRef="event_4KHi0A">
+      <bpmn2:documentation id="documentation_2dI0Kw"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_cj0Bkw" id="BPMNShape_fBYzOw">
+        <dc:Bounds height="50.0" width="160.0" x="299.5057067871094" y="164.51990509033203"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_90DkQQ" id="BPMNShape_0LATCg">
+        <dc:Bounds height="50.0" width="130.0" x="721.0057373046875" y="167.51990509033203"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_bxDW0g" id="BPMNShape_PTunGQ">
+        <dc:Bounds height="50.0" width="50.0" x="556.0057373046875" y="164.51990509033203"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_Zyt0rw">
+          <dc:Bounds height="16.0" width="100.0" x="531.0057373046875" y="217.51990509033203"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_i0aejA" id="BPMNEdge_3WyZZw">
+        <di:waypoint x="160.0" y="99.5"/>
+        <di:waypoint x="256.5000305175781" y="99.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_EeqFww" id="BPMNEdge_6ihqrA">
+        <di:waypoint x="305.50003814697266" y="98.50000762939453"/>
+        <di:waypoint x="364.0000305175781" y="98.50000762939453"/>
+        <di:waypoint x="364.0000305175781" y="102.50000762939453"/>
+        <di:waypoint x="421.5000305175781" y="102.50000762939453"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="participant_A9p52g" id="BPMNShape_LIjSZA">
+        <dc:Bounds height="378.0" width="965.0" x="86.00570678710938" y="14.019889831542969"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_L6GByQ" id="BPMNShape_ghs38Q">
+        <dc:Bounds height="36.0" width="36.0" x="234.00570678710938" y="157.0198974609375"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_nhNGhQ">
+          <dc:Bounds height="16.0" width="100.0" x="202.00570678710938" y="196.0198974609375"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_YQJKnQ" id="BPMNShape_z6u4RQ">
+        <dc:Bounds height="36.0" width="36.0" x="935.0057373046875" y="163.0198974609375"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_0SApSg">
+          <dc:Bounds height="16.0" width="100.0" x="903.0057373046875" y="202.0198974609375"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_qBQSsg" id="BPMNShape_xPc30Q">
+        <dc:Bounds height="148.0" width="470.0" x="344.5057067871094" y="105.5198974609375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_uCeDmA" id="BPMNShape_HCf7wQ">
+        <dc:Bounds height="50.0" width="160.0" x="344.5057067871094" y="147.0198974609375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_OL0csw" id="BPMNShape_4IPmJQ">
+        <dc:Bounds height="50.0" width="130.0" x="615.0057373046875" y="145.0198974609375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_TcO1kw" id="BPMNShape_oc2kpQ">
+        <dc:Bounds height="50.0" width="50.0" x="542.0057373046875" y="147.0198974609375"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_FHATDg">
+          <dc:Bounds height="16.0" width="100.0" x="517.0057373046875" y="200.0198974609375"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Y3G58g" id="BPMNEdge_KztW7Q">
+        <di:waypoint x="160.0" y="71.5"/>
+        <di:waypoint x="173.25001525878906" y="71.5"/>
+        <di:waypoint x="173.25001525878906" y="66.5"/>
+        <di:waypoint x="197.50003051757812" y="66.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_9US4Ow" id="BPMNEdge_dVx37g">
+        <di:waypoint x="247.50003051757812" y="66.5"/>
+        <di:waypoint x="259.0000305175781" y="66.5"/>
+        <di:waypoint x="259.0000305175781" y="64.5"/>
+        <di:waypoint x="270.5000305175781" y="64.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_95TJkw" id="BPMNEdge_GLe4yg" sourceElement="BPMNShape_ghs38Q" targetElement="BPMNShape_xPc30Q">
+        <di:waypoint x="270.0057067871094" y="175.0198974609375"/>
+        <di:waypoint x="318.7557067871094" y="175.0198974609375"/>
+        <di:waypoint x="318.7557067871094" y="181.0198974609375"/>
+        <di:waypoint x="344.5057067871094" y="181.0198974609375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_kSTJig" id="BPMNEdge_fRP2Ww" sourceElement="BPMNShape_xPc30Q" targetElement="BPMNShape_z6u4RQ">
+        <di:waypoint x="814.5057067871094" y="179.5198974609375"/>
+        <di:waypoint x="874.7557220458984" y="179.5198974609375"/>
+        <di:waypoint x="874.7557220458984" y="181.0198974609375"/>
+        <di:waypoint x="935.0057373046875" y="181.0198974609375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="participant_9n2rjA" id="BPMNShape_0xI0pQ">
+        <dc:Bounds height="418.27724198721234" width="961.2436063535006" x="91.00570678710938" y="429.0198974609375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_VNJ6RA" id="BPMNShape_BTYL3w">
+        <dc:Bounds height="36.0" width="36.0" x="165.38830243817472" y="528.0504485903509"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_sJTW7w">
+          <dc:Bounds height="16.0" width="100.0" x="133.38830243817472" y="567.0504485903509"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_4KHi0A" id="BPMNShape_sV3zBA">
+        <dc:Bounds height="36.0" width="36.0" x="868.3883024381747" y="539.0504485903509"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_X9KMWA">
+          <dc:Bounds height="16.0" width="100.0" x="836.3883024381747" y="578.0504485903509"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_mE0xsQ" id="BPMNShape_LhV1gA">
+        <dc:Bounds height="175.0" width="465.0" x="303.8883056640625" y="469.55047607421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_3bVP4w" id="BPMNEdge_w1Pyvg" sourceElement="BPMNShape_BTYL3w" targetElement="BPMNShape_LhV1gA">
+        <di:waypoint x="201.3883056640625" y="546.0504760742188"/>
+        <di:waypoint x="252.1383056640625" y="546.0504760742188"/>
+        <di:waypoint x="252.1383056640625" y="567.0504455566406"/>
+        <di:waypoint x="302.8883056640625" y="567.0504455566406"/>
+        <di:waypoint x="302.8883056640625" y="557.0504760742188"/>
+        <di:waypoint x="303.8883056640625" y="557.0504760742188"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_SXzfgA" id="BPMNEdge_6bzTbA" sourceElement="BPMNShape_LhV1gA" targetElement="BPMNShape_sV3zBA">
+        <di:waypoint x="768.8883056640625" y="567.0504455566406"/>
+        <di:waypoint x="818.1383056640625" y="567.0504455566406"/>
+        <di:waypoint x="818.1383056640625" y="557.0504760742188"/>
+        <di:waypoint x="868.3883056640625" y="557.0504760742188"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_LufOuw" id="BPMNShape_qUjqig">
+        <dc:Bounds height="50.0" width="160.0" x="303.8883056640625" y="492.05047607421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_o9mXTQ" id="BPMNShape_bx0kVw">
+        <dc:Bounds height="50.0" width="160.0" x="303.8883056640625" y="566.050537109375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_WfreQQ" id="BPMNShape_6KqvPg">
+        <dc:Bounds height="50.0" width="130.0" x="595.3883056640625" y="513.0505065917969"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_aWUtSw" id="BPMNShape_otdXOg">
+        <dc:Bounds height="50.0" width="50.0" x="501.3883056640625" y="538.9967009214754"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_cwcA4w">
+          <dc:Bounds height="16.0" width="100.0" x="476.3883056640625" y="591.9967009214754"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_oLh5Ow" id="BPMNEdge_OSqoKw">
+        <di:waypoint x="160.0" y="47.5"/>
+        <di:waypoint x="178.75" y="47.5"/>
+        <di:waypoint x="178.75" y="89.50003051757812"/>
+        <di:waypoint x="202.44619750976562" y="89.50003051757812"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_FnFKHQ" id="BPMNEdge_Dkcf0w">
+        <di:waypoint x="160.0" y="121.50003051757812"/>
+        <di:waypoint x="178.75" y="121.50003051757812"/>
+        <di:waypoint x="178.75" y="89.50003051757812"/>
+        <di:waypoint x="202.44619750976562" y="89.50003051757812"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Vb9b4w" id="BPMNEdge_TnO5Mg">
+        <di:waypoint x="242.55380249023438" y="89.50003051757812"/>
+        <di:waypoint x="269.5" y="89.50003051757812"/>
+        <di:waypoint x="269.5" y="68.50003051757812"/>
+        <di:waypoint x="291.5" y="68.50003051757812"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

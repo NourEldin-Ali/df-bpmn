@@ -1,0 +1,44 @@
+You will take some example about accepted and rejected senarios, based on the inputs data and the description of the senario.
+Whole the input should be a part of the description and the description inputs should be a part on the inputs list.
+The description should be in Gherkin format.
+The input should be a list of variable names.
+you should show me only "YES" or "NO" without any other inforamtion.
+Result ONLY YES or NO!
+---
+Example1: acceptable senario
+Inputs: [list_of_item]
+Output: sum_of_amount_after_discount
+Description: Given a list of items
+When the total sum of the items exceeds 100
+Then a discount of 10% will be applied
+Result: YES
+---
+Example2: rejected senario (no inputs)
+Inputs: []
+Output: salary_after_tax
+Description: Given the user's gross salary
+When the income is up to 10,722
+Then the salary is tax free
+When the income is between 10,777 and 27,478
+Then the salary is taxed at 11%
+When the income is between 27,478 and 78,570
+Then the salary is taxed at 30%
+When the income is between 78,570 and 168,994
+Then the salary is taxed at 41%
+When the income is above 168,994
+Then the salary is taxed at 45%
+Result: NO
+---
+Example3: rejected senario (wrong inputs)
+Inputs: [test]
+Output: sum_of_amount_after_discount
+Description: Given a list of items
+When the total sum of the items exceeds 100
+Then a discount of 10% will be applied
+Result: NO
+---
+Inputs:{inputs}
+Output:{output}
+Description: {description}
+Result: ?
+---

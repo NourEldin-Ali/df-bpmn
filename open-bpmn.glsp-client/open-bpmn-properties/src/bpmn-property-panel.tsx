@@ -29,7 +29,7 @@ import {
     SetUIExtensionVisibilityAction,
     TYPES
 } from 'sprotty';
-
+// import { MyCustomAction} from  '@open-bpmn/open-bpmn-glsp/lib/bpmn-select-listeners';
 import { SelectionListener, SelectionService } from '@eclipse-glsp/client/lib/features/select/selection-service';
 import { JsonForms } from '@jsonforms/react';
 import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers';
@@ -43,11 +43,12 @@ import { SelectItemComboRendererEntry, SelectItemRendererEntry } from './SelectI
 import { TextFileEditorRendererEntry } from './TextFileEditorControl';
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 @injectable()
+
 export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionListener, IActionHandler {
 
     static readonly ID = 'bpmn-property-panel';
 
-    @inject(TYPES.IActionDispatcher) protected readonly actionDispatcher: GLSPActionDispatcher;
+    @inject(TYPES.IActionDispatcher) protected actionDispatcher: GLSPActionDispatcher;
 
     @inject(EditorContextService)
     protected readonly editorContext: EditorContextService;
@@ -402,10 +403,38 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                                 const newJsonData = JSON.stringify({});
                                 const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'Export');
                                 this.actionDispatcher.dispatch(action);
+                            
                             }
                             } />
                         </div>);
-                } else {
+                } else  if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/generate')) {
+                    this.panelContainer.render(
+                        <div>
+                            <JsonForms
+                                data={bpmnPropertiesData}
+                                schema={bpmnPropertiesSchema}
+                                uischema={bpmnPropertiesUISchema}
+                                cells={vanillaCells}
+                                renderers={bpmnRenderers}
+                                onChange={({ errors, data }) => this.setState({ data })}
+                                key={this.selectedElementId}
+                            />
+                            <input type="button" className="favorite styled" value="Generate Behavior" onClick={async () => {
+                                console.log('click generate');
+                                const newJsonData = JSON.stringify({});
+                                const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'generate');
+                                this.actionDispatcher.dispatch(action);
+                                // this.actionDispatcher.request(action);
+
+                                // const response = await this.actionDispatcher.request(
+                                //     MyCustomAction.create({additionalInformation:'test'})
+                                //     );
+
+                                // console.log(response.responseId);
+                            }
+                            } />
+                        </div>);
+                } else{
                     this.panelContainer.render(
                         <JsonForms
                             data={bpmnPropertiesData}

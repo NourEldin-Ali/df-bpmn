@@ -36,8 +36,8 @@ public class DataProcessingExtension extends BPMNElementNode {
      * 
      * @return
      */
-    public Set<DataFlowExtension> getIngoingDataFlows() {
-        // filter all sequenceFlows with a sourceRef to this elementNode
+    public Set<DataFlowExtension> getIncomingDataFlows() {
+        // filter all sequenceFlows with a target to this elementNode
         Set<DataFlowExtension> result = this.activity.getDataFlows()
                 .stream()
                 .filter(c -> c.getTargetRef().equals(this.getId()))
@@ -45,4 +45,20 @@ public class DataProcessingExtension extends BPMNElementNode {
         return result;
 
     }
+    
+    /**
+     * Returns a List of all outgoing SequenceFlows associated with this element
+     * 
+     * @return
+     */
+    public Set<DataFlowExtension> getOutgoingDataFlows() {
+        // filter all sequenceFlows with a sourceRef to this elementNode
+        Set<DataFlowExtension> result = this.activity.getDataFlows()
+                .stream()
+                .filter(c -> c.getSourceRef().equals(this.getId()))
+                .collect(Collectors.toSet());
+        return result;
+
+    }
+    
 }

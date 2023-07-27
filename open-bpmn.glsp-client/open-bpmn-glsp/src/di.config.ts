@@ -16,6 +16,7 @@
 import {
     boundsFeature,
     CircularNodeView,
+    configureActionHandler,
     configureCommand,
     configureDefaultModelElements,
     configureModelElement,
@@ -70,6 +71,7 @@ import {
     IconView,
     LabelNodeView,
     MessageNodeView,
+    MyCustomResponseActionHandler,
     TextAnnotationNodeView
 } from './bpmn-element-views';
 import {
@@ -84,7 +86,7 @@ import { BPMNEdgeView } from './bpmn-routing-views';
 import { BPMNPropertyModule } from '@open-bpmn/open-bpmn-properties';
 
 import {
-    BPMNLabelNodeSelectionListener, BPMNMultiNodeSelectionListener
+    BPMNLabelNodeSelectionListener, BPMNMultiNodeSelectionListener, MyCustomResponseAction
 } from './bpmn-select-listeners';
 
 const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -186,6 +188,10 @@ const bpmnDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =>
     // data flow
     configureModelElement(context, 'dataFlow', BPMNEdge, BPMNEdgeView);
     configureModelElement(context, 'dataReference', BPMNEdge, BPMNEdgeView);
+
+    // add actions
+    configureActionHandler(context, MyCustomResponseAction.KIND, MyCustomResponseActionHandler);
+
 });
 
 /*

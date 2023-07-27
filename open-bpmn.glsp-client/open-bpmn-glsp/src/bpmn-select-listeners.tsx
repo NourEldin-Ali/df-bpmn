@@ -14,7 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import {
-  ActionDispatcher, filter, getElements, hasArguments, SelectAction,
+  Action,
+  ActionDispatcher, filter, getElements, hasArguments, hasStringProp, RequestAction, ResponseAction, SelectAction,
   SModelRoot, TYPES
 } from '@eclipse-glsp/client';
 import { SelectionListener } from '@eclipse-glsp/client/lib/features/select/selection-service';
@@ -110,4 +111,43 @@ export class BPMNMultiNodeSelectionListener implements SelectionListener {
         // finally dispatch the updated selected and unselected IDs...
         this.actionDispatcher.dispatch(SelectAction.create({ selectedElementsIDs: selectedElements, deselectedElementsIDs: containerIDs }));
     }
+}
+
+export interface MyCustomAction extends RequestAction<MyCustomResponseAction> {
+  kind: typeof MyCustomAction.KIND;
+  additionalInformation: string;
+}
+
+export namespace MyCustomAction {
+  export const KIND = 'myCustomKind';
+  export function is(object: any): object is MyCustomAction {
+    return (RequestAction.hasKind(object, KIND) && hasStringProp(object, 'additionalInformation'));
+  }
+  export function create(options: { additionalInformation: string, requestId?: string }): MyCustomAction {
+    return {
+        kind: KIND,
+        requestId: '',
+        ...options
+    };
+  }
+}
+
+export interface MyCustomResponseAction extends ResponseAction {
+  kind: typeof MyCustomResponseAction.KIND;
+}
+
+export namespace MyCustomResponseAction {
+  export const KIND = 'myCustomResponse';
+
+  export function is(object: any): object is MyCustomResponseAction  {
+      return Action.hasKind(object, KIND);
+  }
+
+  export function create(options: { responseId?: string } = {}): MyCustomResponseAction {
+    return {
+        kind: KIND,
+        responseId: '',
+        ...options
+    };
+}
 }

@@ -99,18 +99,18 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         <dc:Bounds height="200.0" width="800.0" x="-6003.729606623689" y="263.6835681383977"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_6M0goQ" id="BPMNShape_f01s2A">
-        <dc:Bounds height="243.4073486328125" width="635.36328125" x="266.97271728515625" y="67.32122802734375"/>
+        <dc:Bounds height="243.4073486328125" width="635.36328125" x="268.97271728515625" y="67.32122802734375"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_NSeFjA" id="BPMNShape_JdU9kQ">
-        <dc:Bounds height="50.0" width="160.0" x="301.0" y="137.0"/>
+        <dc:Bounds height="50.0" width="160.0" x="303.0" y="137.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_AoopQg" id="BPMNShape_vNaMtg">
-        <dc:Bounds height="50.0" width="130.0" x="716.008544921875" y="172.0"/>
+        <dc:Bounds height="50.0" width="130.0" x="718.008544921875" y="172.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_FvnXvQ" id="BPMNShape_WszPEA">
-        <dc:Bounds height="50.0" width="50.0" x="567.008544921875" y="172.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="569.008544921875" y="172.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_lbb8Fw">
-          <dc:Bounds height="16.0" width="100.0" x="542.008544921875" y="224.0"/>
+          <dc:Bounds height="16.0" width="100.0" x="544.008544921875" y="224.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_jn7i0g" id="BPMNEdge_KOwtjw">
@@ -135,12 +135,13 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_ugKxyg" id="BPMNEdge_RzVD1A" sourceElement="BPMNShape_f01s2A" targetElement="BPMNShape_v76EIQ">
-        <di:waypoint x="902.3359985351562" y="189.02490234375"/>
+        <di:waypoint x="904.3359985351562" y="189.02490234375"/>
         <di:waypoint x="1032.008544921875" y="189.02490234375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_JEdZaA" id="BPMNEdge_kUg0Jw" sourceElement="BPMNShape_YytoXA" targetElement="BPMNShape_f01s2A">
         <di:waypoint x="182.008544921875" y="189.02490234375"/>
         <di:waypoint x="266.97271728515625" y="189.02490234375"/>
+        <di:waypoint x="268.97271728515625" y="189.02490234375"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

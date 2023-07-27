@@ -1053,11 +1053,17 @@ public class Activity extends BPMNElementNode {
 				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
 	}
 
-	public boolean dataHasReference(String dataObjectId) {
+	public boolean isUpdateData(String dataObjectId) {
 		return this.dataReferences.stream()
-				.anyMatch(ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId));
+				.anyMatch(ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId)) ||
+				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("init") ||
+				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("delete");
+	
 	}
-
+	public boolean isDeleteData(String dataObjectId) {
+		return this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("delete");
+	
+	}
 	public List<DataFlowExtension> getConnectDataFlowTo(BPMNElement dataObject) {
 		if (dataObject instanceof DataOutputObjectExtension) {
 			return dataFlows.stream()
@@ -1068,6 +1074,11 @@ public class Activity extends BPMNElementNode {
 
 		}
 		return new ArrayList<>();
+	}
+	
+	public List<DataOutputObjectExtension> getAllDeleteObjectData() {
+		
+		return this.dataOutputObjects.stream().filter(dataObject -> dataObject.getAttribute("state").toLowerCase().equals("delete") && dataObject.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)).collect(Collectors.toList());
 	}
 
 	public BPMNElement getFistMultiObjectFor(BPMNElement dataObject) {
@@ -1088,7 +1099,7 @@ public class Activity extends BPMNElementNode {
 
 		DataProcessingExtension dataProcessing = (DataProcessingExtension) findElementById(dataProcessingId);
 
-		dataProcessing.getIngoingDataFlows().stream().forEach(sequenceFlow -> {
+		dataProcessing.getIncomingDataFlows().stream().forEach(sequenceFlow -> {
 			BPMNElement dataElementInc = findElementById(sequenceFlow.getSourceRef());
 			if (dataElementInc.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
 				listIncomingElement.addAll(getDataProcessingIncoming(dataElementInc.getId()));
@@ -1098,6 +1109,24 @@ public class Activity extends BPMNElementNode {
 		});
 
 		return listIncomingElement;
+
+	}
+	
+	public List<BPMNElement> getDataProcessingOutgoing(String dataProcessingId) {
+		List<BPMNElement> listOutgingElement = new ArrayList<>();
+
+		DataProcessingExtension dataProcessing = (DataProcessingExtension) findElementById(dataProcessingId);
+
+		dataProcessing.getOutgoingDataFlows().stream().forEach(sequenceFlow -> {
+			BPMNElement dataElementInc = findElementById(sequenceFlow.getTargetRef());
+			if (dataElementInc.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+				listOutgingElement.addAll(getDataProcessingOutgoing(dataElementInc.getId()));
+			} else {
+				listOutgingElement.add(dataElementInc);
+			}
+		});
+
+		return listOutgingElement;
 
 	}
 }

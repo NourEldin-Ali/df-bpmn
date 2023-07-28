@@ -1,5 +1,16 @@
 #!/bin/bash
 echo "***************************************"
+echo "*        Starting - LLM server        *"
+echo "***************************************"
+
+
+echo OPENAI_KEY
+echo OPENAI_ORGA_KEY
+cd integration-openai/
+nohup python app.py OPENAI_KEY OPENAI_ORGA_KEY &
+cd ..
+
+echo "***************************************"
 echo "* Starting - Open BPMN.....     test      *"
 echo "***************************************"
 

@@ -3,7 +3,32 @@ FROM node:16-buster
 # Install app dependencies
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev openjdk-11-jre
 
-RUN apt-get install -y curl tar bash procps
+# Install base utilities
+RUN apt-get update \
+    && apt-get install -y build-essential \
+    && apt-get install -y wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install miniconda
+ENV CONDA_DIR /opt/conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda
+
+# Put conda in path so we can use conda activate
+ENV PATH=$CONDA_DIR/bin:$PATH
+
+#python library needed to working
+RUN conda install langchain -c conda-forge
+# RUN conda install -c conda-forge openai
+
+
+# Python enviroment for the server connected to openAI
+ARG API_KEY
+ENV OPENAI_KEY=$API_KEY
+ARG ORGA_KEY
+ENV OPENAI_ORGA_KEY=$ORGA_KEY
+
 
 # Downloading and installing Maven
 # 1- Define a constant with the version of maven you want to install
@@ -56,9 +81,9 @@ WORKDIR /usr/src/app/open-bpmn/open-bpmn.glsp-client
 RUN yarn
 
 # Copy Start script
-WORKDIR /usr/src/app
-COPY scripts/start.sh start.sh
+# WORKDIR /usr/src/app
+# COPY scripts/start.sh start.sh
 
 EXPOSE 3000
 
-ENTRYPOINT [ "/usr/src/app/start.sh" ]
+ENTRYPOINT ["/usr/src/app/open-bpmn/scripts/start.sh"]

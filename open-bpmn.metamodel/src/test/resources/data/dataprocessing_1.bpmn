@@ -77,7 +77,7 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
       <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_WfreQQ" isMultiple="false" name="price_after_discount" state="init" type="double">
         <bpmn2:incoming>DataFlowExtension_Vb9b4w</bpmn2:incoming>
       </bpmn2:dataOutputObjectProcess>
-      <bpmn2:dataProcessing gherkin="&#10;Given the price is less than 100&#10;When the discount is applied&#10;Then half the discount is applied&#10;&#10;Given the price is more than 100&#10;When the discount is applied&#10;Then the full discount is applied&#10;" id="DataProcessingExtension_aWUtSw" name="dataProcessing-2">
+      <bpmn2:dataProcessing gherkin="&#10;Given a product's price&#10;When the price is less than 100&#10;Then half of the discount is applied&#10;When the price is greater than or equal to 100&#10;Then the full discount is applied&#10;" id="DataProcessingExtension_aWUtSw" name="dataProcessing-2">
         <bpmn2:documentation id="documentation_nLRXMw"><![CDATA[calculate the price after discount:
 *if the price is less than 100, we will do half of the discount
 *else do all the discount]]></bpmn2:documentation>
@@ -151,21 +151,21 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         <dc:Bounds height="50.0" width="130.0" x="615.0057373046875" y="145.0198974609375"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_TcO1kw" id="BPMNShape_oc2kpQ">
-        <dc:Bounds height="50.0" width="50.0" x="542.0057373046875" y="147.0198974609375"/>
+        <dc:Bounds height="50.0" width="50.0" x="543.0057373046875" y="147.0198974609375"/>
         <bpmndi:BPMNLabel id="BPMNLabel_FHATDg">
-          <dc:Bounds height="16.0" width="100.0" x="517.0057373046875" y="200.0198974609375"/>
+          <dc:Bounds height="16.0" width="100.0" x="432.0057373046875" y="187.0198974609375"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Y3G58g" id="BPMNEdge_KztW7Q">
         <di:waypoint x="160.0" y="71.5"/>
         <di:waypoint x="173.25001525878906" y="71.5"/>
         <di:waypoint x="173.25001525878906" y="66.5"/>
-        <di:waypoint x="197.50003051757812" y="66.5"/>
+        <di:waypoint x="198.50003051757812" y="66.5"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_9US4Ow" id="BPMNEdge_dVx37g">
-        <di:waypoint x="247.50003051757812" y="66.5"/>
-        <di:waypoint x="259.0000305175781" y="66.5"/>
-        <di:waypoint x="259.0000305175781" y="64.5"/>
+        <di:waypoint x="248.50003051757812" y="66.5"/>
+        <di:waypoint x="259.5000305175781" y="66.5"/>
+        <di:waypoint x="259.5000305175781" y="64.5"/>
         <di:waypoint x="270.5000305175781" y="64.5"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_95TJkw" id="BPMNEdge_GLe4yg" sourceElement="BPMNShape_ghs38Q" targetElement="BPMNShape_xPc30Q">
@@ -176,9 +176,8 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_kSTJig" id="BPMNEdge_fRP2Ww" sourceElement="BPMNShape_xPc30Q" targetElement="BPMNShape_z6u4RQ">
         <di:waypoint x="814.5057067871094" y="179.5198974609375"/>
-        <di:waypoint x="874.7557220458984" y="179.5198974609375"/>
-        <di:waypoint x="874.7557220458984" y="181.0198974609375"/>
-        <di:waypoint x="935.0057373046875" y="181.0198974609375"/>
+        <di:waypoint x="814.5057373046875" y="179.5198974609375"/>
+        <di:waypoint x="935.0683461900354" y="179.5198974609375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="participant_9n2rjA" id="BPMNShape_0xI0pQ">
         <dc:Bounds height="418.27724198721234" width="961.2436063535006" x="91.00570678710938" y="429.0198974609375"/>
@@ -201,14 +200,14 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_3bVP4w" id="BPMNEdge_w1Pyvg" sourceElement="BPMNShape_BTYL3w" targetElement="BPMNShape_LhV1gA">
         <di:waypoint x="201.3883056640625" y="546.0504760742188"/>
         <di:waypoint x="252.1383056640625" y="546.0504760742188"/>
-        <di:waypoint x="252.1383056640625" y="567.0504455566406"/>
-        <di:waypoint x="302.8883056640625" y="567.0504455566406"/>
+        <di:waypoint x="252.1383056640625" y="567.0504150390625"/>
+        <di:waypoint x="302.8883056640625" y="567.0504150390625"/>
         <di:waypoint x="302.8883056640625" y="557.0504760742188"/>
         <di:waypoint x="303.8883056640625" y="557.0504760742188"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_SXzfgA" id="BPMNEdge_6bzTbA" sourceElement="BPMNShape_LhV1gA" targetElement="BPMNShape_sV3zBA">
-        <di:waypoint x="768.8883056640625" y="567.0504455566406"/>
-        <di:waypoint x="818.1383056640625" y="567.0504455566406"/>
+        <di:waypoint x="768.8883056640625" y="567.0504150390625"/>
+        <di:waypoint x="818.1383056640625" y="567.0504150390625"/>
         <di:waypoint x="818.1383056640625" y="557.0504760742188"/>
         <di:waypoint x="868.3883056640625" y="557.0504760742188"/>
       </bpmndi:BPMNEdge>
@@ -224,7 +223,7 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_aWUtSw" id="BPMNShape_otdXOg">
         <dc:Bounds height="50.0" width="50.0" x="501.3883056640625" y="538.9967009214754"/>
         <bpmndi:BPMNLabel id="BPMNLabel_cwcA4w">
-          <dc:Bounds height="16.0" width="100.0" x="476.3883056640625" y="591.9967009214754"/>
+          <dc:Bounds height="16.0" width="100.0" x="387.3573570462556" y="166.62661626092944"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_oLh5Ow" id="BPMNEdge_OSqoKw">

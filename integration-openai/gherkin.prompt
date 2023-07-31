@@ -1,6 +1,8 @@
 Please convert the following description into Gherkin language.
 Don't make any mistakes in the syntax of Gherkin language.
 Don't make any changes to the description need to transfer.
+Retrun only one senario for the description.
+
 ###
 Description need to transfer: {description}
 ###

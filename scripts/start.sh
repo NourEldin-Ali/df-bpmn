@@ -4,10 +4,10 @@ echo "*        Starting - LLM server        *"
 echo "***************************************"
 
 
-echo OPENAI_KEY
-echo OPENAI_ORGA_KEY
+echo $OPENAI_KEY
+
 cd integration-openai/
-nohup python app.py OPENAI_KEY OPENAI_ORGA_KEY &
+nohup python app.py $OPENAI_KEY  &
 cd ..
 
 echo "***************************************"

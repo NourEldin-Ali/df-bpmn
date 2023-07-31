@@ -80,6 +80,7 @@ RUN rm -r /usr/src/app/open-bpmn/open-bpmn.glsp-client/workspace/
 WORKDIR /usr/src/app/open-bpmn/open-bpmn.glsp-client
 RUN yarn
 
+WORKDIR /usr/src/app/open-bpmn/
 # Copy Start script
 # WORKDIR /usr/src/app
 # COPY scripts/start.sh start.sh

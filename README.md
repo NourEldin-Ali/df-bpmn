@@ -34,22 +34,22 @@ DA BPMN is based on the [Eclipse Graphical Language Server Platform (GLSP)](http
 - [open-bpmn.glsp-server](./open-bpmn.glsp-server/README.md) - the GLSP Server implementation
 - [open-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) - the GLSP Client components and Theia integration
 
-### DA-BPMN - BPMN 2.0 Metamodel
+### DF-BPMN - BPMN 2.0 Metamodel
 
-DA-BPMN provides a BPMN 2.0 Metamodel based on pure java. This library can be used to generate a BPMN model programmatically as also import or export a model form any .bpmn file. So in case you want to implement you own BPMN workflow engine the DA-BPMN Metamodel is the perfect library to work with BPMN 2.0 files. THe DA-BPMN Metamodel is based o the `org.w3c.dom` XML API and includes a set of junit test classes which may be helpful to implement you own business logic. 
+DF-BPMN provides a BPMN 2.0 Metamodel based on pure java. This library can be used to generate a BPMN model programmatically as also import or export a model form any .bpmn file. So in case you want to implement you own BPMN workflow engine the DF-BPMN Metamodel is the perfect library to work with BPMN 2.0 files. THe DF-BPMN Metamodel is based o the `org.w3c.dom` XML API and includes a set of junit test classes which may be helpful to implement you own business logic. 
 
- - [DA-BPMN Metamodel](./open-bpmn.metamodel/README.md)
+ - [DF-BPMN Metamodel](./open-bpmn.metamodel/README.md)
 
 - [OpenBPMN Metamodel](./open-bpmn.metamodel/README.md)
 
-### DA-BPMN GLSP-Server
+### DF-BPMN GLSP-Server
 
 The [open-bpmn.glsp-server](./open-bpmn.glsp-server/README.md) provides the GLSP Server part. The server part is responsible to load and store the diagram from a .bpmn file.
 
 
-### DA-BPMN GLSP-Client
+### DF-BPMN GLSP-Client
 
-The [DA-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) is the GLSP Client part of DA-BPMN providing the graphical modeling tool. 
+The [DF-bpmn.glsp-client](./open-bpmn.glsp-client/README.md) is the GLSP Client part of DF-BPMN providing the graphical modeling tool. 
 
 # Tutorials
 
@@ -106,8 +106,8 @@ The Application can be started from a Web Browser
 	
 ## Using docker
 
-	$ docker pull alinoureldin/da-bpmn:latest
-	$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn
+	$ docker pull alinoureldin/df-bpmn:latest
+	$ docker run --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
 	
 The Application can be started from a Web Browser
 

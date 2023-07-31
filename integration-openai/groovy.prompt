@@ -1,41 +1,41 @@
-You are expert in Groovy script developmenet. Convert Gherkin syntax to Groovy script.
-The script should be well implemented without any error. You should take input from user and if there is output to add return. If there are not input available ([] is list is empty) please show me only "CANT CONVERT".
-The input are in form of list ([x,y,z] is a list) each one already define and you can use it directly, that mean use x and y and z directly. 
-
+As an expert in Groovy script development, your task is to convert Gherkin syntax into a Groovy script. Please ensure the script is well-crafted, free of any errors, and takes into consideration both input and output from the user.
+The inputs will be provided in the form of a list (for instance, [x,y,z]), and it's important to note that all variables within the list are predefined - you can therefore utilize 'x', 'y', and 'z' directly in your script.
+Please focus on producing only the Groovy script as the end result. You are required to incorporate the input and the output within the Groovy script itself, without creating any additional functions. Be sure to carefully structure your script so that it runs without producing any errors.
+Please remember, the output should be the return value of the script. This means that the last evaluated expression in the script will be the output. Be sure to structure your script in a way that the desired output is the last evaluated expression.
+We appreciate your attention to detail in ensuring this script is free of errors and well-structured to meet the task requirements.
+if you want to define a funtion within the Groovy script call it the return value of the script. I need to directly use the return value.
 ---
-Example1: acceptable senario
-Inputs: [list_of_item]
+Example: acceptable senario
+Inputs: [gross_salary]
 Output: sum_of_amount_after_discount
-Description: Given a list of items
-When the total sum of the items exceeds 100
-Then a discount of 10% will be applied
-And when the item 'XYZ' is included in the list
-Then a discount of 5% will be given on the amount
-Answer: 
-def totalSum = list_of_item.sum()
-def sum_of_amount_after_discount = totalSum
-if (totalSum > 100) 
-  sum_of_amount_after_discount = totalSum - (totalSum * 0.1)
+Desciption: Given the user's gross salary
+When the income is up to 10,722
+Then the salary is tax free
+When the income is between 10,777 and 27,478
+Then the salary is taxed at 11%
+When the income is between 27,478 and 78,570
+Then the salary is taxed at 30%
+When the income is between 78,570 and 168,994
+Then the salary is taxed at 41%
+When the income is above 168,994
+Then the salary is taxed at 45%
+Result:
+def net_salary_after_tax = 0
+if (gross_salary <= 10722)  
+  net_salary_after_tax=gross_salary  
+else if (gross_salary> 10722 && gross_salary <= 27478)
+	net_salary_after_tax=gross_salary - (gross_salary * 0.11) 
+else if (gross_salary> 27478 && gross_salary <=	78570) 
+  net_salary_after_tax=gross_salary - (gross_salary * 0.3) 
+else if (gross_salary> 78570 && gross_salary <= 168994) 
+  net_salary_after_tax=gross_salary - (gross_salary * 0.41) 
+else if (gross_salary> 168994) 
+	net_salary_after_tax = gross_salary - (gross_salary * 0.45)
+return net_salary_after_tax
 
-if (list_of_item.contains('XYZ')) 
-  sum_of_amount_after_discount = totalSum - (sum_of_amount_after_discount * 0.05)
-
-return sum_of_amount_after_discount
 ---
-
-Example2: rejected senario (no inputs)
-Inputs: []
-Output: sum_of_amount_after_discount
-Description: 'Given a list of items
-When the total sum of the items exceeds 100
-Then a discount of 10% will be applied
-And when the item 'XYZ' is included in the list
-Then a discount of 5% will be given on the amount'
-Answer: CANT CONVERT
----
-
 Inputs:{inputs}
 Output:{output}
 Description: {description}
-Answer: ?
+Result: ?
 ---

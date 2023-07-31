@@ -1,1 +1,1 @@
-	$ python app.py <secretkey-openai> <organisation-key-openai>
+	$ python app.py <secretkey-openai>

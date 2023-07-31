@@ -20,14 +20,14 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 #python library needed to working
 RUN conda install langchain -c conda-forge
-# RUN conda install -c conda-forge openai
-
+RUN conda install -c anaconda flask
+RUN pip install openai
 
 # Python enviroment for the server connected to openAI
 ARG API_KEY
 ENV OPENAI_KEY=$API_KEY
-ARG ORGA_KEY
-ENV OPENAI_ORGA_KEY=$ORGA_KEY
+# ARG ORGA_KEY
+# ENV OPENAI_ORGA_KEY=$ORGA_KEY
 
 
 # Downloading and installing Maven

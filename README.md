@@ -103,6 +103,10 @@ The Application can be started from a Web Browser
 The Application can be started from a Web Browser
 
 	http://localhost:3000/
+
+ ## openAI API
+ 	$ cd integration-openai
+  	$ python app.py <api-key>
 	
 ## Using docker
 

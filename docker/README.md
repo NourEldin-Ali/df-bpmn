@@ -1,8 +1,8 @@
 # Docker
 
-DA-BPMN provides a Docker image to run the BPMN modeler as a Container in Docker or Kubernetes. 
+DF-BPMN provides a Docker image to run the BPMN modeler as a Container in Docker or Kubernetes. 
 
-The DA-BPMN Docker image is based on the [official NodeJS image (node:16-buster)](https://hub.docker.com/_/node). The container image contains a prebuild appliction and exposes the port 3000
+The DF-BPMN Docker image is based on the [official NodeJS image (node:16-buster)](https://hub.docker.com/_/node). The container image contains a prebuild appliction and exposes the port 3000
 
 In the Dockerfile we are using start script as the entrypoint:
 
@@ -14,13 +14,13 @@ In the Dockerfile we are using start script as the entrypoint:
 
 To build the docker image from sources run:
 
-	$ docker build . -t alinoureldin/da-bpmn
+	$ docker build . -t alinoureldin/df-bpmn --build-arg API_KEY=<open-api-key>
 
 ## Run
 
 To run the docker image locally run:
 
-	$ docker run --name="da-bpmn" --rm -p 3000:3000 alinoureldin/da-bpmn
+	$ docker run --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
       
 After starting the container the applicaiton is available on 
 
@@ -28,12 +28,12 @@ After starting the container the applicaiton is available on
 	      
 To stop the container run:
 
-	$ docker stop da-bpmn
+	$ docker stop df-bpmn
 
 # Push to Docker-Hub
 
 To push the image manually to a docker repo:
 
-	$ docker build . -t alinoureldin/da-bpmn:latest
-	$ docker push alinoureldin/da-bpmn:latest
+	$ docker build . -t alinoureldin/df-bpmn:latest
+	$ docker push alinoureldin/df-bpmn:latest
 

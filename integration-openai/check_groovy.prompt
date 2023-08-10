@@ -18,9 +18,7 @@ if (list_of_item.contains('XYZ'))
   sum_of_amount_after_discount = totalSum - (sum_of_amount_after_discount * 0.05)
 return sum_of_amount_after_discount
 Answer: YES
-
 ---
-
 Example2: rejected scenario (no inputs)
 Inputs: []
 Output: sum_of_amount_after_discount
@@ -34,7 +32,6 @@ if (list_of_item.contains('XYZ'))
 return sum_of_amount_after_discount
 Answer: NO
 ---
-
 Example3: rejected scenario (wrong inputs)
 Inputs: [water_intake]
 Output: sum_of_amount_after_discount
@@ -53,26 +50,6 @@ else if (gross_salary> 168994)
 return net_salary_after_tax
 Answer: NO
 ---
-
-Example4: acceptable scenario
-Inputs: [gross_salary]
-Output: sum_of_amount_after_discount
-Description:
-def net_salary_after_tax = 0
-if (gross_salary <= 10722)  
-  net_salary_after_tax=gross_salary  
-else if (gross_salary> 10722 && gross_salary <= 27478)
-	net_salary_after_tax=gross_salary - (gross_salary * 0.11) 
-else if (gross_salary> 27478 && gross_salary <=	78570) 
-  net_salary_after_tax=gross_salary - (gross_salary * 0.3) 
-else if (gross_salary> 78570 && gross_salary <= 168994) 
-  net_salary_after_tax=gross_salary - (gross_salary * 0.41) 
-else if (gross_salary> 168994) 
-	net_salary_after_tax = gross_salary - (gross_salary * 0.45)
-return net_salary_after_tax
-Answer: YES
----
-
 Inputs:{inputs}
 Output:{output}
 Description: {description}

@@ -34,7 +34,7 @@ def generateGherkin():
     llm = ChatOpenAI(
         model_name='gpt-3.5-turbo',
         temperature=temperature,
-        api_key=api_key)
+        openai_api_key=api_key)
     
     f = open("gherkin.prompt", "r")
     template = f.read()

@@ -1095,8 +1095,15 @@ public class DFBPMNToProc {
 								refE.setAttribute("xmi:type", "process:ContractInput");
 								refE.setAttribute("name", srcElement.getName());
 //								System.out.println(fixDataTypes.get(srcElement.getAttribute("type").toLowerCase()));
-								refE.setAttribute("type",
-										fixDataTypes.get(srcElement.getAttribute("type").toLowerCase()));
+//								System.out.println(srcElement.getAttribute("type"));
+								if(dataTypes.containsKey(srcElement.getAttribute("type").toLowerCase())){
+									refE.setAttribute("type",
+											dataTypes.get(srcElement.getAttribute("type").toLowerCase()).toUpperCase());
+								}else {
+									refE.setAttribute("type",
+											dataTypes.get("string").toUpperCase());
+								}
+								
 								rightOperand.appendChild(refE);
 
 								Element mapping = doc.createElement("mapping");

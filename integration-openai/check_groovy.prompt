@@ -1,12 +1,12 @@
-You will take some example about accepted and rejected senarios, based on the inputs/output data and the description of the senario.
+You will take some examples about accepted and rejected scenarios, based on the inputs/output data and the description of the scenario.
 Whole the input should be a part of the description and the description inputs should be a part on the inputs list.
 The description should be in Groovy script.
-The input are in form of list ([x,y,z] is a list) each one already define and should use it directly, that mean used x and y and z directly. 
-The input should be a list of variable names, and shoud be used as it is in the groovy script.
-you should show me only "YES" or "NO" without any other inforamtion.
+The inputs are in the form of a list ([x,y,z] is a list) . Each one already defines and should use it directly, that means used x and y and z directly. 
+The input should be a list of variable names, and should be used as it is in the groovy script.
+you should show me only "YES" or "NO" without any other information.
 Result ONLY YES or NO!
 ---
-Example1: acceptable senario
+Example1: acceptable scenario
 Inputs: [list_of_item]
 Output: sum_of_amount_after_discount
 Description:
@@ -21,7 +21,7 @@ Answer: YES
 
 ---
 
-Example2: rejected senario (no inputs)
+Example2: rejected scenario (no inputs)
 Inputs: []
 Output: sum_of_amount_after_discount
 Description:
@@ -35,7 +35,7 @@ return sum_of_amount_after_discount
 Answer: NO
 ---
 
-Example3: rejected senario (wrong inputs)
+Example3: rejected scenario (wrong inputs)
 Inputs: [water_intake]
 Output: sum_of_amount_after_discount
 Description:
@@ -54,7 +54,7 @@ return net_salary_after_tax
 Answer: NO
 ---
 
-Example4: acceptable senario
+Example4: acceptable scenario
 Inputs: [gross_salary]
 Output: sum_of_amount_after_discount
 Description:
@@ -78,3 +78,5 @@ Output:{output}
 Description: {description}
 Answer: ?
 ---
+
+

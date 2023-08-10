@@ -10,7 +10,7 @@
     <bpmn2:documentation id="documentation_iupHcQ"/>
     <bpmn2:task expand="true" id="task_6M0goQ" name="calculate salary after tax">
       <bpmn2:documentation id="documentation_1qdnMA"/>
-      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_NSeFjA" isMultiple="true" name="salary" type="double">
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_NSeFjA" isMultiple="false" name="salary" type="double">
         <bpmn2:outgoing>DataFlowExtension_jn7i0g</bpmn2:outgoing>
       </bpmn2:dataInputObjectEnvironmentDataUser>
       <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_AoopQg" isMultiple="false" name="salary after tax" state="init" type="any">
@@ -99,27 +99,27 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         <dc:Bounds height="200.0" width="800.0" x="-6003.729606623689" y="263.6835681383977"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_6M0goQ" id="BPMNShape_f01s2A">
-        <dc:Bounds height="243.4073486328125" width="635.36328125" x="268.97271728515625" y="67.32122802734375"/>
+        <dc:Bounds height="243.4073486328125" width="635.36328125" x="237.97271728515625" y="50.32122802734375"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_NSeFjA" id="BPMNShape_JdU9kQ">
-        <dc:Bounds height="50.0" width="160.0" x="303.0" y="137.0"/>
+        <dc:Bounds height="50.0" width="160.0" x="272.0" y="120.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_AoopQg" id="BPMNShape_vNaMtg">
-        <dc:Bounds height="50.0" width="130.0" x="718.008544921875" y="172.0"/>
+        <dc:Bounds height="50.0" width="130.0" x="687.008544921875" y="155.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_FvnXvQ" id="BPMNShape_WszPEA">
-        <dc:Bounds height="50.0" width="50.0" x="569.008544921875" y="172.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="539.008544921875" y="155.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_lbb8Fw">
-          <dc:Bounds height="16.0" width="100.0" x="544.008544921875" y="224.0"/>
+          <dc:Bounds height="16.0" width="100.0" x="514.008544921875" y="207.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_jn7i0g" id="BPMNEdge_KOwtjw">
         <di:waypoint x="190.02728271484375" y="119.67877197265625"/>
         <di:waypoint x="190.02728271484375" y="129.67877197265625"/>
-        <di:waypoint x="300.03582763671875" y="129.67877197265625"/>
+        <di:waypoint x="301.03582763671875" y="129.67877197265625"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_4ZW1vw" id="BPMNEdge_qJGIGA">
-        <di:waypoint x="350.03582763671875" y="129.67877197265625"/>
+        <di:waypoint x="351.03582763671875" y="129.67877197265625"/>
         <di:waypoint x="449.03582763671875" y="129.67877197265625"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="event_Zp6zew" id="BPMNShape_YytoXA">
@@ -135,13 +135,18 @@ For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_ugKxyg" id="BPMNEdge_RzVD1A" sourceElement="BPMNShape_f01s2A" targetElement="BPMNShape_v76EIQ">
+        <di:waypoint x="873.3359985351562" y="169.02490234375"/>
+        <di:waypoint x="904.3359985351562" y="169.02490234375"/>
         <di:waypoint x="904.3359985351562" y="189.02490234375"/>
         <di:waypoint x="1032.008544921875" y="189.02490234375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_JEdZaA" id="BPMNEdge_kUg0Jw" sourceElement="BPMNShape_YytoXA" targetElement="BPMNShape_f01s2A">
-        <di:waypoint x="182.008544921875" y="189.02490234375"/>
-        <di:waypoint x="266.97271728515625" y="189.02490234375"/>
-        <di:waypoint x="268.97271728515625" y="189.02490234375"/>
+        <di:waypoint x="164.008544921875" y="171.02490234375"/>
+        <di:waypoint x="164.008544921875" y="17.32122802734375"/>
+        <di:waypoint x="498.65435791015625" y="17.32122802734375"/>
+        <di:waypoint x="498.65435791015625" y="47.32122802734375"/>
+        <di:waypoint x="555.6543579101562" y="47.32122802734375"/>
+        <di:waypoint x="555.6543579101562" y="50.32122802734375"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

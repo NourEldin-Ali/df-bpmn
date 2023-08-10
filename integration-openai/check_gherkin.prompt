@@ -1,11 +1,11 @@
-You will take some example about accepted and rejected senarios, based on the inputs data and the description of the senario.
+You will take some examples about accepted and rejected scenarios, based on the input data and the description of the scenario.
 Whole the input should be a part of the description and the description inputs should be a part on the inputs list.
 The description should be in Gherkin format.
 The input should be a list of variable names.
-you should show me only "YES" or "NO" without any other inforamtion.
+you should show me only "YES" or "NO" without any other information.
 Result ONLY YES or NO!
 ---
-Example1: acceptable senario
+Example1: acceptable scenario
 Inputs: [list_of_item]
 Output: sum_of_amount_after_discount
 Description: Given a list of items
@@ -13,7 +13,7 @@ When the total sum of the items exceeds 100
 Then a discount of 10% will be applied
 Result: YES
 ---
-Example2: rejected senario (no inputs)
+Example2: rejected scenario (no inputs)
 Inputs: []
 Output: salary_after_tax
 Description: Given the user's gross salary
@@ -29,7 +29,7 @@ When the income is above 168,994
 Then the salary is taxed at 45%
 Result: NO
 ---
-Example3: rejected senario (wrong inputs)
+Example3: rejected scenario(wrong inputs)
 Inputs: [test]
 Output: sum_of_amount_after_discount
 Description: Given a list of items

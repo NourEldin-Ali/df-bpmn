@@ -3,12 +3,12 @@ The inputs will be provided in the form of a list (for instance, [x,y,z]), and i
 Please focus on producing only the Groovy script as the end result. You are required to incorporate the input and the output within the Groovy script itself, without creating any additional functions. Be sure to carefully structure your script so that it runs without producing any errors.
 Please remember, the output should be the return value of the script. This means that the last evaluated expression in the script will be the output. Be sure to structure your script in a way that the desired output is the last evaluated expression.
 We appreciate your attention to detail in ensuring this script is free of errors and well-structured to meet the task requirements.
-if you want to define a funtion within the Groovy script call it the return value of the script. I need to directly use the return value.
+If you want to define a function within the Groovy script, call it. I need to directly use the return value.
 ---
-Example: acceptable senario
+Example: 
 Inputs: [gross_salary]
 Output: sum_of_amount_after_discount
-Desciption: Given the user's gross salary
+Description: Given the user's gross salary
 When the income is up to 10,722
 Then the salary is tax free
 When the income is between 10,777 and 27,478

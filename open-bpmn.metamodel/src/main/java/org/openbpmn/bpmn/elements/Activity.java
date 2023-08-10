@@ -1050,13 +1050,13 @@ public class Activity extends BPMNElementNode {
 
 	public boolean isHuman() {
 		return this.dataInputObjects.stream().anyMatch(
-				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER));
+				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER) || data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
 	}
 
 	public boolean isUpdateData(String dataObjectId) {
 		return this.dataReferences.stream()
-				.anyMatch(ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId)) ||
-				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("init") ||
+				.anyMatch((ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId))) &&
+				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("init") &&
 				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("delete");
 	
 	}

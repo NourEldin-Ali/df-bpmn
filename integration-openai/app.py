@@ -32,7 +32,7 @@ def generateGherkin():
     
 
     llm = ChatOpenAI(
-        model_name='gpt-3.5-turbo',
+        model_name='gpt-4',
         temperature=temperature,
         openai_api_key=api_key)
     
@@ -46,9 +46,9 @@ def generateGherkin():
     result = llm_chain.run(prompt_input)
 
     #Check gerkin
-    llm = OpenAI(openai_api_key=api_key,
-                 temperature=temperature,
-                 model='text-davinci-003')
+    # llm = OpenAI(openai_api_key=api_key,
+    #              temperature=temperature,
+    #              model='text-davinci-003')
     
     f = open("check_gherkin.prompt", "r")
     template = f.read()
@@ -87,35 +87,38 @@ def generateGroovy():
     api_key = sys.argv[1]
 
     llm = ChatOpenAI(
-        model_name='gpt-3.5-turbo',
+        model_name='gpt-4',
         temperature=temperature,
         openai_api_key=api_key
         )
     
     f = open("groovy.prompt", "r")
     template = f.read()
-
+    print(request.form['inputs'])
+    
     prompt = PromptTemplate(template=template, input_variables=["inputs","description","output"])
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':request.form['description']}
     result = llm_chain.run(prompt_input)
 
 
-    llm = OpenAI(
-        openai_api_key=api_key,
-        temperature=temperature,
-        model='text-davinci-003'
-        )
+    # llm = OpenAI(
+    #     openai_api_key=api_key,
+    #     temperature=temperature,
+    #     model='text-davinci-003'
+    #     )
 
     f = open("check_groovy.prompt", "r")
     template = f.read()
 
     prompt = PromptTemplate(template=template, input_variables=["inputs","description","output"])
     llm_chain = LLMChain(prompt=prompt, llm=llm)
-    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':request.form['description']}
+    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':result}
     result2 = llm_chain.run(prompt_input)
 
     print(result,"################################",result2)
+    if("NO" in result2):
+       return "CANNOT CONVERT GHERKIN TO CODE, TRY AGAIN"
     return result
 
 app.run(debug=True,host='0.0.0.0',port=3001)

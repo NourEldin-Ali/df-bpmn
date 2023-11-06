@@ -1050,20 +1050,34 @@ public class Activity extends BPMNElementNode {
 
 	public boolean isHuman() {
 		return this.dataInputObjects.stream().anyMatch(
-				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER) || data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
+				data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
+						|| data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY));
 	}
 
 	public boolean isUpdateData(String dataObjectId) {
 		return this.dataReferences.stream()
-				.anyMatch((ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId))) &&
-				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("init") &&
-				!this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("delete");
-	
+				.anyMatch((ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId)))
+				&& !this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
+						.findFirst().get().getAttribute("state").toLowerCase().equals("init")
+				&& !this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
+						.findFirst().get().getAttribute("state").toLowerCase().equals("delete")
+				&& !this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
+						.findFirst().get().getAttribute("state").toLowerCase().equals("read");
+
 	}
+
 	public boolean isDeleteData(String dataObjectId) {
-		return this.dataOutputObjects.stream().filter(dataObject ->dataObject.getId().equals(dataObjectId)).findFirst().get().getAttribute("state").toLowerCase().equals("delete");
-	
+		return this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId)).findFirst()
+				.get().getAttribute("state").toLowerCase().equals("delete");
+
 	}
+
+	public boolean isReadData(String dataObjectId) {
+		return this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId)).findFirst()
+				.get().getAttribute("state").toLowerCase().equals("read");
+
+	}
+	
 	public List<DataFlowExtension> getConnectDataFlowTo(BPMNElement dataObject) {
 		if (dataObject instanceof DataOutputObjectExtension) {
 			return dataFlows.stream()
@@ -1075,10 +1089,13 @@ public class Activity extends BPMNElementNode {
 		}
 		return new ArrayList<>();
 	}
-	
+
 	public List<DataOutputObjectExtension> getAllDeleteObjectData() {
-		
-		return this.dataOutputObjects.stream().filter(dataObject -> dataObject.getAttribute("state").toLowerCase().equals("delete") && dataObject.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)).collect(Collectors.toList());
+
+		return this.dataOutputObjects.stream()
+				.filter(dataObject -> dataObject.getAttribute("state").toLowerCase().equals("delete")
+						&& dataObject.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE))
+				.collect(Collectors.toList());
 	}
 
 	public BPMNElement getFistMultiObjectFor(BPMNElement dataObject) {
@@ -1111,7 +1128,7 @@ public class Activity extends BPMNElementNode {
 		return listIncomingElement;
 
 	}
-	
+
 	public List<BPMNElement> getDataProcessingOutgoing(String dataProcessingId) {
 		List<BPMNElement> listOutgingElement = new ArrayList<>();
 

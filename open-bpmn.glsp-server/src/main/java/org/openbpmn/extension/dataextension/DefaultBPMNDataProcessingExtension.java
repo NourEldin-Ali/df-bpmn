@@ -140,81 +140,30 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				continue;
 			}
 		}
-		if ("generate".equals(category.toLowerCase())) {
-			System.out.println("Generate behavior");
-			DataProcessingExtension dataProcessing = (DataProcessingExtension) bpmnElement;
-			List<String> input = dataProcessing.activity.getDataProcessingIncoming(bpmnElement.getId()).stream()
-					.map((element) -> element.getName()).collect(Collectors.toList());
-
-			modelState.reset();
-			List<String> output = dataProcessing.activity.getDataProcessingOutgoing(bpmnElement.getId()).stream()
-					.map((element) -> element.getName()).collect(Collectors.toList());
-
-			
-			try {
-				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
-				bpmnElement.setAttribute("gherkin",results);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-
-			// activity.getDataProcessingIncoming
-
-//			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),
-//					modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),
-//					modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
-//			dfbpmnToProc.createDiagrame();
-		}
+//		if ("generate".equals(category.toLowerCase())) {
+//			System.out.println("Generate behavior");
+//			DataProcessingExtension dataProcessing = (DataProcessingExtension) bpmnElement;
+//			List<String> input = dataProcessing.activity.getDataProcessingIncoming(bpmnElement.getId()).stream()
+//					.map((element) -> element.getName()).collect(Collectors.toList());
+//
+//			modelState.reset();
+//			List<String> output = dataProcessing.activity.getDataProcessingOutgoing(bpmnElement.getId()).stream()
+//					.map((element) -> element.getName()).collect(Collectors.toList());
+//
+//			
+//			try {
+//				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
+//				bpmnElement.setAttribute("gherkin",results);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//
+//			// activity.getDataProcessingIncoming
+//		}
 
 	}
 
-	// HTTP POST request
-	private String sendPost(String inputsValue, String descriptionValue, String outputValue) throws Exception {
-
-		String url = "http://localhost:3001/gherkin";
-		URL obj = new URL(url);
-		HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-
-		// add request header
-		connection.setRequestMethod("POST");
-
-        // Set Do Output to true if you want to use URLConnection for output.
-        connection.setDoOutput(true);
-
-        String urlParameters = "inputs=" + inputsValue + "&description=" + descriptionValue+ "&output=" + outputValue;
-        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
-        try(OutputStream wr = connection.getOutputStream()){
-            wr.write(postData);
-        }
-
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            // Success
-            System.out.println("Generate done");
-            
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    		String inputLine;
-    		StringBuffer response = new StringBuffer();
-
-    		while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine+ "\n");
-    		}
-    		in.close();
-
-//    		String result = response.toString().replace("[","");
-//    		 result = result.replace("]","");
-//    		 List<String> results = new ArrayList<String>(Arrays.asList(result.split("\"###\"")));
-//    		 System.out.println(results.toString());
-    		return response.toString();
-        } else {
-            // Error handling code goes here
-            System.out.println("Generate failed");
-        }
-    
-        return "CONNECTION FAILED";
-
-	}
 
 }

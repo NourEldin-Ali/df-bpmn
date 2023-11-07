@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://open-bpmn.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
+    <bpmn2:participant id="participant_YoiaSA" name="Default Process" processRef="process_1"/>
+    <bpmn2:participant id="participant_7qWoRA" name="HR Salary Calculation" processRef="process_jo9rEw">
+      <bpmn2:documentation id="documentation_ty3eIw"/>
+    </bpmn2:participant>
+  </bpmn2:collaboration>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_1" name="Default Process" processType="Public">
+    <bpmn2:documentation id="documentation_BSe2jA"/>
+  </bpmn2:process>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_jo9rEw" name="HR Salary Calculation" processType="Private">
+    <bpmn2:startEvent id="event_bN5iYA" name="start">
+      <bpmn2:documentation id="documentation_WCBomQ"/>
+      <bpmn2:outgoing>sequenceFlow_oeltiw</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:task expand="true" id="task_tKuyrg" name="Is new Emplyee?">
+      <bpmn2:documentation id="documentation_n179nA"/>
+      <bpmn2:incoming>sequenceFlow_oeltiw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_Nh5zZg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_oeltiw" sourceRef="event_bN5iYA" targetRef="task_tKuyrg">
+      <bpmn2:documentation id="documentation_6u6R6Q"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="gateway_hzhvRA" name="">
+      <bpmn2:documentation id="documentation_irqfCQ"/>
+      <bpmn2:incoming>sequenceFlow_Nh5zZg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_2d0gWg</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_CyfG8g</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:task expand="true" id="task_1c06WQ" name="Add new employe">
+      <bpmn2:documentation id="documentation_cGugXg"/>
+      <bpmn2:incoming>sequenceFlow_2d0gWg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_HtOX3Q</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_BvRJRQ" name="Select an employe">
+      <bpmn2:documentation id="documentation_IcCYGA"/>
+      <bpmn2:outgoing>sequenceFlow_FxMx7w</bpmn2:outgoing>
+      <bpmn2:incoming>sequenceFlow_CyfG8g</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="gateway_SW2KlA" name="">
+      <bpmn2:documentation id="documentation_0AE02A"/>
+      <bpmn2:incoming>sequenceFlow_HtOX3Q</bpmn2:incoming>
+      <bpmn2:incoming>sequenceFlow_FxMx7w</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_drK3QQ</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_Nh5zZg" sourceRef="task_tKuyrg" targetRef="gateway_hzhvRA">
+      <bpmn2:documentation id="documentation_gtq0QA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_2d0gWg" sourceRef="gateway_hzhvRA" targetRef="task_1c06WQ">
+      <bpmn2:documentation id="documentation_h7AdQg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_HtOX3Q" sourceRef="task_1c06WQ" targetRef="gateway_SW2KlA">
+      <bpmn2:documentation id="documentation_t51tfQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_FxMx7w" sourceRef="task_BvRJRQ" targetRef="gateway_SW2KlA">
+      <bpmn2:documentation id="documentation_WAOdVw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_CyfG8g" sourceRef="gateway_hzhvRA" targetRef="task_BvRJRQ">
+      <bpmn2:documentation id="documentation_VfSwmg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="task_C369LQ" name="Employee information collection">
+      <bpmn2:documentation id="documentation_LQy2JQ"/>
+      <bpmn2:incoming>sequenceFlow_drK3QQ</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_mJz3Tg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_drK3QQ" sourceRef="gateway_SW2KlA" targetRef="task_C369LQ">
+      <bpmn2:documentation id="documentation_uU8p8w"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="task_5lj1RA" name="Calculate the gross salary">
+      <bpmn2:documentation id="documentation_8QNmYQ"/>
+      <bpmn2:incoming>sequenceFlow_mJz3Tg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_f0uWEg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_l51X8g" name="Calculate deducation">
+      <bpmn2:documentation id="documentation_0VE5sg"/>
+      <bpmn2:incoming>sequenceFlow_f0uWEg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_XftyXw</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_BRCpTQ" name="Gross-To-Net salary">
+      <bpmn2:documentation id="documentation_gtDqUQ"/>
+      <bpmn2:incoming>sequenceFlow_XftyXw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_J3v0Dg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_Id04jQ" name="Payment and Record Keeping">
+      <bpmn2:documentation id="documentation_Lb7rcw"/>
+      <bpmn2:incoming>sequenceFlow_J3v0Dg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_Sym0xA</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:endEvent id="event_wqqeQQ" name="end">
+      <bpmn2:documentation id="documentation_to12fA"/>
+      <bpmn2:incoming>sequenceFlow_Sym0xA</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_mJz3Tg" sourceRef="task_C369LQ" targetRef="task_5lj1RA">
+      <bpmn2:documentation id="documentation_wIZN0Q"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_f0uWEg" sourceRef="task_5lj1RA" targetRef="task_l51X8g">
+      <bpmn2:documentation id="documentation_kWzApg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_XftyXw" sourceRef="task_l51X8g" targetRef="task_BRCpTQ">
+      <bpmn2:documentation id="documentation_FZ3xyQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_J3v0Dg" sourceRef="task_BRCpTQ" targetRef="task_Id04jQ">
+      <bpmn2:documentation id="documentation_X8Z4NA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_Sym0xA" sourceRef="task_Id04jQ" targetRef="event_wqqeQQ">
+      <bpmn2:documentation id="documentation_u9j12w"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="participant_7qWoRA" id="BPMNShape_Eb9PWw">
+        <dc:Bounds height="278.3512878417969" width="1539.033935546875" x="156.64872127070012" y="115.64872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_bN5iYA" id="BPMNShape_Poovqw">
+        <dc:Bounds height="36.0" width="36.0" x="210.64872127070012" y="211.64872127070012"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_SGUNyw">
+          <dc:Bounds height="16.0" width="100.0" x="178.64872127070012" y="250.64872127070012"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_tKuyrg" id="BPMNShape_cmzLcQ">
+        <dc:Bounds height="55.0" width="165.0" x="281.06662898554384" y="202.14872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_oeltiw" id="BPMNEdge_XL4QYw" sourceElement="BPMNShape_Poovqw" targetElement="BPMNShape_cmzLcQ">
+        <di:waypoint x="246.6487274169922" y="229.64871978759766"/>
+        <di:waypoint x="281.06663513183594" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="gateway_hzhvRA" id="BPMNShape_Sg3O0w">
+        <dc:Bounds height="50.0" width="50.0" x="488.8640533019501" y="204.64872127070012"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_xmMvuA">
+          <dc:Bounds height="16.0" width="100.0" x="463.8640533019501" y="257.6487212707001"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_1c06WQ" id="BPMNShape_OMT5Ag">
+        <dc:Bounds height="55.0" width="165.0" x="571.1204619933563" y="202.14872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_BvRJRQ" id="BPMNShape_W8u2Ag">
+        <dc:Bounds height="55.0" width="165.0" x="571.1204619933563" y="290.50000911249697"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gateway_SW2KlA" id="BPMNShape_D6aEpw">
+        <dc:Bounds height="50.0" width="50.0" x="789.5383697082001" y="204.64872127070012"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_wkHJDw">
+          <dc:Bounds height="16.0" width="100.0" x="764.5383697082001" y="257.6487212707001"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Nh5zZg" id="BPMNEdge_sA3IFg" sourceElement="BPMNShape_cmzLcQ" targetElement="BPMNShape_Sg3O0w">
+        <di:waypoint x="446.06663513183594" y="229.64871978759766"/>
+        <di:waypoint x="469.1487274169922" y="229.64871978759766"/>
+        <di:waypoint x="488.8640594482422" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_2d0gWg" id="BPMNEdge_oDTcfA" sourceElement="BPMNShape_Sg3O0w" targetElement="BPMNShape_OMT5Ag">
+        <di:waypoint x="538.8640594482422" y="229.64871978759766"/>
+        <di:waypoint x="558.6487274169922" y="229.64871978759766"/>
+        <di:waypoint x="571.1204681396484" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_HtOX3Q" id="BPMNEdge_Aa0Edw" sourceElement="BPMNShape_OMT5Ag" targetElement="BPMNShape_D6aEpw">
+        <di:waypoint x="736.1204681396484" y="229.64871978759766"/>
+        <di:waypoint x="789.5383758544922" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_FxMx7w" id="BPMNEdge_6gMwlQ" sourceElement="BPMNShape_W8u2Ag" targetElement="BPMNShape_D6aEpw">
+        <di:waypoint x="736.1204681396484" y="319.64871978759766"/>
+        <di:waypoint x="814.078790582852" y="319.64871978759766"/>
+        <di:waypoint x="814.0787905828519" y="254.1891345159574"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_CyfG8g" id="BPMNEdge_LbD6lA" sourceElement="BPMNShape_Sg3O0w" targetElement="BPMNShape_W8u2Ag">
+        <di:waypoint x="532.8987274169922" y="235.61405181884766"/>
+        <di:waypoint x="532.8987274169922" y="319.64871978759766"/>
+        <di:waypoint x="571.1204681396484" y="319.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="task_C369LQ" id="BPMNShape_51EDTQ">
+        <dc:Bounds height="55.0" width="165.0" x="905.7238555480438" y="202.14872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_drK3QQ" id="BPMNEdge_UGuZmQ" sourceElement="BPMNShape_D6aEpw" targetElement="BPMNShape_51EDTQ">
+        <di:waypoint x="839.5383758544922" y="229.64871978759766"/>
+        <di:waypoint x="891.7238616943359" y="229.64871978759766"/>
+        <di:waypoint x="905.7238616943359" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="task_5lj1RA" id="BPMNShape_SJWJ5w">
+        <dc:Bounds height="55.0" width="165.0" x="905.7238555480438" y="303.1487212707001"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_l51X8g" id="BPMNShape_YjOB5A">
+        <dc:Bounds height="55.0" width="165.0" x="1139.7239165832002" y="303.1487212707001"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_BRCpTQ" id="BPMNShape_40n3yA">
+        <dc:Bounds height="55.0" width="165.0" x="1139.7239165832002" y="202.14872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_Id04jQ" id="BPMNShape_9ezevA">
+        <dc:Bounds height="55.0" width="165.0" x="1378.2278228332002" y="202.14872127070012"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_wqqeQQ" id="BPMNShape_7mOF4g">
+        <dc:Bounds height="36.0" width="36.0" x="1605.3053374816377" y="211.64872127070012"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1UIWxA">
+          <dc:Bounds height="16.0" width="100.0" x="1573.3053374816377" y="250.64872127070012"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_mJz3Tg" id="BPMNEdge_BYIMEg" sourceElement="BPMNShape_51EDTQ" targetElement="BPMNShape_SJWJ5w">
+        <di:waypoint x="988.2238616943359" y="257.14871978759766"/>
+        <di:waypoint x="988.2238616943359" y="303.14871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_f0uWEg" id="BPMNEdge_rv8JBQ" sourceElement="BPMNShape_SJWJ5w" targetElement="BPMNShape_YjOB5A">
+        <di:waypoint x="1070.723861694336" y="330.64871978759766"/>
+        <di:waypoint x="1139.7239227294922" y="330.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_XftyXw" id="BPMNEdge_w6wczQ" sourceElement="BPMNShape_YjOB5A" targetElement="BPMNShape_40n3yA">
+        <di:waypoint x="1222.2239227294922" y="303.14871978759766"/>
+        <di:waypoint x="1222.2239227294922" y="257.14871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_J3v0Dg" id="BPMNEdge_RTY67A" sourceElement="BPMNShape_40n3yA" targetElement="BPMNShape_9ezevA">
+        <di:waypoint x="1304.7239227294922" y="229.64871978759766"/>
+        <di:waypoint x="1378.2278289794922" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Sym0xA" id="BPMNEdge_iYmI0w" sourceElement="BPMNShape_9ezevA" targetElement="BPMNShape_7mOF4g">
+        <di:waypoint x="1543.2278289794922" y="229.64871978759766"/>
+        <di:waypoint x="1605.3053436279297" y="229.64871978759766"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

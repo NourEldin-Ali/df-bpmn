@@ -235,12 +235,12 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 			bpmnElement.setAttribute("bonitaProjectPath", json.getString("bonitaProjectPath", ""));
 			bpmnElement.setAttribute("exportName", json.getString("exportName", ""));
 		}
-		if ("Export".equals(category)) {
-			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),
-					modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),
-					modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
-			dfbpmnToProc.createDiagrame();
-		}
+//		if ("Export".equals(category)) {
+//			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),
+//					modelState.getBpmnModel().openDefaultProces().getAttribute("exportName"),
+//					modelState.getBpmnModel().openDefaultProces().getAttribute("bonitaProjectPath"));
+//			dfbpmnToProc.createDiagrame();
+//		}
 		if ("Signals".equals(category)) {
 			// update signal properties...
 			boolean update = false;

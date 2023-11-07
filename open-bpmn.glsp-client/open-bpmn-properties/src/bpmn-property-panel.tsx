@@ -15,7 +15,7 @@
  ********************************************************************************/
 import {
     EditorContextService, EnableToolPaletteAction,
-    GLSPActionDispatcher, hasArguments
+    GLSPActionDispatcher, RequestAction, ResponseAction, ServerMessageAction, ServerStatusAction, hasArguments, hasStringProp
 } from '@eclipse-glsp/client';
 import { Action, RequestContextActions, SetContextActions } from '@eclipse-glsp/protocol';
 import {
@@ -29,11 +29,9 @@ import {
     SetUIExtensionVisibilityAction,
     TYPES
 } from 'sprotty';
-// import { MyCustomAction} from  '@open-bpmn/open-bpmn-glsp/lib/bpmn-select-listeners';
 import { SelectionListener, SelectionService } from '@eclipse-glsp/client/lib/features/select/selection-service';
 import { JsonForms } from '@jsonforms/react';
 import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers';
-import { isBoundaryEvent } from '@open-bpmn/open-bpmn-model';
 import { inject, injectable, postConstruct } from 'inversify';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -41,15 +39,14 @@ import { codiconCSSClasses } from 'sprotty/lib/utils/codicon';
 
 import { SelectItemComboRendererEntry, SelectItemRendererEntry } from './SelectItemControl';
 import { TextFileEditorRendererEntry } from './TextFileEditorControl';
+import { isBoundaryEvent } from '@open-bpmn/open-bpmn-model/lib/model';
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 @injectable()
-
 export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionListener, IActionHandler {
 
     static readonly ID = 'bpmn-property-panel';
 
     @inject(TYPES.IActionDispatcher) protected actionDispatcher: GLSPActionDispatcher;
-
     @inject(EditorContextService)
     protected readonly editorContext: EditorContextService;
 
@@ -399,15 +396,17 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                                 key={this.selectedElementId}
                             />
                             <input type="button" className="favorite styled" value="Export" onClick={() => {
-                                console.log('click export');
-                                const newJsonData = JSON.stringify({});
-                                const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'Export');
-                                this.actionDispatcher.dispatch(action);
-                            
+                                  console.log('export to bonita has started');
+                                  this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
+                                  this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
+  
+                                  this.actionDispatcher.request(
+                                      MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'toBonita' })
+                                  );
                             }
                             } />
                         </div>);
-                } else  if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/generate')) {
+                } else if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/generate')) {
                     this.panelContainer.render(
                         <div>
                             <JsonForms
@@ -420,21 +419,17 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                                 key={this.selectedElementId}
                             />
                             <input type="button" className="favorite styled" value="Generate Behavior" onClick={async () => {
-                                console.log('click generate');
-                                const newJsonData = JSON.stringify({});
-                                const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'generate');
-                                this.actionDispatcher.dispatch(action);
-                                // this.actionDispatcher.request(action);
+                                console.log('generate gherkin has started');
 
-                                // const response = await this.actionDispatcher.request(
-                                //     MyCustomAction.create({additionalInformation:'test'})
-                                //     );
-
-                                // console.log(response.responseId);
+                                this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.request(
+                                    MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'gherkin' })
+                                );
                             }
                             } />
                         </div>);
-                } else{
+                } else {
                     this.panelContainer.render(
                         <JsonForms
                             data={bpmnPropertiesData}
@@ -509,6 +504,18 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
     }
 }
 
+@injectable()
+export class MyCustomResponseActionHandler implements IActionHandler {
+    @inject(TYPES.IActionDispatcher) protected actionDispatcher: GLSPActionDispatcher;
+
+    handle(action: MyCustomResponseAction): void | Action {
+        // implement your custom logic to handle the action
+        // Optionally issue a response action
+        this.actionDispatcher.dispatch(ServerStatusAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
+        this.actionDispatcher.dispatch(ServerMessageAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
+    }
+}
+
 /**
  * This action is send after a property change to the backend providing the ID and the new value
  */
@@ -578,4 +585,45 @@ export function hasKeyValue(obj: any, keyToFind: string, valueToFind: string): b
         }
     }
     return false;
+}
+
+export interface MyCustomAction extends RequestAction<MyCustomResponseAction> {
+    kind: typeof MyCustomAction.KIND;
+    additionalInformation: string;
+}
+
+export namespace MyCustomAction {
+    export const KIND = 'myCustomKind';
+    export function is(object: any): object is MyCustomAction {
+        return (RequestAction.hasKind(object, KIND) &&
+            hasStringProp(object, 'additionalInformation') &&
+            hasStringProp(object, 'elementId'));
+    }
+    export function create(options: { elementId: string, additionalInformation: string, requestId?: string }): MyCustomAction {
+        return {
+            kind: KIND,
+            requestId: '',
+            ...options
+        };
+    }
+}
+
+export interface MyCustomResponseAction extends ResponseAction {
+    kind: typeof MyCustomResponseAction.KIND;
+}
+
+export namespace MyCustomResponseAction {
+    export const KIND = 'myCustomResponse';
+
+    export function is(object: any): object is MyCustomResponseAction {
+        return Action.hasKind(object, KIND);
+    }
+
+    export function create(options: { responseId?: string } = {}): MyCustomResponseAction {
+        return {
+            kind: KIND,
+            responseId: '',
+            ...options
+        };
+    }
 }

@@ -14,13 +14,13 @@ In the Dockerfile we are using start script as the entrypoint:
 
 To build the docker image from sources run:
 
-	$ docker build . -t alinoureldin/df-bpmn --build-arg API_KEY=<open-api-key>
+	$ docker build . -t alinoureldin/df-bpmn --build-arg OPENAI_KEY=<open-api-key>
 
 ## Run
 
 To run the docker image locally run:
 
-	$ docker run --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
+	$ docker run --env OPENAI_KEY=<open-api-key> --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
       
 After starting the container the applicaiton is available on 
 

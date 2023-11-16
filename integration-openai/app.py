@@ -11,8 +11,7 @@ from langchain.chat_models import ChatOpenAI
 temperature = 0
 @app.route("/gherkin", methods=['post'])
 def generateGherkin():
-    # if('openai-api-key' not in request.headers):
-    #     return "Error: OpenAI API key"
+    print("Generating   Gherkin");
 
     api_key = sys.argv[1]
     if('inputs' not in request.form):

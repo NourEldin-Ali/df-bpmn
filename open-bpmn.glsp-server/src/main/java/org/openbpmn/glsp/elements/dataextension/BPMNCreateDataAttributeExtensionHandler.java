@@ -84,7 +84,7 @@ public class BPMNCreateDataAttributeExtensionHandler extends CreateBPMNNodeOpera
                 Optional<GPoint> point = operation.getLocation();
                 if (dataObject instanceof DataInputObjectExtension) {
                     DataInputObjectExtension data = (DataInputObjectExtension) dataObject;
-                    DataObjectAttributeExtension attribute = data.addAttributeObject(getLabel(), "any");
+                    DataObjectAttributeExtension attribute = data.addAttributeObject(getLabel(), "string");
                     if (point.isPresent()) {
 
                         double elementX = data.getBounds().getPosition().getX() + 25;

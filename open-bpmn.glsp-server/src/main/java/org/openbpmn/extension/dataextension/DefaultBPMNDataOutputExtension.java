@@ -15,6 +15,8 @@
  ********************************************************************************/
 package org.openbpmn.extension.dataextension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.json.JsonObject;
@@ -27,6 +29,7 @@ import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.DataOutputObjectExtension;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.extension.AbstractBPMNElementExtension;
+import org.openbpmn.extension.bonita.BDMInformation;
 import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
@@ -42,102 +45,120 @@ import org.openbpmn.glsp.utils.BPMNGraphUtil;
  */
 public class DefaultBPMNDataOutputExtension extends AbstractBPMNElementExtension {
 
-    private static Logger logger = LogManager.getLogger(DefaultBPMNDataOutputExtension.class);
+	private static Logger logger = LogManager.getLogger(DefaultBPMNDataOutputExtension.class);
 
-    public DefaultBPMNDataOutputExtension() {
-        super();
-    }
+	public DefaultBPMNDataOutputExtension() {
+		super();
+	}
 
-    @Override
-    public boolean handlesElementTypeId(final String elementTypeId) {
-        return BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.contains(elementTypeId);
-    }
+	@Override
+	public boolean handlesElementTypeId(final String elementTypeId) {
+		return BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.contains(elementTypeId);
+	}
 
-    /**
-     * This Extension is for BPMNActivities only
-     */
-    @Override
-    public boolean handlesBPMNElement(final BPMNElement bpmnElement) {
-        return (bpmnElement instanceof DataOutputObjectExtension);
-    }
+	/**
+	 * This Extension is for BPMNActivities only
+	 */
+	@Override
+	public boolean handlesBPMNElement(final BPMNElement bpmnElement) {
+		return (bpmnElement instanceof DataOutputObjectExtension);
+	}
 
-    /**
-     * This Helper Method generates a JSON Object with the BPMNElement properties.
-     * <p>
-     * This json object is used on the GLSP Client to generate the EMF JsonForms
-     */
-    @Override
-    public void buildPropertiesForm(final BPMNElement bpmnElement, final DataBuilder dataBuilder,
-            final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
+	/**
+	 * This Helper Method generates a JSON Object with the BPMNElement properties.
+	 * <p>
+	 * This json object is used on the GLSP Client to generate the EMF JsonForms
+	 */
+	@Override
+	public void buildPropertiesForm(final BPMNElement bpmnElement, final DataBuilder dataBuilder,
+			final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
 
-        dataBuilder //
-                .addData("name", bpmnElement.getName()) //
-                .addData("type", bpmnElement.getAttribute("type")) //
-                .addData("state", bpmnElement.getAttribute("state")) //
-                .addData("isMultiple", bpmnElement.getAttribute("isMultiple").contentEquals("true") ? true : false);
 
-        schemaBuilder //
-                .addProperty("name", "string", null) //
-                .addProperty("type", "string", null) //
-                .addProperty("state", "string", null) //
-                .addProperty("isMultiple", "boolean", null) //
 
-        ;
+		dataBuilder //
+				.addData("name", bpmnElement.getName()) //
+				.addData("type", bpmnElement.getAttribute("type")) //
+				.addData("state", bpmnElement.getAttribute("state")) //
+				.addData("isMultiple", bpmnElement.getAttribute("isMultiple").contentEquals("true") ? true : false);
+
+		
+		
+		// static values 	
+		String[] stateObject = { "init", "read", "update", "delete" };
+		String[] datatypes = { "integer", "boolean", "double", "string", "complex" };
+		if (bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
+			BDMInformation bdmInfo = new BDMInformation(modelState.getBpmnModel());
+			datatypes = bdmInfo.getAllBusinessObjects();
+		}
+		
+		
+		
+		schemaBuilder //
+				.addProperty("name", "string", null) //
+				.addProperty("type", "string", null, datatypes) //
+				.addProperty("state", "string", null, stateObject) //
+				.addProperty("isMultiple", "boolean", null); //
+
+		
 
 //Map<String, String> multilineOption = new HashMap<>();
 //multilineOption.put("multi", "true");
-        uiSchemaBuilder. //
-                addCategory("General") //
-                .addLayout(Layout.HORIZONTAL) //
-                .addElements("name") //
-                .addElements("type") //
-                .addElements("state") //
-                .addElements("isMultiple") //
+		uiSchemaBuilder. //
+				addCategory("General") //
+				.addLayout(Layout.HORIZONTAL) //
+				.addElements("name") //
+				.addElements("type") //
+				.addElements("state") //
+				.addElements("isMultiple") //
 //        .addLayout(Layout.VERTICAL) //
 
-        ;
+		;
 
-    }
+	}
 
-    @Override
-    public void updatePropertiesData(final JsonObject json, String category,final BPMNElement bpmnElement,
-            final GModelElement gNodeElement) {
+	@Override
+	public void updatePropertiesData(final JsonObject json, String category, final BPMNElement bpmnElement,
+			final GModelElement gNodeElement) {
 
-        // default update of name and documentation
+		// default update of name and documentation
 
-        Set<String> features = json.keySet();
-        for (String feature : features) {
-            if ("name".equals(feature)) {
-                String text = json.getString(feature);
-                if (text.contains(":")) {
-                    bpmnElement.setName(text.split(":")[0]);
-                    bpmnElement.setAttribute("type", text.split(":")[1]);
-                    // update the bpmn-text-node of the GNodeElement
-                    GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
-                    if (gnode != null) {
-                        gnode.getArgs().put("text", text.split(":")[0]);
-                    }
+		Set<String> features = json.keySet();
+		for (String feature : features) {
+			if ("name".equals(feature)) {
+				String text = json.getString(feature);
+				if (text.contains(":")) {
+					bpmnElement.setName(text.split(":")[0]);
+					bpmnElement.setAttribute("type", text.split(":")[1]);
+					// update the bpmn-text-node of the GNodeElement
+					GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
+					if (gnode != null) {
+						gnode.getArgs().put("text", text.split(":")[0]);
+					}
 
-                } else {
-                    bpmnElement.setName(text);
-                    // update the bpmn-text-node of the GNodeElement
-                    GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
-                    if (gnode != null) {
-                        gnode.getArgs().put("text", text);
-                    }
+				} else {
+					bpmnElement.setName(text);
+					// update the bpmn-text-node of the GNodeElement
+					GNode gnode = BPMNGraphUtil.findMultiLineTextNode((BPMNGNode) gNodeElement);
+					if (gnode != null) {
+						gnode.getArgs().put("text", text);
+					}
+					
+					
+				}
+				continue;
+			}
 
-                }
-                continue;
-            }
+			if ("isMultiple".equals(feature)) {
+				bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
+				continue;
+			}
+			bpmnElement.setAttribute(feature, json.getString(feature));
+			modelState.reset();
 
-            if ("isMultiple".equals(feature)) {
-                bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
-                continue;
-            }
-            bpmnElement.setAttribute(feature, json.getString(feature));
+		}
 
-        }
-
-    }
+	}
 
 }

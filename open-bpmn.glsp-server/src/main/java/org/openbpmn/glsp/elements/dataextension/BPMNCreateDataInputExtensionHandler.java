@@ -80,7 +80,7 @@ public class BPMNCreateDataInputExtensionHandler extends CreateBPMNNodeOperation
                 Activity task = bpmnProcess.findActivityByPoint(BPMNGraphUtil.createBPMNPoint(dropPoint));
                 Optional<GPoint> point = operation.getLocation();
 
-                DataInputObjectExtension data = task.addDataInputObject(elementTypeId, getLabel(), "any", false,
+                DataInputObjectExtension data = task.addDataInputObject(elementTypeId, getLabel(), "string", false,
                         getLabel());
                 if (point.isPresent()) {
                     double elementX = point.get().getX();

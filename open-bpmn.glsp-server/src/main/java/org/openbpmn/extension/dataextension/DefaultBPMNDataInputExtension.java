@@ -27,6 +27,7 @@ import org.openbpmn.bpmn.BPMNTypes;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.extension.AbstractBPMNElementExtension;
+import org.openbpmn.extension.bonita.BDMInformation;
 import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
@@ -74,12 +75,20 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
                 .addData("type", bpmnElement.getAttribute("type")) //
         ;
 
-        schemaBuilder //
-                .addProperty("name", "string", null) //
-                .addProperty("type", "string", null) //
-        //
-
-        ;
+		// static values 	
+		String[] datatypes = { "integer", "boolean", "double", "string", "complex" };
+		if (bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
+			BDMInformation bdmInfo = new BDMInformation(modelState.getBpmnModel());
+			datatypes = bdmInfo.getAllBusinessObjects();
+		}
+				
+		schemaBuilder //
+				.addProperty("name", "string", null) //
+				.addProperty("type", "string", null, datatypes); //
+		
+        
 
 //Map<String, String> multilineOption = new HashMap<>();
 //multilineOption.put("multi", "true");
@@ -141,7 +150,7 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
                 continue;
             }
             bpmnElement.setAttribute(feature, json.getString(feature));
-
+            modelState.reset();
         }
 
     }

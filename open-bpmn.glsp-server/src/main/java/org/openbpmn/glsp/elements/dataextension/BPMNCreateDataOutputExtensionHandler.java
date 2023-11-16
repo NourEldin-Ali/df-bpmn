@@ -80,7 +80,7 @@ public class BPMNCreateDataOutputExtensionHandler extends CreateBPMNNodeOperatio
                 Activity task = bpmnProcess.findActivityByPoint(BPMNGraphUtil.createBPMNPoint(dropPoint));
                 Optional<GPoint> point = operation.getLocation();
                 if (BPMNTypes.BPMN_DATA_OUTPUT_EXTENSION.contains(elementTypeId)) {
-                    DataOutputObjectExtension data = task.addDataOutputObject(elementTypeId, getLabel(), "any", false,
+                    DataOutputObjectExtension data = task.addDataOutputObject(elementTypeId, getLabel(), "string", false,
                             "init");
                     if (point.isPresent()) {
                         double elementX = point.get().getX();

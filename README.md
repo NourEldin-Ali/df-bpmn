@@ -111,7 +111,7 @@ The Application can be started from a Web Browser
 ## Using docker
 
 	$ docker pull alinoureldin/df-bpmn:latest
-	$ docker run --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
+	$ docker run --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn --env OPENAI_KEY=<open-api-key>
 	
 The Application can be started from a Web Browser
 

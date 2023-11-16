@@ -92,14 +92,14 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				.addData("name", bpmnElement.getName()) //
 				.addData("documentation", bpmnElement.getDocumentation()) //
 				.addData("gherkin", bpmnElement.getAttribute("gherkin")) //
-				.addData("exporter", "") //
-		;
+				.addData("exporter", ""); //
+		
 
 		schemaBuilder //
 				.addProperty("name", "string", null) //
 				.addProperty("documentation", "string", "Add data processing description")
-				.addProperty("exporter", "string", null). //
-				addProperty("gherkin", "string", "update data processing bihavior description");
+				.addProperty("gherkin", "string", "update data processing behavior description")
+				.addProperty("exporter", "string", null);
 
 		Map<String, String> multilineOption = new HashMap<>();
 		multilineOption.put("multi", "true");
@@ -137,6 +137,10 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 			}
 			if ("documentation".equals(feature)) {
 				bpmnElement.setDocumentation(json.getString(feature));
+				continue;
+			}
+			if ("gherkin".equals(feature)) {
+				bpmnElement.setAttribute("gherkin",json.getString(feature));
 				continue;
 			}
 		}

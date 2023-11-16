@@ -51,15 +51,13 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 			
 			try {
 				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
-				bpmnElement.setAttribute("gherkin",results);
+				dataProcessing.setAttribute("gherkin",results);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println("Gherkin Done");
 		}
-		
-
 		System.out.println("---------------------------");
 		return listOf(new MyCustomRequestAction());
 	}

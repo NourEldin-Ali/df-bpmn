@@ -20,7 +20,7 @@ To build the docker image from sources run:
 
 To run the docker image locally run:
 
-	$ docker run --env OPENAI_KEY=<open-api-key> --name="df-bpmn" --rm -p 3000:3000 alinoureldin/df-bpmn
+	$ docker run --name="df-bpmn" --rm -p 3000:3000 -p 3001:3001 alinoureldin/df-bpmn --env OPENAI_KEY=<open-api-key>
       
 After starting the container the applicaiton is available on 
 

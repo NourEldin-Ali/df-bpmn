@@ -7,25 +7,25 @@ echo "***************************************"
 echo $OPENAI_KEY
 
 cd integration-openai/
-python app.py $OPENAI_KEY 
-# cd ..
+nohup python app.py $OPENAI_KEY &
+cd ..
 
-# echo "***************************************"
-# echo "* Starting - Open BPMN.....           *"
-# echo "***************************************"
+echo "***************************************"
+echo "* Starting - Open BPMN.....           *"
+echo "***************************************"
 
-# # Test server jar...
-# if [[ -z "${GLSP_SERVER_JAR}" ]]; then
-#   # set default jar
-#   GLSP_SERVER_JAR="open-bpmn.glsp-server/target/open-bpmn.server*-glsp.jar"
-# fi
+# Test server jar...
+if [[ -z "${GLSP_SERVER_JAR}" ]]; then
+  # set default jar
+  GLSP_SERVER_JAR="open-bpmn.glsp-server/target/open-bpmn.server*-glsp.jar"
+fi
 
-# echo "Server jar="$GLSP_SERVER_JAR
+echo "Server jar="$GLSP_SERVER_JAR
 
-# # Start server in background...
-# java -jar $GLSP_SERVER_JAR org.openbpmn.glsp.BPMNServerLauncher &
+# Start server in background...
+java -jar $GLSP_SERVER_JAR org.openbpmn.glsp.BPMNServerLauncher &
 
-# # start client
-# cd open-bpmn.glsp-client/
-# yarn start:external --hostname=0.0.0.0
-# cd ..
+# start client
+cd open-bpmn.glsp-client/
+yarn start:external --hostname=0.0.0.0
+cd ..

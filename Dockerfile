@@ -19,8 +19,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 ENV PATH=$CONDA_DIR/bin:$PATH
 
 #python library needed to working
-RUN conda install langchain -c conda-forge
-RUN conda install -c anaconda flask
+RUN pip install langchain
+RUN pip install flask
 RUN pip install openai
 
 # Python enviroment for the server connected to openAI
@@ -86,5 +86,6 @@ WORKDIR /usr/src/app/open-bpmn/
 # COPY scripts/start.sh start.sh
 
 EXPOSE 3000
+EXPOSE 3001
 
 ENTRYPOINT ["/usr/src/app/open-bpmn/scripts/start.sh"]

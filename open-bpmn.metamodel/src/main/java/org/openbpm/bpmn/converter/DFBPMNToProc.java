@@ -2619,7 +2619,7 @@ public class DFBPMNToProc {
 //			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			DOMSource source = new DOMSource(doc);
-			File outfile = new File(projectPath + "\\app\\diagrams\\" + outputName + "-0.0.proc");
+			File outfile = new File(projectPath + "/app/diagrams/" + outputName + "-0.0.proc");
 			StreamResult result = new StreamResult(outfile);
 			transformer.transform(source, result);
 			return outfile;

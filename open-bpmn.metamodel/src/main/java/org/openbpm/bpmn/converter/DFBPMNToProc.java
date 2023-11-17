@@ -83,9 +83,15 @@ public class DFBPMNToProc {
 
 	public File createDiagrame() {
 		System.out.println("Start converting to Bonita");
-		try {
+		File file;
 
-			File file = new File("src/main/resources/initDiagram.proc");
+		try {
+			// for docker image
+			file = new File("bonita-specification/initDiagram.proc");
+			if (!file.canRead()) {
+				//for run directry from eclipse
+				file = new File("../bonita-specification/initDiagram.proc");
+			}
 			// an instance of factory that gives a document builder
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			// an instance of builder to parse the specified xml file
@@ -273,9 +279,7 @@ public class DFBPMNToProc {
 			}
 			System.out.println("Converting to Bonita done");
 			return procFile;
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			logger.info("Generate failed to Bonita Proc");
 			System.out.println(e.getMessage());
 			return null;
@@ -1481,7 +1485,7 @@ public class DFBPMNToProc {
 									if (script.toString().split(contractParent + ".get").length == 2) {
 										refE.setAttribute("xmi:id", generateXmiId());
 										refE.setAttribute("xmi:type", "process:ContractInput");
-										refE.setAttribute("name",contractParent);
+										refE.setAttribute("name", contractParent);
 										refE.setAttribute("type", "COMPLEX");
 										// add right operand
 										rightOperand.appendChild(refE);
@@ -1941,12 +1945,12 @@ public class DFBPMNToProc {
 
 					Element refE = doc.createElement("referencedElements");
 					if (parentUserSource) {
-						String contractParent = element.getElementNode().getParentNode().getAttributes().getNamedItem("name")
-								.getNodeValue() ;
-						inputs.add(contractParent+ ".get(\"" + element.getElementNode().getAttribute("name") + "\")");
-						script.append(contractParent + ".get(\"" + element.getElementNode().getAttribute("name") + "\")");
-						
-						
+						String contractParent = element.getElementNode().getParentNode().getAttributes()
+								.getNamedItem("name").getNodeValue();
+						inputs.add(contractParent + ".get(\"" + element.getElementNode().getAttribute("name") + "\")");
+						script.append(
+								contractParent + ".get(\"" + element.getElementNode().getAttribute("name") + "\")");
+
 						if (script.toString().split(contractParent + ".get").length == 2) {
 							refE.setAttribute("xmi:id", generateXmiId());
 							refE.setAttribute("xmi:type", "process:ContractInput");

@@ -29,6 +29,12 @@ After starting the container the applicaiton is available on
 To stop the container run:
 
 	$ docker stop df-bpmn
+## Workspace
+For the integration with Bonita studio, you should add `-v` to mount the workspace of bonita project within the docker image
+
+	$ docker run --name="df-bpmn" --rm -p 3000:3000 -p 3001:3001  --env OPENAI_KEY=<open-api-key> -it -v /path/to/bonita-workspace:/usr/src/app/bonita alinoureldin/df-bpmn
+
+When you need to export a DF-BPMN project to Bonita proc, you should add the `/bonita-project-name/` and the BDM of bonita will automatically imported, and the export of DF-BPMN will be within download within your Bonita project.
 
 # Push to Docker-Hub
 

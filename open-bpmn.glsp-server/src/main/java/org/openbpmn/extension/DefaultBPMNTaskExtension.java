@@ -68,10 +68,13 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
             final SchemaBuilder schemaBuilder, final UISchemaBuilder uiSchemaBuilder) {
         boolean expand = (bpmnElement.getAttribute("expand") != null
                 && bpmnElement.getAttribute("expand").contentEquals("true"));
+        boolean isMultiple = (bpmnElement.getAttribute("isMultiple") != null
+                && bpmnElement.getAttribute("isMultiple").contentEquals("true"));
 //        System.out.println(bpmnElement.getAttribute("expand"));
         dataBuilder //
                 .addData("name", bpmnElement.getName()) //
                 .addData("expand", expand) //
+                .addData("multiple", isMultiple) //
                 .addData("documentation", bpmnElement.getDocumentation());
 
         String documentation = "A Task is work that is performed within the Business Process." +
@@ -79,6 +82,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
         schemaBuilder. //
                 addProperty("name", "string", null). //
                 addProperty("expand", "boolean", null). //
+                addProperty("multiple", "boolean", null). //
                 addProperty("documentation", "string", documentation);
 
         uiSchemaBuilder. //
@@ -86,6 +90,7 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name"). //
                 addElements("expand"). //
+                addElements("multiple"). //
                 addLayout(Layout.VERTICAL). //
                 addElement("documentation", "Documentation", this.getFileEditorOption());
 
@@ -140,7 +145,11 @@ public class DefaultBPMNTaskExtension extends AbstractBPMNElementExtension {
                 bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
                 continue;
             }
-
+            if ("multiple".equals(feature)) {
+                bpmnElement.setAttribute("isMultiple", json.getBoolean(feature) == true ? "true" : "false");
+                modelState.reset();
+                continue;
+            }
             if ("scriptformat".equals(feature)) {
                 bpmnElement.setAttribute("scriptFormat", json.getString(feature));
 //                modelState.reset();

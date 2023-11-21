@@ -142,8 +142,10 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 								bpmnElement.getElementNode().getParentNode().getAttributes().getNamedItem("type")
 										.getNodeValue(),
 								// object name
-								text).toLowerCase();
+								text);
+//						bpmnElement.setAttribute("type", type.toLowerCase());
 						bpmnElement.setAttribute("type", type);
+
 						modelState.reset();
 					}
 //					// update the bpmn-text-node of the GNodeElement

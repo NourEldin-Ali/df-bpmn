@@ -69,7 +69,9 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
         // set Layout options
         this.addCssClass(type);
         this.addCssClass("task");
-
+        if (activity.getAttribute("isMultiple").contentEquals("true")) {
+            this.addCssClass("isMuliple");
+        }
         this.addArguments(GArguments.cornerRadius(5));
     }
 
@@ -88,7 +90,7 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
         super.setProperties(node);
         node.setName(name);
 
-        node.setLayout(GConstants.Layout.VBOX); // .VBOX
+        node.setLayout(GConstants.Layout.HBOX); // .VBOX
         // Set min width/height
         node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_WIDTH, Activity.DEFAULT_WIDTH);
         node.getLayoutOptions().put(GLayoutOptions.KEY_MIN_HEIGHT, Activity.DEFAULT_HEIGHT);
@@ -96,18 +98,30 @@ public class TaskGNodeBuilder extends AbstractGNodeBuilder<TaskGNode, TaskGNodeB
         node.getLayoutOptions().put(GLayoutOptions.KEY_PREF_HEIGHT, size.getHeight());
         node.getLayoutOptions().put(GLayoutOptions.KEY_V_GAP, 1);
 
-        GLayoutOptions iconLayoutOptions = new GLayoutOptions().hAlign(GConstants.HAlign.LEFT);
+        GLayoutOptions iconLayoutOptions = new GLayoutOptions().hAlign(GConstants.HAlign.CENTER).vAlign(GConstants.VAlign.BOTTOM);
         // icon can grab the vertical space, so that the extension label will be aligned
         // to the bottom
-        iconLayoutOptions.put(V_GRAB, true);
+        iconLayoutOptions.put(H_GRAB, true);
+
         IconGCompartment taskIcon = new IconGCompartmentBuilder(). //
                 id(node.getId() + "_icon"). //
                 layoutOptions(iconLayoutOptions). //
                 build();
 
         node.getChildren().add(taskIcon);
+       
+        IconGCompartment taskIcon2 = new IconGCompartmentBuilder(). //
+                id(node.getId() + "_icon2"). //
+                layoutOptions(new GLayoutOptions().hAlign(GConstants.HAlign.CENTER).vAlign(GConstants.VAlign.BOTTOM)).
+                //
+                build();
+        
+        node.getChildren().add(taskIcon2);
         node.getChildren().add(BPMNGraphUtil.createExtensionLabel(node));
+        
         node.getChildren().add(BPMNGraphUtil.createMultiLineTextNode(id + "_name", name));
+       
+        
 
     }
 //    @Override

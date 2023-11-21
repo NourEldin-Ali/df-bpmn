@@ -127,6 +127,19 @@ export class IconView extends ShapeView {
             } else {
                 // no icon defined at all - See Issue #215
             }
+
+            if (element.id.includes('_icon2')) {
+                if (taskNode.cssClasses?.indexOf('isMuliple') !== -1) {
+                    scaleFactor = 1;
+                    translateX = taskNode.bounds.height/3;
+                    translateY = 0.0;
+                    rotate = 90;
+                    // From codicons: https://github.com/microsoft/vscode-codicons/blob/main/src/icons/three-bars.svg
+                    icon =
+                        // three bars
+                        'M14 5H2V3h12v2zm0 4H2V7h12v2zM2 13h12v-2H2v2z';
+                }
+            }
         }
 
         if (gatewayNode) {

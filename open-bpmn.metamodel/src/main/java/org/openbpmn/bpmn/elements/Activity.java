@@ -1055,9 +1055,11 @@ public class Activity extends BPMNElementNode {
 	}
 
 	public boolean isUpdateData(String dataObjectId) {
-		return this.dataReferences.stream()
-				.anyMatch((ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId)))
-				&& !this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
+		return 
+//				this.dataReferences.stream()
+//				.anyMatch((ref -> ref.getTargetRef().equals(dataObjectId) || ref.getSourceRef().equals(dataObjectId)))
+//				&&
+				!this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
 						.findFirst().get().getAttribute("state").toLowerCase().equals("init")
 				&& !this.dataOutputObjects.stream().filter(dataObject -> dataObject.getId().equals(dataObjectId))
 						.findFirst().get().getAttribute("state").toLowerCase().equals("delete")
@@ -1077,7 +1079,7 @@ public class Activity extends BPMNElementNode {
 				.get().getAttribute("state").toLowerCase().equals("read");
 
 	}
-	
+
 	public List<DataFlowExtension> getConnectDataFlowTo(BPMNElement dataObject) {
 		if (dataObject instanceof DataOutputObjectExtension) {
 			return dataFlows.stream()
@@ -1145,5 +1147,34 @@ public class Activity extends BPMNElementNode {
 
 		return listOutgingElement;
 
+	}
+
+	public BPMNElementNode getFirstMuliObject() {
+		List<DataOutputObjectExtension> dataOutput = this.getDataOutputObjects().stream()
+				.filter(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE))
+				.collect(Collectors.toList());
+
+		for (DataOutputObjectExtension dataObj : dataOutput) {
+			if (this.getBpmnProcess().getActivities().stream().anyMatch(activity -> activity.getDataOutputObjects()
+					.stream()
+					.anyMatch(data -> (data.getElementNode().getLocalName()
+							.equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
+							&& data.getElementNode().getAttribute("isMultiple").contentEquals("true") && dataObj
+									.getElementNode().getAttribute("name").contentEquals(data.getAttribute("name"))))))
+				return dataObj;
+		}
+
+		return null;
+	}
+
+	public boolean checkObjectIsMulti(BPMNElement bpmnElement) {
+
+		if (this.getBpmnProcess().getActivities().stream().anyMatch(activity -> activity.getDataOutputObjects().stream()
+				.anyMatch(data -> (data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
+						&& data.getElementNode().getAttribute("isMultiple").contentEquals("true")
+						&& bpmnElement.getAttribute("name").contentEquals(data.getAttribute("name"))))))
+			return true;
+
+		return false;
 	}
 }

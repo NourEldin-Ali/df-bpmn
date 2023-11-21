@@ -40,6 +40,7 @@ import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.DataInputObjectExtension;
 import org.openbpmn.bpmn.elements.DataObjectAttributeExtension;
+import org.openbpmn.bpmn.elements.DataOutputObjectExtension;
 import org.openbpmn.bpmn.elements.DataProcessingExtension;
 import org.openbpmn.bpmn.elements.Event;
 import org.openbpmn.bpmn.elements.Gateway;
@@ -89,7 +90,7 @@ public class DFBPMNToProc {
 			// for docker image
 			file = new File("bonita-specification/initDiagram.proc");
 			if (!file.canRead()) {
-				//for run directry from eclipse
+				// for run directry from eclipse
 				file = new File("../bonita-specification/initDiagram.proc");
 			}
 			// an instance of factory that gives a document builder
@@ -806,6 +807,35 @@ public class DFBPMNToProc {
 			elementsActivity.appendChild(expressionElement);
 		}
 
+		if (activity.getAttribute("isMultiple").contentEquals("true")) {
+			elementsActivity.setAttribute("type", "PARALLEL");
+			// validate what is the element of the
+
+			BPMNElementNode bpmnElement = activity.getFirstMuliObject();
+			if (bpmnElement != null) {
+				// search data id
+				// Create an XPath instance
+				XPathFactory xPathFactory = XPathFactory.newInstance();
+				XPath xPath = xPathFactory.newXPath();
+				// Define the XPath expression to find the <children> element with type="7001"
+				String xpathExpression = "//data[@name='" + bpmnElement.getAttribute("name") + "']";
+
+				// Evaluate the XPath expression and get the matching node
+				Node node = (Node) xPath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+				if (node != null) {
+					Element diagram = (Element) node;
+					elementsActivity.setAttribute("collectionDataToMultiInstantiate", diagram.getAttribute("xmi:id"));
+
+				}
+				// add retyrn type to the iteraorExpression
+				elementsActivity.getElementsByTagName("iteratorExpression").item(0).getAttributes()
+						.getNamedItem("returnType").setTextContent(bpmnElement.getAttribute("type"));
+				elementsActivity.getElementsByTagName("iteratorExpression").item(0).getAttributes().getNamedItem("name")
+						.setTextContent(bpmnElement.getAttribute("name") + "Itr");
+				elementsActivity.getElementsByTagName("iteratorExpression").item(0).getAttributes()
+						.getNamedItem("content").setTextContent(bpmnElement.getAttribute("name") + "Itr");
+			}
+		}
 		// in case of human activity, we need to define the contract of the activity
 		if (type == ActivityType.HUMAN) {
 			// required element to add contract to the activity
@@ -1041,9 +1071,13 @@ public class DFBPMNToProc {
 				// update object
 				if (activity.isUpdateData(parentElement.getId())) {
 					addedData.add(targetElement.getId());
-					// define the attributes of the left operand
 					// no code needed here
-					leftOperand.setAttribute("name", parentElement.getName()); // name
+					// define the attributes of the left operand
+					if (activity.checkObjectIsMulti(parentElement)) {
+						leftOperand.setAttribute("name", parentElement.getName()+"Itr"); // name
+					} else {
+						leftOperand.setAttribute("name", parentElement.getName()); // name
+					}
 					leftOperand.setAttribute("content", parentElement.getName()); // name
 					leftOperand.setAttribute("type", "TYPE_VARIABLE");
 					leftOperand.setAttribute("returnType", parentElement.getAttribute("type"));// class name in BDM
@@ -1622,8 +1656,8 @@ public class DFBPMNToProc {
 				if (returnDataTypes.containsKey(targetElement.getAttribute("type").toLowerCase())) {
 					rightOperand.setAttribute("returnType",
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
-					leftOperand.setAttribute("returnType",
-							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+//					leftOperand.setAttribute("returnType",
+//							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
 				}
 
 				refElemenet = doc.createElement("referencedElements");
@@ -1649,8 +1683,8 @@ public class DFBPMNToProc {
 				if (returnDataTypes.containsKey(targetElement.getAttribute("type").toLowerCase())) {
 					rightOperand.setAttribute("returnType",
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
-					leftOperand.setAttribute("returnType",
-							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+//					leftOperand.setAttribute("returnType",
+//							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
 				}
 
 				String script = addOperationFromDataProcessing(doc, activity, operationOrder, rightOperand,
@@ -1688,8 +1722,8 @@ public class DFBPMNToProc {
 								.containsKey(sourceElement.getElementNode().getAttribute("type").toLowerCase())) {
 							rightOperand.setAttribute("returnType", returnDataTypes
 									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
-							leftOperand.setAttribute("returnType", returnDataTypes
-									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
+//							leftOperand.setAttribute("returnType", returnDataTypes
+//									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
 						}
 
 						refElemenet.setAttribute("xmi:id", generateXmiId());
@@ -1711,8 +1745,8 @@ public class DFBPMNToProc {
 						if (returnDataTypes.containsKey(sourceElement.getAttribute("type").toLowerCase())) {
 							rightOperand.setAttribute("returnType",
 									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
-							leftOperand.setAttribute("returnType",
-									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
+//							leftOperand.setAttribute("returnType",
+//									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
 						}
 
 						refElemenet.setAttribute("xmi:id", generateXmiId());
@@ -2611,7 +2645,6 @@ public class DFBPMNToProc {
 	 */
 	private File createProcFile(Document doc) {
 		try {
-
 			// Save the modified XML document
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
@@ -2626,7 +2659,6 @@ public class DFBPMNToProc {
 		} catch (Exception e) {
 			return null;
 		}
-
 	}
 
 	/**

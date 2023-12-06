@@ -38,7 +38,7 @@ public class BDMInformation {
 			Document document = builder.parse(xmlFile);
 			return document;
 		} catch (Exception e) {
-//			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}

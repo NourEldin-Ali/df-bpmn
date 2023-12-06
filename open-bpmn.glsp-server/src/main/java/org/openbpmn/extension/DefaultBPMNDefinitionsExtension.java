@@ -43,6 +43,7 @@ import org.openbpmn.bpmn.elements.Participant;
 import org.openbpmn.bpmn.elements.Signal;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
+import org.openbpmn.extension.bonita.BonitaWorkspaceInfo;
 import org.openbpmn.glsp.bpmn.BPMNGNode;
 import org.openbpmn.glsp.jsonforms.DataBuilder;
 import org.openbpmn.glsp.jsonforms.SchemaBuilder;
@@ -142,8 +143,11 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 				addLayout(Layout.VERTICAL). //
 				addElements("bonitaProjectPath", "exportName", "export");
 
-		//
-		schemaBuilder.addProperty("bonitaProjectPath", "string", null).addProperty("exportName", "string", null)
+		//get Bonita project from the Bonita Workspace
+		BonitaWorkspaceInfo bonitaProjects = new BonitaWorkspaceInfo("/usr/src/app/bonita");
+		String[] listProjectPath = bonitaProjects.getProjects();
+		schemaBuilder.addProperty("bonitaProjectPath", "string", null, listProjectPath.length==0?null:listProjectPath )
+				.addProperty("exportName", "string", null)
 //				.addProperty("export", "boolean", null)
 		;
 

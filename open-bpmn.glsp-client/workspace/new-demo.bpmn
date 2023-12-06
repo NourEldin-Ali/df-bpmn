@@ -6,7 +6,7 @@
       <bpmn2:documentation id="documentation_i3KP1g"/>
     </bpmn2:participant>
   </bpmn2:collaboration>
-  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.1-u0\workspace\purchase_request" definitionalCollaborationRef="collaboration_1" exportName="ex-1.0" id="process_1" name="Default Process" processType="Public">
+  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.1-u0\workspace\procurement-example" definitionalCollaborationRef="collaboration_1" exportName="ex-1.0" id="process_1" name="Default Process" processType="Public">
     <bpmn2:documentation id="documentation_Yx8Idg"/>
   </bpmn2:process>
   <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_lYrupw" name="Pool-1" processType="Private">
@@ -76,49 +76,49 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
     <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
       <bpmndi:BPMNShape bpmnElement="participant_d0N0Tw" id="BPMNShape_Kb0Ytw">
-        <dc:Bounds height="712.0" width="1210.0" x="62.0" y="39.0"/>
+        <dc:Bounds height="712.0" width="1210.0" x="64.0" y="27.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="lane_3TFn0A" id="BPMNShape_Lane_qkzbGg">
-        <dc:Bounds height="356.0" width="1180.0" x="92.0" y="39.0"/>
+        <dc:Bounds height="356.0" width="1180.0" x="94.0" y="27.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="lane_Se32OQ" id="BPMNShape_Lane_4bU0TQ">
-        <dc:Bounds height="356.0" width="1180.0" x="92.0" y="395.0"/>
+        <dc:Bounds height="356.0" width="1180.0" x="94.0" y="383.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="event_5aonNQ" id="BPMNShape_xEDZbw">
-        <dc:Bounds height="36.0" width="36.0" x="142.0" y="147.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="144.0" y="135.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_U45TxQ">
-          <dc:Bounds height="16.0" width="100.0" x="110.0" y="186.0"/>
+          <dc:Bounds height="16.0" width="100.0" x="112.0" y="174.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_6EbGVA" id="BPMNShape_R6Migg">
-        <dc:Bounds height="280.0" width="530.0" x="236.5" y="64.5"/>
+        <dc:Bounds height="280.0" width="530.0" x="238.5" y="52.5"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_6SDYRA" id="BPMNEdge_00tTTQ" sourceElement="BPMNShape_xEDZbw" targetElement="BPMNShape_R6Migg">
-        <di:waypoint x="178.0" y="165.0"/>
-        <di:waypoint x="207.25" y="165.0"/>
-        <di:waypoint x="207.25" y="204.5"/>
-        <di:waypoint x="236.5" y="204.5"/>
+        <di:waypoint x="180.0" y="153.0"/>
+        <di:waypoint x="209.25" y="153.0"/>
+        <di:waypoint x="209.25" y="192.5"/>
+        <di:waypoint x="238.5" y="192.5"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_vOCCTw" id="BPMNShape_0Vbosg">
-        <dc:Bounds height="50.0" width="160.0" x="236.5" y="122.0"/>
+        <dc:Bounds height="50.0" width="160.0" x="238.5" y="110.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_WheVaQ" id="BPMNShape_iY5KhQ">
-        <dc:Bounds height="50.0" width="160.0" x="236.5" y="187.0"/>
+        <dc:Bounds height="50.0" width="160.0" x="238.5" y="175.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_Wr89XA" id="BPMNShape_AOh8Og">
-        <dc:Bounds height="50.0" width="130.0" x="538.0" y="122.0"/>
+        <dc:Bounds height="50.0" width="130.0" x="540.0" y="110.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_N0iflg" id="BPMNShape_vfxNHw">
-        <dc:Bounds height="50.0" width="130.0" x="538.0" y="251.0"/>
+        <dc:Bounds height="50.0" width="130.0" x="540.0" y="239.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_etD4VQ" id="BPMNShape_yLqeDA">
-        <dc:Bounds height="25.0" width="110.0" x="563.0" y="172.0"/>
+        <dc:Bounds height="25.0" width="110.0" x="565.0" y="160.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_6gq0oQ" id="BPMNShape_S0SGig">
-        <dc:Bounds height="25.0" width="110.0" x="563.0" y="197.0"/>
+        <dc:Bounds height="25.0" width="110.0" x="565.0" y="185.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_8z4mMQ" id="BPMNShape_JwJw2g">
-        <dc:Bounds height="25.0" width="110.0" x="563.0" y="301.0"/>
+        <dc:Bounds height="25.0" width="110.0" x="565.0" y="289.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_VKP75A" id="BPMNEdge_N0QQmg">
         <di:waypoint x="160.0" y="82.5"/>
@@ -133,19 +133,19 @@
         <di:waypoint x="326.5" y="145.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="task_HOPXVQ" id="BPMNShape_BYOpyg">
-        <dc:Bounds height="273.0" width="585.0" x="245.5" y="449.5"/>
+        <dc:Bounds height="273.0" width="585.0" x="247.5" y="437.5"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Z0S0UQ" id="BPMNEdge_W01BZw" sourceElement="BPMNShape_R6Migg" targetElement="BPMNShape_BYOpyg">
-        <di:waypoint x="501.5" y="344.5"/>
-        <di:waypoint x="501.5" y="400.0"/>
-        <di:waypoint x="536.0" y="400.0"/>
-        <di:waypoint x="536.0" y="449.5"/>
+        <di:waypoint x="503.5" y="332.5"/>
+        <di:waypoint x="503.5" y="388.0"/>
+        <di:waypoint x="538.0" y="388.0"/>
+        <di:waypoint x="538.0" y="437.5"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_qQX0pQ" id="BPMNShape_d9n6ww">
-        <dc:Bounds height="50.0" width="130.0" x="639.0" y="524.0"/>
+        <dc:Bounds height="50.0" width="130.0" x="641.0" y="512.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_WeEL8g" id="BPMNShape_Rpr0hw">
-        <dc:Bounds height="50.0" width="160.0" x="260.0" y="551.0"/>
+        <dc:Bounds height="50.0" width="160.0" x="262.0" y="539.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_bWxrAw" id="BPMNEdge_fpVaEA">
         <di:waypoint x="174.5" y="126.5"/>

@@ -4,7 +4,7 @@ Please focus on producing only the Groovy script as the end result. You are requ
 Please remember, the output should be the return value of the script. This means that the last evaluated expression in the script will be the output. Be sure to structure your script in a way that the desired output is the last evaluated expression.
 We appreciate your attention to detail in ensuring this script is free of errors and well-structured to meet the task requirements.
 If you want to define a function within the Groovy script, call it. I need to directly use the return value.
-The resutls should be only code without any other inforamtions about the function.
+The resutls should be only code without any other informations about the function.
 ---
 Example: 
 Inputs: [gross_salary]

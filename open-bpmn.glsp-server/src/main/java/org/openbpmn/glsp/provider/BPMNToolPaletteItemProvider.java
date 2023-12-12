@@ -74,8 +74,8 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
                 PaletteItem.createPaletteGroup("gateway-group", "Gateways", createPaletteGatewayItems(),
                         "symbol-property", "E"),
 
-                PaletteItem.createPaletteGroup("data-group", "Data Items", createPaletteDataItems(), "symbol-property",
-                        "F"),
+//                PaletteItem.createPaletteGroup("data-group", "Data Items", createPaletteDataItems(), "symbol-property",
+//                        "F"),
 
                 PaletteItem.createPaletteGroup("edge-group", "Edges", createPaletteSequenceFlowItems(),
                         "symbol-property", "G"),
@@ -179,11 +179,11 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("A");
         result.add(item);
 
-        item = new PaletteItem(BPMNTypes.DATA_REFERENCE, "Data Reference",
-                new TriggerEdgeCreationAction(BPMNTypes.DATA_REFERENCE));
-        item.setSortString("B");
-
-        result.add(item);
+//        item = new PaletteItem(BPMNTypes.DATA_REFERENCE, "Data Reference",
+//                new TriggerEdgeCreationAction(BPMNTypes.DATA_REFERENCE));
+//        item.setSortString("B");
+//
+//        result.add(item);
 
         return result;
     }

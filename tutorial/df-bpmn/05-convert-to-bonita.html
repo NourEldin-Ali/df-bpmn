@@ -25,8 +25,81 @@
     </div>
     <div class="wrapper">
 
-        <h3></h3>
-       
+        After add all the data elements to the activities, now your process is ready to convert to Bonita studio to be
+        executed.
+        <br>
+        <h3>Convert to Bonita</h3>
+        <ol>
+            <li> Before convert to Bonita studio, if you have data processing operator you should validate the the
+                Behavior of the code is generated. <br>
+                Note: in this example your are not used the data processing operator.
+                <br>
+                <img src="05-convert-to-bonita/01-gherkin.png" width="500" />
+                <br>
+                If the behavior is not generated, you should click on the "generate behavior" and what for some seconds
+                and revalidate the behavior.
+                <br>
+                <img src="05-convert-to-bonita/02-gherkin.png" width="500" />
+                <br>
+            </li>
+            <li>
+                To export to Bonita, click on withspace, in "Bonita integration" tab, add the name of the exported
+                project, and click "export", it should take some seconds or some minutes.
+                <br>
+                <img src="05-convert-to-bonita/03-export.png" width="500" />
+            </li>
+            <li>
+                You can find a new process diagram within your project in Bonita studio. If the project does not found,
+                you can refresh the bonita project.
+                <br>
+                <img src="05-convert-to-bonita/04-in-bonita.png" width="500" />
+            </li>
+        </ol>
+        <br>
+        <br>
+        After Converting DF-BPMN to Bonita, there are manual implementation you should do before the execution.
+        <br>
+        <br>
+        <h3>Define Gateways Conditions</h3>
+        <ol>
+            <li>
+                <b>Gateway after the activity "Review quotation"</b>
+                <br>
+                The conditions are added to the sequence flow after the gateway.
+                <br>
+                click on the sequence flow, then click on "General" and then add the expression (conditions).
+                <br>
+                <img src="../bonita/06-implementation/11-gateway.png" width="500" />
+                <br>
+                The expression should be defined based on a variable already defined in the activities, yf you used the
+                the second way in define the process variable (isAccepted) in the last activity, the
+                conditions (script) should be:
+                <br>
+                <img src="../bonita/06-implementation/12-gateway-expression.png" width="500" />
+                <br>
+                in other way, you should add the variable you are based on to define the condition (like, attribute of
+                business data).
+            </li>
+        </ol>
+        <br>
+        <br>
+        <h3>Add forms</h3>
+        You should add form only for the activity with type "Human".
+        <br>
+        <ol>
+            <li>
+                <b>Activity "Create request and select supplier"</b>
+                <br>
+            </li>
+            <li>
+                <b>Activity "Complete quotation"</b>
+                <br>
+            </li>
+            <li>
+                <b>Activity "Review quotation"</b>
+                <br>
+            </li>
+        </ol>
         <br>
         <br>
         <h4><a href="06-execution.html">Next exercice</a></h4>

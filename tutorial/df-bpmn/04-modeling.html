@@ -23,14 +23,273 @@
         </div>
     </div>
     <div class="wrapper">
-    
-        <h3></h3>
-       
-        
+        <h2>BPMN to process model in the tool</h2>
+        In this exercice, you need to create the BPMN model bellow in the DF-BPMN tool, including the data flow of each
+        activity. In this exercice, we will start by explain where you can find the elements of the process model. Then,
+        you should able to add activities and data within each activity.
+        <br>
+        <img src="../example/example-BPMN.png" align="middle" width="800" />
+        <br>
+        <br>
+        <h3>DF-BPMN symbols</h3>
+        <img src="04-modeling/01-df-bpmn-symbol.png" width="600" />
+        <br><br>
+        This symbols represent the data flow of each activity.<br>
+        There are different data types:
+        <ul>
+            <li><b>Data object</b> there are the process variabels that used during the execution phase.</li>
+            <li><b>Data store</b> there are the business data that used stored or retreived from the database (BDM
+                within Bonita studio).</li>
+            <li><b>Data user</b> there are the data need to read from the user to continue the activity tasks (Fill
+                information from user to used within the process model).</li>
+            <li><b>Data system</b> there are the data that read or send to a server system (Like, auto-sending email,
+                auto check the calender).</li>
+        </ul>
+        The icon of the data object is to present the data types.<br>
+        (a),(c), (e), (f) and (g) are input data where:
+        <ul>
+            <li>(a): is a simple data input. This input object has name, type, also can attached by attributes. The
+                object type can be simple type like string, integer, ... or complex type like the UML object name
+                (Request in this example).</li>
+            <li>(c): is a multi-instance data input. This input object also has name, type, also can attached by
+                attributes, But it use to present multi-instance object or list of oject from the same data type</li>
+            <li>(e) and (f): are two data object depend on each other. if we have (e), it should be connected to (f).
+                (e) used to indicate that we need data from a list of from the database. However, (f) is to present that
+                the user need to select one (or more) object from the database.
+            </li>
+            <li>(g): is a static data input. This input object has name, type, and value. This data object is to present
+                a fix value that we need to use within our model.</li>
+        </ul>
+        <br>
+        (b), and (d) are output data where:
+        <ul>
+            <li>
+                (b): is a simple data output object. This output object has name, type, also can attached by attributes,
+                indeed to a state to present the opeartion on this object. The
+                object type can be simple type like string, integer, ... or complex type like the UML object name
+                (Request in this example).
+                <br>
+                State can be:
+                <ol>
+                    <li>init: for the creation of new data object.</li>
+                    <li>read: for the read a data object.</li>
+                    <li>delete: for the delete a data object.</li>
+                    <li>update: for the update a data object.</li>
+                </ol>
+            </li>
+            <li>
+                (d): is a multi-instance data output object. This output object has name, type, also can attached by
+                attributes,
+                indeed to a state to present the opeartion on this object.
+            </li>
+        </ul>
+        <br>
+        (h) : is the data processing operator that present the complex data operation like sum, conditions etc.
+        <br>
+        This operator is connected to the data input and data output object.
+        <br>
+        <br>
+        (i): is the flow that connect the inputs by the outputs. Also we can connect the outputs by the outputs and
+        connect the data operator to input and output.
+        <br>
+        <br>
+        <h3>Pool and Lane</h3>
+        <ol>
+            After open your project (double click on project file name), you can start the modelling. You can find all
+            the elements in "Palette".
+            <li>
+                From the "Palette", click on "Pool", and then click on the whitespace to add the pool.
+                <br>
+                <img src="04-modeling/02-add-pool.png" width="600" />
+            </li>
+            <li>
+                Then, we should add the lane of our process model. We can do that by click on "Lane" (find it in the
+                "palette") and then click on
+                the name of the "name of your pool to add new lane.
+                <br>
+                <img src="04-modeling/03-add-lane.png" width="600" />
+            </li>
+            <li>
+                Then, to change the Pool name, click on the pool (on pool name), then, you should open the panel
+                properties, then in
+                "General" tab, you can change the name of your pool.
+                <br>
+                <img src="04-modeling/04-change-pool-name.png" width="600" />
+            </li>
+            <li>
+                Then, to change the Lane name, click on the pool (on pool name), then, you should open the panel
+                properties, then in
+                "Lanes" tab, you can change the name of your lanes (it is a list of all your lanes in the selected
+                pool).
+                <br>
+                <img src="04-modeling/05-change-lane-name.png" width="600" />
+            </li>
+        </ol>
+        <h3>Add Process Model Elements</h3>
+        <ol>
+            <li>
+                You can find all the process elements in the "palette". In the DF-BPMN tool, we propose to add an
+                activity and
+                then add directly the data element of it. This helpfull for reducing the time of expanding the activity.
+                <br>
+                <img src="04-modeling/06-process-element.png" width="200" />
+            </li>
+            <li>
+                From the property panel, you can change the name of the activity, also you can expand and collapse an
+                activity.
+                <br>
+                <img src="04-modeling/08-activitypanel.png" width="600" />
+            </li>
+        </ol>
+
+        <h3>Add data within the activity</h3>
+        <ol>
+            <li>
+                Before adding the data to the activity, make sure that the activity is expanded. Then, you can change
+                the size of it based on your needs.
+                <br>
+                <img src="04-modeling/08-activitypanel.png" width="600" />
+            </li>
+            <li>
+                All the data can be found within the panel. You can select the data object you need and then add to the
+                activity.
+                <br>
+                <img src="04-modeling/07-data-element.png" width="200" />
+            </li>
+            <li>
+                you can change the name of the data object from the property panel, also you can change the type, and
+                the state in case of output object.
+                <br>
+                <img src="04-modeling/09-data-panel.png" width="600" />
+            </li>
+
+            <li>
+                In other case (is not included in this example), you can add the data processing operator. this operator
+                is to define a specific data operations like sum,....
+                <br>
+                Todo that, after add the data processing operator, and connect it to the data object inputs and outputs,
+                you should add the description of the operator, by open the property panel, and then within the
+                documents you can add the description using your own world.
+                Following by click on the "Generate Behavior". To express the data operations in other language (after
+                few seconds), that used late to be code in the next exercice.
+                <br>
+                <img src="04-modeling/09-gherkin.png" width="600" />
+            </li>
+        </ol>
+
+        <h3>Add data to the following activtiy</h3>
+        In this exercice, you need to create a process model using DF-BPMN tool, also to add the data of
+        each activity.
+        You have some hints for the activities you want to create, dont forget to add sequence flow between activities.
+        <br>
+        <h4>Process description</h4>
+        A user fills a procurement request (summary and description) and identify a supplier. This request is sent to
+        the supplier for quotation. The supplier should add the following inforamtion to the quotation: price, comments,
+        if he is accept or no. The status of quotation will automatically changed to completed.
+        After completed, the quotations are sent back to the requestor for review and selection. Before starting the
+        review process, the status of the request will be changed to "pending for review". In the review quotation, the
+        requestor should accept or reject the quotation. And finally based on the decision of the requestor, the request
+        status changed to completed or abort.
+        To effectively implement the process, developer must understand how the information is conceptually structured
+        and arranged within each class (suppliers, quotation and request) and how the process interacts with it.
+        <br>
+        <br>
+        <ol>
+            <li>
+                <b>Activity "Create request and select supplier"</b>
+                <br>
+                We have in this activity 2 main object that we need to create
+                <ul>
+                    <li>
+                        Request within the summary nad the description.
+                    </li>
+                    <li>
+                        Quotation within the create request and selected supplier
+                    </li>
+                </ul>
+            </li>
+
+            Therefore, we need to get the information of the request from the user, also the supplier should be selected
+            from the database before create the new quotation.
+            <br>
+            This activity with the data is the activity that express all this information. Please add it to your process
+            model.
+            <br>
+            <img src="04-modeling/10-create-request.png" width="500" />
+            <li>
+                <b>Activity "Complete quotation"</b>
+                <br>
+                In this activity, the supplier (presented by the lane) should add the informations about the quotation,
+                which
+                means that this activity is to update the quotation that created in the first activity.
+                <br>
+                From the process description, find the data object of this activity.
+                <br>
+                Note: in the first activity you define "quotation" you should use the same name of the data object in
+                all the process model to refere the same data object.
+                <br>
+                Hint: in this activity, you have 3 data user inputs and on static input, and you have one data object
+                output with 4 attributes.
+                <br>
+                Add the data within this activity in you model.
+            </li>
+            <br>
+            <li>
+                <b>Activity "Update request status"</b>
+                <br>
+                Add this activity after extract the data information from the process description.
+            </li>
+            <li>
+                <b>Activity "Review quotation"</b>
+                <br>
+                After this activity, there is a gateway, therefore, we can add a process variable to use it late in take
+                a dicision after the gateway.
+                <br>
+                This activity can be modeled in two way:
+                <ol>
+                    <li>
+                        This first way is only to review the request and update if it accepted or not. Then, use the
+                        request attribute (isAccepted) to take a decision.
+                        <br>
+                        <img src="04-modeling/16-review-quotation.png" width="500" />
+                    </li>
+                    <li>
+                        In other way, we can define the process variable, which will be used later in the gateway and
+                        then update the request if it acceted or not.
+                        <br>
+                        <img src="04-modeling/17-review-quotation2.png" width="500" />
+                    </li>
+                </ol>
+                <br>
+                Add this activity to your model.
+                <br>
+                Note: You should always use the same name of the data that you are used before "request".
+            </li>
+            <br>
+            <li>
+                <b>Activity "Complete request"</b>
+                <br>
+                Add this activity, and extract the data information from the process description.
+                <br>
+                Note: You should always use the same name of the data that you are used before.
+            </li>
+            <br>
+            <li>
+                <b>Activity "Abort request"</b>
+                <br>
+                Add this activity, and extract the data information from the process description.
+                <br>
+                Note: You should always use the same name of the data that you are used before.
+            </li>
+            <br>
+        </ol>
+        <br>
+        At the final of this excercice, you should have all the activity illustrated in the process model (BPMN to
+        DF-BPMN tool), indeed, to the data operations within each activity.
         <br>
         <br>
         <h4><a href="05-convert-to-bonita.html">Next exercice</a></h4>
-        
+
     </div>
 
     <!-- Optional JavaScript -->

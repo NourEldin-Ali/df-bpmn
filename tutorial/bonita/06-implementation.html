@@ -23,13 +23,227 @@
         </div>
     </div>
     <div class="wrapper">
-    
-        <h3>Testing for your tool</h3>
-        You can access the tool using the following link <a href="http://localhost:3000/#/usr/src/app/workspace">http://localhost:3000/#/usr/src/app/workspace</a>
+
+        <h3>Impementation overview</h3>
+        In Bonita studio, you have different steps that need to be done to execute the model. To add data to an
+        activity, you should click on the activity and then in the "Execution" tab, you can find all information can be
+        used during the execution of the activity.
+        <br>
+        <img src="06-implementation/01-data.png" width="500" />
+        <br>
+        In this tutorial, we will focus on the "Contract", "Form", and "Operations".
+        <br>
+        <ol>
+            <li>
+                <b>Contract</b>: is the place where you can add attributes that connect to a form, to retreive inputs
+                from a user. This data inputs are used late within the "Operations".
+            </li>
+            <li>
+                <b>Form</b>: where we can define a form that connected to the "Contract".
+            </li>
+            <li>
+                <b>Operations</b>: An operation updates the value of a variable after and activity is performed.
+                Operations are executed in the order they are listed.<br>
+                The left operand is the variable need to change, the right operand is the value. Also, you can find
+                different operator type, such as, "Takes value of" to get value of the right operand, "Use a Java
+                method" to use a java method for the business data, ...
+                <br>
+                <img src="06-implementation/02-operations.png" width="500" />
+                <br>
+                Within the script you can access the contract, the business variable and the process variable.
+                <br>
+                <img src="06-implementation/03-script.png" width="500" />
+                <br>
+            </li>
+        </ol>
+        <br>
+
+        <h3>Impementation of the process model</h3>
+        In this exercice, you should start by the implementation phase. The first step is to define in to define the
+        contacts and the operations, and late to add forms.
+        <br>
+        <h4>Process description</h4>
+        A user fills a procurement request (summary and description) and identify a supplier. This request is sent to
+        the supplier for quotation. The supplier should add the following inforamtion to the quotation: price, comments,
+        if he is accept or no. The status of quotation will automatically changed to completed.
+        After completed, the quotations are sent back to the requestor for review and selection. Before starting the
+        review process, the status of the request will be changed to "pending for review". In the review quotation, the
+        requestor should accept or reject the quotation. And finally based on the decision of the requestor, the request
+        status changed to completed or abort.
+        To effectively implement the process, developer must understand how the information is conceptually structured
+        and arranged within each class (suppliers, quotation and request) and how the process interacts with it.
+        <br>
+        <br>
+        <h4>Add contacts & operations</h4>
+        <br>
+        You need to start to add the data to each activity:
+        <ol>
+            <li>
+                <b>Activity "Create request and select supplier"</b>
+                <br>
+                <br>
+                We have in this activity 2 main object that we need to create
+                <ul>
+                    <li>
+                        Request within the summary nad the description.
+                    </li>
+                    <li>
+                        Quotation within the create request and selected supplier
+                    </li>
+                </ul>
+                Therefore, we need to get the information of the request from the user, also the supplier should be
+                selected
+                from the database before create the new quotation.
+                <br>
+                So, in Bonita the data from the user are presented in contract => we have 3 contract objects, such as,
+                description and summary of the request, and the supplier full name to get the supplier object from the
+                database.
+                <br>
+                <img src="06-implementation/05-activity-contract.png" width="500" />
+                <br>
+                After adding the contract, we can add the data operation to create new request and then new quotation
+                connected to the request object and to a supplier object.
+                <br>
+                <img src="06-implementation/06-activity-operation.png" width="700" />
+                <br>
+                Within the first script you should get the information from the contracts (description and summary) to
+                create new request.
+                <br>
+                <img src="06-implementation/07-activity-script1.png" width="500" />
+                <br>
+                Within the second script you should get the supplier based on the supplierName from the contracts then
+                create a quotation that connected to request and supplier.
+                <br>
+                <img src="06-implementation/08-activity-script2.png" width="500" />
+                <br>
+            </li>
+            <br>
+
+            <li>
+                <b>Activity "Complete quotation"</b>
+                <br>
+                In this activity, the supplier (presented by the lane) should add the informations about the quotation,
+                which
+                means that this activity is to update the quotation that created in the first activity.
+                <br>
+                From the process description, find the data object of this activity.
+                <br>
+                An example of one of the information need to be added to this activity.
+                <br>
+                <img src="06-implementation/09-activity2-contract.png" width="800" />
+                <br>
+                <img src="06-implementation/10-activity2-operation.png" width="800" />
+                <br>
+                You should get other data information from the process description and add within the activity.
+            </li>
+            <li>
+                <b>Activity "Update request status"</b>
+                <br>
+                Extract the data information of this activity from the process description, the add to this activity.
+            </li>
+            <li>
+                <b>Activity "Review quotation"</b>
+                <br>
+                We have in this activity one contract.
+                <br>
+                <img src="06-implementation/13-activity3-contract.png" width="500" />
+                This activity can be modeled in two way:
+                <ol>
+                    <li>
+                        This first way is only to review the request and update if it accepted or not. Then, use the
+                        request attribute (isAccepted) to take a decision.
+                        <br>
+                        <img src="06-implementation/15-activity3-operation2.png" width="700" />
+                    </li>
+                    <li>
+                        In other way, we can define the process variable, which will be used later in the gateway and
+                        then update the request if it acceted or not.
+                        <br>
+                        <img src="06-implementation/14-activity3-operation1.png" width="700" />
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <b>Gateway after the activity "Review quotation"</b>
+                <br>
+                The conditions are added to the sequence flow after the gateway.
+                <br>
+                click on the sequence flow, then click on "General" and then add the expression (conditions).
+                <br>
+                <img src="06-implementation/11-gateway.png" width="500" />
+                <br>
+                The expression should be defined based on a variable already defined in the activities, yf you used the
+                the second way in define the process variable (isAccepted) in the last activity, the
+                conditions (script) should be:
+                <br>
+                <img src="06-implementation/12-gateway-expression.png" width="500" />
+                <br>
+                in other way, you should add the variable you are based on to define the condition (like, attribute of
+                business data).
+            </li>
+            <li>
+                <b>Activity "Complete request"</b>
+                <br>
+                Extract the data information of this activity from the process description, the add to this activity.
+            </li>
+            <li>
+                <b>Activity "Abort request"</b>
+                <br>
+                Extract the data information of this activity from the process description, the add to this activity.
+            </li>
+        </ol>
+        <br>
+        <br>
+        <h4>Add forms</h4>
+        You should add form only for the activity with type "Human".
+        <br>
+        <ol>
+            <li>
+                <b>Activity "Create request and select supplier"</b>
+                After select the activity, go to the "Execution" tab, and then within the "Form" click on edit icon.
+                <br>
+                <img src="06-implementation/16-form.png" width="500" />
+                <br>
+                Now, you can edit the name of the form, and save.
+                <br>
+                <img src="06-implementation/17-form-design.png" width="500" />
+                <br>
+                In this example, you should add the list of the supplier, by click on the database icon, then add
+                supplier. Then, click on find to get all the list of suppliers from the BDM.
+                <br>
+                <img src="06-implementation/18-add-supplier.png" width="500" />
+                <br>
+                Now, you should change the output to return the selected full name of the supplier.
+                <br>
+                <img src="06-implementation/19-edit-output.png" width="500" />
+                <br>
+                You should change this output
+                <br>
+                <img src="06-implementation/20-change-output.png" width="500" />
+                <br>
+                to the output new output (fullName selected by the user, not added by hand).
+                <br>
+                <img src="06-implementation/21-new-value.png" width="500" />
+                <br>
+                For the other activities, you dont need to add data from the database, you can only generate a form and
+                change the name of the form.
+            </li>
+            <li>
+                <b>Activity "Complete quotation"</b>
+                <br>
+                Add form for this activity.
+            </li>
+            <li>
+                <b>Activity "Review quotation"</b>
+                <br>
+                Add form for this activity.
+            </li>
+        </ol>
+
         <br>
         <br>
         <h4><a href="07-execution.html">Next exercice</a></h4>
-        
+
     </div>
 
     <!-- Optional JavaScript -->

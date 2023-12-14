@@ -18,46 +18,47 @@
 <body>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4"><a href="02-general-explanation.html"> Exercice 2</a> (c): Converting DF-BPMN model to
-                be Executed within Bonita studio</h1>
-            <p class="lead">This exercice is to convert DF-BPMN model to be executed within Bonita studio.</p>
+            <h1 class="display-4"><a href="02-general-explanation.html"> Exercise 2</a> (c): Converting a DF-BPMN Model
+                to be Executed within Bonita Studio</h1>
+            <p class="lead">This exercise is about converting a DF-BPMN model to be executed within Bonita Studio.</p>
         </div>
     </div>
     <div class="wrapper">
 
-        After add all the data elements to the activities, now your process is ready to convert to Bonita studio to be
-        executed.
+        After adding all the data elements to the activities, your process is now ready to be converted to Bonita Studio
+        for execution.
         <br>
-        <h3>Convert to Bonita</h3>
+        <h3>Convert to Bonita Studio for Execution</h3>
         <ol>
-            <li> Before convert to Bonita studio, if you have data processing operator you should validate the the
-                Behavior of the code is generated. <br>
-                Note: in this example your are not used the data processing operator.
+            <li> Before converting to Bonita Studio, if you have a data processing operator, you should validate that
+                the behavior of the code is generated. <br>
+                Note: in this example, you have not used the data processing operator.
                 <br>
                 <img src="05-convert-to-bonita/01-gherkin.png" width="500" />
                 <br>
-                If the behavior is not generated, you should click on the "generate behavior" and what for some seconds
-                and revalidate the behavior.
+                If the behavior is not generated, you should click on 'generate behavior,' wait for a few seconds, and
+                then revalidate the behavior.
                 <br>
                 <img src="05-convert-to-bonita/02-gherkin.png" width="500" />
                 <br>
             </li>
             <li>
-                To export to Bonita, click on withspace, in "Bonita integration" tab, add the name of the exported
-                project, and click "export", it should take some seconds or some minutes.
+                To export to Bonita, click on the whitespace, go to the 'Bonita Integration' tab, enter the name of the
+                project to be exported, and click 'Export.' It may take a few seconds or a few minutes.
                 <br>
                 <img src="05-convert-to-bonita/03-export.png" width="500" />
             </li>
             <li>
-                You can find a new process diagram within your project in Bonita studio. If the project does not found,
-                you can refresh the bonita project.
+                You can find a new process diagram within your project in Bonita Studio. If the project is not found,
+                you can refresh the Bonita project.
                 <br>
                 <img src="05-convert-to-bonita/04-in-bonita.png" width="500" />
             </li>
         </ol>
         <br>
         <br>
-        After Converting DF-BPMN to Bonita, there are manual implementation you should do before the execution.
+        After converting from DF-BPMN to Bonita, there are manual implementations that you should perform before
+        execution.
         <br>
         <br>
         <h3>Define Gateways Conditions</h3>
@@ -65,44 +66,73 @@
             <li>
                 <b>Gateway after the activity "Review quotation"</b>
                 <br>
-                The conditions are added to the sequence flow after the gateway.
+                The conditions are added to the sequence flow after the gateway, determining the flow's path.
                 <br>
-                click on the sequence flow, then click on "General" and then add the expression (conditions).
+                Click on the sequence flow, then click on 'General,' and add the expression (conditions).
                 <br>
                 <img src="../bonita/06-implementation/11-gateway.png" width="500" />
                 <br>
-                The expression should be defined based on a variable already defined in the activities, yf you used the
-                the second way in define the process variable (isAccepted) in the last activity, the
-                conditions (script) should be:
+                The expression should be defined based on a variable that has already been defined in the activities. If
+                you used the second way to define the process variable (isAccepted) in the last activity, the conditions
+                (script) should be as follows:
                 <br>
                 <img src="../bonita/06-implementation/12-gateway-expression.png" width="500" />
                 <br>
-                in other way, you should add the variable you are based on to define the condition (like, attribute of
-                business data).
+                Alternatively, you should add the variable you are using to define the condition, such as an attribute
+                of business data.
             </li>
         </ol>
         <br>
         <br>
         <h3>Add forms</h3>
-        You should add form only for the activity with type "Human".
+        You should add a form only for activities with the type 'Human'.
         <br>
         <ol>
             <li>
                 <b>Activity "Create request and select supplier"</b>
+                After selecting the activity, go to the 'Execution' tab, and then click on the edit icon within the
+                'Form'.
                 <br>
+                <img src="../bonita/06-implementation/16-form.png" width="500" />
+                <br>
+                Now, you can edit the name of the form and then save it.
+                <br>
+                <img src="../bonita/06-implementation/17-form-design.png" width="500" />
+                <br>
+                In this example, you should add the list of suppliers by clicking on the database icon and selecting
+                'supplier.' Then, click 'Find' to retrieve the list of suppliers from the BDM.
+                <br>
+                <img src="../bonita/06-implementation/18-add-supplier.png" width="500" />
+                <br>
+                Now, you should modify the output to return the full name of the selected supplier.
+                <br>
+                <img src="../bonita/06-implementation/19-edit-output.png" width="500" />
+                <br>
+                You should modify this output to include additional information.
+                <br>
+                <img src="../bonita/06-implementation/20-change-output.png" width="500" />
+                <br>
+                Add the new output (fullName selected by the user, not manually entered).
+                <br>
+                <img src="../bonita/06-implementation/21-new-value.png" width="500" />
+                <br>
+                For the other activities, you don't need to retrieve data from the database. Instead, you can simply
+                generate a form and change its name.
             </li>
             <li>
                 <b>Activity "Complete quotation"</b>
                 <br>
+                Please add a form for this activity.
             </li>
             <li>
                 <b>Activity "Review quotation"</b>
                 <br>
+                Please add a form for this activity.
             </li>
         </ol>
         <br>
         <br>
-        <h4><a href="06-execution.html">Next exercice</a></h4>
+        <h4><a href="06-execution.html">Next Exercise</a></h4>
 
     </div>
 

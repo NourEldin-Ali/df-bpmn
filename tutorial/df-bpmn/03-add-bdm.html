@@ -18,79 +18,79 @@
 <body>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4"><a href="02-general-explanation.html"> Exercice 2</a> (a): Add BDM in Bonita studio
+            <h1 class="display-4"><a href="02-general-explanation.html"> Exercise 2</a> (a): Add BDM to Bonita studio
             </h1>
-            <p class="lead">This exercice to define the Data Model within the Bonita studio, then to access this data
-                model within DF-BPMN tool.</p>
+            <p class="lead">This exercise is about defining the Data Model within Bonita Studio and then accessing this
+                data model within the DF-BPMN tool.</p>
 
         </div>
     </div>
     <div class="wrapper">
 
-        <h3>Add data object </h3>
+        <h3>Add data objects </h3>
         Follow the next steps to add the UML objects within the BDM:
         <ol>
             <li>
                 Click on bom.xml in the Business Data Model
                 <br>
-                <img src="../bonita/03-add-bdm/01-select-bom.png" />
+                <img src="03-add-bdm/01-select-bom.png" />
             </li>
             <br>
             <li>
-                Select a package (you can add you own packages)
+                Select a package (you can also add your own packages).
                 <br>
-                <img src="../bonita/03-add-bdm/02-select-package.png" />
+                <img src="03-add-bdm/02-select-package.png" />
             </li>
             <br>
             <li>
-                Click on "Add Object"
+                Click on 'Add Object'
                 <br>
-                <img src="../bonita/03-add-bdm/03-add-object.png" />
+                <img src="03-add-bdm/03-add-object.png" />
             </li>
             <br>
             <li>
-                Change the name of the object and then define the object attributes and their types
+                Change the name of the object, and then define its attributes and their types.
                 <br>
-                <img src="../bonita/03-add-bdm/04-add-attributes.png" />
+                <img src="03-add-bdm/04-add-attributes.png" />
             </li>
             <br>
         </ol>
         <br>
         <br>
         <h3>Add UML objects to the DBM </h3>
-        Follow the steps described above to add UML objects to the DBM.
+        Follow the steps described above to add UML objects to the BDM.
         <br>
         <img src="../example/exemple-UML.png" align="middle" width="500" />
         <br>
         <br>
         <h3>Add data information to the DBM </h3>
-        In this exercice, we suppose that the suppliers already stored in the BDM (database). Therefore, you need to add
-        it manually to the database.
+        In this exercise, we assume that the suppliers are already stored in the BDM (database). Therefore, you need to
+        add them manually to the database.
         <ol>
             <li>
-                Right click on the BDM "bom.xml" file. Then, click on "Browse data (h2 console) ...".
+                Right-click on the 'bom.xml' file in the BDM. Then, select 'Browse data (h2 console) ...'.
                 <br>
-                <img src="../bonita/03-add-bdm/05-access-to-bdm.png" />
+                <img src="03-add-bdm/05-access-to-bdm.png" />
             </li>
             <br>
             <li>
-                The database should automatically opened in the browser. Double click on "Supplier", and then click on
-                "RUN". Then, click on "Edit" to edit the database table and to start adding information.
+                The database should automatically open in the browser. Double-click on 'Supplier', then click 'RUN'.
+                After that, click 'Edit' to modify the database table and start adding information.
 
                 <br>
-                <img src="../bonita/03-add-bdm/06-select-supplier.png" />
+                <img src="03-add-bdm/06-select-supplier.png" />
             </li>
             <br>
             <li>
-                Click on icon "+" and add new suppliers (2 or 3).
+                Click on the '+' icon and add new suppliers (2 or 3).
                 <br>
-                <img src="../bonita/03-add-bdm/07-add-new-objects.png" />
+                <img src="03-add-bdm/07-add-new-objects.png" />
             </li>
             <br>
         </ol>
         <br>
         <br>
-        <h3>Access DBM in DF-BPMN tool </h3>
+        <h3>Access the DBM in the DF-BPMN tool </h3>
         <br>
         <br>
         After creating BDM objects, you should create a reference of the database within DF-BPMN tool. This reference
@@ -100,39 +100,38 @@
         <br>
         <ol>
             <li>
-                Open DF-BPMN tool: <a
+                Open the DF-BPMN tool: <a
                     href="http://localhost:3000/#/usr/src/app/workspace">http://localhost:3000/#/usr/src/app/workspace</a>
             </li>
             <br>
             <li>
-                Open your project in DF-BPMN tool, by double click on the project file.
+                Open your project in the DF-BPMN tool by double-clicking on the project file.
                 <br>
                 <img src="03-add-bdm/01-open-project.png" />
             </li>
             <br>
             <li>
-                Click on white space, and then Open the property panel.
+                Click on the white space, and then open the property panel.
                 <br>
                 <img src="03-add-bdm/02-bonita-integration.png" />
             </li>
             <br>
             <li>
-                Click on "Bonita Integration", and then select your Bonita project based on the Bonita project name. The
-                name of the project is the last folder in the path. Example: "hr_salary_calculation" is a Bonita project
-                name.
+                Click on 'Bonita Integration,' and then select your Bonita project based on its name, which is the last
+                folder in the path. For example, 'hr_salary_calculation' is an example of a Bonita project name.
                 <br>
                 <img src="03-add-bdm/03-select-project.png" />
             </li>
             <br>
             <li>
-                Save your project "crtl + s" and refresh your browser. Now, during the modeling you can access the data
-                object by their name and their attributes.
+                Save your project (Ctrl + S) and refresh your browser. Now, during modeling, you can access the data
+                objects by their names and attributes.
                 <br>
             </li>
         </ol>
         <br>
         <br>
-        <h4><a href="04-modeling.html">Next exercice</a></h4>
+        <h4><a href="04-modeling.html">Next Exercise</a></h4>
 
     </div>
 

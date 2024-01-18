@@ -52,33 +52,18 @@ def generateGherkin():
     f = open("check_gherkin.prompt", "r")
     template = f.read()
 
-    prompt = PromptTemplate(template=template, input_variables=["inputs","description","output","gherkin"])  
+    prompt = PromptTemplate(template=template, input_variables=["inputs","description","output"])  
     llm_chain = LLMChain(prompt=prompt, llm=llm)
-    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':request.form['description'],'gherkin':result}
+    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':result}
     result1 = llm_chain.run(prompt_input)
 
     # resutls
-    cleaned_gherkin = extract_code_and_remove_specific_lines(
-                    result1,
-                    "GHERKIN:\n",
-                    "```"
-                )
-    if(cleaned_gherkin.count('- YES')):
-        cleaned_gherkin = extract_code_and_remove_specific_lines(
-                    result,
-                    "GHERKIN:\n",
-                    "```"
-                )
-    return cleaned_gherkin
+    print([result1,"###",result])
+    if("NO" in result1):
+        return "INVALID REQUEST, CHECK IF YOUR DATA INPUTS AND DESCRIPTION ARE COHERENT, AND TRY AGAIN"
+    # return [result1,"###",result]
+    return result
 
-def extract_code_and_remove_specific_lines(text, start_marker, line_marker):
-    # Extract the code between the start and end markers
-    start_idx = text.find(start_marker) + len(start_marker)
-    code_block = text[start_idx:].strip()
-
-    # Remove lines containing the specific line marker
-    cleaned_code = "\n".join([line for line in code_block.split('\n') if not line.startswith(line_marker)])
-    return cleaned_code
 
 @app.route("/groovy", methods=['post'])
 def generateGroovy():
@@ -125,20 +110,14 @@ def generateGroovy():
     f = open("check_groovy.prompt", "r")
     template = f.read()
 
-    prompt = PromptTemplate(template=template, input_variables=["inputs","description","output","groovy"])
+    prompt = PromptTemplate(template=template, input_variables=["inputs","description","output"])
     llm_chain = LLMChain(prompt=prompt, llm=llm)
-    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':request.form['description'], 'groovy':result}
+    prompt_input = {'output':output, 'inputs':request.form['inputs'], 'description':result}
     result2 = llm_chain.run(prompt_input)
 
-    cleaned_code = extract_code_and_remove_specific_lines(
-                    result2,
-                    "GROOVY:\n",
-                    "```"
-                )
-    return cleaned_code
-    # print(result,"################################",result2)
-    # if("NO" in result2):
-    #    return "CANNOT CONVERT GHERKIN TO CODE, TRY AGAIN"
-    # return result
+    print(result,"################################",result2)
+    if("NO" in result2):
+       return "CANNOT CONVERT GHERKIN TO CODE, TRY AGAIN"
+    return result
 
 app.run(debug=True,host='0.0.0.0',port=3001)

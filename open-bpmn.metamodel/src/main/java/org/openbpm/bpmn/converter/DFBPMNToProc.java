@@ -1656,8 +1656,8 @@ public class DFBPMNToProc {
 				if (returnDataTypes.containsKey(targetElement.getAttribute("type").toLowerCase())) {
 					rightOperand.setAttribute("returnType",
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
-//					leftOperand.setAttribute("returnType",
-//							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+					leftOperand.setAttribute("returnType",
+							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
 				}
 
 				refElemenet = doc.createElement("referencedElements");
@@ -1680,11 +1680,15 @@ public class DFBPMNToProc {
 				rightOperand.setAttribute("type", "TYPE_READ_ONLY_SCRIPT");
 				rightOperand.setAttribute("interpreter", "GROOVY");
 				rightOperand.setAttribute("name", "newScript()");
+//				System.out.println(targetElement.getAttribute("type").toLowerCase());
+//				System.out.println(returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+//				System.out.println(returnDataTypes.containsKey(targetElement.getAttribute("type").toLowerCase()));
 				if (returnDataTypes.containsKey(targetElement.getAttribute("type").toLowerCase())) {
 					rightOperand.setAttribute("returnType",
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
-//					leftOperand.setAttribute("returnType",
-//							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+					leftOperand.setAttribute("returnType",
+							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
+				}else {
 				}
 
 				String script = addOperationFromDataProcessing(doc, activity, operationOrder, rightOperand,
@@ -1722,8 +1726,8 @@ public class DFBPMNToProc {
 								.containsKey(sourceElement.getElementNode().getAttribute("type").toLowerCase())) {
 							rightOperand.setAttribute("returnType", returnDataTypes
 									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
-//							leftOperand.setAttribute("returnType", returnDataTypes
-//									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
+							leftOperand.setAttribute("returnType", returnDataTypes
+									.get(sourceElement.getElementNode().getAttribute("type").toLowerCase()));
 						}
 
 						refElemenet.setAttribute("xmi:id", generateXmiId());
@@ -1745,8 +1749,8 @@ public class DFBPMNToProc {
 						if (returnDataTypes.containsKey(sourceElement.getAttribute("type").toLowerCase())) {
 							rightOperand.setAttribute("returnType",
 									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
-//							leftOperand.setAttribute("returnType",
-//									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
+							leftOperand.setAttribute("returnType",
+									returnDataTypes.get(sourceElement.getAttribute("type").toLowerCase()));
 						}
 
 						refElemenet.setAttribute("xmi:id", generateXmiId());

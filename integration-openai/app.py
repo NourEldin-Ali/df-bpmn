@@ -69,6 +69,8 @@ def generateGherkin():
                     "GHERKIN:\n",
                     "```"
                 )
+        
+    # print(cleaned_gherkin)
     return cleaned_gherkin
 
 def extract_code_and_remove_specific_lines(text, start_marker, line_marker):

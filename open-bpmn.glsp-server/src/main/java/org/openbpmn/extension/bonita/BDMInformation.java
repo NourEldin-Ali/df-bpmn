@@ -149,13 +149,12 @@ public class BDMInformation {
 							Element fieldElement = (Element) field;
 							if (fieldElement.getAttribute("name").equals(fieldName)) {
 								String type = fieldElement.getAttribute("type");
-								return type;
+								return type.toLowerCase();
 							}
 						}
 					}
 
 					NodeList relationFields = element.getElementsByTagName("relationField");
-
 					for (int k = 0; k < relationFields.getLength(); k++) {
 						Node relationField = relationFields.item(k);
 						if (relationField.getNodeType() == Node.ELEMENT_NODE) {
@@ -166,12 +165,10 @@ public class BDMInformation {
 							}
 						}
 					}
-
 					break;
 				}
 			}
 		}
-
 		return "string";
 	}
 }

@@ -27,9 +27,7 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 	protected List<Action> executeAction(final MyCustomResponseAction actualAction) {
 		// implement your custom logic to handle the action
 		System.out.println("---------------------------");
-		System.out.println(actualAction.getElementId());
-		System.out.println(actualAction.getAdditionalInformation());
-		System.out.println("---------------------------");
+
 		if(actualAction.getAdditionalInformation().toLowerCase().contains("tobonita")) {
 			System.out.println("to Bonita Start");
 			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),
@@ -44,14 +42,16 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 			List<String> input = dataProcessing.activity.getDataProcessingIncoming(dataProcessing.getId()).stream()
 					.map((element) -> element.getName()).collect(Collectors.toList());
 
-			modelState.reset();
+			
 			List<String> output = dataProcessing.activity.getDataProcessingOutgoing(dataProcessing.getId()).stream()
 					.map((element) -> element.getName()).collect(Collectors.toList());
 
 			
 			try {
 				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
-				dataProcessing.setAttribute("gherkin",results);
+				dataProcessing.getElementNode().setAttribute("gherkin",results);
+				System.out.println(results);
+				modelState.reset();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -84,7 +84,6 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             // Success
-//            System.out.println("Generate done");
             
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
     		String inputLine;
@@ -95,10 +94,7 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
     		}
     		in.close();
 
-//    		String result = response.toString().replace("[","");
-//    		 result = result.replace("]","");
-//    		 List<String> results = new ArrayList<String>(Arrays.asList(result.split("\"###\"")));
-//    		 System.out.println(results.toString());
+
     		return response.toString();
         } else {
             // Error handling code goes here

@@ -170,7 +170,7 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 			bpmnElement.setAttribute(feature, json.getString(feature));
 
 		}
-		// modelState.reset();
+		 modelState.reset();
 
 	}
 

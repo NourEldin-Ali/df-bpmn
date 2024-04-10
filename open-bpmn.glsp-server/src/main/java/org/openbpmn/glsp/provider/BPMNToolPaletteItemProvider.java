@@ -69,8 +69,8 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
                 PaletteItem.createPaletteGroup("task-group", "Tasks", createPaletteTaskItems(), "symbol-property", "B"),
                 PaletteItem.createPaletteGroup("event-group", "Events", createPaletteEventItems(), "symbol-property",
                         "C"),
-//                PaletteItem.createPaletteGroup("event-group", "Event Definitions", createPaletteEventDefinitions(),
-//                        "symbol-property", "D"),
+                PaletteItem.createPaletteGroup("event-group", "Event Definitions", createPaletteEventDefinitions(),
+                        "symbol-property", "D"),
                 PaletteItem.createPaletteGroup("gateway-group", "Gateways", createPaletteGatewayItems(),
                         "symbol-property", "E"),
 
@@ -327,20 +327,20 @@ public class BPMNToolPaletteItemProvider implements ToolPaletteItemProvider {
         item.setSortString("B");
         result.add(item);
 
-//        item = new PaletteItem(BPMNTypes.CATCH_EVENT, "Catch Event",
-//                new TriggerNodeCreationAction(BPMNTypes.CATCH_EVENT));
-//        item.setSortString("C");
-//        result.add(item);
-//
-//        item = new PaletteItem(BPMNTypes.THROW_EVENT, "Throw Event",
-//                new TriggerNodeCreationAction(BPMNTypes.THROW_EVENT));
-//        item.setSortString("D");
-//        result.add(item);
-//
-//        item = new PaletteItem(BPMNTypes.BOUNDARY_EVENT, "Boundary Event",
-//                new TriggerNodeCreationAction(BPMNTypes.BOUNDARY_EVENT));
-//        item.setSortString("E");
-//        result.add(item);
+        item = new PaletteItem(BPMNTypes.CATCH_EVENT, "Catch Event",
+                new TriggerNodeCreationAction(BPMNTypes.CATCH_EVENT));
+        item.setSortString("C");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.THROW_EVENT, "Throw Event",
+                new TriggerNodeCreationAction(BPMNTypes.THROW_EVENT));
+        item.setSortString("D");
+        result.add(item);
+
+        item = new PaletteItem(BPMNTypes.BOUNDARY_EVENT, "Boundary Event",
+                new TriggerNodeCreationAction(BPMNTypes.BOUNDARY_EVENT));
+        item.setSortString("E");
+        result.add(item);
         return result;
     }
 

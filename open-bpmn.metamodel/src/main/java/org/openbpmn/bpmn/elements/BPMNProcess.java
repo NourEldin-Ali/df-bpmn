@@ -1562,70 +1562,130 @@ public class BPMNProcess extends BPMNElement {
 	}
 
 	/**
-     * Returns all BPMN DataObject elements contained in this process
-     * 
-     * @return
-     */
-    public Map<String,String> getDataObjectsExtensions() {
-    	Map<String,String> processVariable = new HashMap<String,String>();
-    	
-    	activities.stream().forEach(activity->{
-    		
-    		List<DataInputObjectExtension> dataInputObjectExtensions =  activity.getDataInputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS) ).collect(Collectors.toList());
-    		dataInputObjectExtensions.stream().forEach(dataObject->{
-    			if(dataObject.getDataAttributes().size()>0) {
-    				dataObject.getDataAttributes().stream().forEach(attribute->{
-    					processVariable.put(attribute.getName(), attribute.getAttribute("type"));
-    				});
-    			}else {
-    				processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
-    			}
-    			
-    		});
-    		
-    		List<DataOutputObjectExtension> dataOutputObjectExtension =  activity.getDataOutputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS)).collect(Collectors.toList());
-    		dataOutputObjectExtension.stream().forEach(dataObject->{
-    			if(dataObject.getDataAttributes().size()>0) {
-    				dataObject.getDataAttributes().stream().forEach(attribute->{
-    					processVariable.put(attribute.getName(), attribute.getAttribute("type"));
-    				});
-    			}else {
-    				processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
-    			}
-    		});
-    		
-    	});
-        return processVariable;
-    }
-    
-    
+	 * Returns all BPMN DataObject elements contained in this process
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getDataObjectsExtensions() {
+		Map<String, String> processVariable = new HashMap<String, String>();
+
+		activities.stream().forEach(activity -> {
+
+			List<DataInputObjectExtension> dataInputObjectExtensions = activity.getDataInputObjects().stream()
+					.filter(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS))
+					.collect(Collectors.toList());
+			dataInputObjectExtensions.stream().forEach(dataObject -> {
+				if (dataObject.getDataAttributes().size() > 0) {
+					dataObject.getDataAttributes().stream().forEach(attribute -> {
+						processVariable.put(attribute.getName(), attribute.getAttribute("type"));
+					});
+				} else {
+					processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
+				}
+
+			});
+
+			List<DataOutputObjectExtension> dataOutputObjectExtension = activity.getDataOutputObjects().stream()
+					.filter(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_PROCESS))
+					.collect(Collectors.toList());
+			dataOutputObjectExtension.stream().forEach(dataObject -> {
+				if (dataObject.getDataAttributes().size() > 0) {
+					dataObject.getDataAttributes().stream().forEach(attribute -> {
+						processVariable.put(attribute.getName(), attribute.getAttribute("type"));
+					});
+				} else {
+					processVariable.put(dataObject.getName(), dataObject.getAttribute("type"));
+				}
+			});
+
+		});
+		return processVariable;
+	}
+
 	/**
-     * Returns all BPMN DataObject elements contained in this process
-     * 
-     * @return
-     */
-    public Map<String,Map<String,String>> getDataStoresExtensions() {
-    	Map<String,Map<String,String>> dataStores = new HashMap<String,Map<String,String>>();
-    	
-    	activities.stream().forEach(activity->{
-    	
-    		List<DataInputObjectExtension> dataInputObjectExtensions =  activity.getDataInputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ).collect(Collectors.toList());
-    		dataInputObjectExtensions.stream().forEach(dataObject->{
-    			Map<String,String> dataInfo = new HashMap<String,String>();
-    			dataInfo.put("type", dataObject.getAttribute("type"));
-    			dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-    			dataStores.put(dataObject.getName(), dataInfo);
-    		});
-    		
-    		List<DataOutputObjectExtension> dataOutputObjectExtension =  activity.getDataOutputObjects().stream().filter(data->data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)).collect(Collectors.toList());
-    		dataOutputObjectExtension.stream().forEach(dataObject->{
-    			Map<String,String> dataInfo = new HashMap<String,String>();
-    			dataInfo.put("type", dataObject.getAttribute("type"));
-    			dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-    			dataStores.put(dataObject.getName(), dataInfo);
-    		});
-    		
-    	});
-        return dataStores;
-    }
+	 * Returns all BPMN DataObject elements contained in this process
+	 * 
+	 * @return
+	 */
+	public Map<String, Map<String, Object>> getDataStoresExtensions() {
+		//data store information
+		Map<String, Map<String, Object>> dataStores = new HashMap<String, Map<String, Object>>();
+		
+		//need to get the data store from all the activities
+		activities.stream().forEach(activity -> {
+			//start by all the data store input
+			List<DataInputObjectExtension> dataInputObjectExtensions = activity.getDataInputObjects().stream()
+					.filter(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE))
+					.collect(Collectors.toList());
+			
+			// get information of each input object
+			dataInputObjectExtensions.stream().forEach(dataObject -> {
+				//check if already exisits
+				if (!dataStores.containsKey(dataObject.getName())) {
+					Map<String, Object> dataInfo = new HashMap<String, Object>();
+					dataInfo.put("type", dataObject.getAttribute("type"));
+					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
+					dataInfo.put("attributes", dataObject.getDataAttributes());
+					dataStores.put(dataObject.getName(), dataInfo);
+				} 
+				//already exists
+				else {
+					// append the attributes (net existing attributes
+					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
+					if (dataInfoExists.get("attributes") == null) {
+						dataInfoExists.put("attributes", dataObject.getDataAttributes());
+					} else {
+						//get attributes
+						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");
+						//check attributes
+						for (DataObjectAttributeExtension att : dataObject.getDataAttributes()) {
+							if (attributesList.stream()
+									.filter((exisitingAtt) -> exisitingAtt.getName().contentEquals(att.getName()))
+									.findAny().orElse(null) == null) {
+								attributesList.add(att);
+							}
+						}
+					}
+					dataStores.put(dataObject.getName(), dataInfoExists);
+				}
+			});
+			// get data store output
+			List<DataOutputObjectExtension> dataOutputObjectExtension = activity.getDataOutputObjects().stream().filter(
+					data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE))
+					.collect(Collectors.toList());
+			// collect information about these output
+			dataOutputObjectExtension.stream().forEach(dataObject -> {
+				//check if already added
+				if (!dataStores.containsKey(dataObject.getName())) {
+					Map<String, Object> dataInfo = new HashMap<String, Object>();
+					dataInfo.put("type", dataObject.getAttribute("type"));
+					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
+					dataInfo.put("attributes", dataObject.getDataAttributes());
+					dataStores.put(dataObject.getName(), dataInfo);
+				} 
+				//already exists
+				else {
+					// append the attributes (net existing attributes
+					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
+					if (dataInfoExists.get("attributes") == null) {
+						dataInfoExists.put("attributes", dataObject.getDataAttributes());
+					} else {
+						//get attributes
+						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");
+						//check attributes
+						for (DataObjectAttributeExtension att : dataObject.getDataAttributes()) {
+							if (attributesList.stream()
+									.filter((exisitingAtt) -> exisitingAtt.getName().contentEquals(att.getName()))
+									.findAny().orElse(null) == null) {
+								attributesList.add(att);
+							}
+						}
+					}
+					dataStores.put(dataObject.getName(), dataInfoExists);
+				}
+			});
+
+		});
+		return dataStores;
+	}
 }

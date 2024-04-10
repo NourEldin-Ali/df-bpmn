@@ -50,7 +50,7 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 			try {
 				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
 				dataProcessing.getElementNode().setAttribute("gherkin",results);
-				System.out.println(results);
+//				System.out.println(results);
 				modelState.reset();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

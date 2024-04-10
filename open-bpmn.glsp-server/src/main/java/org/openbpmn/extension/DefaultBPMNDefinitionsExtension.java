@@ -112,6 +112,7 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 		Element definitions = modelState.getBpmnModel().getDefinitions();
 		dataBuilder //
 				.addData("name", bpmnElement.getName()) //
+				.addData("verify", bpmnElement.getAttribute("verify")) //
 				.addData("documentation", bpmnElement.getDocumentation()) //
 				.addData("targetNamespace", definitions.getAttribute("targetNamespace")) //
 				.addData("exporter", definitions.getAttribute("exporter")) //
@@ -119,6 +120,7 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 
 		schemaBuilder. //
 				addProperty("name", "string", null). //
+				addProperty("verify", "string", null). //
 				addProperty("targetNamespace", "string", null). //
 				addProperty("exporter", "string", null). //
 				addProperty("exporterVersion", "string", null). //
@@ -129,7 +131,7 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 		uiSchemaBuilder. //
 				addCategory("General"). //
 				addLayout(Layout.HORIZONTAL). //
-				addElements("name"). //
+				addElements("name", "verify"). //
 				addLayout(Layout.HORIZONTAL). //
 				addElement("documentation", "Documentation", multilineOption). //
 				// Category Definitions...
@@ -143,10 +145,11 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 				addLayout(Layout.VERTICAL). //
 				addElements("bonitaProjectPath", "exportName", "export");
 
-		//get Bonita project from the Bonita Workspace
+		// get Bonita project from the Bonita Workspace
 		BonitaWorkspaceInfo bonitaProjects = new BonitaWorkspaceInfo("/usr/src/app/bonita");
 		String[] listProjectPath = bonitaProjects.getProjects();
-		schemaBuilder.addProperty("bonitaProjectPath", "string", null, listProjectPath.length==0?null:listProjectPath )
+		schemaBuilder
+				.addProperty("bonitaProjectPath", "string", null, listProjectPath.length == 0 ? null : listProjectPath)
 				.addProperty("exportName", "string", null)
 //				.addProperty("export", "boolean", null)
 		;
@@ -227,6 +230,7 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 
 		if ("General".equals(category)) {
 			bpmnElement.setName(json.getString("name", ""));
+			bpmnElement.setAttribute("verify", json.getString("verify", ""));
 			bpmnElement.setDocumentation(json.getString("documentation", ""));
 		}
 		if ("Definitions".equals(category)) {

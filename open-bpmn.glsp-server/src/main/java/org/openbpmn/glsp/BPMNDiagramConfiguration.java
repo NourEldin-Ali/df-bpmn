@@ -187,6 +187,7 @@ public class BPMNDiagramConfiguration extends BaseDiagramConfiguration {
 
         // Association
         EdgeTypeHint associationHint = createDefaultEdgeTypeHint(BPMNTypes.ASSOCIATION);
+        
         associationHint.setSourceElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS);
         associationHint.setTargetElementTypeIds(BPMNTypes.BPMN_NODE_ELEMENTS);
         edgeHints.add(associationHint);

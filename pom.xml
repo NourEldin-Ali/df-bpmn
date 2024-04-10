@@ -11,6 +11,7 @@
 	<modules>
 		<module>open-bpmn.metamodel</module>
 		<module>open-bpmn.glsp-server</module>
+		<module>DAB</module>
 	</modules>
 	
 	<organization>

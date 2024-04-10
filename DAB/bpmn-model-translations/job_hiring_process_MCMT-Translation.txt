@@ -1,0 +1,273 @@
+:max_transitions_number 500 
+
+:index int 
+
+:smt (define-type StringSort)
+:smt (define-type NumAge)
+:smt (define-type Bool)
+:smt (define-type jobcatID)
+:smt (define-type NumScore)
+:smt (define-type userID)
+
+:smt (define userF1 ::(-> userID StringSort))
+:smt (define userF2 ::(-> userID NumAge))
+
+:smt (define uid_app ::userID)
+:smt (define jcid ::jobcatID)
+:smt (define Enabled ::StringSort)
+:smt (define Error ::StringSort)
+:smt (define True ::Bool)
+:smt (define HR ::jobcatID)
+:smt (define False ::Bool)
+:smt (define uid ::userID)
+:smt (define Active ::StringSort)
+:smt (define ActiveAllPath ::StringSort)
+:smt (define ActiveOnePath ::StringSort)
+:smt (define Idle ::StringSort)
+:smt (define jcid_app ::jobcatID)
+:smt (define eligible ::Bool)
+:smt (define Completed ::StringSort)
+
+:db_driven
+:db_sorts StringSort NumAge Bool jobcatID NumScore userID 
+:db_functions userF1 userF2 
+:db_constants uid_app jcid Enabled Error True HR False uid Active ActiveAllPath ActiveOnePath Idle jcid_app eligible Completed 
+
+:local Application1 jobcatID
+:local Application2 userID
+:local Application3 NumScore
+:local Application4 Bool
+
+:global result Bool
+:global uid userID
+:global lifecycleDecideEligible StringSort
+:global winner userID
+:global lifecycleRootProcess StringSort
+:global jcid jobcatID
+:global lifecycleSequenceBlock StringSort
+:global lifecycleSelectWinner StringSort
+:global lifecycleEmpty StringSort
+:global qualif Bool
+
+:initial
+:var x
+:cnj (= Application1[x] NULL_jobcatID) (= Application2[x] NULL_userID) (= Application3[x] NULL_NumScore) (= Application4[x] NULL_Bool)  (= result NULL_Bool) (= uid NULL_userID) (= lifecycleDecideEligible Idle) (= winner NULL_userID) (= lifecycleRootProcess Enabled) (= jcid NULL_jobcatID) (= lifecycleSequenceBlock Idle) (= lifecycleSelectWinner Idle) (= lifecycleEmpty NULL_StringSort) (= qualif NULL_Bool) 
+
+:u_cnj (= lifecycleRootProcess Enabled) (= winner NULL) 
+
+:eevar b userID
+:eevar d Bool
+:eevar a jobcatID
+:eevar c NumScore
+
+:comment [t1] = RootProcess--{1st}
+:transition
+:var j
+:guard (= lifecycleRootProcess Enabled) 
+:numcases 1
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val result
+:val uid
+:val lifecycleDecideEligible
+:val winner
+:val Active
+:val jcid
+:val Enabled
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+
+:comment [t2] = RootProcess--{2nd}
+:transition
+:var j
+:guard (= lifecycleSequenceBlock Completed) 
+:numcases 1
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val result
+:val uid
+:val lifecycleDecideEligible
+:val winner
+:val Completed
+:val jcid
+:val Idle
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+
+:comment [t3] = SequenceBlock--{1st}
+:transition
+:var j
+:guard (= lifecycleSequenceBlock Enabled) 
+:numcases 1
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val result
+:val uid
+:val Enabled
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val Active
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+
+:comment [t4] = SequenceBlock--{2nd}
+:transition
+:var j
+:guard (= lifecycleDecideEligible Completed) 
+:numcases 1
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val result
+:val uid
+:val Idle
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val lifecycleSequenceBlock
+:val Enabled
+:val lifecycleEmpty
+:val qualif
+
+
+:comment [t5] = SequenceBlock--{3rd}
+:transition
+:var j
+:guard (= lifecycleSelectWinner Completed) 
+:numcases 1
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val result
+:val uid
+:val lifecycleDecideEligible
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val Completed
+:val Idle
+:val lifecycleEmpty
+:val qualif
+
+
+:comment [t6] = MarkE
+:transition
+:var j
+:guard (= lifecycleDecideEligible Enabled)
+:numcases 3
+:case (> Application3[j] 80) (< Application3[j] 100)
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val True
+
+:val result
+:val uid
+:val Completed
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val lifecycleSequenceBlock
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+:case (not (> Application3[j] 80))
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val False
+
+:val result
+:val uid
+:val Completed
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val lifecycleSequenceBlock
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+:case (not (< Application3[j] 100))
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val False
+
+:val result
+:val uid
+:val Completed
+:val winner
+:val lifecycleRootProcess
+:val jcid
+:val lifecycleSequenceBlock
+:val lifecycleSelectWinner
+:val lifecycleEmpty
+:val qualif
+
+:comment [t7] = Sel_Winner
+:transition
+:var j
+:var x
+:guard (= Application1[x] a) (= Application2[x] b) (= Application3[x] c) (= Application4[x] d) (= d True) (= lifecycleSelectWinner Enabled)
+:numcases 2
+:case (= j x)
+:val NULL_jobcatID
+:val NULL_userID
+:val NULL_NumScore
+:val NULL_Bool
+
+:val eligible
+:val uid_app
+:val lifecycleDecideEligible
+:val uid_app
+:val lifecycleRootProcess
+:val jcid_app
+:val lifecycleSequenceBlock
+:val Completed
+:val lifecycleEmpty
+:val False
+
+:case
+:val Application1[j]
+:val Application2[j]
+:val Application3[j]
+:val Application4[j]
+
+:val eligible
+:val uid_app
+:val lifecycleDecideEligible
+:val uid_app
+:val lifecycleRootProcess
+:val jcid_app
+:val lifecycleSequenceBlock
+:val Completed
+:val lifecycleEmpty
+:val False
+

@@ -1,6 +1,8 @@
 package org.openbpmn.bpmn.elements;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.openbpmn.bpmn.BPMNModel;
@@ -100,4 +102,17 @@ public class DataOutputObjectExtension extends BPMNElementNode {
    		return null;
    	}
 
+   	
+	/**
+	 * This function to get the attributes data of the data object. It include the attribute name and type
+	 * @return
+	 */
+	public Map<String, String> getDataAttributesList() {
+		Map<String, String> attributes = new HashMap<String, String>();
+
+		dataAttributes.forEach((att) -> {
+			attributes.put(att.getAttribute("name"), att.getAttribute("type"));
+		});
+		return attributes;
+	}
 }

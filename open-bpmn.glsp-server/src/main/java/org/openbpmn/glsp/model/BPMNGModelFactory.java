@@ -167,7 +167,6 @@ public class BPMNGModelFactory implements GModelFactory {
 				logger.warn("Unable to create model - no processes found - creating an empty model");
 				createNewEmptyRoot("process_0");
 			}
-
 			modelState.setInitialized(true);
 			logger.debug("===> createGModel took " + (System.currentTimeMillis() - l) + "ms");
 		} else {
@@ -709,7 +708,6 @@ public class BPMNGModelFactory implements GModelFactory {
 				point.setY(point.getY() - participant.getBounds().getPosition().getY());
 			}
 
-
 			DataObjectExtensionGNode dataNode = new DataInputExtensionGNodeBuilder(data)//
 					.position(point) //
 					.build();
@@ -765,7 +763,7 @@ public class BPMNGModelFactory implements GModelFactory {
 
 			// now add a GLabel
 			BPMNLabel bpmnLabel = data.getLabel();
-			LabelGNode labelNode = createLabelNodeForDataExtension(bpmnLabel, data, taskNode);
+			LabelGNode labelNode = createLabelNodeForDataExtension(bpmnLabel, data, taskNode,participant);
 			labelNode.setParent(taskNode);
 //            gNodeList.add(labelNode);
 		}
@@ -1189,14 +1187,19 @@ public class BPMNGModelFactory implements GModelFactory {
 	}
 
 	private LabelGNode createLabelNodeForDataExtension(final BPMNLabel bpmnLabel, final BPMNElementNode flowElement,
-			final TaskGNode taskNode) throws BPMNMissingElementException {
+			final TaskGNode taskNode,final Participant participant) throws BPMNMissingElementException {
 		logger.debug("BPMNLabel: x=" + bpmnLabel.getBounds().getPosition().getX() + " y="
 				+ bpmnLabel.getBounds().getPosition().getY());
-		GPoint labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX(), bpmnLabel.getPosition().getY());
-		// compute relative point...
-		labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX() - taskNode.getPosition().getX(),
+		GPoint labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX() - taskNode.getPosition().getX(),
 				bpmnLabel.getPosition().getY() - taskNode.getPosition().getY());
-		labelPoint.setX(labelPoint.getX() - 0);
+		// compute relative point...
+//		labelPoint = GraphUtil.point(bpmnLabel.getPosition().getX() - taskNode.getPosition().getX(),
+//				bpmnLabel.getPosition().getY() - taskNode.getPosition().getY());
+		if (participant != null) {
+
+			labelPoint.setX(labelPoint.getX() - participant.getBounds().getPosition().getX());
+			labelPoint.setY(labelPoint.getY() - participant.getBounds().getPosition().getY());
+		}
 		// now we build the LabelGNode
 		logger.debug("label GPoint: x=" + labelPoint.getX() + " y=" + labelPoint.getY());
 		LabelGNode labelNode = new LabelGNodeBuilder(flowElement) //

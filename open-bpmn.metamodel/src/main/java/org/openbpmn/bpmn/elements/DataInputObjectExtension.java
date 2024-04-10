@@ -1,6 +1,8 @@
 package org.openbpmn.bpmn.elements;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.openbpmn.bpmn.BPMNModel;
@@ -14,39 +16,36 @@ import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.w3c.dom.Element;
 
 /**
- * An Data object is work within an Activity.  * 
+ * A Data object is work within an Activity. *
+ * 
  * @author Ali Nour Eldin
  *
  */
 public class DataInputObjectExtension extends BPMNElementNode {
 
-    public final static double DEFAULT_WIDTH = 160.0;
-    public final static double DEFAULT_HEIGHT = 50.0;
+	public final static double DEFAULT_WIDTH = 160.0;
+	public final static double DEFAULT_HEIGHT = 50.0;
 	public Activity activity = null;
-    
-	
-    protected DataInputObjectExtension(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess, Activity activity) throws BPMNModelException {
-        super(model, node, type,bpmnProcess);
-        this.activity = activity;
-        this.dataAttributes = new LinkedHashSet<DataObjectAttributeExtension>();
-    }
 
-    @Override
-    public double getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
+	protected DataInputObjectExtension(BPMNModel model, Element node, String type, BPMNProcess bpmnProcess,
+			Activity activity) throws BPMNModelException {
+		super(model, node, type, bpmnProcess);
+		this.activity = activity;
+		this.dataAttributes = new LinkedHashSet<DataObjectAttributeExtension>();
+	}
 
+	@Override
+	public double getDefaultWidth() {
+		return DEFAULT_WIDTH;
+	}
 
-    @Override
-    public double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
-    }
-    
-    private Set<DataObjectAttributeExtension> dataAttributes = null;
-    
-    
-    
-    
+	@Override
+	public double getDefaultHeight() {
+		return DEFAULT_HEIGHT;
+	}
+
+	private Set<DataObjectAttributeExtension> dataAttributes = null;
+
 	public Set<DataObjectAttributeExtension> getDataAttributes() {
 		return dataAttributes;
 	}
@@ -54,10 +53,8 @@ public class DataInputObjectExtension extends BPMNElementNode {
 	public void setDataAttributes(Set<DataObjectAttributeExtension> dataAttributes) {
 		dataAttributes = dataAttributes;
 	}
-	
-	
-	public DataObjectAttributeExtension addAttributeObject( String attName, String attType)
-			throws BPMNModelException {
+
+	public DataObjectAttributeExtension addAttributeObject(String attName, String attType) throws BPMNModelException {
 		if (this.getElementNode() == null) {
 			throw new BPMNMissingElementException("Missing ElementNode!");
 		}
@@ -65,8 +62,7 @@ public class DataInputObjectExtension extends BPMNElementNode {
 		if (this.getElementNode().getTagName().contains(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
 			throw new BPMNInvalidTypeException("Local type can't be contains attributes");
 		}
-			
-		
+
 		if (attName.isEmpty() || attType.isEmpty()) {
 			throw new BPMNInvalidTypeException("Attribute name and attribute type should be filled");
 		}
@@ -76,30 +72,43 @@ public class DataInputObjectExtension extends BPMNElementNode {
 //			}
 //		}
 		Element dataObject = model.createElement(BPMNNS.BPMN2, BPMNTypes.DATA_OBJECT_ATTRIBUTE);
-		dataObject.setAttribute("id",  BPMNModel.generateShortID(BPMNTypes.DATA_OBJECT_ATTRIBUTE_Extension));
+		dataObject.setAttribute("id", BPMNModel.generateShortID(BPMNTypes.DATA_OBJECT_ATTRIBUTE_Extension));
 		dataObject.setAttribute("name", attName);
 		dataObject.setAttribute("type", attType);
-		
+
 		this.getElementNode().appendChild(dataObject);
-		
+
 		DataObjectAttributeExtension data = this.createDataAttributObjectByNode(dataObject);
 		return data;
 	}
 
 	protected DataObjectAttributeExtension createDataAttributObjectByNode(Element element) throws BPMNModelException {
 		DataObjectAttributeExtension dataObject = null;
-		dataObject = new DataObjectAttributeExtension(model, element, element.getLocalName(), this.getBpmnProcess(), this);
+		dataObject = new DataObjectAttributeExtension(model, element, element.getLocalName(), this.getBpmnProcess(),
+				this);
 		getDataAttributes().add(dataObject);
 		return dataObject;
 	}
 
 	public BPMNElement findElementById(String id) {
-   		for (DataObjectAttributeExtension element : getDataAttributes()) {
-   			if (id.equals(element.getId())) {
+		for (DataObjectAttributeExtension element : getDataAttributes()) {
+			if (id.equals(element.getId())) {
 				return element;
 			}
 		}
-   		return null;
-   	}
+		return null;
+	}
 
+	/**
+	 * This function to get the attributes data of the data object. It include the attribute name and type
+	 * @return
+	 */
+	public Map<String, String> getDataAttributesList() {
+		Map<String, String> attributes = new HashMap<String, String>();
+
+		dataAttributes.forEach((att) -> {
+			attributes.put(att.getAttribute("name"), att.getAttribute("type"));
+		});
+		return attributes;
+	}
 }

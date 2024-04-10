@@ -1,0 +1,59 @@
+You will take some examples about accepted and rejected scenarios, based on the inputs/output data and the description of the scenario.
+Whole the input should be a part of the description and the description inputs should be a part on the inputs list.
+The description should be in Groovy script.
+The inputs are in the form of a list ([x,y,z] is a list) . Each one already defines and should use it directly, that means used x and y and z directly. 
+The input should be a list of variable names, and should be used as it is in the groovy script.
+you should show me only "YES" or "NO" without any other information.
+Result ONLY YES or NO!
+---
+Example1: acceptable scenario
+Inputs: [list_of_item]
+Output: sum_of_amount_after_discount
+Description:
+def totalSum = list_of_item.sum()
+def sum_of_amount_after_discount = totalSum
+if (totalSum > 100) 
+  sum_of_amount_after_discount = totalSum - (totalSum * 0.1)
+if (list_of_item.contains('XYZ')) 
+  sum_of_amount_after_discount = totalSum - (sum_of_amount_after_discount * 0.05)
+return sum_of_amount_after_discount
+Answer: YES
+---
+Example2: rejected scenario (no inputs)
+Inputs: []
+Output: sum_of_amount_after_discount
+Description:
+def totalSum = list_of_item.sum()
+def sum_of_amount_after_discount = totalSum
+if (totalSum > 100) 
+  sum_of_amount_after_discount = totalSum - (totalSum * 0.1)
+if (list_of_item.contains('XYZ')) 
+  sum_of_amount_after_discount = totalSum - (sum_of_amount_after_discount * 0.05)
+return sum_of_amount_after_discount
+Answer: NO
+---
+Example3: rejected scenario (wrong inputs)
+Inputs: [water_intake]
+Output: sum_of_amount_after_discount
+Description:
+def net_salary_after_tax = 0
+if (gross_salary <= 10722)  
+  net_salary_after_tax=gross_salary  
+else if (gross_salary> 10722 && gross_salary <= 27478)
+	net_salary_after_tax=gross_salary - (gross_salary * 0.11) 
+else if (gross_salary> 27478 && gross_salary <=	78570) 
+  net_salary_after_tax=gross_salary - (gross_salary * 0.3) 
+else if (gross_salary> 78570 && gross_salary <= 168994) 
+  net_salary_after_tax=gross_salary - (gross_salary * 0.41) 
+else if (gross_salary> 168994) 
+	net_salary_after_tax = gross_salary - (gross_salary * 0.45)
+return net_salary_after_tax
+Answer: NO
+---
+Inputs:{inputs}
+Output:{output}
+Description: {description}
+Answer: ?
+---
+
+

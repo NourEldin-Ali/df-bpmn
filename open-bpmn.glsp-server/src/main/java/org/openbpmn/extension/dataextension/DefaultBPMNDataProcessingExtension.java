@@ -124,6 +124,7 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 		// default update of name and documentation
 
 		Set<String> features = json.keySet();
+		System.out.println(features);
 		for (String feature : features) {
 			if ("name".equals(feature)) {
 				String text = json.getString(feature);
@@ -140,10 +141,18 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				continue;
 			}
 			if ("gherkin".equals(feature)) {
+				
 				bpmnElement.setAttribute("gherkin",json.getString(feature));
 				continue;
 			}
 		}
+		if(!features.contains("gherkin")) {
+			bpmnElement.removeAttribute("gherkin");
+		}
+		if(!features.contains("documentation")) {
+			bpmnElement.setDocumentation("");
+		}
+		modelState.reset();
 //		if ("generate".equals(category.toLowerCase())) {
 //			System.out.println("Generate behavior");
 //			DataProcessingExtension dataProcessing = (DataProcessingExtension) bpmnElement;

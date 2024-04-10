@@ -1082,6 +1082,34 @@ public class BPMNModel {
     
     
     /**
+     * to find data object in the process model
+     * 
+     * @author Ali Nour Eldin
+     */
+    
+    public BPMNElement findElementDataExtensionNodeById(String id) {
+
+//        BPMNElement result = this.findElementById(id);
+//        if (result != null && result instanceof BPMNElementNode) {
+//            return (BPMNElementNode) result;
+//        }
+     // iterate over all processes
+        Set<BPMNProcess> processList = this.getProcesses();
+        for (BPMNProcess process : processList) {
+           for(Activity activity: process.getActivities()) {
+                // analyze the content of the process
+        	   BPMNElement baseElement = (BPMNElement) activity.findElementById(id);
+                if (baseElement != null) {
+                    return baseElement;
+                }
+            }
+        }
+
+        // no corresponding element found!
+        return null;
+    }
+    
+    /**
      * Finds a BPMNElementEdge by ID within this model. The method iterates over all
      * existing Processes and its contained FlowElements.
      * <p>

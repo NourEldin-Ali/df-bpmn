@@ -1,0 +1,8 @@
+Please convert the following description into Gherkin language.
+Don't make any mistakes in the syntax of Gherkin language.
+Don't make any changes to the description needed to transfer.
+Return only one scenario for the description, without any example.
+
+###
+Description need to transfer: {description}
+###

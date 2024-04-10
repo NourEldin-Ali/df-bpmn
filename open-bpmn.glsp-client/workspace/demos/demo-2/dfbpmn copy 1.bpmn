@@ -23,7 +23,7 @@
       <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_vSKCuw" isMultiple="false" name="newEmploye" state="init" type="boolean">
         <bpmn2:incoming>DataFlowExtension_5qTM0A</bpmn2:incoming>
       </bpmn2:dataOutputObjectProcess>
-      <bpmn2:dataFlow id="DataFlowExtension_5qTM0A" sourceRef="DataInputObjectExtension_uQX79w" targetRef="DataOutputObjectExtension_vSKCuw">
+      <bpmn2:dataFlow id="DataFlowExtension_5qTM0A" name="" sourceRef="DataInputObjectExtension_uQX79w" targetRef="DataOutputObjectExtension_vSKCuw">
         <bpmn2:documentation id="documentation_jzlByw"/>
       </bpmn2:dataFlow>
       <bpmn2:outgoing>sequenceFlow_v77cvA</bpmn2:outgoing>
@@ -37,7 +37,7 @@
       <bpmn2:outgoing>sequenceFlow_re3utw</bpmn2:outgoing>
       <bpmn2:outgoing>sequenceFlow_v5LOhQ</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="sequenceFlow_v77cvA" sourceRef="task_tKuyrg" targetRef="gateway_505pbA">
+    <bpmn2:sequenceFlow id="sequenceFlow_v77cvA" name="test" sourceRef="task_tKuyrg" targetRef="gateway_505pbA">
       <bpmn2:documentation id="documentation_LDFrwQ"/>
     </bpmn2:sequenceFlow>
     <bpmn2:task expand="true" id="task_NAk5Qg" name="Add new employe">
@@ -76,7 +76,7 @@
       <bpmn2:incoming>sequenceFlow_re3utw</bpmn2:incoming>
       <bpmn2:outgoing>sequenceFlow_qdddWw</bpmn2:outgoing>
     </bpmn2:task>
-    <bpmn2:sequenceFlow id="sequenceFlow_re3utw" sourceRef="gateway_505pbA" targetRef="task_NAk5Qg">
+    <bpmn2:sequenceFlow id="sequenceFlow_re3utw" name="testt" sourceRef="gateway_505pbA" targetRef="task_NAk5Qg">
       <bpmn2:documentation id="documentation_1CSp0A"/>
     </bpmn2:sequenceFlow>
     <bpmn2:task expand="true" id="task_fM3kmw" name="Select an employee">
@@ -158,7 +158,7 @@
     <bpmn2:sequenceFlow id="sequenceFlow_xpky5w" sourceRef="gateway_jDN0Iw" targetRef="task_jpBZvA">
       <bpmn2:documentation id="documentation_qU1ibQ"/>
     </bpmn2:sequenceFlow>
-    <bpmn2:task expand="true" gherkin="Feature: Salary Calculation&#10;  In order to calculate net salary&#10;  As a payroll system&#10;  I want to subtract deductions from gross salary&#10;&#10;Scenario: Calculate net salary&#10;  Given the gross salary is provided&#10;  And the deductions are provided&#10;  When the system calculates the net salary&#10;  Then the net salary should be the gross salary minus the deductions&#10;" id="task_E7teMQ" name="Net Salary calculation">
+    <bpmn2:task expand="true" gherkin="Feature: Salary Calculation&#10;  In order to calculate net salary&#10;  As a payroll system&#10;  I want to subtract deductions from gross salary&#10;&#10;Scenario: Calculate net salary&#10;  Given the gross salary is provided&#10;  And the deductions are provided&#10;  When the system calculates the net salary&#10;  Then the net salary should be the gross salary minus the deductions&#10;" id="task_E7teMQ" isMultiple="false" name="Calculate gross salary">
       <bpmn2:documentation id="documentation_7M0f3g"/>
       <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_vSV0Ig" isMultiple="false" name="bonus" type="double">
         <bpmn2:outgoing>DataFlowExtension_vqjXDQ</bpmn2:outgoing>
@@ -254,7 +254,7 @@ Gross Salary = Base Salary + Bonus + Overtime Pay
       </bpmn2:dataFlow>
       <bpmn2:outgoing>sequenceFlow_W0o10w</bpmn2:outgoing>
       <bpmn2:incoming>sequenceFlow_LuUmGw</bpmn2:incoming>
-      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_C6w6Mw" isMultiple="false" name="netSalary" type="string">
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_C6w6Mw" isMultiple="false" name="netSalary" type="double">
         <bpmn2:outgoing>DataFlowExtension_kM4Nfw</bpmn2:outgoing>
       </bpmn2:dataInputObjectProcess>
       <bpmn2:dataFlow id="DataFlowExtension_kM4Nfw" sourceRef="DataInputObjectExtension_C6w6Mw" targetRef="DataObjectAttributeExtension_wOf81g">
@@ -352,7 +352,7 @@ No tax for annual incomes up to 10,722.
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_tKuyrg" id="BPMNShape_cmzLcQ">
-        <dc:Bounds height="134.78488159179688" width="370.3066711425781" x="175.82951546373937" y="150.93240356445312"/>
+        <dc:Bounds height="134.78488159179688" width="370.3066711425781" x="174.8295135498047" y="150.93238830566406"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_oeltiw" id="BPMNEdge_XL4QYw" sourceElement="BPMNShape_Poovqw" targetElement="BPMNShape_cmzLcQ">
         <di:waypoint x="121.87059783935547" y="218.3248291015625"/>
@@ -362,13 +362,13 @@ No tax for annual incomes up to 10,722.
         <di:waypoint x="150.07952880859375" y="214.6607666015625"/>
         <di:waypoint x="167.28848266601562" y="214.6607666015625"/>
         <di:waypoint x="167.28848266601562" y="244.33773803710938"/>
-        <di:waypoint x="175.8295135498047" y="244.33773803710938"/>
+        <di:waypoint x="174.8295135498047" y="244.33773803710938"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_uQX79w" id="BPMNShape_iYuqCw">
-        <dc:Bounds height="50.0" width="160.0" x="175.82951546373937" y="203.96347045898438"/>
+        <dc:Bounds height="50.0" width="160.0" x="174.8295135498047" y="203.9634552001953"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_vSKCuw" id="BPMNShape_BnNWsQ">
-        <dc:Bounds height="50.0" width="130.0" x="382.43707466784093" y="203.96347045898438"/>
+        <dc:Bounds height="50.0" width="130.0" x="381.43707275390625" y="203.9634552001953"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_5qTM0A" id="BPMNEdge_TQs5wA">
         <di:waypoint x="160.0" y="78.03106689453125"/>
@@ -382,9 +382,7 @@ No tax for annual incomes up to 10,722.
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_v77cvA" id="BPMNEdge_f62R3g" sourceElement="BPMNShape_cmzLcQ" targetElement="BPMNShape_8w6pmQ">
-        <di:waypoint x="546.1361846923828" y="218.32484436035156"/>
-        <di:waypoint x="574.7325820922852" y="218.32484436035156"/>
-        <di:waypoint x="574.7325820922852" y="218.3248291015625"/>
+        <di:waypoint x="545.1361846923828" y="218.3248291015625"/>
         <di:waypoint x="603.3289794921875" y="218.3248291015625"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="task_NAk5Qg" id="BPMNShape_ck4dkA">
@@ -403,7 +401,7 @@ No tax for annual incomes up to 10,722.
         <dc:Bounds height="25.0" width="110.0" x="769.0093994140625" y="292.4630432128906"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_V0KTPA" id="BPMNShape_0SYo9A">
-        <dc:Bounds height="50.0" width="130.0" x="1091.4023456639347" y="192.46304321289062"/>
+        <dc:Bounds height="50.0" width="130.0" x="1091.40234375" y="192.46304321289062"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_kLvkXg" id="BPMNShape_pBufOg">
         <dc:Bounds height="25.0" width="110.0" x="1116.40234375" y="242.46304321289062"/>
@@ -551,9 +549,9 @@ No tax for annual incomes up to 10,722.
         <dc:Bounds height="25.0" width="110.0" x="1522.494873046875" y="714.7079467773438"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_cfPKAw" id="BPMNShape_YX8JVQ">
-        <dc:Bounds height="50.0" width="50.0" x="1766.996829351962" y="553.1289554203365"/>
+        <dc:Bounds height="50.0" width="50.0" x="1766.996826171875" y="553.1289672851562"/>
         <bpmndi:BPMNLabel id="BPMNLabel_gDJ20A">
-          <dc:Bounds height="16.0" width="100.0" x="1620.996829351962" y="449.12892490275834"/>
+          <dc:Bounds height="16.0" width="100.0" x="1743.996826171875" y="611.12890625"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_vqjXDQ" id="BPMNEdge_p6dX7A">
@@ -652,36 +650,27 @@ No tax for annual incomes up to 10,722.
         <di:waypoint x="319.995361328125" y="183.0989990234375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="task_Rc7pFw" id="BPMNShape_vFZXBA">
-        <dc:Bounds height="279.2261047363281" width="601.9111328125" x="2177.2685546875" y="485.18968200683594"/>
+        <dc:Bounds height="279.2261047363281" width="601.9111328125" x="2110.7632893430837" y="466.3872499598716"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_Bvk7Aw" id="BPMNShape_fNCAIg">
         <dc:Bounds height="221.52085876464844" width="529.367431640625" x="2243.622314453125" y="163.1791534423828"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_3QUTVA" id="BPMNEdge_4QzDGQ" sourceElement="BPMNShape_jAZuCw" targetElement="BPMNShape_vFZXBA">
-        <di:waypoint x="2067.8743896484375" y="624.802734375"/>
-        <di:waypoint x="2067.87451171875" y="624.802734375"/>
-        <di:waypoint x="2072.820556640625" y="624.802734375"/>
-        <di:waypoint x="2072.820556640625" y="637.9924926757812"/>
-        <di:waypoint x="2084.361572265625" y="637.9924926757812"/>
-        <di:waypoint x="2084.361572265625" y="619.8565673828125"/>
-        <di:waypoint x="2114.03857421875" y="619.8565673828125"/>
-        <di:waypoint x="2114.03857421875" y="714.6580200195312"/>
-        <di:waypoint x="2160.018798828125" y="714.6580200195312"/>
-        <di:waypoint x="2160.018798828125" y="731.9186401367188"/>
-        <di:waypoint x="2171.2685546875" y="731.9186401367188"/>
-        <di:waypoint x="2171.2685546875" y="640.9924926757812"/>
-        <di:waypoint x="2177.2685546875" y="640.9924926757812"/>
+        <di:waypoint x="1777.6845703125" y="467.0052795410156"/>
+        <di:waypoint x="1777.6845703125" y="437.0052795410156"/>
+        <di:waypoint x="2314.673828125" y="437.0052795410156"/>
+        <di:waypoint x="2314.673828125" y="466.3872375488281"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_1n00uA" id="BPMNEdge_eCOdYQ" sourceElement="BPMNShape_vFZXBA" targetElement="BPMNShape_fNCAIg">
-        <di:waypoint x="2505.305908203125" y="485.189697265625"/>
+        <di:waypoint x="2505.305908203125" y="466.3872375488281"/>
         <di:waypoint x="2505.305908203125" y="389.70001220703125"/>
         <di:waypoint x="2508.30615234375" y="389.70001220703125"/>
         <di:waypoint x="2508.30615234375" y="384.70001220703125"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_W0o10w" id="BPMNEdge_5oKFHQ" sourceElement="BPMNShape_ecvVVQ" targetElement="BPMNShape_kus2RA">
         <di:waypoint x="3127.793182373047" y="517.1113128662109"/>
-        <di:waypoint x="3127.793182373047" y="517.111328125"/>
-        <di:waypoint x="3127.793212890625" y="517.111328125"/>
+        <di:waypoint x="3127.793182373047" y="530.6879501342773"/>
+        <di:waypoint x="3127.793212890625" y="530.6879501342773"/>
         <di:waypoint x="3127.793212890625" y="544.2645874023438"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_LuUmGw" id="BPMNEdge_vxmnxA" sourceElement="BPMNShape_fNCAIg" targetElement="BPMNShape_ecvVVQ">
@@ -722,16 +711,16 @@ No tax for annual incomes up to 10,722.
         <di:waypoint x="345.931884765625" y="106.27250671386719"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_y0KTzQ" id="BPMNShape_7TIp5w">
-        <dc:Bounds height="50.0" width="130.0" x="2598.066487211407" y="587.4279174804688"/>
+        <dc:Bounds height="50.0" width="130.0" x="2531.561018835271" y="568.6254396571372"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_0Cq02g" id="BPMNShape_dnT0yQ">
-        <dc:Bounds height="50.0" width="160.0" x="2184.811767578125" y="653.3767547607422"/>
+        <dc:Bounds height="50.0" width="160.0" x="2118.3065022337087" y="634.5742921961997"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_xfMhXQ" id="BPMNShape_rJYTIA">
-        <dc:Bounds height="50.0" width="160.0" x="2184.811767578125" y="519.4790496826172"/>
+        <dc:Bounds height="50.0" width="160.0" x="2118.3065022337087" y="500.67661763565286"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_chph6A" id="BPMNShape_vBAPqA">
-        <dc:Bounds height="25.0" width="110.0" x="2209.811767578125" y="569.4790649414062"/>
+        <dc:Bounds height="25.0" width="110.0" x="2143.306396484375" y="550.6766052246094"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_C6w6Mw" id="BPMNShape_pNlFuw">
         <dc:Bounds height="50.0" width="160.0" x="2895.04150390625" y="431.0"/>
@@ -746,26 +735,26 @@ No tax for annual incomes up to 10,722.
         <di:waypoint x="319.995361328125" y="208.09901428222656"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_TPFKqw" id="BPMNShape_myBClQ">
-        <dc:Bounds height="50.0" width="50.0" x="2449.0" y="587.4279022216797"/>
+        <dc:Bounds height="50.0" width="50.0" x="2382.494612585271" y="568.6254396571372"/>
         <bpmndi:BPMNLabel id="BPMNLabel_giHmpQ">
-          <dc:Bounds height="16.0" width="100.0" x="2424.0" y="640.4279022216797"/>
+          <dc:Bounds height="16.0" width="100.0" x="2357.494612585271" y="621.6254396571372"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_xX0XRw" id="BPMNEdge_umoUnQ">
         <di:waypoint x="142.543212890625" y="96.78936767578125"/>
         <di:waypoint x="207.6373291015625" y="96.78936767578125"/>
         <di:waypoint x="207.6373291015625" y="127.23822021484375"/>
-        <di:waypoint x="271.7314453125" y="127.23822021484375"/>
+        <di:waypoint x="271.7314758300781" y="127.23822021484375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_PcyieA" id="BPMNEdge_KvXlWg">
         <di:waypoint x="167.543212890625" y="193.18707275390625"/>
         <di:waypoint x="220.1373291015625" y="193.18707275390625"/>
         <di:waypoint x="220.1373291015625" y="127.23822021484375"/>
-        <di:waypoint x="271.7314453125" y="127.23822021484375"/>
+        <di:waypoint x="271.7314758300781" y="127.23822021484375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_SpSd0g" id="BPMNEdge_qVj0iQ">
-        <di:waypoint x="321.7314453125" y="127.23822021484375"/>
-        <di:waypoint x="420.7978515625" y="127.23822021484375"/>
+        <di:waypoint x="321.7314453125" y="127.23818969726562"/>
+        <di:waypoint x="420.7978515625" y="127.23818969726562"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

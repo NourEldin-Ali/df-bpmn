@@ -137,7 +137,7 @@ public class DFBPMNToProc {
 							String.valueOf(height.getAsInt()), String.valueOf(width.getAsInt()));
 					Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
 					addProcessVariableToProc(pool, processVariable, doc);
-					Map<String, Map<String, String>> businessDataModel = openProcess.getDataStoresExtensions();
+					Map<String, Map<String, Object>> businessDataModel = openProcess.getDataStoresExtensions();
 					addBusinessDataToProc(pool, businessDataModel, doc);
 					addActor(pool, doc);
 //						Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250",
@@ -184,7 +184,7 @@ public class DFBPMNToProc {
 										String.valueOf(width.getAsInt()));
 								Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
 								addProcessVariableToProc(pool, processVariable, doc);
-								Map<String, Map<String, String>> businessDataModel = openProcess
+								Map<String, Map<String, Object>> businessDataModel = openProcess
 										.getDataStoresExtensions();
 								addBusinessDataToProc(pool, businessDataModel, doc);
 								Element actor = addActor(pool, doc);
@@ -205,7 +205,7 @@ public class DFBPMNToProc {
 								Element actor = addActor(pool, doc);
 								Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
 								addProcessVariableToProc(pool, processVariable, doc);
-								Map<String, Map<String, String>> businessDataModel = openProcess
+								Map<String, Map<String, Object>> businessDataModel = openProcess
 										.getDataStoresExtensions();
 								addBusinessDataToProc(pool, businessDataModel, doc);
 								if (openProcess.getLanes().size() == 0) {
@@ -332,7 +332,7 @@ public class DFBPMNToProc {
 	 * @param doc
 	 * @throws XPathExpressionException
 	 */
-	void addBusinessDataToProc(Map<String, Element> pool, Map<String, Map<String, String>> businessDataModel,
+	void addBusinessDataToProc(Map<String, Element> pool, Map<String, Map<String, Object>> businessDataModel,
 			Document doc) throws XPathExpressionException {
 
 		// get data types stored within the Bonita XML initiation.
@@ -345,7 +345,7 @@ public class DFBPMNToProc {
 			data.setAttribute("xmi:id", generateXmiId());
 			data.setAttribute("name", dataName);
 			data.setAttribute("dataType", types.get("business_object")); // all the type are business object
-			data.setAttribute("className", dataElement.get("type"));
+			data.setAttribute("className", (String) dataElement.get("type"));
 			// check if it is multiple (list)
 			if (dataElement.get("multiple").equals("true")) {
 				data.setAttribute("multiple", "true");
@@ -914,7 +914,7 @@ public class DFBPMNToProc {
 				else {
 					// get the data type
 					if (dataTypes.containsKey(objectData.getAttribute("type").toLowerCase())) {
-						dataElement.setAttribute("type", dataTypes.get(objectData.getAttribute("type")).toUpperCase());
+						dataElement.setAttribute("type", dataTypes.get(objectData.getAttribute("type").toLowerCase()).toUpperCase());
 					} else {
 						dataElement.setAttribute("type", dataTypes.get("text").toUpperCase());
 					}
@@ -1688,7 +1688,6 @@ public class DFBPMNToProc {
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
 					leftOperand.setAttribute("returnType",
 							returnDataTypes.get(targetElement.getAttribute("type").toLowerCase()));
-				}else {
 				}
 
 				String script = addOperationFromDataProcessing(doc, activity, operationOrder, rightOperand,
@@ -1767,7 +1766,6 @@ public class DFBPMNToProc {
 						mapping.setAttribute("xmi:type", "process:ContractInputMapping");
 						refElemenet.appendChild(mapping);
 					}
-
 				}
 			}
 

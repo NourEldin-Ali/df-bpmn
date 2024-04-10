@@ -502,6 +502,12 @@ public class BPMNChangeBoundsOperationHandler extends AbstractOperationHandler<C
             GPoint taskPosition = ((GNode) parent).getPosition();
             double relativeX = absoluteX - taskPosition.getX();
             double relativeY = absoluteY - taskPosition.getY();
+            if (parent.getParent() instanceof PoolGNode) {
+            	 GPoint poolPosition = ((GNode) parent.getParent()).getPosition();
+                  relativeX = relativeX - poolPosition.getX();
+                  relativeY = relativeY - poolPosition.getY();
+            }
+            
             newLabelGPoint = GraphUtil.point(relativeX, relativeY);
         } else {
             // parent is the root plane

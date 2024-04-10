@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://open-bpmn.org">
+  <bpmn2:collaboration id="collaboration_1" name="Default Collaboration">
+    <bpmn2:participant id="participant_ZWqHTw" name="Default Process" processRef="process_1"/>
+    <bpmn2:participant id="participant_k4032A" name="purchase-request" processRef="process_Dry2rQ">
+      <bpmn2:documentation id="documentation_CkwTRw"/>
+    </bpmn2:participant>
+  </bpmn2:collaboration>
+  <bpmn2:process bonitaProjectPath="C:\BonitaStudioCommunity-2023.2-u0\workspace\bonita-test-project1" definitionalCollaborationRef="collaboration_1" exportName="df-bpmn1" id="process_1" name="Default Process" processType="Public">
+    <bpmn2:documentation id="documentation_5YXIFg"/>
+  </bpmn2:process>
+  <bpmn2:process definitionalCollaborationRef="collaboration_1" id="process_Dry2rQ" name="purchase-request" processType="Private">
+    <bpmn2:laneSet id="laneset_9KMEPg" name="Lane Set">
+      <bpmn2:lane id="lane_dVCeqw" name="Lane 1">
+        <bpmn2:documentation id="documentation_WObxsg"/>
+        <bpmn2:flowNodeRef>task_gtR5dg</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>task_2uSFiw</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>task_f1BzlQ</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>gateway_uGZV0A</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_cDGZhA</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_H2sfWg</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+      <bpmn2:lane id="lane_koclEg" name="Lane 2">
+        <bpmn2:documentation id="documentation_0WskOg"/>
+        <bpmn2:flowNodeRef>task_svX7uQ</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>task_nDVe5Q</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>task_VyOluw</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>event_1K1gmg</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+    </bpmn2:laneSet>
+    <bpmn2:task expand="true" id="task_f1BzlQ" name="Create request and selected supplier">
+      <bpmn2:documentation id="documentation_mSWYCA"/>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_Z0wNsQ" isMultiple="false" name="summery" type="string">
+        <bpmn2:outgoing>DataFlowExtension_lopgvA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_C0buPg" isMultiple="false" name="description" type="string">
+        <bpmn2:outgoing>DataFlowExtension_HACmeA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_0zPkkQ" isMultiple="false" name="request" state="init" type="com.company.model.Request">
+        <bpmn2:attribute id="DataObjectAttributeExtension_VswoEw" name="summery" type="string">
+          <bpmn2:incoming>DataFlowExtension_lopgvA</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_UgkDDg" name="description" type="string">
+          <bpmn2:incoming>DataFlowExtension_HACmeA</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:outgoing>DataFlowExtension_Oipn4Q</bpmn2:outgoing>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_6eZXSQ" isMultiple="false" name="quotation" state="init" type="com.company.model.Quotation">
+        <bpmn2:attribute id="DataObjectAttributeExtension_jBYgSA" name="request" type="com.company.model.Request">
+          <bpmn2:incoming>DataFlowExtension_Oipn4Q</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_tIXIcw" name="supplier" type="com.company.model.Supplier">
+          <bpmn2:incoming>DataFlowExtension_VpJZJg</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_k0oQHg" isMultiple="false" name="supplier" state="init" type="com.company.model.Supplier">
+        <bpmn2:attribute id="DataObjectAttributeExtension_mo12nQ" name="fullName" type="string">
+          <bpmn2:incoming>DataFlowExtension_S0C5Dw</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:outgoing>DataFlowExtension_VpJZJg</bpmn2:outgoing>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_Xw3mSg" isMultiple="true" name="s" type="com.company.model.Supplier">
+        <bpmn2:attribute id="DataObjectAttributeExtension_p1Zg0A" name="fullName" type="string">
+          <bpmn2:outgoing>DataFlowExtension_XPJsxw</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataInputObjectDataStore>
+      <bpmn2:dataInputObjectDependency id="DataInputObjectExtension_1b104Q" isMultiple="false" name="fullName" type="string">
+        <bpmn2:incoming>DataFlowExtension_XPJsxw</bpmn2:incoming>
+        <bpmn2:outgoing>DataFlowExtension_S0C5Dw</bpmn2:outgoing>
+      </bpmn2:dataInputObjectDependency>
+      <bpmn2:dataFlow id="DataFlowExtension_lopgvA" sourceRef="DataInputObjectExtension_Z0wNsQ" targetRef="DataObjectAttributeExtension_VswoEw">
+        <bpmn2:documentation id="documentation_XFLybA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_HACmeA" sourceRef="DataInputObjectExtension_C0buPg" targetRef="DataObjectAttributeExtension_UgkDDg">
+        <bpmn2:documentation id="documentation_KuYeoQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_Oipn4Q" sourceRef="DataOutputObjectExtension_0zPkkQ" targetRef="DataObjectAttributeExtension_jBYgSA">
+        <bpmn2:documentation id="documentation_Q2SCHA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_VpJZJg" sourceRef="DataOutputObjectExtension_k0oQHg" targetRef="DataObjectAttributeExtension_tIXIcw">
+        <bpmn2:documentation id="documentation_VhheHw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_XPJsxw" sourceRef="DataObjectAttributeExtension_p1Zg0A" targetRef="DataInputObjectExtension_1b104Q">
+        <bpmn2:documentation id="documentation_dhn0pg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_S0C5Dw" sourceRef="DataInputObjectExtension_1b104Q" targetRef="DataObjectAttributeExtension_mo12nQ">
+        <bpmn2:documentation id="documentation_oObxgQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:outgoing>sequenceFlow_RwA0NQ</bpmn2:outgoing>
+      <bpmn2:incoming>sequenceFlow_F0Lltw</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_VyOluw" name="Complete Quotation">
+      <bpmn2:documentation id="documentation_U84WBA"/>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_KlRHAA" isMultiple="false" name="hasSupplierAccepted" type="boolean">
+        <bpmn2:outgoing>DataFlowExtension_Pb8lMQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_eHrmYA" isMultiple="false" name="status" type="string" value="DataInput-9">
+        <bpmn2:outgoing>DataFlowExtension_GfsXKw</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_bExweA" isMultiple="false" name="comment" type="string">
+        <bpmn2:outgoing>DataFlowExtension_M70ZOg</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_24jRDw" isMultiple="false" name="price" type="integer">
+        <bpmn2:outgoing>DataFlowExtension_QYWNwg</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_7l15WQ" isMultiple="false" name="quotation" state="update" type="com.company.model.Quotation">
+        <bpmn2:attribute id="DataObjectAttributeExtension_5BHAgQ" name="hasSupplierAccepted" type="boolean">
+          <bpmn2:incoming>DataFlowExtension_Pb8lMQ</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_CQEcvA" name="status" type="string">
+          <bpmn2:incoming>DataFlowExtension_GfsXKw</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_lWt3Bw" name="comment" type="string">
+          <bpmn2:incoming>DataFlowExtension_M70ZOg</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_l2PFLg" name="price" type="integer">
+          <bpmn2:incoming>DataFlowExtension_QYWNwg</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_Pb8lMQ" sourceRef="DataInputObjectExtension_KlRHAA" targetRef="DataObjectAttributeExtension_5BHAgQ">
+        <bpmn2:documentation id="documentation_wPdUfQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_GfsXKw" sourceRef="DataInputObjectExtension_eHrmYA" targetRef="DataObjectAttributeExtension_CQEcvA">
+        <bpmn2:documentation id="documentation_7CidYA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_M70ZOg" sourceRef="DataInputObjectExtension_bExweA" targetRef="DataObjectAttributeExtension_lWt3Bw">
+        <bpmn2:documentation id="documentation_T0h4BA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_QYWNwg" sourceRef="DataInputObjectExtension_24jRDw" targetRef="DataObjectAttributeExtension_l2PFLg">
+        <bpmn2:documentation id="documentation_M9meFw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_RwA0NQ</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_k0FKQg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_nDVe5Q" name="Update request status">
+      <bpmn2:documentation id="documentation_rra02w"/>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_AeGMsA" isMultiple="false" name="status" type="string" value="DataInput-13">
+        <bpmn2:outgoing>DataFlowExtension_dyz6dQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_Bd4Oqw" isMultiple="false" name="request" state="update" type="com.company.model.Request">
+        <bpmn2:attribute id="DataObjectAttributeExtension_C5SOag" name="status" type="string">
+          <bpmn2:incoming>DataFlowExtension_dyz6dQ</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_dyz6dQ" sourceRef="DataInputObjectExtension_AeGMsA" targetRef="DataObjectAttributeExtension_C5SOag">
+        <bpmn2:documentation id="documentation_iCzeOw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_k0FKQg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_yely0A</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_gtR5dg" isMultiple="false" name="Review quotation">
+      <bpmn2:documentation id="documentation_PRncjQ"/>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_6GPXSg" isMultiple="false" name="isAccepted" type="BOOLEAN">
+        <bpmn2:outgoing>DataFlowExtension_NXUwhA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_Xfvnhg" isMultiple="false" name="request" state="update" type="com.company.model.Request">
+        <bpmn2:attribute id="DataObjectAttributeExtension_ircFXA" name="isAccepted" type="boolean">
+          <bpmn2:incoming>DataFlowExtension_NXUwhA</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_NXUwhA" sourceRef="DataInputObjectExtension_6GPXSg" targetRef="DataObjectAttributeExtension_ircFXA">
+        <bpmn2:documentation id="documentation_7cW7VQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_yely0A</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_dcj0mw</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_2uSFiw" name="Complete Request">
+      <bpmn2:documentation id="documentation_3n65Zw"/>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_9rNcgA" isMultiple="false" name="status" type="string" value="DataInput-17">
+        <bpmn2:outgoing>DataFlowExtension_IdKOmQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_daoxbg" isMultiple="false" name="request" state="update" type="com.company.model.Request">
+        <bpmn2:attribute id="DataObjectAttributeExtension_W3071w" name="status" type="string">
+          <bpmn2:incoming>DataFlowExtension_IdKOmQ</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_IdKOmQ" sourceRef="DataInputObjectExtension_9rNcgA" targetRef="DataObjectAttributeExtension_W3071w">
+        <bpmn2:documentation id="documentation_szhjmA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_xU1elg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_l1iPng</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="task_svX7uQ" name="Abort Request">
+      <bpmn2:documentation id="documentation_J8uNCw"/>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_Zv0H9Q" isMultiple="false" name="status" type="string" value="DataInput-19">
+        <bpmn2:outgoing>DataFlowExtension_HOgpAg</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_BdhNuA" isMultiple="false" name="request" state="update" type="com.company.model.Request">
+        <bpmn2:attribute id="DataObjectAttributeExtension_vh3EAQ" name="status" type="string">
+          <bpmn2:incoming>DataFlowExtension_HOgpAg</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_HOgpAg" sourceRef="DataInputObjectExtension_Zv0H9Q" targetRef="DataObjectAttributeExtension_vh3EAQ">
+        <bpmn2:documentation id="documentation_GNI0wg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_aC8sqQ</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_SODJqg</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="gateway_uGZV0A" name="accept or reject">
+      <bpmn2:documentation id="documentation_fqDxpQ"/>
+      <bpmn2:incoming>sequenceFlow_dcj0mw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_xU1elg</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_aC8sqQ</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:startEvent id="event_cDGZhA" name="start">
+      <bpmn2:documentation id="documentation_eSDQuw"/>
+      <bpmn2:outgoing>sequenceFlow_F0Lltw</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="event_H2sfWg" name="Event-2">
+      <bpmn2:documentation id="documentation_N59h0g"/>
+      <bpmn2:incoming>sequenceFlow_l1iPng</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:endEvent id="event_1K1gmg" name="Event-3">
+      <bpmn2:documentation id="documentation_0PXFIw"/>
+      <bpmn2:incoming>sequenceFlow_SODJqg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_RwA0NQ" sourceRef="task_f1BzlQ" targetRef="task_VyOluw">
+      <bpmn2:documentation id="documentation_IL7cOg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_k0FKQg" sourceRef="task_VyOluw" targetRef="task_nDVe5Q">
+      <bpmn2:documentation id="documentation_CQKWKg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_yely0A" sourceRef="task_nDVe5Q" targetRef="task_gtR5dg">
+      <bpmn2:documentation id="documentation_KMhlUQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_dcj0mw" sourceRef="task_gtR5dg" targetRef="gateway_uGZV0A">
+      <bpmn2:documentation id="documentation_d2qmCg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_xU1elg" sourceRef="gateway_uGZV0A" targetRef="task_2uSFiw">
+      <bpmn2:documentation id="documentation_SxKGGg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_aC8sqQ" sourceRef="gateway_uGZV0A" targetRef="task_svX7uQ">
+      <bpmn2:documentation id="documentation_g3opIw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_l1iPng" sourceRef="task_2uSFiw" targetRef="event_H2sfWg">
+      <bpmn2:documentation id="documentation_Bm5ZNg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_SODJqg" sourceRef="task_svX7uQ" targetRef="event_1K1gmg">
+      <bpmn2:documentation id="documentation_4OPruw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_F0Lltw" sourceRef="event_cDGZhA" targetRef="task_f1BzlQ">
+      <bpmn2:documentation id="documentation_BGMD9g"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_C0IA3g" id="BPMNShape_H3Dypg">
+        <dc:Bounds height="50.0" width="160.0" x="13.5" y="31.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_ZjsApw" id="BPMNShape_dlxk3w">
+        <dc:Bounds height="50.0" width="160.0" x="13.5" y="88.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_s6RbbQ" id="BPMNShape_ZGEl0Q">
+        <dc:Bounds height="50.0" width="160.0" x="13.5" y="170.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_707ZNA" id="BPMNShape_BdLuyg">
+        <dc:Bounds height="50.0" width="130.0" x="270.0" y="31.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="participant_k4032A" id="BPMNShape_M3I7LQ">
+        <dc:Bounds height="1573.8911291667428" width="1869.8624051612958" x="-276.05240085017755" y="196.01519898123092"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_dVCeqw" id="BPMNShape_Lane_MoHq0Q">
+        <dc:Bounds height="783.0" width="1839.0" x="-246.0" y="196.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_koclEg" id="BPMNShape_Lane_GAHAbw">
+        <dc:Bounds height="790.0" width="1839.0" x="-246.0" y="979.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_f1BzlQ" id="BPMNShape_hEeDxA">
+        <dc:Bounds height="382.6626281738281" width="591.3709716796875" x="-198.84006315369277" y="448.566825845635"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_VyOluw" id="BPMNShape_urd0Ag">
+        <dc:Bounds height="382.7372741699219" width="514.8816528320312" x="-166.6968367327459" y="1061.8877041692192"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_nDVe5Q" id="BPMNShape_Yh7egQ">
+        <dc:Bounds height="212.2252960205078" width="428.5184586867917" x="533.7043688537744" y="1147.143684387207"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_gtR5dg" id="BPMNShape_z6Eo0A">
+        <dc:Bounds height="257.04128915643037" width="358.3513306771239" x="507.76772518769417" y="443.9268672546436"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_2uSFiw" id="BPMNShape_Bu3JYA">
+        <dc:Bounds height="222.3980255126953" width="367.80914306640625" x="1041.3707166646404" y="402.66670989990234"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task_svX7uQ" id="BPMNShape_DR2itQ">
+        <dc:Bounds height="224.763671875" width="431.771484375" x="1048.5892691772558" y="1120.2331314086914"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_Z0wNsQ" id="BPMNShape_XY3efg">
+        <dc:Bounds height="50.0" width="160.0" x="-198.84006315369277" y="491.54799649993186"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_C0buPg" id="BPMNShape_A0yfnw">
+        <dc:Bounds height="50.0" width="160.0" x="-198.84006315369277" y="557.6689986971975"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_0zPkkQ" id="BPMNShape_99YjZA">
+        <dc:Bounds height="50.0" width="130.0" x="141.13436311583848" y="491.54799649993186"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_VswoEw" id="BPMNShape_TpJEcQ">
+        <dc:Bounds height="25.0" width="110.0" x="166.13436889648438" y="541.5480041503906"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_UgkDDg" id="BPMNShape_t5e8DA">
+        <dc:Bounds height="25.0" width="110.0" x="166.13436889648438" y="566.5480041503906"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_6eZXSQ" id="BPMNShape_yr7ofw">
+        <dc:Bounds height="50.0" width="130.0" x="141.13436311583848" y="617.4589767245412"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_jBYgSA" id="BPMNShape_MSen0w">
+        <dc:Bounds height="25.0" width="110.0" x="166.13436889648438" y="667.458984375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_tIXIcw" id="BPMNShape_F9fgeg">
+        <dc:Bounds height="25.0" width="110.0" x="166.13436889648438" y="692.458984375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_k0oQHg" id="BPMNShape_ocW8ZA">
+        <dc:Bounds height="50.0" width="130.0" x="145.56325715880723" y="723.7520675448537"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_mo12nQ" id="BPMNShape_LPQT9Q">
+        <dc:Bounds height="25.0" width="110.0" x="170.56326293945312" y="773.7520751953125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_Xw3mSg" id="BPMNShape_Uonx0A">
+        <dc:Bounds height="50.0" width="160.0" x="-198.84006315369277" y="701.6076583651662"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_1b104Q" id="BPMNShape_aibxHw">
+        <dc:Bounds height="50.0" width="160.0" x="-31.090907632299945" y="734.8242721346975"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_KlRHAA" id="BPMNShape_09Kvhg">
+        <dc:Bounds height="50.0" width="160.0" x="-166.6968367327459" y="1113.7515957707817"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_eHrmYA" id="BPMNShape_kIGzng">
+        <dc:Bounds height="50.0" width="160.0" x="-166.6968367327459" y="1189.0426113957817"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_bExweA" id="BPMNShape_rtrOow">
+        <dc:Bounds height="50.0" width="160.0" x="-166.6968367327459" y="1253.2613613957817"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_24jRDw" id="BPMNShape_jt0utQ">
+        <dc:Bounds height="50.0" width="160.0" x="-166.6968367327459" y="1321.9090664739067"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_7l15WQ" id="BPMNShape_D50x7A">
+        <dc:Bounds height="50.0" width="130.0" x="156.07016537296698" y="1129.2525723332817"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_5BHAgQ" id="BPMNShape_KPErUw">
+        <dc:Bounds height="25.0" width="110.0" x="181.07015991210938" y="1179.2525634765625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_CQEcvA" id="BPMNShape_8fLo1Q">
+        <dc:Bounds height="25.0" width="110.0" x="181.07015991210938" y="1204.2525634765625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_lWt3Bw" id="BPMNShape_qvLCDQ">
+        <dc:Bounds height="25.0" width="110.0" x="181.07015991210938" y="1229.2525634765625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_l2PFLg" id="BPMNShape_NLKxvQ">
+        <dc:Bounds height="25.0" width="110.0" x="181.07015991210938" y="1254.2525634765625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_AeGMsA" id="BPMNShape_HbUXnw">
+        <dc:Bounds height="50.0" width="160.0" x="533.7043688537744" y="1201.2219314575195"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_Bd4Oqw" id="BPMNShape_qCXtaA">
+        <dc:Bounds height="50.0" width="130.0" x="777.6600268127588" y="1201.2219314575195"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_C5SOag" id="BPMNShape_jixwaw">
+        <dc:Bounds height="25.0" width="110.0" x="802.6600341796875" y="1251.221923828125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_6GPXSg" id="BPMNShape_5f4kUQ">
+        <dc:Bounds height="50.0" width="160.0" x="507.76772518769417" y="486.0880000671436"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_Xfvnhg" id="BPMNShape_DZt02g">
+        <dc:Bounds height="50.0" width="130.0" x="697.2016546310535" y="496.9504268249561"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_ircFXA" id="BPMNShape_Oweg2A">
+        <dc:Bounds height="25.0" width="110.0" x="722.20166015625" y="546.950439453125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_9rNcgA" id="BPMNShape_de3FfQ">
+        <dc:Bounds height="50.0" width="160.0" x="1047.809071156828" y="449.51412200927734"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_daoxbg" id="BPMNShape_TRIf6g">
+        <dc:Bounds height="50.0" width="130.0" x="1234.3575941060467" y="461.8189010620117"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_W3071w" id="BPMNShape_JK14kg">
+        <dc:Bounds height="25.0" width="110.0" x="1259.3575439453125" y="511.81890869140625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_Zv0H9Q" id="BPMNShape_YHuPIg">
+        <dc:Bounds height="50.0" width="160.0" x="1048.5892691772558" y="1173.474708557129"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_BdhNuA" id="BPMNShape_wHVnuQ">
+        <dc:Bounds height="50.0" width="130.0" x="1301.3509879272558" y="1173.474708557129"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_vh3EAQ" id="BPMNShape_UBzrRQ">
+        <dc:Bounds height="25.0" width="110.0" x="1326.3509521484375" y="1223.4747314453125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gateway_uGZV0A" id="BPMNShape_ISMI4Q">
+        <dc:Bounds height="50.0" width="50.0" x="932.6372678904354" y="488.86573028564453"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1bMbTA">
+          <dc:Bounds height="28.0" width="100.0" x="907.6372678904354" y="541.8657302856445"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_cDGZhA" id="BPMNShape_KDPy2Q">
+        <dc:Bounds height="36.0" width="36.0" x="-216.76339550100968" y="546.1440044035105"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_Xcqm6A">
+          <dc:Bounds height="14.0" width="100.0" x="-248.76339550100968" y="585.1440044035105"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_H2sfWg" id="BPMNShape_00nDtg">
+        <dc:Bounds height="36.0" width="36.0" x="1463.122990001338" y="495.86571469657406"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_m6CdDw">
+          <dc:Bounds height="16.0" width="100.0" x="1431.122990001338" y="534.8657146965741"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="event_1K1gmg" id="BPMNShape_VWkV8Q">
+        <dc:Bounds height="36.0" width="36.0" x="1510.4437332549253" y="1170.1863060601925"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_DPYj7w">
+          <dc:Bounds height="16.0" width="100.0" x="1478.4437332549253" y="1209.1863060601925"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_lopgvA" id="BPMNEdge_BWACVw">
+        <di:waypoint x="160.0" y="67.98117065429688"/>
+        <di:waypoint x="259.1655578613281" y="67.98117065429688"/>
+        <di:waypoint x="259.1655578613281" y="105.48117065429688"/>
+        <di:waypoint x="364.97442626953125" y="105.48117065429688"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_HACmeA" id="BPMNEdge_6hn3uw">
+        <di:waypoint x="160.0" y="134.10214233398438"/>
+        <di:waypoint x="259.1655578613281" y="134.10214233398438"/>
+        <di:waypoint x="259.1655578613281" y="130.48117065429688"/>
+        <di:waypoint x="364.97442626953125" y="130.48117065429688"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Oipn4Q" id="BPMNEdge_T006Zg">
+        <di:waypoint x="398.33111572265625" y="92.98117065429688"/>
+        <di:waypoint x="398.33111572265625" y="155.9366455078125"/>
+        <di:waypoint x="419.9744567871094" y="155.9366455078125"/>
+        <di:waypoint x="419.9744567871094" y="218.89215087890625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_VpJZJg" id="BPMNEdge_sXKL2A">
+        <di:waypoint x="474.4033203125" y="300.1852722167969"/>
+        <di:waypoint x="504.9744567871094" y="300.1852722167969"/>
+        <di:waypoint x="504.9744567871094" y="256.3921203613281"/>
+        <di:waypoint x="474.97442626953125" y="256.3921203613281"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_p1Zg0A" id="BPMNShape_2yYMzA">
+        <dc:Bounds height="25.0" width="110.0" x="-173.84005737304688" y="751.607666015625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_XPJsxw" id="BPMNEdge_7p6b8Q">
+        <di:waypoint x="135.0" y="315.5408630371094"/>
+        <di:waypoint x="151.37457275390625" y="315.5408630371094"/>
+        <di:waypoint x="151.37457275390625" y="311.2574768066406"/>
+        <di:waypoint x="167.74914932250977" y="311.2574768066406"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_S0C5Dw" id="BPMNEdge_ejyJDw">
+        <di:waypoint x="327.74914932250977" y="311.2574462890625"/>
+        <di:waypoint x="327.7491555213928" y="311.2574462890625"/>
+        <di:waypoint x="327.7491555213928" y="311.2574768066406"/>
+        <di:waypoint x="348.57623291015625" y="311.2574768066406"/>
+        <di:waypoint x="348.57623291015625" y="337.6852722167969"/>
+        <di:waypoint x="369.4033203125" y="337.6852722167969"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Pb8lMQ" id="BPMNEdge_Q7uP9w">
+        <di:waypoint x="160.0" y="76.8638916015625"/>
+        <di:waypoint x="253.8834991455078" y="76.8638916015625"/>
+        <di:waypoint x="253.8834991455078" y="129.8648681640625"/>
+        <di:waypoint x="347.7669982910156" y="129.8648681640625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_GfsXKw" id="BPMNEdge_DlY40A">
+        <di:waypoint x="160.0" y="152.1549072265625"/>
+        <di:waypoint x="253.8834991455078" y="152.1549072265625"/>
+        <di:waypoint x="253.8834991455078" y="154.8648681640625"/>
+        <di:waypoint x="347.7669982910156" y="154.8648681640625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_M70ZOg" id="BPMNEdge_bpDnsg">
+        <di:waypoint x="160.0" y="216.3736572265625"/>
+        <di:waypoint x="253.8834991455078" y="216.3736572265625"/>
+        <di:waypoint x="253.8834991455078" y="179.8648681640625"/>
+        <di:waypoint x="347.7669982910156" y="179.8648681640625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_QYWNwg" id="BPMNEdge_yeXLwA">
+        <di:waypoint x="160.0" y="285.0213623046875"/>
+        <di:waypoint x="253.8834991455078" y="285.0213623046875"/>
+        <di:waypoint x="253.8834991455078" y="204.8648681640625"/>
+        <di:waypoint x="347.7669982910156" y="204.8648681640625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_dyz6dQ" id="BPMNEdge_t8Fxpw">
+        <di:waypoint x="160.0" y="79.0782470703125"/>
+        <di:waypoint x="214.47784423828125" y="79.0782470703125"/>
+        <di:waypoint x="214.47784423828125" y="116.5782470703125"/>
+        <di:waypoint x="268.9556884765625" y="116.5782470703125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_NXUwhA" id="BPMNEdge_T6nv3A">
+        <di:waypoint x="160.0" y="67.1611328125"/>
+        <di:waypoint x="187.2169647216797" y="67.1611328125"/>
+        <di:waypoint x="187.2169647216797" y="115.5235595703125"/>
+        <di:waypoint x="214.43392944335938" y="115.5235595703125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_IdKOmQ" id="BPMNEdge_IjHpwg">
+        <di:waypoint x="166.4383544921875" y="71.847412109375"/>
+        <di:waypoint x="192.21258544921875" y="71.847412109375"/>
+        <di:waypoint x="192.21258544921875" y="121.65219116210938"/>
+        <di:waypoint x="217.98681640625" y="121.65219116210938"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_HOgpAg" id="BPMNEdge_Q2MAlA">
+        <di:waypoint x="160.0" y="78.2415771484375"/>
+        <di:waypoint x="218.880859375" y="78.2415771484375"/>
+        <di:waypoint x="218.880859375" y="115.7415771484375"/>
+        <di:waypoint x="277.76171875" y="115.7415771484375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_RwA0NQ" id="BPMNEdge_gOVlzA" sourceElement="BPMNShape_hEeDxA" targetElement="BPMNShape_urd0Ag">
+        <di:waypoint x="173.5552978515625" y="831.2294616699219"/>
+        <di:waypoint x="173.5552978515625" y="788.83740234375"/>
+        <di:waypoint x="173.5552978515625" y="775.8078002929688"/>
+        <di:waypoint x="173.5552978515625" y="918.8477783203125"/>
+        <di:waypoint x="90.74398803710938" y="918.8477783203125"/>
+        <di:waypoint x="90.74398803710938" y="1061.8876953125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_k0FKQg" id="BPMNEdge_tzkbFg" sourceElement="BPMNShape_urd0Ag" targetElement="BPMNShape_Yh7egQ">
+        <di:waypoint x="348.184814453125" y="1253.256332397461"/>
+        <di:waypoint x="440.944580078125" y="1253.256332397461"/>
+        <di:waypoint x="440.944580078125" y="1253.2563247680664"/>
+        <di:waypoint x="533.704345703125" y="1253.2563247680664"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_yely0A" id="BPMNEdge_qTOgGA" sourceElement="BPMNShape_Yh7egQ" targetElement="BPMNShape_z6Eo0A">
+        <di:waypoint x="747.9635620117188" y="1147.1436767578125"/>
+        <di:waypoint x="747.9635620117188" y="924.055908203125"/>
+        <di:waypoint x="686.943359375" y="924.055908203125"/>
+        <di:waypoint x="686.943359375" y="700.9681701660156"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_dcj0mw" id="BPMNEdge_XbSgLQ" sourceElement="BPMNShape_z6Eo0A" targetElement="BPMNShape_ISMI4Q">
+        <di:waypoint x="866.1190490722656" y="572.447509765625"/>
+        <di:waypoint x="899.378173828125" y="572.447509765625"/>
+        <di:waypoint x="899.378173828125" y="513.86572265625"/>
+        <di:waypoint x="932.6372680664062" y="513.86572265625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_xU1elg" id="BPMNEdge_BtkK5A" sourceElement="BPMNShape_ISMI4Q" targetElement="BPMNShape_Bu3JYA">
+        <di:waypoint x="982.6372680664062" y="513.86572265625"/>
+        <di:waypoint x="1012.0039978027344" y="513.86572265625"/>
+        <di:waypoint x="1012.0039978027344" y="513.8657302856445"/>
+        <di:waypoint x="1041.3707275390625" y="513.8657302856445"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_aC8sqQ" id="BPMNEdge_wJOrJA" sourceElement="BPMNShape_ISMI4Q" targetElement="BPMNShape_DR2itQ">
+        <di:waypoint x="982.6372680664062" y="513.86572265625"/>
+        <di:waypoint x="1015.61328125" y="513.86572265625"/>
+        <di:waypoint x="1015.61328125" y="1232.614990234375"/>
+        <di:waypoint x="1048.5892333984375" y="1232.614990234375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_l1iPng" id="BPMNEdge_knExWA" sourceElement="BPMNShape_Bu3JYA" targetElement="BPMNShape_00nDtg">
+        <di:waypoint x="1409.1798706054688" y="513.8657302856445"/>
+        <di:waypoint x="1436.1514587402344" y="513.8657302856445"/>
+        <di:waypoint x="1436.1514587402344" y="513.86572265625"/>
+        <di:waypoint x="1463.123046875" y="513.86572265625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_SODJqg" id="BPMNEdge_MZ3J7w" sourceElement="BPMNShape_DR2itQ" targetElement="BPMNShape_VWkV8Q">
+        <di:waypoint x="1480.3607177734375" y="1232.614990234375"/>
+        <di:waypoint x="1495.4022216796875" y="1232.614990234375"/>
+        <di:waypoint x="1495.4022216796875" y="1188.186279296875"/>
+        <di:waypoint x="1510.4437255859375" y="1188.186279296875"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_F0Lltw" id="BPMNEdge_XbwNIg" sourceElement="BPMNShape_KDPy2Q" targetElement="BPMNShape_hEeDxA">
+        <di:waypoint x="-180.76339721679688" y="564.1439819335938"/>
+        <di:waypoint x="96.84542846679688" y="564.1439819335938"/>
+        <di:waypoint x="96.84542846679688" y="448.56683349609375"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

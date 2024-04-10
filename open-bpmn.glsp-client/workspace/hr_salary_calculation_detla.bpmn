@@ -445,9 +445,11 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
         <di:waypoint x="193.61141967773438" y="143.677734375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_VhJCwQ" id="BPMNEdge_IQifTg">
+        <di:waypoint x="353.6114196777344" y="168.40185546875"/>
         <di:waypoint x="353.6114196777344" y="143.40185546875"/>
-        <di:waypoint x="353.6114311218262" y="143.40185546875"/>
-        <di:waypoint x="397.83570098876953" y="143.40185546875"/>
+        <di:waypoint x="397.835693359375" y="143.40185546875"/>
+        <di:waypoint x="397.835693359375" y="143.677734375"/>
+        <di:waypoint x="397.83570098876953" y="143.677734375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_sSWX0g" id="BPMNShape_zq0aDw">
         <dc:Bounds height="50.0" width="130.0" x="-120.84750470362565" y="1103.218017578125"/>
@@ -489,16 +491,16 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
         <di:waypoint x="380.80914306640625" y="169.07977294921875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_RVkYcA" id="BPMNEdge_GCoscQ" sourceElement="BPMNShape_f4LOaA" targetElement="BPMNShape_TTdtlQ">
-        <di:waypoint x="-540.668830871582" y="1194.0940475463867"/>
-        <di:waypoint x="-522.6040344238281" y="1194.0940475463867"/>
-        <di:waypoint x="-522.6040344238281" y="1140.3422622680664"/>
-        <di:waypoint x="-476.6566467285156" y="1140.3422622680664"/>
+        <di:waypoint x="-540.6688842773438" y="1194.093994140625"/>
+        <di:waypoint x="-522.60400390625" y="1194.093994140625"/>
+        <di:waypoint x="-522.60400390625" y="1140.34228515625"/>
+        <di:waypoint x="-476.6566467285156" y="1140.34228515625"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Jb87lw" id="BPMNEdge_x38gFw" sourceElement="BPMNShape_f4LOaA" targetElement="BPMNShape_wYAG1A">
-        <di:waypoint x="-540.668830871582" y="1194.0940475463867"/>
-        <di:waypoint x="-522.5014801025391" y="1194.0940475463867"/>
-        <di:waypoint x="-522.5014801025391" y="1395.3651657104492"/>
-        <di:waypoint x="-485.40277099609375" y="1395.3651657104492"/>
+        <di:waypoint x="-540.6688842773438" y="1194.093994140625"/>
+        <di:waypoint x="-522.50146484375" y="1194.093994140625"/>
+        <di:waypoint x="-522.50146484375" y="1395.3651123046875"/>
+        <di:waypoint x="-485.40277099609375" y="1395.3651123046875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_YR0rNg" id="BPMNShape_MkN1Aw">
         <dc:Bounds height="50.0" width="160.0" x="422.70080462254623" y="1203.8917236328125"/>
@@ -531,9 +533,9 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
         <di:waypoint x="204.65899658203125" y="209.7117919921875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Yc8c0A" id="BPMNEdge_yqzg8w" sourceElement="BPMNShape_TTdtlQ" targetElement="BPMNShape_mb2d3A">
-        <di:waypoint x="255.97225952148438" y="1162.9233627319336"/>
-        <di:waypoint x="329.72161865234375" y="1162.9233627319336"/>
-        <di:waypoint x="329.7216186523435" y="1254.6448669433594"/>
+        <di:waypoint x="255.97225952148438" y="1162.92333984375"/>
+        <di:waypoint x="329.72161865234375" y="1162.92333984375"/>
+        <di:waypoint x="329.72161865234375" y="1254.6448669433594"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_sNk0Iw" id="BPMNEdge_2ESJQQ" sourceElement="BPMNShape_mb2d3A" targetElement="BPMNShape_LIubjQ">
         <di:waypoint x="355.4054260253906" y="1278.9610595703125"/>
@@ -553,8 +555,8 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
         <dc:Bounds height="50.0" width="130.0" x="86.29297533787826" y="1449.7413330078125"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_etKqUA" id="BPMNEdge_wtkpwA" sourceElement="BPMNShape_wYAG1A" targetElement="BPMNShape_mb2d3A">
-        <di:waypoint x="256.09649658203125" y="1409.4388961791992"/>
-        <di:waypoint x="332.482421875" y="1409.4388961791992"/>
+        <di:waypoint x="256.09649658203125" y="1409.4388427734375"/>
+        <di:waypoint x="332.482421875" y="1409.4388427734375"/>
         <di:waypoint x="332.482421875" y="1301.8840637207031"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_lYG07w" id="BPMNShape_xg5Yxg">
@@ -585,13 +587,17 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
         <di:waypoint x="507.83570098876953" y="168.67776489257812"/>
         <di:waypoint x="533.29931640625" y="168.67776489257812"/>
         <di:waypoint x="533.29931640625" y="68.21682739257812"/>
-        <di:waypoint x="571.6957473754883" y="68.21682739257812"/>
+        <di:waypoint x="571.6957397460938" y="68.21682739257812"/>
+        <di:waypoint x="571.6957397460938" y="68.216796875"/>
+        <di:waypoint x="571.6957473754883" y="68.216796875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_VVa1Mw" id="BPMNEdge_McsFXg">
         <di:waypoint x="507.83570098876953" y="193.67776489257812"/>
         <di:waypoint x="539.74267578125" y="193.67776489257812"/>
         <di:waypoint x="539.74267578125" y="162.80123901367188"/>
-        <di:waypoint x="571.6957473754883" y="162.80123901367188"/>
+        <di:waypoint x="571.6957397460938" y="162.80123901367188"/>
+        <di:waypoint x="571.6957397460938" y="162.8011474609375"/>
+        <di:waypoint x="571.6957473754883" y="162.8011474609375"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_aY0Eqw" id="BPMNShape_lKI7Pg">
         <dc:Bounds height="50.0" width="50.0" x="1458.0627511270025" y="194.4320561054934"/>
@@ -900,35 +906,35 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_x7Y7jA" id="BPMNEdge_SpuBcQ">
         <di:waypoint x="182.48681640625" y="44.035888671875"/>
-        <di:waypoint x="253.66460205272546" y="44.035888671875"/>
-        <di:waypoint x="253.66460205272546" y="105.57732177928797"/>
+        <di:waypoint x="253.6645965576172" y="44.035888671875"/>
+        <di:waypoint x="253.6645965576172" y="105.57731628417969"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_dWzIlQ" id="BPMNEdge_FfgnVA">
         <di:waypoint x="182.48681640625" y="102.6439208984375"/>
-        <di:waypoint x="202.4275300455497" y="102.6439208984375"/>
-        <di:waypoint x="202.4275300455497" y="124.34590729775576"/>
-        <di:waypoint x="231.67911711630674" y="124.34590729775577"/>
+        <di:waypoint x="202.4275360107422" y="102.6439208984375"/>
+        <di:waypoint x="202.4275360107422" y="124.34590911865234"/>
+        <di:waypoint x="231.67911529541016" y="124.34590911865234"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_J4AC0A" id="BPMNEdge_SS4oaw">
         <di:waypoint x="182.48681640625" y="161.2520751953125"/>
-        <di:waypoint x="202.4275300455497" y="161.2520751953125"/>
-        <di:waypoint x="202.4275300455497" y="139.98676714478444"/>
-        <di:waypoint x="238.07404741822202" y="139.9867671447845"/>
+        <di:waypoint x="202.4275360107422" y="161.2520751953125"/>
+        <di:waypoint x="202.4275360107422" y="139.9867706298828"/>
+        <di:waypoint x="238.0740509033203" y="139.9867706298828"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_paZUnA" id="BPMNEdge_M8IR9w">
         <di:waypoint x="182.48681640625" y="221.1829833984375"/>
-        <di:waypoint x="254.19985233555383" y="221.1829833984375"/>
-        <di:waypoint x="254.19985233555386" y="151.82517207850864"/>
+        <di:waypoint x="254.19985961914062" y="221.1829833984375"/>
+        <di:waypoint x="254.19985961914062" y="151.82516479492188"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_sR0btA" id="BPMNEdge_jrZ6FA">
         <di:waypoint x="277.05615234375" y="128.9688720703125"/>
         <di:waypoint x="340.2392578125" y="128.9688720703125"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_tZazJA" id="BPMNEdge_dexiPQ" sourceElement="BPMNShape_LIubjQ" targetElement="BPMNShape_0A0WDw">
-        <di:waypoint x="801.3328857421875" y="1278.9610900878906"/>
-        <di:waypoint x="854.2693176269531" y="1278.9610900878906"/>
-        <di:waypoint x="854.2693176269531" y="1337.4816728759417"/>
-        <di:waypoint x="905.8255615234375" y="1337.4816728759417"/>
+        <di:waypoint x="801.3328857421875" y="1278.9610595703125"/>
+        <di:waypoint x="854.269287109375" y="1278.9610595703125"/>
+        <di:waypoint x="854.269287109375" y="1337.481689453125"/>
+        <di:waypoint x="905.8255615234375" y="1337.481689453125"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_gLCdrA" id="BPMNShape_csE68g">
         <dc:Bounds height="50.0" width="160.0" x="928.3123768881712" y="1397.6378173828125"/>
@@ -958,9 +964,9 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_kGdXvw" id="BPMNEdge_hI0vqw">
         <di:waypoint x="102.48681640625" y="246.1829833984375"/>
-        <di:waypoint x="102.48681640625" y="266.5491948653939"/>
-        <di:waypoint x="280.671709306776" y="266.5491948653939"/>
-        <di:waypoint x="280.6717093067761" y="320.6835501270886"/>
+        <di:waypoint x="102.48681640625" y="266.5491943359375"/>
+        <di:waypoint x="280.6717224121094" y="266.5491943359375"/>
+        <di:waypoint x="280.6717224121094" y="320.6835632324219"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_9QM7LA" id="BPMNShape_zS0i4Q">
         <dc:Bounds height="50.0" width="130.0" x="1246.0648182944212" y="1360.06396484375"/>
@@ -1039,14 +1045,15 @@ Calculate totalDeductions as (insurance + deduction + taxes).]]></bpmn2:document
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_DOZbVw" id="BPMNEdge_S0Xlew" sourceElement="BPMNShape_0A0WDw" targetElement="BPMNShape_tlaLjg">
         <di:waypoint x="1223.3577270507812" y="1576.6339721679688"/>
-        <di:waypoint x="1223.3577270507812" y="1633.8583679199219"/>
-        <di:waypoint x="1223.3577117919922" y="1633.8583679199219"/>
+        <di:waypoint x="1223.3577270507812" y="1576.634033203125"/>
+        <di:waypoint x="1223.357666015625" y="1576.634033203125"/>
+        <di:waypoint x="1223.3577117919922" y="1576.634033203125"/>
         <di:waypoint x="1223.3577117919922" y="1691.082763671875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_70ECOQ" id="BPMNEdge_a1kDKw" sourceElement="BPMNShape_tlaLjg" targetElement="BPMNShape_WQ6JgA">
         <di:waypoint x="1471.7535095214844" y="1867.6297760009766"/>
-        <di:waypoint x="1506.1028900146484" y="1867.6297760009766"/>
-        <di:waypoint x="1506.1028900146484" y="1867.6297607421875"/>
+        <di:waypoint x="1471.7535400390625" y="1867.6297760009766"/>
+        <di:waypoint x="1471.7535400390625" y="1867.6297607421875"/>
         <di:waypoint x="1540.4522705078125" y="1867.6297607421875"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_ryRP1g" id="BPMNShape_5VgyCw">

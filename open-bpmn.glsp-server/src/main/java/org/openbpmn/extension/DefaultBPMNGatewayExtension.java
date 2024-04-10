@@ -69,6 +69,7 @@ public class DefaultBPMNGatewayExtension extends AbstractBPMNElementExtension {
 
         dataBuilder. //
                 addData("name", bpmnElement.getName()). //
+                addData("condition", bpmnElement.getAttribute("condition")). //
                 addData("documentation", bpmnElement.getDocumentation()). //
                 addData("gatewaydirection", bpmnElement.getAttribute("gatewayDirection"));
 
@@ -78,6 +79,7 @@ public class DefaultBPMNGatewayExtension extends AbstractBPMNElementExtension {
 
         schemaBuilder. //
                 addProperty("name", "string", null). //
+                addProperty("condition", "string", null). //
                 addProperty("documentation", "string", documentation). //
                 addProperty("gatewaydirection", "string", null, gatewayDirections);
 
@@ -89,6 +91,8 @@ public class DefaultBPMNGatewayExtension extends AbstractBPMNElementExtension {
                 addLayout(Layout.HORIZONTAL). //
                 addElements("name"). //
                 addElement("gatewaydirection", "Direction", radioOption). //
+                addLayout(Layout.HORIZONTAL). //
+                addElements("condition"). //
                 addLayout(Layout.VERTICAL). //
                 addElement("documentation", "Documentation", this.getFileEditorOption());
 
@@ -110,5 +114,6 @@ public class DefaultBPMNGatewayExtension extends AbstractBPMNElementExtension {
         // update attributes and tags
         bpmnElement.setDocumentation(json.getString("documentation", ""));
         bpmnElement.setAttribute("gatewayDirection", json.getString("gatewaydirection", ""));
+        bpmnElement.setAttribute("condition", json.getString("condition", ""));
     }
 }

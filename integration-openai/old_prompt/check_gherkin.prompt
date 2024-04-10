@@ -1,0 +1,12 @@
+You will take some examples about accepted and rejected scenarios, based on the input data and the description of the scenario.
+Whole the input should be a part of the description and the description inputs should be a part on the inputs list.
+The description should be in Gherkin format.
+The input should be a list of variable names.
+you should show me only "YES" or "NO" without any other information.
+Result ONLY YES or NO!
+---
+Inputs:{inputs}
+Output:{output}
+Description: {description}
+Result: ?
+---

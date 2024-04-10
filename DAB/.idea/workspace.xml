@@ -1,0 +1,1495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="DAB:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c8bb2679-4430-4ffe-82a6-f3b4a326dc47" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/DEMO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/DEMO.java" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/DEMO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/UpdateExpressionParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-828">
+              <caret line="164" column="28" selection-start-line="164" selection-start-column="28" selection-end-line="164" selection-end-column="28" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="356">
+              <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/CamundaModelReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5054">
+              <caret line="341" column="17" selection-start-line="341" selection-start-column="17" selection-end-line="341" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4330#4331#0" expanded="true" />
+                <element signature="e#4368#4369#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABLoopBlock.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1410">
+              <caret line="96" column="57" selection-start-line="96" selection-start-column="57" selection-end-line="96" selection-end-column="57" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1742#1743#0" expanded="true" />
+                <element signature="e#1779#1780#0" expanded="true" />
+                <element signature="e#1836#1837#0" expanded="true" />
+                <element signature="e#1873#1874#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/InsertTransition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Singleton" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>dSchema</find>
+      <find>add</find>
+      <find>equa</find>
+      <find>insertTra</find>
+      <find>truechi</find>
+      <find>set</find>
+      <find>final</find>
+      <find>new</find>
+      <find>object</find>
+      <find>eevarAssociation</find>
+      <find>isEev</find>
+      <find>null</find>
+      <find>undef</find>
+      <find>trans</find>
+      <find>||</find>
+      <find>E</find>
+      <find>Method not supported</find>
+      <find>boolean</find>
+      <find>eev</find>
+      <find>in</find>
+      <find>term</find>
+      <find>getR</find>
+      <find>tur</find>
+      <find>true</find>
+      <find>getId</find>
+      <find>sor</find>
+      <find>SystemConstants.NULL</find>
+      <find>:case</find>
+      <find>SystemConstants.TRUE.getName();</find>
+      <find>javafx</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>.getLifeCycleVariable()</replace>
+      <replace>lifeCycle</replace>
+      <replace>dataSchema</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src/main/java</dir>
+      <dir>$PROJECT_DIR$/src</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABSort.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/ANDSplitGate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/ComplexTransition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/ConjunctiveSelectQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/TermProcessor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/GatewayConditionParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/SafetyPropertyParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/utils/SQL/SelectParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABTask.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/XORSplitGate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABParallelBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABBackwardExceptionBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABDeferredChoiceBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABErrorEventBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABForwardExceptionBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABInclusiveOrBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABProcessBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/XORLoopSplitGate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/XORLoopGate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/DeferredANDSplitGate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/BulkConditionParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemSorts.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/ErrorBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABErrorBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABSequenceBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/providers/ErrorBlockProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/providers/PossibleCompletionProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/ProcessSchema.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/PossibleCompletion.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABPossibleCompletionBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/SystemVariables.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/EmptyBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABRepositoryRelation.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/CaseVariableTranslator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DataSchema.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkCondition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/EmptyTransition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/InsertTransition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/DeleteTransition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkUpdate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/DABProcessTranslator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/CamundaModelReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABExclusiveChoiceBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemConstants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABLoopBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemVariables.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/UpdateExpressionParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/BinaryExpressionParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/DEMO.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="1280" />
+    <option name="width" value="1920" />
+    <option name="height" value="1200" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+              <item name="bpmn-model-translations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DAB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DAB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="deltabpmn" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1617295928730" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/it/unibz/dab/bpmn/utils/SQL" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DEMO" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.unibz.deltabpmn.DEMO" />
+      <module name="DAB" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.unibz.deltabpmn.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.DEMO" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c8bb2679-4430-4ffe-82a6-f3b4a326dc47" name="Default Changelist" comment="" />
+      <created>1576607118523</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1576607118523</updated>
+    </task>
+    <task id="LOCAL-00040" summary="eevar management fixes">
+      <created>1604996030710</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1604996030717</updated>
+    </task>
+    <task id="LOCAL-00041" summary="merging camunda parser with the translator">
+      <created>1605780010835</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1605780010835</updated>
+    </task>
+    <task id="LOCAL-00042" summary="BPMN parser">
+      <created>1606411353745</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1606411353745</updated>
+    </task>
+    <task id="LOCAL-00043" summary="BPMN parser">
+      <created>1606500214889</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1606500214889</updated>
+    </task>
+    <task id="LOCAL-00044" summary="BPMN parser">
+      <created>1606611974405</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1606611974405</updated>
+    </task>
+    <task id="LOCAL-00045" summary="BPMN parser">
+      <created>1606688780490</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1606688780490</updated>
+    </task>
+    <task id="LOCAL-00046" summary="BPMN parser">
+      <created>1606746982522</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1606746982522</updated>
+    </task>
+    <task id="LOCAL-00047" summary="BPMN parser">
+      <created>1606760505762</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1606760505762</updated>
+    </task>
+    <task id="LOCAL-00048" summary="BPMN parser">
+      <created>1606782858533</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1606782858533</updated>
+    </task>
+    <task id="LOCAL-00049" summary="BPMN parser">
+      <created>1606822356098</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1606822356098</updated>
+    </task>
+    <task id="LOCAL-00050" summary="BPMN parser">
+      <created>1607382409420</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1607382409426</updated>
+    </task>
+    <task id="LOCAL-00051" summary="BPMN parser">
+      <created>1608164245362</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1608164245363</updated>
+    </task>
+    <task id="LOCAL-00052" summary="update expressions parser">
+      <created>1608420598896</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1608420598896</updated>
+    </task>
+    <task id="LOCAL-00053" summary="update expressions parser">
+      <created>1608420783280</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1608420783280</updated>
+    </task>
+    <task id="LOCAL-00054" summary="beta version">
+      <created>1609174276288</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1609174276290</updated>
+    </task>
+    <task id="LOCAL-00055" summary="beta version">
+      <created>1609174636583</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1609174636583</updated>
+    </task>
+    <task id="LOCAL-00056" summary="beta version">
+      <created>1609174641970</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1609174641970</updated>
+    </task>
+    <task id="LOCAL-00057" summary="beta version">
+      <created>1609185332995</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1609185332996</updated>
+    </task>
+    <task id="LOCAL-00058" summary="beta version">
+      <created>1609185394999</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1609185395000</updated>
+    </task>
+    <task id="LOCAL-00059" summary="beta version">
+      <created>1609320871751</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1609320871751</updated>
+    </task>
+    <task id="LOCAL-00060" summary="beta version">
+      <created>1610581397238</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1610581397240</updated>
+    </task>
+    <task id="LOCAL-00061" summary="debugging">
+      <created>1610705207284</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1610705207285</updated>
+    </task>
+    <task id="LOCAL-00062" summary="debugging">
+      <created>1610737665913</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1610737665913</updated>
+    </task>
+    <task id="LOCAL-00063" summary="debugging">
+      <created>1610893228400</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1610893228401</updated>
+    </task>
+    <task id="LOCAL-00064" summary="debugging">
+      <created>1610954106375</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1610954106376</updated>
+    </task>
+    <task id="LOCAL-00065" summary="debugging">
+      <created>1610961959531</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1610961959531</updated>
+    </task>
+    <task id="LOCAL-00066" summary="debugging">
+      <created>1610968164375</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1610968164376</updated>
+    </task>
+    <task id="LOCAL-00067" summary="debugging">
+      <created>1610976624547</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1610976624547</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Deferred Parallel block">
+      <created>1615883935296</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1615883935299</updated>
+    </task>
+    <task id="LOCAL-00069" summary="debugging">
+      <created>1615884733521</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1615884733522</updated>
+    </task>
+    <task id="LOCAL-00070" summary="debugging">
+      <created>1616081519475</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1616081519476</updated>
+    </task>
+    <task id="LOCAL-00071" summary="debugging">
+      <created>1616169815883</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1616169815883</updated>
+    </task>
+    <task id="LOCAL-00072" summary="debugging">
+      <created>1616202930182</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1616202930182</updated>
+    </task>
+    <task id="LOCAL-00073" summary="debugging">
+      <created>1616263031015</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1616263031015</updated>
+    </task>
+    <task id="LOCAL-00074" summary="debugging">
+      <created>1616270026733</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1616270026733</updated>
+    </task>
+    <task id="LOCAL-00075" summary="debugging">
+      <created>1616287916694</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1616287916695</updated>
+    </task>
+    <task id="LOCAL-00076" summary="debugging">
+      <created>1616296166928</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1616296166931</updated>
+    </task>
+    <task id="LOCAL-00077" summary="debugging">
+      <created>1616355259007</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1616355259007</updated>
+    </task>
+    <task id="LOCAL-00078" summary="debugging">
+      <created>1616515170309</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1616515170310</updated>
+    </task>
+    <task id="LOCAL-00079" summary="debugging">
+      <created>1616523237570</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1616523237570</updated>
+    </task>
+    <task id="LOCAL-00080" summary="debugging">
+      <created>1616524263712</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1616524263712</updated>
+    </task>
+    <task id="LOCAL-00081" summary="debugging">
+      <created>1617034151907</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1617034151908</updated>
+    </task>
+    <task id="LOCAL-00082" summary="debugging">
+      <created>1617034172736</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1617034172736</updated>
+    </task>
+    <task id="LOCAL-00083" summary="debugging">
+      <created>1617035269287</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1617035269288</updated>
+    </task>
+    <task id="LOCAL-00084" summary="debugging">
+      <created>1617055067724</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1617055067724</updated>
+    </task>
+    <task id="LOCAL-00085" summary="debugging">
+      <created>1617119042098</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1617119042098</updated>
+    </task>
+    <task id="LOCAL-00086" summary="debugging">
+      <created>1617119964234</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1617119964235</updated>
+    </task>
+    <task id="LOCAL-00087" summary="debugging">
+      <created>1617123265934</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1617123265934</updated>
+    </task>
+    <task id="LOCAL-00088" summary="debugging">
+      <created>1617295984881</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1617295984881</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1280" y="0" width="1920" height="1200" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18743344" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3281471" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18608853" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29358628" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32881662" />
+      <window_info anchor="bottom" id="Tool Output" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="ANTLR Preview" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.3281471" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Maven" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21001616" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3281471" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.0831075" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.44896117" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32956153" />
+      <window_info anchor="bottom" id="Tool Output" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="ANTLR Preview" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32928064" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Maven" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/Davide/MCMT_Translator" />
+    </ignored-roots>
+    <MESSAGE value="refactored: RelationFactory&#10;added: DetaLayerTranslator (generates MCMT code for the data layer)" />
+    <MESSAGE value="refactoring: RelationFactory and CatalogRelation" />
+    <MESSAGE value="refactoring: ConstantFactory and SortFactory" />
+    <MESSAGE value="refactoring: CaseVariableFactory" />
+    <MESSAGE value="refactoring: drastically changing the project structure" />
+    <MESSAGE value="finished the Data Schema part, refactoring the Process Schema" />
+    <MESSAGE value="refactoring the Process Schema" />
+    <MESSAGE value="refactoring the Data Logic" />
+    <MESSAGE value="minor fixes" />
+    <MESSAGE value="refactoring + fixed &quot;sorted&quot; NULL handling" />
+    <MESSAGE value="refactoring" />
+    <MESSAGE value="eevar management fixes" />
+    <MESSAGE value="merging camunda parser with the translator" />
+    <MESSAGE value="BPMN parser" />
+    <MESSAGE value="update expressions parser" />
+    <MESSAGE value="beta version" />
+    <MESSAGE value="Deferred Parallel block" />
+    <MESSAGE value="debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="debugging" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkUpdate.java</url>
+          <line>123</line>
+          <properties />
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkUpdate.java</url>
+          <line>112</line>
+          <properties />
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkUpdate.java</url>
+          <line>136</line>
+          <properties />
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/UpdateExpressionParser.java</url>
+          <line>212</line>
+          <properties />
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/CamundaModelReader.java</url>
+          <line>295</line>
+          <properties />
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABLoopBlock.java</url>
+          <line>95</line>
+          <properties />
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="this.subBlocks[1]" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>this.dataSchema.getCaseVariables()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>this.dataSchema.getConstants().get(cName)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>this.dataSchema.getConstants().get(cname)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>cName</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>variable.getSort().getSortName()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentNode.getSucceedingNodes().list()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>EevarManager.</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>relation.getAttributes().size()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataSchema.getConstants().get(second).getSort().getSortName()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/EevarManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="53" column="54" lean-forward="true" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
+          <folding>
+            <element signature="e#1867#1868#0" expanded="true" />
+            <element signature="e#1909#1910#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABErrorEventBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="111" column="13" lean-forward="true" selection-start-line="111" selection-start-column="13" selection-end-line="111" selection-end-column="13" />
+          <folding>
+            <element signature="e#4852#4853#0" expanded="true" />
+            <element signature="e#4889#4890#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/SafetyPropertyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABSequenceBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/ProcessBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="40" lean-forward="true" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/providers/PossibleCompletionProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABProcessBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="24" column="11" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/MCMTTranslatable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/PossibleCompletion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/elements/CaseVariable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="54" column="5" lean-forward="true" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABPossibleCompletionBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="577">
+          <caret line="61" column="45" lean-forward="true" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABRepositoryRelation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1785">
+          <caret line="133" column="97" selection-start-line="133" selection-start-column="97" selection-end-line="133" selection-end-column="97" />
+          <folding>
+            <element signature="e#2040#2041#0" expanded="true" />
+            <element signature="e#2089#2090#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABCatalogRelation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-723">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABCaseVariable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1053">
+          <caret line="84" column="78" lean-forward="true" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/CatalogTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/ConstantTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
+          <folding>
+            <element signature="e#413#414#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="42" column="13" lean-forward="true" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/ConjunctiveSelectQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3142">
+          <caret line="262" column="25" selection-start-line="262" selection-start-column="15" selection-end-line="262" selection-end-column="25" />
+          <folding>
+            <element signature="e#10555#10556#0" expanded="true" />
+            <element signature="e#10595#10596#0" expanded="true" />
+            <element signature="e#10908#10909#0" expanded="true" />
+            <element signature="e#10956#10957#0" expanded="true" />
+            <element signature="e#11122#11123#0" expanded="true" />
+            <element signature="e#11155#11156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/SortTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/RepositoryTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/CaseVariableTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="39" column="57" selection-start-line="39" selection-start-column="57" selection-end-line="39" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/utils/SQL/SelectParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="47" column="55" selection-start-line="47" selection-start-column="55" selection-end-line="47" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DABAttribute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="e#1684#1685#0" expanded="true" />
+            <element signature="e#1823#1824#0" expanded="true" />
+            <element signature="e#1856#1857#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/BulkConditionParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/DataSchema.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkCondition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="21" column="78" lean-forward="true" selection-start-line="21" selection-start-column="78" selection-end-line="21" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/camunda/bpm/model/camunda-bpmn-model/7.12.0/camunda-bpmn-model-7.12.0-sources.jar!/org/camunda/bpm/model/bpmn/impl/instance/BaseElementImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="76" selection-start-line="76" selection-end-line="76" />
+          <folding>
+            <element signature="e#3091#3092#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/EmptyTransition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="24" column="105" lean-forward="true" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="105" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/BulkUpdate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="68" column="7" lean-forward="true" selection-start-line="68" selection-start-column="7" selection-end-line="68" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/DeleteTransition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="47" column="105" selection-start-line="47" selection-start-column="105" selection-end-line="47" selection-end-column="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../models/bpm21-test/comments.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="25" lean-forward="true" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/blocks/DeferredChoiceBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bpmn-model-translations/MortgageB2_MCMT-Translation.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="46" column="26" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABDeferredChoiceBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="21" column="11" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/ProcessSchema.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1308#1309#0" expanded="true" />
+            <element signature="e#1371#1372#0" expanded="true" />
+            <element signature="e#1441#1442#0" expanded="true" />
+            <element signature="e#1506#1507#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABExclusiveChoiceBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="698">
+          <caret line="111" column="62" selection-start-line="111" selection-start-column="62" selection-end-line="111" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="36" column="25" lean-forward="true" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="25" />
+          <folding>
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#592#593#0" expanded="true" />
+            <element signature="e#753#754#0" expanded="true" />
+            <element signature="e#800#801#0" expanded="true" />
+            <element signature="e#713#714#0" expanded="true" />
+            <element signature="e#762#763#0" expanded="true" />
+            <element signature="e#878#879#0" expanded="true" />
+            <element signature="e#1442#1443#0" expanded="true" />
+            <element signature="e#1474#1475#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemVariables.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/dataschema/core/SystemSorts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="3" lean-forward="true" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bpmn-model-translations/MortgageB4_MCMT-Translation.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="195" column="24" lean-forward="true" selection-start-line="195" selection-start-column="24" selection-end-line="195" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/EmptyBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1132#1133#0" expanded="true" />
+            <element signature="e#1169#1170#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/verification/mcmt/translation/DABProcessTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="37" lean-forward="true" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/CamundaModelReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5054">
+          <caret line="341" column="17" selection-start-line="341" selection-start-column="17" selection-end-line="341" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4330#4331#0" expanded="true" />
+            <element signature="e#4368#4369#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/processschema/core/DABLoopBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1410">
+          <caret line="96" column="57" selection-start-line="96" selection-start-column="57" selection-end-line="96" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1742#1743#0" expanded="true" />
+            <element signature="e#1779#1780#0" expanded="true" />
+            <element signature="e#1836#1837#0" expanded="true" />
+            <element signature="e#1873#1874#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/datalogic/InsertTransition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/BinaryExpressionParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/bpmn/parsers/UpdateExpressionParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-828">
+          <caret line="164" column="28" selection-start-line="164" selection-start-column="28" selection-end-line="164" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/unibz/deltabpmn/DEMO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>DAB:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>DAB</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: com.github.jsqlparser:jsqlparser:3.1</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

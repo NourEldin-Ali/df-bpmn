@@ -82,10 +82,20 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 				|| bpmnElement.getElementNode().getParentNode().getLocalName()
 						.equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
 			BDMInformation bdmInfo = new BDMInformation(modelState.getBpmnModel());
-			String[] dataFieldName = bdmInfo.getFieldsForQualifiedName(
-					// parent type
-					bpmnElement.getElementNode().getParentNode().getAttributes().getNamedItem("type").getNodeValue());
-			schemaBuilder.addProperty("name", "string", null, dataFieldName);
+			if (bdmInfo.isConnect()) {
+
+				String[] dataFieldName = bdmInfo.getFieldsForQualifiedName(
+						// parent type
+						bpmnElement.getElementNode().getParentNode().getAttributes().getNamedItem("type")
+								.getNodeValue());
+				schemaBuilder.addProperty("name", "string", null, dataFieldName);
+			} else {
+				schemaBuilder //
+						.addProperty("name", "string", null) //
+						.addProperty("type", "string", null, datatypes) //
+				//
+				;
+			}
 		} else {
 			schemaBuilder //
 					.addProperty("name", "string", null) //
@@ -137,6 +147,7 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 							|| bpmnElement.getElementNode().getParentNode().getLocalName()
 									.equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
 						BDMInformation bdmInfo = new BDMInformation(modelState.getBpmnModel());
+						if(bdmInfo.isConnect()) {
 						String type = bdmInfo.getFieldTypeForQualifiedNameAndField(
 								// parent type
 								bpmnElement.getElementNode().getParentNode().getAttributes().getNamedItem("type")
@@ -145,7 +156,9 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 								text);
 //						bpmnElement.setAttribute("type", type.toLowerCase());
 						bpmnElement.setAttribute("type", type);
-
+						}else {
+							
+						}
 						modelState.reset();
 					}
 //					// update the bpmn-text-node of the GNodeElement
@@ -157,20 +170,20 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 				}
 				continue;
 			}
-			if ("type".equals(feature)) {
-				if (bpmnElement.getElementNode().getParentNode().getLocalName()
-						.equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
-						|| bpmnElement.getElementNode().getParentNode().getLocalName()
-								.equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE)
-						|| bpmnElement.getElementNode().getParentNode().getLocalName()
-								.equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
-					continue;
-				}
-			}
+//			if ("type".equals(feature)) {
+//				if (bpmnElement.getElementNode().getParentNode().getLocalName()
+//						.equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
+//						|| bpmnElement.getElementNode().getParentNode().getLocalName()
+//								.equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE)
+//						|| bpmnElement.getElementNode().getParentNode().getLocalName()
+//								.equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
+//					continue;
+//				}
+//			}
 			bpmnElement.setAttribute(feature, json.getString(feature));
 
 		}
-		 modelState.reset();
+		modelState.reset();
 
 	}
 

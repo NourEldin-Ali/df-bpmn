@@ -1625,15 +1625,20 @@ public class BPMNProcess extends BPMNElement {
 					Map<String, Object> dataInfo = new HashMap<String, Object>();
 					dataInfo.put("type", dataObject.getAttribute("type"));
 					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-					dataInfo.put("attributes", dataObject.getDataAttributes());
+					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					dataInfo.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
 					dataStores.put(dataObject.getName(), dataInfo);
 				} 
 				//already exists
 				else {
+					
 					// append the attributes (net existing attributes
 					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
+					if(Boolean.parseBoolean((String) dataInfoExists.get("readonly"))==false) {
+						dataInfoExists.put("readonly",  dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					}
 					if (dataInfoExists.get("attributes") == null) {
-						dataInfoExists.put("attributes", dataObject.getDataAttributes());
+						dataInfoExists.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
 					} else {
 						//get attributes
 						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");
@@ -1660,15 +1665,21 @@ public class BPMNProcess extends BPMNElement {
 					Map<String, Object> dataInfo = new HashMap<String, Object>();
 					dataInfo.put("type", dataObject.getAttribute("type"));
 					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-					dataInfo.put("attributes", dataObject.getDataAttributes());
+					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					dataInfo.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
 					dataStores.put(dataObject.getName(), dataInfo);
+				
 				} 
 				//already exists
 				else {
 					// append the attributes (net existing attributes
 					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
+					if(Boolean.parseBoolean((String) dataInfoExists.get("readonly"))==false) {
+						dataInfoExists.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					}
+					
 					if (dataInfoExists.get("attributes") == null) {
-						dataInfoExists.put("attributes", dataObject.getDataAttributes());
+						dataInfoExists.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
 					} else {
 						//get attributes
 						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");

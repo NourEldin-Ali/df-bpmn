@@ -59,8 +59,11 @@ public class UpdateExpressionParser {
 			if (precondition.trim().isEmpty())
 				System.out.println("empty precondition from task/event " + taskName);
 //                query = new ConjunctiveSelectQuery();//
-			else
+			else {
 				query = parsePrecondition(precondition, dataSchema);
+				System.out.println(precondition);
+			}
+
 		}
 		// 4. parse one of the effect types and generate the final transition object
 		// (NB: if we have only variables to set, then this is going to be an insert
@@ -81,6 +84,7 @@ public class UpdateExpressionParser {
 			((InsertTransition) transition).insert(
 					dataSchema.getRepositoryRelationAssociations().get(insertComponents.getValue()),
 					insertComponents.getKey());
+			System.out.println(mainStatement);
 		}
 		// if (effects.stream().anyMatch(str -> str.contains("DELETE")))
 		if (mainStatement.contains("DELETE")) {
@@ -92,11 +96,13 @@ public class UpdateExpressionParser {
 			((DeleteTransition) transition).delete(
 					dataSchema.getRepositoryRelationAssociations().get(deleteComponents.getValue()),
 					deleteComponents.getKey());
+			System.out.println(mainStatement);
 		}
 		// if (effects.stream().anyMatch(str -> str.contains("UPDATE")))
 		if (mainStatement.contains("UPDATE")) {
 			// manage the update statement
 			transition = parseUpdateExpression(query, taskName + "UPDATE", mainStatement, dataSchema);
+			System.out.println(mainStatement);
 		}
 
 		// remove from effects the processes string and generate
@@ -128,6 +134,9 @@ public class UpdateExpressionParser {
 				.collect(Collectors.toList());// list user data = list of variable declaration appearing in var clauses
 		varData.forEach((data) -> {
 			if (data.getDataAttributesList().size() == 0) {
+				System.out.println("new variable name: " + data.getName().trim());
+				System.out.println("new variable sort: " + data.getAttribute("type").trim());
+				System.out.println();
 				Sort varSort = dataSchema.newSort(data.getAttribute("type").trim());
 				dataSchema.newCaseVariable(data.getName(), varSort, true);
 				try {
@@ -139,6 +148,9 @@ public class UpdateExpressionParser {
 				}
 			} else {
 				data.getDataAttributesList().forEach((name, type) -> {
+					System.out.println("new variable name: " + data.getName().trim());
+					System.out.println("new variable sort: " + data.getAttribute("type").trim());
+					System.out.println();
 					Sort varSort = dataSchema.newSort(type.trim());
 					dataSchema.newCaseVariable(name, varSort, true);
 					try {
@@ -152,83 +164,20 @@ public class UpdateExpressionParser {
 			}
 		});
 		// 2. parse the precondition => SELECT data from database
-		// get read data store
-		DataOutputObjectExtension preConditionData = activity.getDataOutputObjects().stream().filter((data) -> {
-			return data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
-					&& data.getElementNode().getAttribute("state").contentEquals("read");
-		}).findFirst().orElse(null);
-		if (preConditionData != null) {
-			String select = "";
-			String where = "";
-
-			if (preConditionData.getDataAttributes().size() > 0) {
-				// get selected attributes
-				for (DataObjectAttributeExtension dataAtt : preConditionData.getDataAttributes().stream()
-						.filter((att) -> {
-							// check outgouting dataflow == attribue
-							return activity.getDataFlows().stream()
-									.filter((dataflow) -> dataflow.getSourceRef().contentEquals(att.getId()))
-									.findFirst().orElse(null) != null;
-						}).collect(Collectors.toList())) {
-					select += dataAtt.getName() + ", ";
-
-				}
-
-				select = select.substring(0, select.lastIndexOf(", "));
-				// get where conditions
-				for (DataObjectAttributeExtension dataAtt : preConditionData.getDataAttributes().stream()
-						// check incamming dataflow == attribue
-						.filter((att) -> activity.getDataFlows().stream()
-								.filter((dataflow) -> dataflow.getTargetRef().contentEquals(att.getId())).findFirst()
-								.orElse(null) != null)
-						.collect(Collectors.toList())) {
-					BPMNElementNode dataInput = (BPMNElementNode) activity.findElementById(activity.getDataFlows()
-							.stream().filter((dataflow) -> dataflow.getTargetRef().contentEquals(dataAtt.getId()))
-							.findFirst().orElseThrow().getSourceRef());
-					where += dataAtt.getName() + "=";
-					if (dataInput instanceof DataInputObjectExtension) {
-						if (dataInput.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-							where += "#" + dataInput.getName() + "";
-						} else if (dataInput.getElementNode().getLocalName()
-								.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-							where += "\"" + dataInput.getAttribute("value") + "\"";
-						} else {
-							where += "" + dataInput.getName() + "";
-						}
-					} else if (dataInput instanceof DataObjectAttributeExtension) {
-						if (dataInput.getElementNode().getParentNode().getLocalName()
-								.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-							where += "#" + dataInput.getName() + "";
-						} else if (dataInput.getElementNode().getParentNode().getLocalName()
-								.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-							where += "\"" + dataInput.getAttribute("value") + "\"";
-						} else {
-							where += "" + dataInput.getName() + "";
-						}
-					}
-					where += " AND ";
-				}
-
-			}
-			if (select != "") {
-				precondition = "SELECT " + select + " FROM " + preConditionData.getName() + "";
-			} else {
-				throw new Exception("NO ATTRIBUTE USED IN THIS EXAMPLE");
-			}
-
-			if (where != "") {
-				where = where.substring(0, where.lastIndexOf(" AND "));
-				precondition += " WHERE " + where;
-			}
-		}
+		precondition = parserPrecondition(activity);
 
 		// 3. parse the precondition
 		ConjunctiveSelectQuery query = null;
 		if (!precondition.trim().equals("TRUE")) {
 			if (precondition.trim().isEmpty())
 				System.out.println("empty precondition from task/event " + taskName);
-			else
+			else {
 				query = parsePrecondition(precondition, dataSchema);
+				System.out.print("precondition: ");
+				System.out.println(precondition);
+				System.out.println();
+			}
+
 		}
 		// 4. parse one of the effect types and generate the final transition object
 		// (NB: if we have only variables to set, then this is going to be an insert
@@ -247,6 +196,9 @@ public class UpdateExpressionParser {
 
 		// if (effects.stream().anyMatch(str -> str.contains("INSERT")))
 		if (mainStatement.contains("INSERT")) {
+			System.out.print("Mainstatement: ");
+			System.out.println(mainStatement);
+			System.out.println();
 			if (query == null)
 				transition = new InsertTransition(taskName + "INSERT", dataSchema);
 			else
@@ -255,9 +207,13 @@ public class UpdateExpressionParser {
 			((InsertTransition) transition).insert(
 					dataSchema.getRepositoryRelationAssociations().get(insertComponents.getValue()),
 					insertComponents.getKey());
+
 		}
 		// if (effects.stream().anyMatch(str -> str.contains("DELETE")))
 		if (mainStatement.contains("DELETE")) {
+			System.out.print("Mainstatement: ");
+			System.out.println(mainStatement);
+			System.out.println();
 			if (query == null)
 				transition = new DeleteTransition(taskName + "DELETE", dataSchema);
 			else
@@ -266,11 +222,16 @@ public class UpdateExpressionParser {
 			((DeleteTransition) transition).delete(
 					dataSchema.getRepositoryRelationAssociations().get(deleteComponents.getValue()),
 					deleteComponents.getKey());
+
 		}
 		// if (effects.stream().anyMatch(str -> str.contains("UPDATE")))
 		if (mainStatement.contains("UPDATE")) {
+			System.out.print("Mainstatement: ");
+			System.out.println(mainStatement);
+			System.out.println();
 			// manage the update statement
 			transition = parseUpdateExpression(query, taskName + "UPDATE", mainStatement, dataSchema);
+
 		}
 
 		// remove from effects the processes string and generate
@@ -292,6 +253,9 @@ public class UpdateExpressionParser {
 
 	private static ComplexTransition parseVariableUpdate(String effect, DataSchema dataSchema,
 			ComplexTransition transition) throws Exception {
+		System.out.print("effect: ");
+		System.out.println(effect);
+		System.out.println();
 		String[] operands = effect.split("=");
 		CaseVariable first = (CaseVariable) TermProcessor.processTerm(operands[0].trim(), dataSchema);// first element
 																										// is always #
@@ -467,76 +431,89 @@ public class UpdateExpressionParser {
 			String column = "";
 			// get all data attributes
 			Map<String, Object> dataStoreVariables = activity.getBpmnProcess().getDataStoresExtensions()
-								.get(dataToDelete.getName());
+					.get(dataToDelete.getName());
 //			get object need to delete attribute (table column)
 //			List<String> attributeSort = new ArrayList<String>();
 //			System.out.println(dataStoreVariables.get("attributes").toString());
-			for(DataObjectAttributeExtension dataAtt:(Set<DataObjectAttributeExtension>) dataStoreVariables.get("attributes")){
-				column +=dataAtt.getName() +",";
+			for (DataObjectAttributeExtension dataAtt : (Set<DataObjectAttributeExtension>) dataStoreVariables
+					.get("attributes")) {
+				column += dataAtt.getName() + ",";
 			}
-			column = column.substring(0,column.lastIndexOf(","));
-			System.out.println(column);
-			effects.add("DELETE "+column+" FROM " + dataToDelete.getType());
+			column = column.substring(0, column.lastIndexOf(","));
+//			System.out.println(column);
+			effects.add("DELETE " + column + " FROM " + dataToDelete.getAttribute("type"));
 
 		} else
 
 		// check if insert statement
 		if ((activity.getDataOutputObjects().stream().filter((data) -> {
-			return data.getAttribute("state").contentEquals("init") && data.getElementNode().getLocalName()
-					.contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA);
+			return data.getAttribute("state").contentEquals("init")
+					&& data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE);
 		}).count() > 0)) {
 			DataOutputObjectExtension dataToInsert = activity.getDataOutputObjects().stream().filter((data) -> {
-				return data.getAttribute("state").contentEquals("init") && data.getElementNode().getLocalName()
-						.contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA);
+				return data.getAttribute("state").contentEquals("init")
+						&& data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE);
 			}).collect(Collectors.toList()).iterator().next();
 			// get all data attributes
 			Map<String, Object> dataStoreVariables = activity.getBpmnProcess().getDataStoresExtensions()
 					.get(dataToInsert.getName());
 
 			// order of attributes
-			List<String> attributeSort = new ArrayList<String>();
-			((Map<String, String>) dataStoreVariables.get("attributes")).forEach((name, type) -> {
-				attributeSort.add(name);
+			List<String> allAttributes = new ArrayList<String>();
+			((Set<DataObjectAttributeExtension>) dataStoreVariables.get("attributes")).forEach((att) -> {
+				allAttributes.add(att.getName());
 			});
 
 			String query = "";
 			// to make sure that I have order attributes
-			List<DataObjectAttributeExtension> dataobjects = dataToInsert.getDataAttributes().stream()
+			List<DataObjectAttributeExtension> currentAttributes = dataToInsert.getDataAttributes().stream()
 					.collect(Collectors.toList());
-			for (int j = 0; j <= dataobjects.size(); j++) {
-				for (int i = j; i < attributeSort.size(); i++) {
-					DataObjectAttributeExtension dataAtt = dataobjects.get(j);
-					if (attributeSort.indexOf(dataAtt.getName()) == i) {
-						BPMNElementNode sourceElement = dataAtt.getIngoingSequenceFlows().iterator().next()
-								.getSourceElement();
-						// check type of source object
-						if (sourceElement instanceof DataInputObjectExtension) {
-							if (sourceElement.getElementNode().getLocalName()
-									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-								query += "#" + sourceElement.getName() + "";
-							} else if (sourceElement.getElementNode().getLocalName()
-									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-								query += "\"" + sourceElement.getAttribute("value") + "\"";
-							}
-						} else if (sourceElement instanceof DataObjectAttributeExtension) {
-							if (sourceElement.getElementNode().getParentNode().getLocalName()
-									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-								query += "#" + sourceElement.getName() + "";
-							} else if (sourceElement.getElementNode().getParentNode().getLocalName()
-									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-								query += "\"" + sourceElement.getAttribute("value") + "\"";
-							}
+			int i = 0;
+			for (String selectedAttribute : allAttributes) {
+				if (currentAttributes.stream().filter((a) -> a.getName().contentEquals(selectedAttribute)).findAny()
+						.orElse(null) != null // check if the attribute in the current attribute list
+						&& currentAttributes.get(i).getName().contentEquals(selectedAttribute) // check if the index is
+																								// ok of the order of
+																								// the attributes
+				) {
+					DataObjectAttributeExtension dataAtt = currentAttributes.get(i);
+
+					String sourceRef = activity.getDataFlows().stream()
+							.filter((dataflow) -> dataflow.getTargetRef().contentEquals(dataAtt.getId())).findFirst()
+							.orElseThrow().getSourceRef();
+					BPMNElementNode sourceElement = (BPMNElementNode) activity.findElementById(sourceRef);
+					// check type of source object
+					if (sourceElement instanceof DataInputObjectExtension) {
+						if (sourceElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+							query += "#" + sourceElement.getName() + "";
+						} else if (sourceElement.getElementNode().getLocalName()
+								.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+							query += "" + sourceElement.getAttribute("value") + "";
 						} else {
 							query += sourceElement.getName();
 						}
-						query += ", ";
-						break;
+					} else if (sourceElement instanceof DataObjectAttributeExtension) {
+						if (sourceElement.getElementNode().getParentNode().getLocalName()
+								.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+							query += "#" + sourceElement.getName() + "";
+						} else if (sourceElement.getElementNode().getParentNode().getLocalName()
+								.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+							query += sourceElement.getAttribute("value");
+						} else {
+							query += sourceElement.getName();
+						}
 					} else {
-						query += "NULL, ";
+						query += sourceElement.getName();
 					}
+					query += ", ";
+					i++;
+				} else {
+					query += "NULL, ";
 				}
 			}
-			query = "INSERT " + query.substring(0, query.lastIndexOf(", ")) + " INTO " + dataToInsert.getType();
+
+			query = "INSERT " + query.substring(0, query.lastIndexOf(", ")) + " INTO "
+					+ dataToInsert.getAttribute("type");
 			effects.add(query);
 
 		} else
@@ -556,15 +533,19 @@ public class UpdateExpressionParser {
 			} else if (elementTargetNode.getElementNode().getParentNode().getLocalName()
 					.equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
 				continue;
+			} else if (elementTargetNode.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+				continue;
 			}
-			BPMNElementNode elementSourceNode = dataflow.getSourceElement();
-			if (elementTargetNode.getElementNode().getLocalName()
+			BPMNElementNode elementSourceNode = (BPMNElementNode) activity.findElementById(dataflow.getSourceRef());
+			if (elementSourceNode.getElementNode().getLocalName()
 					.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
-					|| elementTargetNode.getElementNode().getParentNode().getLocalName()
+					|| elementSourceNode.getElementNode().getParentNode().getLocalName()
 							.equals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)) {
 				effects.add("#" + elementTargetNode.getName() + "=" + elementSourceNode.getName());
-			} else if (elementTargetNode.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+			} else if (elementSourceNode.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
 				effects.add("#" + elementTargetNode.getName() + "=" + elementSourceNode.getAttribute("value"));
+			} else {
+				effects.add("#" + elementTargetNode.getName() + "=" + elementSourceNode.getName());
 			}
 		}
 
@@ -583,5 +564,121 @@ public class UpdateExpressionParser {
 		dataSchema.newCaseVariable(varName, varSort, true);
 		dataSchema.addEevar(varName, varSort);
 		return dataSchema;
+	}
+
+	private static String parserPrecondition(Activity activity) throws Exception {
+		String precondition = "";
+		String select = "";
+		String where = "";
+		String table = "";
+
+		List<BPMNElementNode> preconditionData = activity.getDataOutputObjects().stream().filter((data) -> {
+			return data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)
+					&& data.getElementNode().getAttribute("state").contentEquals("read");
+		}).collect(Collectors.toList());
+
+		preconditionData.addAll(activity.getDataInputObjects().stream().filter((data) -> {
+			return data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE);
+		}).collect(Collectors.toList()));
+		for (BPMNElementNode cond : preconditionData) {
+			if (cond instanceof DataOutputObjectExtension) {
+				// get read data store
+				DataOutputObjectExtension preConditionOut = (DataOutputObjectExtension) cond;
+				if (preConditionOut.getDataAttributes().size() > 0) {
+					// get selected attributes
+					for (DataObjectAttributeExtension dataAtt : preConditionOut.getDataAttributes().stream()
+							.filter((att) -> {
+								// check outgouting dataflow == attribue
+								return activity.getDataFlows().stream()
+										.filter((dataflow) -> dataflow.getSourceRef().contentEquals(att.getId()))
+										.findFirst().orElse(null) != null;
+							}).collect(Collectors.toList())) {
+
+						select += dataAtt.getName() + ", ";
+					}
+
+					// get where conditions
+					for (DataObjectAttributeExtension dataAtt : preConditionOut.getDataAttributes().stream()
+							// check incaming dataflow == attributes
+							.filter((att) -> activity.getDataFlows().stream()
+									.filter((dataflow) -> dataflow.getTargetRef().contentEquals(att.getId()))
+									.findFirst().orElse(null) != null)
+							.collect(Collectors.toList())) {
+						BPMNElementNode dataInput = (BPMNElementNode) activity.findElementById(activity.getDataFlows()
+								.stream().filter((dataflow) -> dataflow.getTargetRef().contentEquals(dataAtt.getId()))
+								.findFirst().orElseThrow().getSourceRef());
+						where += dataAtt.getName() + "=";
+						if (dataInput instanceof DataInputObjectExtension) {
+							if (dataInput.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+								where += "#" + dataInput.getName() + "";
+							} else if (dataInput.getElementNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+								where += "\"" + dataInput.getAttribute("value") + "\"";
+							} else {
+								where += "" + dataInput.getName() + "";
+							}
+						} else if (dataInput instanceof DataObjectAttributeExtension) {
+							if (dataInput.getElementNode().getParentNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+								where += "#" + dataInput.getName() + "";
+							} else if (dataInput.getElementNode().getParentNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+								where += "\"" + dataInput.getAttribute("value") + "\"";
+							} else {
+								where += "" + dataInput.getName() + "";
+							}
+						}
+						where += " AND ";
+					}
+					table += cond.getAttribute("type") + ", ";
+				}
+
+			} else {
+				// get data store inputs
+				// work on one data
+				// TODO: multi data
+				DataInputObjectExtension preConditionIn = activity.getDataInputObjects().stream().filter((data) -> {
+					return data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE);
+				}).findFirst().orElse(null);
+
+				if (preConditionIn != null) {
+					if (preConditionIn.getDataAttributes().size() > 0) {
+						// get selected attributes
+						for (DataObjectAttributeExtension dataAtt : preConditionIn.getDataAttributes().stream()
+								.filter((att) -> {
+									// check outgouting dataflow == attribue
+									return activity.getDataFlows().stream()
+											.filter((dataflow) -> dataflow.getSourceRef().contentEquals(att.getId()))
+											.findFirst().orElse(null) != null;
+								}).collect(Collectors.toList())) {
+
+							select += dataAtt.getName() + ", ";
+						}
+
+						table += cond.getAttribute("type") + ", ";
+					}
+				}
+			}
+		}
+		if (preconditionData.size() > 0) {
+			if (select != "") {
+				if (table != "") {
+					table = table.substring(0, table.lastIndexOf(", "));
+
+				} else {
+					throw new Exception("NO TABLE ADDED IN THIS EXAMPLE");
+				}
+				select = select.substring(0, select.lastIndexOf(", "));
+				precondition = "SELECT " + select + " FROM " + table + "";
+			} else {
+				throw new Exception("NO ATTRIBUTE USED IN THIS EXAMPLE");
+			}
+
+			if (where != "") {
+				where = where.substring(0, where.lastIndexOf(" AND "));
+				precondition += " WHERE " + where;
+			}
+		}
+		return precondition;
 	}
 }

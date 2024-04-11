@@ -116,6 +116,14 @@ public class DefaultBPMNDataOutputExtension extends AbstractBPMNElementExtension
 
 		;
 
+		if (bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
+			dataBuilder.addData("isReadOnly",
+					bpmnElement.getAttribute("isReadOnly").contentEquals("true") ? true : false);
+			schemaBuilder.addProperty("isReadOnly", "boolean", null); //
+			uiSchemaBuilder.addElements("isReadOnly");
+		}
 	}
 
 	@Override
@@ -154,6 +162,10 @@ public class DefaultBPMNDataOutputExtension extends AbstractBPMNElementExtension
 				bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
 				continue;
 			}
+			  if ("isReadOnly".equals(feature)) {
+	                bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
+	                continue;
+	            }
 			bpmnElement.setAttribute(feature, json.getString(feature));
 			modelState.reset();
 

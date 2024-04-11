@@ -81,7 +81,7 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
 				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ||
 				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
 			BDMInformation bdmInfo = new BDMInformation(modelState.getBpmnModel());
-			datatypes = bdmInfo.getAllBusinessObjects();
+			datatypes = bdmInfo.getAllBusinessObjects();      
 		}
 				
 		schemaBuilder //
@@ -112,6 +112,15 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
         dataBuilder.addData("isMultiple", bpmnElement.getAttribute("isMultiple").contentEquals("true") ? true : false);
         schemaBuilder.addProperty("isMultiple", "boolean", null); //
         uiSchemaBuilder.addElements("isMultiple");
+        
+        if (bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE) ||
+				bpmnElement.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENT_DATA_STORE)) {
+			dataBuilder.addData("isReadOnly",
+					bpmnElement.getAttribute("isReadOnly").contentEquals("true") ? true : false);
+			schemaBuilder.addProperty("isReadOnly", "boolean", null); //
+			uiSchemaBuilder.addElements("isReadOnly");
+		}
     }
 
     @Override
@@ -146,6 +155,11 @@ public class DefaultBPMNDataInputExtension extends AbstractBPMNElementExtension 
             }
 
             if ("isMultiple".equals(feature)) {
+                bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
+                continue;
+            }
+            
+            if ("isReadOnly".equals(feature)) {
                 bpmnElement.setAttribute(feature, json.getBoolean(feature) == true ? "true" : "false");
                 continue;
             }

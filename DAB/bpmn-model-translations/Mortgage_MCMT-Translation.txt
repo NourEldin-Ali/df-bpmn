@@ -1,0 +1,2964 @@
+:max_transitions_number 500
+:index int
+:smt (define-type StringSort)
+:smt (define-type boolean)
+:smt (define-type string)
+:smt (define-type Bool)
+:smt (define-type integer)
+
+
+:smt (define CompletedApplication ::string)
+:smt (define NotInterested ::string)
+:smt (define Yes ::boolean)
+:smt (define RejectSent ::string)
+:smt (define OfferMade ::string)
+:smt (define Enabled ::StringSort)
+:smt (define Error ::StringSort)
+:smt (define True ::Bool)
+:smt (define False ::Bool)
+:smt (define InfoProvided ::string)
+:smt (define Archived ::string)
+:smt (define FillApplication ::string)
+:smt (define Active ::StringSort)
+:smt (define ActiveAllPath ::StringSort)
+:smt (define ActiveOnePath ::StringSort)
+:smt (define Idle ::StringSort)
+:smt (define AssessmentMade ::string)
+:smt (define Completed ::StringSort)
+
+:db_driven ENTRY
+:db_sorts StringSort boolean string Bool integer 
+:db_functions 
+:db_constants CompletedApplication NotInterested Yes RejectSent OfferMade Enabled Error True False InfoProvided Archived FillApplication Active ActiveAllPath ActiveOnePath Idle AssessmentMade Completed 
+
+:local Archive1 integer
+:local BankAccount1 integer
+:local BankAccount2 string
+:local BankAccount3 string
+:local Info1 string
+:local Info2 string
+:local Info3 boolean
+
+:global lifecycleTask30ibHA StringSort
+:global lifecycleSEQBlock9 StringSort
+:global lifecycleTaskTR370Q StringSort
+:global lifecycleSEQBlock8 StringSort
+:global lifecycleMortgage StringSort
+:global lifecycleSEQblock1 StringSort
+:global lifecycleSEQblock2 StringSort
+:global lifecycleSEQblock3 StringSort
+:global lifecycleXORChoiceblock2 StringSort
+:global lifecycleTaskRV9Qww StringSort
+:global lifecycleTaskIFQd9w StringSort
+:global #amount integer
+:global #status string
+:global lifecycleTaskKlW0WQ StringSort
+:global lifecycleEventUYxesQ StringSort
+:global lifecycleEmpty StringSort
+:global #statusInfo string
+:global lifecycleEventYqGkAQ StringSort
+:global lifecycleGateway0Swlcg StringSort
+:global #duration integer
+:global #cid integer
+:global #bid string
+:global lifecycleLOOPBlock1 StringSort
+:global lifecycleTaskB0ndEg StringSort
+:global lifecycleTaskPQXHsA StringSort
+:global lifecycleXORblock1 StringSort
+:global #Mid integer
+:global #liability boolean
+:global lifecycleTaskVknxzQ StringSort
+:global lifecycleSEQBlock5 StringSort
+:global lifecycleSEQBlock4 StringSort
+:global lifecycleTaskSwJgJg StringSort
+:global lifecycleSEQBlock7 StringSort
+:global lifecycleSEQBlock6 StringSort
+
+:initial
+:var x
+:cnj (= Archive1[x] NULL_integer) (= BankAccount1[x] NULL_integer) (= BankAccount2[x] NULL_string) (= BankAccount3[x] NULL_string) (= Info1[x] NULL_string) (= Info2[x] NULL_string) (= Info3[x] NULL_boolean)  (= lifecycleTask30ibHA Idle) (= lifecycleSEQBlock9 Idle) (= lifecycleTaskTR370Q Idle) (= lifecycleSEQBlock8 Idle) (= lifecycleMortgage Enabled) (= lifecycleSEQblock1 Idle) (= lifecycleSEQblock2 Idle) (= lifecycleSEQblock3 Idle) (= lifecycleXORChoiceblock2 Idle) (= lifecycleTaskRV9Qww Idle) (= lifecycleTaskIFQd9w Idle) (= #amount NULL_integer) (= #status NULL_string) (= lifecycleTaskKlW0WQ Idle) (= lifecycleEventUYxesQ Idle) (= lifecycleEmpty NULL_StringSort) (= #statusInfo NULL_string) (= lifecycleEventYqGkAQ Idle) (= lifecycleGateway0Swlcg Idle) (= #duration NULL_integer) (= #cid NULL_integer) (= #bid NULL_string) (= lifecycleLOOPBlock1 Idle) (= lifecycleTaskB0ndEg Idle) (= lifecycleTaskPQXHsA Idle) (= lifecycleXORblock1 Idle) (= #Mid NULL_integer) (= #liability NULL_boolean) (= lifecycleTaskVknxzQ Idle) (= lifecycleSEQBlock5 Idle) (= lifecycleSEQBlock4 Idle) (= lifecycleTaskSwJgJg Idle) (= lifecycleSEQBlock7 Idle) (= lifecycleSEQBlock6 Idle) 
+:u_cnj (not (= #status Archived)) (= lifecycleMortgage Completed) 
+:eevar h string
+:eevar d string
+:eevar e string
+:eevar g string
+:eevar a integer
+:eevar b integer
+:eevar c integer
+:eevar f boolean
+:comment [t1] = Mortgage--{1st}
+:transition
+:var j
+:guard (= lifecycleMortgage Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val Enabled
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val Active
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t2] = Mortgage--{2nd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock9 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val Idle
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val Completed
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t3] = SEQBlock9--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock9 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val Active
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val Enabled
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t4] = SEQBlock9--{2nd}
+:transition
+:var j
+:guard (= lifecycleTaskVknxzQ Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val Enabled
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val Idle
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t5] = SEQBlock9--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock8 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val Completed
+:val lifecycleTaskTR370Q
+:val Idle
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t6] = task_VknxzQSET
+:transition
+:var j
+:var x
+:guard (= Archive1[x] a) (= lifecycleTaskVknxzQ Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val a
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val Completed
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t7] = SEQBlock8--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock8 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val Active
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Enabled
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t8] = SEQBlock8--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Idle
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val Enabled
+:val lifecycleSEQBlock6
+
+
+:comment [t9] = SEQBlock8--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock7 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val Completed
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val Idle
+:val lifecycleSEQBlock6
+
+
+:comment [t10] = XORblock1--{1st}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val Enabled
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Active
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t11] = XORblock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Enabled
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Active
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t12] = XORblock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQblock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val Idle
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Completed
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t13] = XORblock1--{4th}
+:transition
+:var j
+:guard (= lifecycleSEQblock2 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Idle
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val Completed
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t14] = SEQblock1--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val Active
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val Enabled
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t15] = SEQblock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleEventUYxesQ Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val Enabled
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val Idle
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t16] = SEQblock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleTaskRV9Qww Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val Completed
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val Idle
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t17] = event_UYxesQSET
+:transition
+:var j
+:guard (= lifecycleEventUYxesQ Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val NotInterested
+:val lifecycleTaskKlW0WQ
+:val Completed
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t18] = task_RV9QwwINSERT
+:transition
+:var j
+:var x
+:guard (= Archive1[x] NULL_integer) (= lifecycleTaskRV9Qww Enabled)
+:numcases 2
+:case (= j x)
+:val #cid
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val Completed
+:val lifecycleTaskIFQd9w
+:val #amount
+:val Archived
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val Completed
+:val lifecycleTaskIFQd9w
+:val #amount
+:val Archived
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t19] = SEQblock2--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQblock2 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Active
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val Enabled
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t20] = SEQblock2--{2nd}
+:transition
+:var j
+:guard (= lifecycleEventYqGkAQ Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val Idle
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val Enabled
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t21] = SEQblock2--{3rd}
+:transition
+:var j
+:guard (= lifecycleTaskSwJgJg Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Completed
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val Idle
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t22] = event_YqGkAQSET
+:transition
+:var j
+:guard (= lifecycleEventYqGkAQ Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val FillApplication
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val Completed
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t23] = task_SwJgJgSET
+:transition
+:var j
+:guard (not (= a NULL_integer)) (= lifecycleTaskSwJgJg Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val b
+:val CompletedApplication
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val c
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val a
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val Completed
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t24] = SEQBlock7--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock7 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val Enabled
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val Active
+:val lifecycleSEQBlock6
+
+
+:comment [t25] = SEQBlock7--{2nd}
+:transition
+:var j
+:guard (= lifecycleGateway0Swlcg Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val Idle
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val Enabled
+
+
+:comment [t26] = SEQBlock7--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock6 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val Completed
+:val Idle
+
+
+:comment [t27] = Gateway0Swlcg--{1st}
+:transition
+:var j
+:guard (= lifecycleGateway0Swlcg Enabled) (not (= #status Archived)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val Completed
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t28] = Gateway0Swlcg--{2nd}
+:transition
+:var j
+:guard (= lifecycleGateway0Swlcg Enabled) (= #status Archived) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val Completed
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val Error
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t29] = SEQBlock6--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock6 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val Enabled
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val Active
+
+
+:comment [t30] = SEQBlock6--{2nd}
+:transition
+:var j
+:guard (= lifecycleLOOPBlock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val Idle
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val Enabled
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t31] = SEQBlock6--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock5 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val Idle
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val Completed
+
+
+:comment [t32] = LOOPBlock1--{1st}
+:transition
+:var j
+:guard (= lifecycleLOOPBlock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val Active
+:val Enabled
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t33] = LOOPBlock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleTaskB0ndEg Completed) (not (= #statusInfo InfoProvided)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val Enabled
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Idle
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t34] = LOOPBlock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleEmpty Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val Idle
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Enabled
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t35] = LOOPBlock1--{4th}
+:transition
+:var j
+:guard (= lifecycleTaskB0ndEg Completed) (= #statusInfo InfoProvided) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val Completed
+:val Idle
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t36] = task_b0ndEgINSERT
+:transition
+:var j
+:var x
+:var y
+:guard (= Info1[x] d) (= Info2[x] e) (= Info3[x] f) (= BankAccount1[y] a) (= BankAccount2[y] e) (= BankAccount3[y] g) (= a #cid) (= Info1[y] NULL_string) (= Info2[y] NULL_string) (= Info3[y] NULL_boolean) (= lifecycleTaskB0ndEg Enabled)
+:numcases 2
+:case (= j y)
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val g
+:val e
+:val NULL_boolean
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val h
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Completed
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val h
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Completed
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t37] = arrowEmptyBlockTransition
+:transition
+:var j
+:guard (= True True)(= lifecycleEmpty Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val Completed
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t38] = SEQBlock5--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock5 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Enabled
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val Active
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t39] = SEQBlock5--{2nd}
+:transition
+:var j
+:guard (= lifecycleTask30ibHA Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Idle
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val Enabled
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t40] = SEQBlock5--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock4 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val Completed
+:val Idle
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t41] = task_30ibHASET
+:transition
+:var j
+:var x
+:guard (= Info1[x] h) (= Info2[x] d) (= Info3[x] f) (= lifecycleTask30ibHA Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Completed
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val AssessmentMade
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t42] = SEQBlock4--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock4 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val Enabled
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val Active
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t43] = SEQBlock4--{2nd}
+:transition
+:var j
+:guard (= lifecycleTaskIFQd9w Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val Enabled
+:val lifecycleTaskRV9Qww
+:val Idle
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t44] = SEQBlock4--{3rd}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val Idle
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val Completed
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t45] = task_iFQd9wDELETE
+:transition
+:var j
+:var x
+:guard (= Info1[x] h) (= Info2[x] d) (= Info3[x] f) (= Info2[x] d) (= lifecycleTaskIFQd9w Enabled)
+:numcases 2
+:case (= j x)
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val NULL_string
+:val NULL_string
+:val NULL_boolean
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val Completed
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val h
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val f
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val Completed
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val h
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val f
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+:comment [t46] = XORChoiceblock2--{1st}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Enabled) (= #liability Yes) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Enabled
+:val Active
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t47] = XORChoiceblock2--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Enabled) (not (= #liability Yes)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val Enabled
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val Active
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t48] = XORChoiceblock2--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQblock3 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Idle
+:val Completed
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t49] = XORChoiceblock2--{4th}
+:transition
+:var j
+:guard (= lifecycleTaskTR370Q Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val Idle
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val Completed
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t50] = SEQblock3--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQblock3 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Active
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val Enabled
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t51] = SEQblock3--{2nd}
+:transition
+:var j
+:guard (= lifecycleTaskPQXHsA Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val Enabled
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val Idle
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t52] = SEQblock3--{3rd}
+:transition
+:var j
+:guard (= lifecycleTaskKlW0WQ Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Completed
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val Idle
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t53] = TaskPQXHsATaskTransition
+:transition
+:var j
+:guard (= True True)(= lifecycleTaskPQXHsA Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val #status
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val Completed
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t54] = task_KlW0WQSET
+:transition
+:var j
+:guard (= lifecycleTaskKlW0WQ Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val lifecycleTaskTR370Q
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val OfferMade
+:val Completed
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t55] = task_tR370QSET
+:transition
+:var j
+:guard (= lifecycleTaskTR370Q Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val BankAccount1[j]
+:val BankAccount2[j]
+:val BankAccount3[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleTask30ibHA
+:val lifecycleSEQBlock9
+:val Completed
+:val lifecycleSEQBlock8
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleSEQblock3
+:val lifecycleXORChoiceblock2
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
+:val #amount
+:val RejectSent
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
+:val lifecycleEmpty
+:val #statusInfo
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
+:val lifecycleTaskPQXHsA
+:val lifecycleXORblock1
+:val #Mid
+:val #liability
+:val lifecycleTaskVknxzQ
+:val lifecycleSEQBlock5
+:val lifecycleSEQBlock4
+:val lifecycleTaskSwJgJg
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+

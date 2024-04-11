@@ -130,6 +130,21 @@ public class BPMNModelValidator implements ModelValidator {
 							MarkerKind.ERROR);
 				}
 			}
+
+			DataOutputObjectExtension bpmnElement = (DataOutputObjectExtension) modelState.getBpmnModel()
+					.findElementDataExtensionNodeById(element.getId());
+			if (bpmnElement != null) {
+				if (!bpmnElement.getAttribute("state").contentEquals("read")) {
+					Map<String, Object> values = modelState.getBpmnModel().openDefaultProces().getDataStoresExtensions()
+							.get(bpmnElement.getName());
+//					System.out.println(values.get("readonly"));
+					if (Boolean.parseBoolean((String) values.get("readonly")) == true) {
+						return new Marker("Node",
+								"The data store output is read only data object, should not used as output data for insert/update/delete",
+								element.getId(), MarkerKind.ERROR);
+					}
+				}
+			}
 		}
 
 		// check attribute
@@ -137,6 +152,7 @@ public class BPMNModelValidator implements ModelValidator {
 			// check the attribute of the attribute if data store output with state "delete"
 			GNode parentElement = (GNode) element.getParent();
 			if (parentElement.getType().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
+//				Map<String, Map<String, Object>> dataStoreVariables = openProcess.getDataStoresExtensions();
 
 				Map<String, Object> parentData = new Gson().fromJson(
 						(String) parentElement.getArgs().get("JSONFormsData"),
@@ -217,7 +233,7 @@ public class BPMNModelValidator implements ModelValidator {
 				boolean hasAttribute = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "attribute");
 				boolean isConnectedToInput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "incoming");
 				boolean isConnectedToOutput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
-				if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute) {
+				if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute && ! bpmnOutputElement.getAttribute("state").contentEquals("delete")) {
 					return new Marker("Node", "Data attribute should be connect to other data object", element.getId(),
 							MarkerKind.ERROR);
 				}
@@ -229,21 +245,22 @@ public class BPMNModelValidator implements ModelValidator {
 
 	// create a dummy marker
 	protected Marker validateDataFlow(final GEdge element) {
-		System.out.println(element.getTarget().getType());
-		System.out.println(element.getSourceId());
-		System.out.println(element.getTargetId());
+//		System.out.println(element.getTarget().getType());
+//		System.out.println(element.getSourceId());
+//		System.out.println(element.getTargetId());
 
 		if (element.getTarget().getType().contentEquals(BPMNTypes.DATA_PROCESSING)
 				|| element.getSource().getType().contentEquals(BPMNTypes.DATA_PROCESSING)) {
 			return null;
 		}
-		
+
 		BPMNElement source = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getSourceId());
 		BPMNElement target = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getTargetId());
-		
-		if(source.hasAttribute("type") && target.hasAttribute("type") ) {
-			if(!source.getAttribute("type").contentEquals(target.getAttribute("type"))) {
-				return new Marker("Edge", "The source and hte target should have the same type", element.getId(), MarkerKind.ERROR);
+
+		if (source.hasAttribute("type") && target.hasAttribute("type")) {
+			if (!source.getAttribute("type").contentEquals(target.getAttribute("type"))) {
+				return new Marker("Edge", "The source and hte target should have the same type", element.getId(),
+						MarkerKind.ERROR);
 			}
 		}
 		return null;

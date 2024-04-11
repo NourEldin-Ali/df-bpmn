@@ -103,8 +103,8 @@ public class DfbpmnModelReader {
 		this.processSchema = new ProcessSchema(dataSchema);
 
 		this.processName = this.modelInstanceNew.openDefaultProces().getName();
-		System.out.println(this.processName);
-		System.out.println("-----------------------");
+//		System.out.println(this.processName);
+//		System.out.println("-----------------------");
 		this.dabProcess = processSchema.newProcessBlock(processName);
 		dfbpmnModelExplorer();
 		this.dabProcess.addBlock(this.stackBlocks.pop());
@@ -192,28 +192,33 @@ public class DfbpmnModelReader {
 
 				}
 				// ****************************************
-				
-				//****************************************
-                //process a CATCH Event (should be only message or timer)
-                //****************************************
+
+				// ****************************************
+				// process a CATCH Event (should be only message or timer)
+				// ****************************************
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.CATCH_EVENT)
-						&& !currentNode.getIngoingSequenceFlows().isEmpty() && !currentNode.getOutgoingSequenceFlows().isEmpty()) {
-                
-                    // --> (E) -->
-                    System.out.println("--------[Catch EVENT] : " + currentNode.getId() +" - " + currentNode.getName());
-                    newFrontier.stream().forEach(c -> bpmnNodeQueueNew.addFirst(c));
-                    visitedNodesNew.add(currentNode);
-                    it.unibz.deltabpmn.processschema.blocks.Event eventBlock;
-                    Event event = (Event) currentNode;
-                    Set<Element> conditionalEventDefinition = event.getEventDefinitionsByType("conditionalEventDefinition");
-                    if (conditionalEventDefinition.size() > 0) 
-                        eventBlock = processSchema.newEvent(currentNode.getId(), UpdateExpressionParser.parse(currentNode.getId(), conditionalEventDefinition, dataSchema));
-                    else
-                        eventBlock = processSchema.newEvent(currentNode.getId());
-                    stackBlocks.push(eventBlock);
-                    //ToDo: in our case, Catch Events can be only of certain types --> NARROW THE SCOPE
-                }
-                //****************************************
+						&& !currentNode.getIngoingSequenceFlows().isEmpty()
+						&& !currentNode.getOutgoingSequenceFlows().isEmpty()) {
+
+					// --> (E) -->
+					System.out
+							.println("--------[Catch EVENT] : " + currentNode.getId() + " - " + currentNode.getName());
+					newFrontier.stream().forEach(c -> bpmnNodeQueueNew.addFirst(c));
+					visitedNodesNew.add(currentNode);
+					it.unibz.deltabpmn.processschema.blocks.Event eventBlock;
+					Event event = (Event) currentNode;
+					Set<Element> conditionalEventDefinition = event
+							.getEventDefinitionsByType("conditionalEventDefinition");
+					if (conditionalEventDefinition.size() > 0)
+						eventBlock = processSchema.newEvent(currentNode.getId(), UpdateExpressionParser
+								.parse(currentNode.getId(), conditionalEventDefinition, dataSchema));
+					else
+						eventBlock = processSchema.newEvent(currentNode.getId());
+					stackBlocks.push(eventBlock);
+					// ToDo: in our case, Catch Events can be only of certain types --> NARROW THE
+					// SCOPE
+				}
+				// ****************************************
 				// ****************************************
 				// process a Task
 				// ****************************************
@@ -222,7 +227,7 @@ public class DfbpmnModelReader {
 					System.out.println("--------[TASK] : " + currentNode.getId() + "-" + currentNode.getName());
 					newFrontier.stream().forEach(c -> bpmnNodeQueueNew.addFirst(c));
 					visitedNodesNew.add(currentNode);
-					System.out.println(currentNode.getName());
+//					System.out.println(currentNode.getName());
 					// start parsing the task data update (if any is available)
 					it.unibz.deltabpmn.processschema.blocks.Task taskBlock;
 					int dataObjects = ((Activity) currentNode).getAllNodes().size();
@@ -244,7 +249,8 @@ public class DfbpmnModelReader {
 				// AND split
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.PARALLEL_GATEWAY)
 						&& currentNode.getIngoingSequenceFlows().size() == 1) {
-					System.out.println("--------[Parallel SPLIT] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println(
+							"--------[Parallel SPLIT] : " + currentNode.getId() + " - " + currentNode.getName());
 					// the order has to be reversed as forEach reverses the order of added elements;
 					// when we start forking, add the frontier to the front of the deque
 					newFrontier.stream().collect(
@@ -261,7 +267,8 @@ public class DfbpmnModelReader {
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.PARALLEL_GATEWAY)
 						&& currentNode.getIngoingSequenceFlows().size() == 2) {
 
-					System.out.println("--------[Parallel JOIN] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println(
+							"--------[Parallel JOIN] : " + currentNode.getId() + " - " + currentNode.getName());
 					// if it has two inputs and the next element is in visited ==> can be backward
 					// exception or loop block!
 					visitedEndGatesNew.merge(currentNode, 1, (prev, one) -> prev + one);// does upsert into the map with
@@ -311,16 +318,13 @@ public class DfbpmnModelReader {
 				// process a Exclusive Choice block
 				// ****************************************
 				// XOR split
-//                && currentNode.getSucceedingNodes().filterByType(EndEvent.class).list().isEmpty() //to check that it's not a possible completion block
-				System.out.println(lookAheadLoop(newFrontier, this.visitedOpenXORLoopGatesNew));
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.EXCLUSIVE_GATEWAY)
 						&& currentNode.getIngoingSequenceFlows().size() == 1
-						&& !currentNode.getIngoingSequenceFlows().stream()
+						&& !currentNode.getOutgoingSequenceFlows().stream()
 								.anyMatch((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
-										.equals(BPMNTypes.END_EVENT)) // to check that it's not a possible
-																				// completion block
+										.equals(BPMNTypes.END_EVENT)) // to check that it's not a possible completion block
 						&& lookAheadLoop(newFrontier, this.visitedOpenXORLoopGatesNew) == null) {
-					System.out.println("--------[XOR SPLIT] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println("--------[XOR SPLIT] : " + currentNode.getId() + " - " + currentNode.getName());
 					// the order has to be reversed as forEach reverses the order of added elements;
 					// when we start forking, add the frontier to the front of the deque
 					newFrontier.stream().collect(
@@ -332,7 +336,8 @@ public class DfbpmnModelReader {
 					String condition = currentNode.getAttribute("condition");
 					// ToDo: do we always force a condition in the gate for a XOR split?
 					if (condition.isEmpty())
-						throw new Exception("The condition of the XOR split " + currentNode.getId() + " "+ currentNode.getName() +" is empty!");
+						throw new Exception("The condition of the XOR split " + currentNode.getId() + " "
+								+ currentNode.getName() + " is empty!");
 					XORSplitGate gate = new XORSplitGate(currentNode.getId(),
 							GatewayConditionParser.parseGatewayCondition(condition, this.dataSchema));
 					visitedXORSplitGates.push(gate);
@@ -347,7 +352,7 @@ public class DfbpmnModelReader {
 						&& currentNode.getIngoingSequenceFlows().size() == 2
 						&& isExclusiveChoiceXORJoin(currentNode, this.bpmnNodeQueueNew, this.visitedNodesNew,
 								this.visitedXORSplitGates, this.modelInstanceNew)) {
-					System.out.println("--------[XOR JOIN] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println("--------[XOR JOIN] : " + currentNode.getId() + " - " + currentNode.getName());
 					// ToDO: when we have two incoming arrows, it can mean that we're dealing with a
 					// gateway of a backward (or forward) exception or a loop block!
 					// if it has two inputs and the next element is in visited ==> can be backward
@@ -439,7 +444,7 @@ public class DfbpmnModelReader {
 						&& currentNode.getIngoingSequenceFlows().size() == 2) {
 
 //                if (currentNode instanceof ExclusiveGateway && currentNode.getIncoming().size() == 2) {
-					System.out.println("--------[LOOP START] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println("--------[LOOP START] : " + currentNode.getId() + " - " + currentNode.getName());
 
 					// visiting the gate for the second time, close the block
 					if (this.visitedOpenXORLoopGatesNew.contains(currentNode)) {
@@ -499,10 +504,11 @@ public class DfbpmnModelReader {
 
 				// XOR "join" for LOOP
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.EXCLUSIVE_GATEWAY)
-						&& currentNode.getIngoingSequenceFlows().size() == 1 &&
-						!this.visitedOpenXORLoopGatesNew.empty()) {
+						&& currentNode.getIngoingSequenceFlows().size() == 1
+						&& !this.visitedOpenXORLoopGatesNew.empty()) {
 //                if (currentNode instanceof ExclusiveGateway && currentNode.getIncoming().size() == 1 && !this.visitedOpenXORLoopGatesNew.empty()) {
-					System.out.println("--------[LOOP CONTINUE] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println(
+							"--------[LOOP CONTINUE] : " + currentNode.getId() + " - " + currentNode.getName());
 
 					// System.out.println("TAKING A TURN IN A LOOP BLOCK");
 					// detect which branch brings to the looping gate and take this branch for
@@ -537,61 +543,70 @@ public class DfbpmnModelReader {
 				}
 				// ****************************************
 
-				 //****************************************
-                //process a POSSIBLE COMPLETION block
-                //****************************************
+				// ****************************************
+				// process a POSSIBLE COMPLETION block
+				// ****************************************
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.EXCLUSIVE_GATEWAY)
-						&& currentNode.getIngoingSequenceFlows().size() == 1 
-						&& currentNode.getIngoingSequenceFlows().stream()
-						.anyMatch((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
-								.equals(BPMNTypes.END_EVENT)) == true) {
-					
-					
-				
+						&& currentNode.getIngoingSequenceFlows().size() == 1
+						&& currentNode.getOutgoingSequenceFlows().stream()
+								.anyMatch((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
+										.equals(BPMNTypes.END_EVENT))) {
+
 //                if (currentNode instanceof ExclusiveGateway && currentNode.getIncoming().size() == 1 && !currentNode.getSucceedingNodes().filterByType(EndEvent.class).list().isEmpty()) {
-                    System.out.println("--------[Possible COMPLETION XOR] : " + currentNode.getId()+" - " + currentNode.getName());
+					System.out.println("--------[Possible COMPLETION XOR] : " + currentNode.getId() + " - "
+							+ currentNode.getName());
 
 //                    EndEvent end = currentNode.getSucceedingNodes().filterByType(EndEvent.class).list().get(0);
-                    BPMNElementNode end = currentNode.getIngoingSequenceFlows().stream().filter((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
-								.equals(BPMNTypes.END_EVENT)).collect(Collectors.toList()).get(0).getTargetElement();
-                    //check if there are no potential situations in which we have a loop instead of the completion block
-                    if (lookAheadLoop(newFrontier, this.visitedOpenXORLoopGatesNew) == null) {
-                        PossibleCompletion newPossibleCompletionBlock = null;
+					BPMNElementNode end = currentNode.getOutgoingSequenceFlows().stream()
+							.filter((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
+									.equals(BPMNTypes.END_EVENT))
+							.collect(Collectors.toList()).get(0).getTargetElement();
+					// check if there are no potential situations in which we have a loop instead of
+					// the completion block
+					if (lookAheadLoop(newFrontier, this.visitedOpenXORLoopGatesNew) == null) {
+						PossibleCompletion newPossibleCompletionBlock = null;
 //                        ExtensionElements extensionElements = currentNode.getExtensionElements();
-                        String condition = currentNode.getAttribute("condition");
-                        if (condition.isEmpty())
-                            //throw new Exception("The condition of the POSSIBLE COMPLETION block " + currentNode.getId() + " is empty!");
-                            newPossibleCompletionBlock = processSchema.newPossibleCompletion(currentNode.getId());
-                        else
-                            newPossibleCompletionBlock = processSchema.newPossibleCompletion(currentNode.getId(), GatewayConditionParser.parseGatewayCondition(condition, this.dataSchema));
-                        //newPossibleCompletionBlock.add(end.getId());
-                        //extract the condition from the XOR gate
-                        newFrontier.remove(end);
-                        newPossibleCompletionBlock.addMainProcessLifecycleVariable(this.dabProcess.getLifeCycleVariable());//add lifecyle variable of the main process
-                        stackBlocks.push(newPossibleCompletionBlock);
-                        this.bpmnNodeQueueNew.addFirst(newFrontier.get(0));
-                    }
-                }
-                //****************************************
-				
-				   //**************************************************
-                //END EVENT + RECURSIVE CREATION OF SEQUENCE BLOCKS
-                //**************************************************
-                //do here the creation of 2-sized sequence block! when you arrive to the end, do a traversal
-                //and create a sequence of chained pairs
-				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.END_EVENT)
-						&& stackBlocks.size() > 1) {
-					
-				
+						String condition = currentNode.getAttribute("condition");
+						if (condition.isEmpty())
+							// throw new Exception("The condition of the POSSIBLE COMPLETION block " +
+							// currentNode.getId() + " is empty!");
+							newPossibleCompletionBlock = processSchema.newPossibleCompletion(currentNode.getId());
+						else
+							newPossibleCompletionBlock = processSchema.newPossibleCompletion(currentNode.getId(),
+									GatewayConditionParser.parseGatewayCondition(condition, this.dataSchema));
+						// newPossibleCompletionBlock.add(end.getId());
+						// extract the condition from the XOR gate
+						newFrontier.remove(end);
+						newPossibleCompletionBlock
+								.addMainProcessLifecycleVariable(this.dabProcess.getLifeCycleVariable());// add lifecyle
+																											// variable
+																											// of the
+																											// main
+																											// process
+						stackBlocks.push(newPossibleCompletionBlock);
+						this.bpmnNodeQueueNew.addFirst(newFrontier.get(0));
+					}
+				}
+				// ****************************************
+
+				// **************************************************
+				// END EVENT + RECURSIVE CREATION OF SEQUENCE BLOCKS
+				// **************************************************
+				// do here the creation of 2-sized sequence block! when you arrive to the end,
+				// do a traversal
+				// and create a sequence of chained pairs
+				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.END_EVENT) && stackBlocks.size() > 1) {
+
 //                if (currentNode instanceof EndEvent && stackBlocks.size() > 1) {
-                    while (stackBlocks.size() > 1) {
-                        SequenceBlock newSequenceBlock = processSchema.newSequenceBlock("SEQBlock" + this.seqBlockCounter);
-                        newSequenceBlock.addSecondBlock(stackBlocks.pop());//add second block
-                        newSequenceBlock.addFirstBlock(stackBlocks.pop());//add first block
-                        stackBlocks.push(newSequenceBlock);
-                        this.seqBlockCounter++;
-                    }
-                }
+					while (stackBlocks.size() > 1) {
+						SequenceBlock newSequenceBlock = processSchema
+								.newSequenceBlock("SEQBlock" + this.seqBlockCounter);
+						newSequenceBlock.addSecondBlock(stackBlocks.pop());// add second block
+						newSequenceBlock.addFirstBlock(stackBlocks.pop());// add first block
+						stackBlocks.push(newSequenceBlock);
+						this.seqBlockCounter++;
+					}
+				}
 			}
 		}
 	}

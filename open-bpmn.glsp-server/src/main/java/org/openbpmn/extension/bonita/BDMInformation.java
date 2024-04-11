@@ -24,7 +24,14 @@ public class BDMInformation {
 		this.model = model;
 		document = loadBDMfile();
 	}
-
+	
+	/**
+	 * This function to check if we are successfully connect to Bonita bdm
+	 * @return
+	 */
+	public boolean isConnect() {
+		return document !=null;
+	}
 	/**
 	 * Loading BDM file
 	 * 

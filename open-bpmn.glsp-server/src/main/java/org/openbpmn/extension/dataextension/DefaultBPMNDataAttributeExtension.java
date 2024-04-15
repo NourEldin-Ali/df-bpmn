@@ -92,7 +92,8 @@ public class DefaultBPMNDataAttributeExtension extends AbstractBPMNElementExtens
 			} else {
 				schemaBuilder //
 						.addProperty("name", "string", null) //
-						.addProperty("type", "string", null, datatypes) //
+//						.addProperty("type", "string", null, datatypes) //
+						.addProperty("type", "string", null) //
 				//
 				;
 			}

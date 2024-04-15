@@ -21,16 +21,18 @@ public final class CaseVariableExtractor {
 	public static DataSchema extract(BPMNModel modelInstance, DataSchema dataSchema) {
 		BPMNProcess openProcess = modelInstance.openDefaultProces();
 		Map<String, String> caseVariables = openProcess.getDataObjectsExtensions();
-		
+		System.out.println("process variable: ");
 		caseVariables.forEach((key, type) -> {
+			System.out.println("#"+key.trim()+ ":"+ type.trim());
 //            System.out.println("Key: " + key + ", Value: " + type);
             
             // ToDo: manage system sorts correctly!
-			Sort varSort = dataSchema.newSort(type);
+			Sort varSort = dataSchema.newSort(type.trim());
 			// ToDo: add a way to account for multiple-case variables
 			dataSchema.newCaseVariable("#"+key.trim(), varSort, true);
 			
         });
+		System.out.println("--------");
 		
 		return dataSchema;
 	}

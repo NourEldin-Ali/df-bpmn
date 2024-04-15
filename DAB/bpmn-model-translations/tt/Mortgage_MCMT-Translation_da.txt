@@ -46,47 +46,47 @@
 :local Info2 String
 :local Info3 String
 
+:global lifecycleTask30ibHA StringSort
 :global lifecycleSEQBlock9 StringSort
 :global #length Num
-:global lifecycleProvideAccInfo StringSort
+:global lifecycleTaskTR370Q StringSort
 :global lifecycleSEQBlock8 StringSort
-:global lifecycleMakeOffer StringSort
-:global lifecycleCompleteApplication StringSort
 :global lifecycleMortgage StringSort
 :global lifecycleSEQblock1 StringSort
 :global lifecycleSEQblock2 StringSort
 :global lifecycleXORChoiceblock2 StringSort
-:global lifecycleEventNotInterested StringSort
-:global lifecycleXORPossibleCompletion StringSort
+:global lifecycleTaskJG0HQw StringSort
+:global lifecycleTaskRV9Qww StringSort
+:global lifecycleTaskIFQd9w StringSort
 :global #amount Num
 :global #status String
 :global #maxAmount Num
-:global lifecycleSendOutAppForm StringSort
+:global lifecycleTaskKlW0WQ StringSort
+:global lifecycleEventUYxesQ StringSort
 :global lifecycleEmpty StringSort
 :global #tid MortgageTypeID
-:global lifecycleExtractInfo StringSort
-:global lifecycleSelectEligibleAcc StringSort
 :global #statusInfo String
-:global lifecycleArchiveDetails StringSort
+:global lifecycleEventYqGkAQ StringSort
+:global lifecycleGateway0Swlcg StringSort
 :global #duration Num
 :global #cid CustomerID
 :global #bid BankAccountID
 :global lifecycleLOOPBlock1 StringSort
+:global lifecycleTaskB0ndEg StringSort
 :global lifecycleXORblock1 StringSort
-:global lifecycleMakeAssessment StringSort
 :global lifecycleSEQBlock3 StringSort
 :global #bankAmount Num
 :global #liability String
+:global lifecycleTaskVknxzQ StringSort
 :global lifecycleSEQBlock5 StringSort
-:global lifecycleEventAppFilled StringSort
 :global lifecycleSEQBlock4 StringSort
-:global lifecycleSendRejection StringSort
+:global lifecycleTaskSwJgJg StringSort
 :global lifecycleSEQBlock7 StringSort
 :global lifecycleSEQBlock6 StringSort
 
 :initial
 :var x
-:cnj (= Archive1[x] NULL_CustomerID) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String)  (= lifecycleSEQBlock9 Idle) (= #length NULL_Num) (= lifecycleProvideAccInfo Idle) (= lifecycleSEQBlock8 Idle) (= lifecycleMakeOffer Idle) (= lifecycleCompleteApplication Idle) (= lifecycleMortgage Enabled) (= lifecycleSEQblock1 Idle) (= lifecycleSEQblock2 Idle) (= lifecycleXORChoiceblock2 Idle) (= lifecycleEventNotInterested Idle) (= lifecycleXORPossibleCompletion Idle) (= #amount NULL_Num) (= #status NULL_String) (= #maxAmount NULL_Num) (= lifecycleSendOutAppForm Idle) (= lifecycleEmpty NULL_StringSort) (= #tid NULL_MortgageTypeID) (= lifecycleExtractInfo Idle) (= lifecycleSelectEligibleAcc Idle) (= #statusInfo NULL_String) (= lifecycleArchiveDetails Idle) (= #duration NULL_Num) (= #cid NULL_CustomerID) (= #bid NULL_BankAccountID) (= lifecycleLOOPBlock1 Idle) (= lifecycleXORblock1 Idle) (= lifecycleMakeAssessment Idle) (= lifecycleSEQBlock3 Idle) (= #bankAmount NULL_Num) (= #liability NULL_String) (= lifecycleSEQBlock5 Idle) (= lifecycleEventAppFilled Idle) (= lifecycleSEQBlock4 Idle) (= lifecycleSendRejection Idle) (= lifecycleSEQBlock7 Idle) (= lifecycleSEQBlock6 Idle) 
+:cnj (= Archive1[x] NULL_CustomerID) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String)  (= lifecycleTask30ibHA Idle) (= lifecycleSEQBlock9 Idle) (= #length NULL_Num) (= lifecycleTaskTR370Q Idle) (= lifecycleSEQBlock8 Idle) (= lifecycleMortgage Enabled) (= lifecycleSEQblock1 Idle) (= lifecycleSEQblock2 Idle) (= lifecycleXORChoiceblock2 Idle) (= lifecycleTaskJG0HQw Idle) (= lifecycleTaskRV9Qww Idle) (= lifecycleTaskIFQd9w Idle) (= #amount NULL_Num) (= #status NULL_String) (= #maxAmount NULL_Num) (= lifecycleTaskKlW0WQ Idle) (= lifecycleEventUYxesQ Idle) (= lifecycleEmpty NULL_StringSort) (= #tid NULL_MortgageTypeID) (= #statusInfo NULL_String) (= lifecycleEventYqGkAQ Idle) (= lifecycleGateway0Swlcg Idle) (= #duration NULL_Num) (= #cid NULL_CustomerID) (= #bid NULL_BankAccountID) (= lifecycleLOOPBlock1 Idle) (= lifecycleTaskB0ndEg Idle) (= lifecycleXORblock1 Idle) (= lifecycleSEQBlock3 Idle) (= #bankAmount NULL_Num) (= #liability NULL_String) (= lifecycleTaskVknxzQ Idle) (= lifecycleSEQBlock5 Idle) (= lifecycleSEQBlock4 Idle) (= lifecycleTaskSwJgJg Idle) (= lifecycleSEQBlock7 Idle) (= lifecycleSEQBlock6 Idle) 
 :u_cnj (not (= #status Archived)) (= lifecycleMortgage Completed) 
 :eevar b Num
 :eevar c Num
@@ -108,41 +108,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val Enabled
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val Active
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -158,41 +158,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val Idle
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val Completed
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -208,41 +208,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val Active
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val Enabled
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val Enabled
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -250,7 +250,7 @@
 :comment [t4] = SEQBlock9--{2nd}
 :transition
 :var j
-:guard (= lifecycleSendOutAppForm Completed) 
+:guard (= lifecycleTaskVknxzQ Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -258,41 +258,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val Enabled
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val Idle
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val Idle
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -308,50 +308,50 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val Completed
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val Idle
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t6] = SendOutAppFormSET
+:comment [t6] = task_VknxzQSET
 :transition
 :var j
 :var x
-:guard (= Archive1[x] a) (= lifecycleSendOutAppForm Enabled)
+:guard (= Archive1[x] a) (= lifecycleTaskVknxzQ Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -359,41 +359,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val Completed
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val a
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val Completed
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -408,41 +408,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val Active
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Enabled
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -458,41 +458,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Idle
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val Enabled
 :val lifecycleSEQBlock6
 
@@ -508,41 +508,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val Completed
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val Idle
 :val lifecycleSEQBlock6
 
@@ -558,41 +558,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val Enabled
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Active
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -608,41 +608,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val Enabled
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Active
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -658,41 +658,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val Idle
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Completed
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -708,41 +708,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val Idle
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val Completed
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -758,41 +758,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val Active
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val Enabled
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val Enabled
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -800,7 +800,7 @@
 :comment [t15] = SEQblock1--{2nd}
 :transition
 :var j
-:guard (= lifecycleEventNotInterested Completed) 
+:guard (= lifecycleEventUYxesQ Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -808,41 +808,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val Idle
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val Enabled
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val Idle
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val Enabled
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -850,7 +850,7 @@
 :comment [t16] = SEQblock1--{3rd}
 :transition
 :var j
-:guard (= lifecycleArchiveDetails Completed) 
+:guard (= lifecycleTaskRV9Qww Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -858,49 +858,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val Completed
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val Idle
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val Idle
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t17] = EventNotInterestedSET
+:comment [t17] = event_UYxesQSET
 :transition
 :var j
-:guard (= lifecycleEventNotInterested Enabled)
+:guard (= lifecycleEventUYxesQ Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -908,49 +908,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val Completed
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val NotInterested
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val Completed
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
-:comment [t18] = ArchiveDetailsINSERT
+:comment [t18] = task_RV9QwwINSERT
 :transition
 :var j
 :var x
-:guard (= Archive1[x] NULL_CustomerID) (= lifecycleArchiveDetails Enabled)
+:guard (= Archive1[x] NULL_CustomerID) (= lifecycleTaskRV9Qww Enabled)
 :numcases 2
 :case (= j x)
 :val #cid
@@ -958,41 +958,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val Completed
+:val lifecycleTaskIFQd9w
 :val #amount
 :val Archived
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val Completed
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1002,41 +1002,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val Completed
+:val lifecycleTaskIFQd9w
 :val #amount
 :val Archived
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val Completed
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1051,41 +1051,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val Active
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val Enabled
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val Enabled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1093,7 +1093,7 @@
 :comment [t20] = SEQblock2--{2nd}
 :transition
 :var j
-:guard (= lifecycleEventAppFilled Completed) 
+:guard (= lifecycleEventYqGkAQ Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1101,41 +1101,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val Enabled
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val Idle
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val Idle
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val Enabled
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1143,7 +1143,7 @@
 :comment [t21] = SEQblock2--{3rd}
 :transition
 :var j
-:guard (= lifecycleCompleteApplication Completed) 
+:guard (= lifecycleTaskSwJgJg Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1151,49 +1151,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val Idle
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val Completed
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val Idle
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t22] = EventAppFilledSET
+:comment [t22] = event_YqGkAQSET
 :transition
 :var j
-:guard (= lifecycleEventAppFilled Enabled)
+:guard (= lifecycleEventYqGkAQ Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -1201,48 +1201,48 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val FillApplication
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val Completed
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val Completed
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
-:comment [t23] = CompleteApplicationSET
+:comment [t23] = task_SwJgJgSET
 :transition
 :var j
-:guard (not (= d NULL_MortgageTypeID)) (= lifecycleCompleteApplication Enabled)
+:guard (not (= d NULL_MortgageTypeID)) (= lifecycleTaskSwJgJg Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -1250,41 +1250,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val Completed
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val b
 :val CompletedApplication
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val d
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val c
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val Completed
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1299,41 +1299,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val Enabled
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val Enabled
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val Active
 :val lifecycleSEQBlock6
 
@@ -1341,7 +1341,7 @@
 :comment [t25] = SEQBlock7--{2nd}
 :transition
 :var j
-:guard (= lifecycleXORPossibleCompletion Completed) 
+:guard (= lifecycleGateway0Swlcg Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1349,41 +1349,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val Idle
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val Idle
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val Enabled
 
@@ -1399,49 +1399,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val Completed
 :val Idle
 
 
-:comment [t27] = XORPossibleCompletion--{1st}
+:comment [t27] = Gateway0Swlcg--{1st}
 :transition
 :var j
-:guard (= lifecycleXORPossibleCompletion Enabled) (not (= #status Archived)) 
+:guard (= lifecycleGateway0Swlcg Enabled) (= #status Archived) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1449,49 +1449,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val Completed
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val Completed
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t28] = XORPossibleCompletion--{2nd}
+:comment [t28] = Gateway0Swlcg--{2nd}
 :transition
 :var j
-:guard (= lifecycleXORPossibleCompletion Enabled) (= #status Archived) 
+:guard (= lifecycleGateway0Swlcg Enabled) (not (= #status Archived)) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1499,41 +1499,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val Completed
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val Error
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val Error
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1549,41 +1549,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val Enabled
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val Active
 
@@ -1599,41 +1599,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val Idle
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val Enabled
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1649,41 +1649,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val Idle
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val Completed
 
@@ -1699,41 +1699,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Enabled
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val Active
+:val Enabled
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1741,7 +1741,7 @@
 :comment [t33] = LOOPBlock1--{2nd}
 :transition
 :var j
-:guard (= lifecycleProvideAccInfo Completed) (not (= #statusInfo InfoProvided)) 
+:guard (= lifecycleTaskB0ndEg Completed) (not (= #statusInfo InfoProvided)) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1749,41 +1749,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Idle
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val Enabled
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val Idle
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1799,41 +1799,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Enabled
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val Idle
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val Enabled
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1841,7 +1841,7 @@
 :comment [t35] = LOOPBlock1--{4th}
 :transition
 :var j
-:guard (= lifecycleProvideAccInfo Completed) (= #statusInfo InfoProvided) 
+:guard (= lifecycleTaskB0ndEg Completed) (= #statusInfo InfoProvided) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -1849,50 +1849,50 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Idle
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val Completed
+:val Idle
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t36] = ProvideAccInfoINSERT
+:comment [t36] = task_b0ndEgINSERT
 :transition
 :var j
 :var x
-:guard (not (= a NULL_CustomerID)) (= (BankAccountF1 a) e) (= (BankAccountF2 a) f) (= #cid a) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String) (= lifecycleProvideAccInfo Enabled)
+:guard (not (= a NULL_CustomerID)) (= (BankAccountF1 a) e) (= (BankAccountF2 a) f) (= #cid a) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String) (= lifecycleTaskB0ndEg Enabled)
 :numcases 2
 :case (= j x)
 :val Archive1[j]
@@ -1900,41 +1900,41 @@
 :val e
 :val NULL_String
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Completed
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val g
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val Completed
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1944,41 +1944,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val Completed
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val g
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val Completed
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -1993,41 +1993,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val Completed
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2042,41 +2042,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val Enabled
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val Enabled
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val Active
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2084,7 +2084,7 @@
 :comment [t39] = SEQBlock5--{2nd}
 :transition
 :var j
-:guard (= lifecycleMakeAssessment Completed) 
+:guard (= lifecycleTask30ibHA Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2092,41 +2092,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val Idle
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val Idle
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val Enabled
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2142,50 +2142,50 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val Completed
-:val lifecycleEventAppFilled
 :val Idle
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t41] = MakeAssessmentUPDATE
+:comment [t41] = task_30ibHAUPDATE
 :transition
 :var j
 :var x
-:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= lifecycleMakeAssessment Enabled)
+:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= lifecycleTask30ibHA Enabled)
 :numcases 2
 :case (not (= Info2[j] fraud))
 :val Archive1[j]
@@ -2193,41 +2193,41 @@
 :val Info2[j]
 :val Yes
 
+:val Completed
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val AssessmentMade
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val Completed
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2237,41 +2237,41 @@
 :val Info2[j]
 :val No
 
+:val Completed
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val AssessmentMade
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val Completed
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2286,41 +2286,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val Enabled
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val Enabled
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val Active
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2328,7 +2328,7 @@
 :comment [t43] = SEQBlock4--{2nd}
 :transition
 :var j
-:guard (= lifecycleSelectEligibleAcc Completed) 
+:guard (= lifecycleTaskIFQd9w Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2336,41 +2336,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val Idle
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val Idle
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val Enabled
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2386,50 +2386,50 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val Idle
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val Completed
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t45] = SelectEligibleAccDELETE
+:comment [t45] = task_iFQd9wDELETE
 :transition
 :var j
 :var x
-:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= Info2[x] e) (= lifecycleSelectEligibleAcc Enabled)
+:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= Info2[x] e) (= lifecycleTaskIFQd9w Enabled)
 :numcases 2
 :case (= j x)
 :val Archive1[j]
@@ -2437,41 +2437,41 @@
 :val NULL_String
 :val NULL_String
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val Completed
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val Completed
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val f
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val g
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2481,41 +2481,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val Completed
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val Completed
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val f
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val g
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 :comment [t46] = SEQBlock3--{1st}
@@ -2529,41 +2529,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val Enabled
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val Enabled
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val Active
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2571,7 +2571,7 @@
 :comment [t47] = SEQBlock3--{2nd}
 :transition
 :var j
-:guard (= lifecycleExtractInfo Completed) 
+:guard (= lifecycleTaskJG0HQw Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2579,41 +2579,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Enabled
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val Idle
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val Idle
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2629,50 +2629,50 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Idle
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val Completed
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t49] = ExtractInfoSET
+:comment [t49] = task_JG0HQwSET
 :transition
 :var j
 :var x
-:guard (= Archive1[x] a) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleExtractInfo Enabled)
+:guard (= Archive1[x] a) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleTaskJG0HQw Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2680,41 +2680,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val o
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val Completed
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val InfoExtracted
 :val c
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val Completed
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val b
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2729,41 +2729,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val Enabled
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Active
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val Enabled
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2779,41 +2779,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val Enabled
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Active
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val Enabled
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2821,7 +2821,7 @@
 :comment [t52] = XORChoiceblock2--{3rd}
 :transition
 :var j
-:guard (= lifecycleSendRejection Completed) 
+:guard (= lifecycleTaskTR370Q Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2829,41 +2829,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val Idle
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Completed
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val Idle
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
@@ -2871,7 +2871,7 @@
 :comment [t53] = XORChoiceblock2--{4th}
 :transition
 :var j
-:guard (= lifecycleMakeOffer Completed) 
+:guard (= lifecycleTaskKlW0WQ Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2879,49 +2879,49 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val Idle
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val Completed
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val #status
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val Idle
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t54] = SendRejectionSET
+:comment [t54] = task_tR370QSET
 :transition
 :var j
-:guard (= lifecycleSendRejection Enabled)
+:guard (= lifecycleTaskTR370Q Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2929,48 +2929,48 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val Completed
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val RejectSent
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val lifecycleTaskKlW0WQ
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val Completed
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
-:comment [t55] = MakeOfferSET
+:comment [t55] = task_KlW0WQSET
 :transition
 :var j
-:guard (= lifecycleMakeOffer Enabled)
+:guard (= lifecycleTaskKlW0WQ Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2978,41 +2978,41 @@
 :val Info2[j]
 :val Info3[j]
 
+:val lifecycleTask30ibHA
 :val lifecycleSEQBlock9
 :val #length
-:val lifecycleProvideAccInfo
+:val lifecycleTaskTR370Q
 :val lifecycleSEQBlock8
-:val Completed
-:val lifecycleCompleteApplication
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
 :val lifecycleXORChoiceblock2
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
+:val lifecycleTaskJG0HQw
+:val lifecycleTaskRV9Qww
+:val lifecycleTaskIFQd9w
 :val #amount
 :val OfferMade
 :val #maxAmount
-:val lifecycleSendOutAppForm
+:val Completed
+:val lifecycleEventUYxesQ
 :val lifecycleEmpty
 :val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
 :val #statusInfo
-:val lifecycleArchiveDetails
+:val lifecycleEventYqGkAQ
+:val lifecycleGateway0Swlcg
 :val #duration
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
+:val lifecycleTaskB0ndEg
 :val lifecycleXORblock1
-:val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
 :val #bankAmount
 :val #liability
+:val lifecycleTaskVknxzQ
 :val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val lifecycleSendRejection
+:val lifecycleTaskSwJgJg
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 

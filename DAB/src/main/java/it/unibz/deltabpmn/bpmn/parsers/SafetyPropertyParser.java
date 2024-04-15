@@ -3,9 +3,6 @@ package it.unibz.deltabpmn.bpmn.parsers;
 import it.unibz.deltabpmn.bpmn.utils.SQL.SelectParser;
 import it.unibz.deltabpmn.datalogic.ConjunctiveSelectQuery;
 import it.unibz.deltabpmn.dataschema.core.DataSchema;
-import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
-import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
-import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperty;
 import org.openbpmn.bpmn.BPMNModel;
 
 import java.util.ArrayList;
@@ -16,24 +13,6 @@ public class SafetyPropertyParser {
 
 	private static final String verifyKey = "verify";
 
-	public static List<ConjunctiveSelectQuery> parse(ExtensionElements extensionElements, DataSchema dataSchema)
-			throws Exception {
-		Collection<CamundaProperty> properties = extensionElements.getElementsQuery()
-				.filterByType(CamundaProperties.class).singleResult().getCamundaProperties();
-		String name = null;
-		String value = null;
-		List<ConjunctiveSelectQuery> toVerify = new ArrayList<>();
-		for (CamundaProperty property : properties) {
-			name = property.getCamundaName();
-			if (name.equals(verifyKey)) {
-				value = property.getCamundaValue();
-				toVerify.add(parseProperty(value, dataSchema));
-				System.out.println("----------------------------");
-				System.out.println(value);
-			}
-		}
-		return toVerify;
-	}
 
 	public static List<ConjunctiveSelectQuery> parse(BPMNModel bpmnModel, DataSchema dataSchema) throws Exception {
 

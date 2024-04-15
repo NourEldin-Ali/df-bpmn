@@ -88,11 +88,11 @@
 :var x
 :cnj (= Archive1[x] NULL_CustomerID) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String)  (= lifecycleSEQBlock9 Idle) (= #length NULL_Num) (= lifecycleProvideAccInfo Idle) (= lifecycleSEQBlock8 Idle) (= lifecycleMakeOffer Idle) (= lifecycleCompleteApplication Idle) (= lifecycleMortgage Enabled) (= lifecycleSEQblock1 Idle) (= lifecycleSEQblock2 Idle) (= lifecycleXORChoiceblock2 Idle) (= lifecycleEventNotInterested Idle) (= lifecycleXORPossibleCompletion Idle) (= #amount NULL_Num) (= #status NULL_String) (= #maxAmount NULL_Num) (= lifecycleSendOutAppForm Idle) (= lifecycleEmpty NULL_StringSort) (= #tid NULL_MortgageTypeID) (= lifecycleExtractInfo Idle) (= lifecycleSelectEligibleAcc Idle) (= #statusInfo NULL_String) (= lifecycleArchiveDetails Idle) (= #duration NULL_Num) (= #cid NULL_CustomerID) (= #bid NULL_BankAccountID) (= lifecycleLOOPBlock1 Idle) (= lifecycleXORblock1 Idle) (= lifecycleMakeAssessment Idle) (= lifecycleSEQBlock3 Idle) (= #bankAmount NULL_Num) (= #liability NULL_String) (= lifecycleSEQBlock5 Idle) (= lifecycleEventAppFilled Idle) (= lifecycleSEQBlock4 Idle) (= lifecycleSendRejection Idle) (= lifecycleSEQBlock7 Idle) (= lifecycleSEQBlock6 Idle) 
 :u_cnj (not (= #status Archived)) (= lifecycleMortgage Completed) 
+:eevar h Num
 :eevar b Num
 :eevar c Num
-:eevar o Num
-:eevar h CustomerID
 :eevar a CustomerID
+:eevar o CustomerID
 :eevar e String
 :eevar g String
 :eevar d MortgageTypeID
@@ -350,8 +350,7 @@
 :comment [t6] = SendOutAppFormSET
 :transition
 :var j
-:var x
-:guard (= Archive1[x] a) (= lifecycleSendOutAppForm Enabled)
+:guard (not (= a NULL_CustomerID)) (= lifecycleSendOutAppForm Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -1262,7 +1261,7 @@
 :val lifecycleXORChoiceblock2
 :val lifecycleEventNotInterested
 :val lifecycleXORPossibleCompletion
-:val b
+:val c
 :val CompletedApplication
 :val #maxAmount
 :val lifecycleSendOutAppForm
@@ -1272,7 +1271,7 @@
 :val lifecycleSelectEligibleAcc
 :val #statusInfo
 :val lifecycleArchiveDetails
-:val c
+:val b
 :val #cid
 :val #bid
 :val lifecycleLOOPBlock1
@@ -2184,8 +2183,7 @@
 :comment [t41] = MakeAssessmentUPDATE
 :transition
 :var j
-:var x
-:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= lifecycleMakeAssessment Enabled)
+:guard (= True True)(= lifecycleMakeAssessment Enabled)
 :numcases 2
 :case (not (= Info2[j] fraud))
 :val Archive1[j]
@@ -2429,7 +2427,7 @@
 :transition
 :var j
 :var x
-:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= Info2[x] e) (= lifecycleSelectEligibleAcc Enabled)
+:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= lifecycleSelectEligibleAcc Enabled)
 :numcases 2
 :case (= j x)
 :val Archive1[j]
@@ -2671,8 +2669,7 @@
 :comment [t49] = ExtractInfoSET
 :transition
 :var j
-:var x
-:guard (= Archive1[x] a) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleExtractInfo Enabled)
+:guard (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) b) (= (MortgageTypeF2 d) c) (not (= a NULL_CustomerID)) (= (BankAccountF2 a) f) (= (BankAccountF3 a) h) (not (= o NULL_CustomerID)) (= #tid d) (= #bid f) (= #cid o) (= lifecycleExtractInfo Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2681,7 +2678,7 @@
 :val Info3[j]
 
 :val lifecycleSEQBlock9
-:val o
+:val c
 :val lifecycleProvideAccInfo
 :val lifecycleSEQBlock8
 :val lifecycleMakeOffer
@@ -2694,7 +2691,7 @@
 :val lifecycleXORPossibleCompletion
 :val #amount
 :val InfoExtracted
-:val c
+:val b
 :val lifecycleSendOutAppForm
 :val lifecycleEmpty
 :val #tid
@@ -2709,7 +2706,7 @@
 :val lifecycleXORblock1
 :val lifecycleMakeAssessment
 :val lifecycleSEQBlock3
-:val b
+:val h
 :val #liability
 :val lifecycleSEQBlock5
 :val lifecycleEventAppFilled

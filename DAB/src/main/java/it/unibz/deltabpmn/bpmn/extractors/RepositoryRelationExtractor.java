@@ -26,18 +26,21 @@ public final class RepositoryRelationExtractor {
 
 		BPMNProcess openProcess = modelInstance.openDefaultProces();
 		Map<String, Map<String, Object>> dataStoreVariables = openProcess.getDataStoresExtensions();
-
+		System.out.println("data store Repository : ");
 		dataStoreVariables.forEach((name, values) -> {
 			if (Boolean.parseBoolean((String) values.get("readonly")) == false) {
 				String repRelationName = ((String) values.get("type")).trim();
+				System.out.println(repRelationName);
 				RepositoryRelation repRelation = dataSchema.newRepositoryRelation(repRelationName);
 
 				((Set<DataObjectAttributeExtension>) values.get("attributes")).forEach((attr) -> {
-					Sort attrSort = dataSchema.newSort(attr.getAttribute("type"));
-					repRelation.addAttribute(attr.getName(), attrSort);
+					Sort attrSort = dataSchema.newSort(attr.getAttribute("type").trim());
+					repRelation.addAttribute(attr.getName().trim(), attrSort);
+					System.out.println("-" + attr.getName().trim()+ ":" + attr.getAttribute("type").trim());
 				});
 			}
 		});
+		System.out.println("---------------------");
 		return dataSchema;
 	}
 

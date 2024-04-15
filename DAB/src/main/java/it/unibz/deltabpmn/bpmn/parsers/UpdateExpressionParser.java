@@ -132,29 +132,30 @@ public class UpdateExpressionParser {
 						.contentEquals(BPMNTypes.DATA_INPUT_OBJECT_ENVIRONMENT_DATA_USER)
 						|| data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_INPUT_OBJECT_DEPENDENCY))
 				.collect(Collectors.toList());// list user data = list of variable declaration appearing in var clauses
+
 		varData.forEach((data) -> {
 			if (data.getDataAttributesList().size() == 0) {
-				System.out.println("new variable name: " + data.getName().trim());
-				System.out.println("new variable sort: " + data.getAttribute("type").trim());
-				System.out.println();
-				Sort varSort = dataSchema.newSort(data.getAttribute("type").trim());
-				dataSchema.newCaseVariable(data.getName(), varSort, true);
 				try {
-					dataSchema.addEevar(data.getName(), varSort);
-				} catch (EevarOverflowException | DuplicateDeclarationException e) {
+					System.out.println("new variable name: " + data.getName().trim());
+					System.out.println("new variable sort: " + data.getAttribute("type").trim());
+					System.out.println();
+					Sort varSort = dataSchema.newSort(data.getAttribute("type").trim());
+					dataSchema.newCaseVariable(data.getName().trim(), varSort, true);
+					dataSchema.addEevar(data.getName().trim(), varSort);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					System.exit(0);
 				}
 			} else {
 				data.getDataAttributesList().forEach((name, type) -> {
-					System.out.println("new variable name: " + data.getName().trim());
-					System.out.println("new variable sort: " + data.getAttribute("type").trim());
-					System.out.println();
-					Sort varSort = dataSchema.newSort(type.trim());
-					dataSchema.newCaseVariable(name, varSort, true);
 					try {
-						dataSchema.addEevar(name, varSort);
+						System.out.println("new variable name: " + name.trim());
+						System.out.println("new variable sort: " + type.trim());
+						System.out.println();
+						Sort varSort = dataSchema.newSort(type.trim());
+						dataSchema.newCaseVariable(name.trim(), varSort, true);
+						dataSchema.addEevar(name.trim(), varSort);
 					} catch (EevarOverflowException | DuplicateDeclarationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -172,12 +173,11 @@ public class UpdateExpressionParser {
 			if (precondition.trim().isEmpty())
 				System.out.println("empty precondition from task/event " + taskName);
 			else {
-				query = parsePrecondition(precondition, dataSchema);
 				System.out.print("precondition: ");
-				System.out.println(precondition);
+				System.out.println(precondition.trim());
 				System.out.println();
+				query = parsePrecondition(precondition.trim(), dataSchema);
 			}
-
 		}
 		// 4. parse one of the effect types and generate the final transition object
 		// (NB: if we have only variables to set, then this is going to be an insert
@@ -422,7 +422,7 @@ public class UpdateExpressionParser {
 		return query;
 	}
 
-	private static List<String> EffectExtract(Activity activity) {
+	private static List<String> EffectExtract(Activity activity) throws Exception {
 		List<String> effects = new ArrayList<>();
 		// data store statement
 		// check if delete statement
@@ -517,12 +517,104 @@ public class UpdateExpressionParser {
 			effects.add(query);
 
 		} else
-		// TODO:
+
 		// check if update statement
 		if ((activity.getDataOutputObjects().stream().filter((data) -> {
-			return data.getAttribute("state").contentEquals("update");
+			return data.getAttribute("state").contentEquals("update")
+					&& data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE);
 		}).count() > 0)) {
+			DataOutputObjectExtension dataToUpdate = activity.getDataOutputObjects().stream().filter((data) -> {
+				return data.getAttribute("state").contentEquals("update")
+						&& data.getElementNode().getLocalName().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE);
+			}).findFirst().orElse(null);
+			if (dataToUpdate != null) {
+				String query = "";
+				if (dataToUpdate.getDataAttributes().size() > 0) {
+					int i = 1;
+					for (DataObjectAttributeExtension dataAtt : dataToUpdate.getDataAttributes().stream()
+							// check incaming dataflow == attributes
+							.filter((att) -> activity.getDataFlows().stream()
+									.filter((dataflow) -> dataflow.getTargetRef().contentEquals(att.getId()))
+									.findFirst().orElse(null) != null)
+							.collect(Collectors.toList())) {
+						// it should be a data processing operator
+						BPMNElementNode dataProcessing = (BPMNElementNode) activity
+								.findElementById(activity.getDataFlows().stream()
+										.filter((dataflow) -> dataflow.getTargetRef().contentEquals(dataAtt.getId()))
+										.findFirst().orElseThrow().getSourceRef());
+						if (!dataProcessing.getElementNode().getLocalName().equals(BPMNTypes.DATA_PROCESSING)) {
+							throw new Exception("IN UPDATE WE SHOULD HAVE CONDITIONS");
+						}
 
+						String gherkinInput = dataProcessing.getAttribute("gherkin");
+						if (gherkinInput == "") {
+							throw new Exception("GHERKIN IS NOT DEFINED");
+						}
+						gherkinInput = gherkinInput.replace("\n", " ").replace("\r", "");
+						String[] givenMatcher = gherkinInput.split("(?i)given");
+						if (givenMatcher.length != 3) {
+							throw new Exception("INVALIDE GHERKIN");
+						}
+
+						String[] thenMatcher = givenMatcher[2].split("(?i)then");
+						String defaultResult = thenMatcher[thenMatcher.length - 1].trim();
+
+						// Extract conditions and results from cases part
+						String[] caseLines = givenMatcher[1].split("(?i)when");
+						List<String> caseStatements = new ArrayList<>();
+						for (int j = 1; j < caseLines.length; j++) {
+							String line = caseLines[j];
+							if (!line.trim().isEmpty()) {
+								String condition = line.split("(?i)then")[0].trim();
+								String result = line.split("(?i)then")[1].trim();
+								caseStatements.add("WHEN " + condition + " THEN @v" + i + " = " + result);
+							}
+						}
+
+						// Extract condition and result from default part
+
+						String defaultStatement = " ELSE @v" + i + " = " + defaultResult;
+
+						// Join the case statements
+						String casesStatement = String.join(" ", caseStatements);
+
+						// Concatenate the default statement
+						String finalStatement = "CASE " + casesStatement + defaultStatement;
+
+						query += dataToUpdate.getAttribute("type") + "." + dataAtt.getName() + " = @v" + i + " WHERE "
+								+ finalStatement;
+
+						if (dataProcessing instanceof DataInputObjectExtension) {
+							if (dataProcessing.getElementNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+								query += "#" + dataProcessing.getName() + "";
+							} else if (dataProcessing.getElementNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+								query += "\"" + dataProcessing.getAttribute("value") + "\"";
+							} else {
+								query += "" + dataProcessing.getName() + "";
+							}
+						} else if (dataProcessing instanceof DataObjectAttributeExtension) {
+							if (dataProcessing.getElementNode().getParentNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
+								query += "#" + dataProcessing.getName() + "";
+							} else if (dataProcessing.getElementNode().getParentNode().getLocalName()
+									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
+								query += "\"" + dataProcessing.getAttribute("value") + "\"";
+							} else {
+								query += "" + dataProcessing.getName() + "";
+							}
+						}
+						query += " AND ";
+						i++;
+					}
+				}
+				if (query != "") {
+					query = "UPDATE " + dataToUpdate.getAttribute("type") + " SET "
+							+ query.substring(0, query.lastIndexOf(" AND "));
+					effects.add(query);
+				}
+			}
 		}
 
 		// other statement (process variables)
@@ -587,12 +679,7 @@ public class UpdateExpressionParser {
 				if (preConditionOut.getDataAttributes().size() > 0) {
 					// get selected attributes
 					for (DataObjectAttributeExtension dataAtt : preConditionOut.getDataAttributes().stream()
-							.filter((att) -> {
-								// check outgouting dataflow == attribue
-								return activity.getDataFlows().stream()
-										.filter((dataflow) -> dataflow.getSourceRef().contentEquals(att.getId()))
-										.findFirst().orElse(null) != null;
-							}).collect(Collectors.toList())) {
+							.collect(Collectors.toList())) {
 
 						select += dataAtt.getName() + ", ";
 					}
@@ -607,28 +694,28 @@ public class UpdateExpressionParser {
 						BPMNElementNode dataInput = (BPMNElementNode) activity.findElementById(activity.getDataFlows()
 								.stream().filter((dataflow) -> dataflow.getTargetRef().contentEquals(dataAtt.getId()))
 								.findFirst().orElseThrow().getSourceRef());
-						where += dataAtt.getName() + "=";
+						String tempWhere = "=" + dataAtt.getName();
 						if (dataInput instanceof DataInputObjectExtension) {
 							if (dataInput.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-								where += "#" + dataInput.getName() + "";
+								tempWhere = "#" + dataInput.getName() + tempWhere;
 							} else if (dataInput.getElementNode().getLocalName()
 									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-								where += "\"" + dataInput.getAttribute("value") + "\"";
+								tempWhere = "\"" + dataInput.getAttribute("value") + "\"" + tempWhere;
 							} else {
-								where += "" + dataInput.getName() + "";
+								tempWhere = "" + dataInput.getName() + "" + tempWhere;
 							}
 						} else if (dataInput instanceof DataObjectAttributeExtension) {
 							if (dataInput.getElementNode().getParentNode().getLocalName()
 									.equals(BPMNTypes.DATA_INPUT_OBJECT_PROCESS)) {
-								where += "#" + dataInput.getName() + "";
+								tempWhere = "#" + dataInput.getName() + "" + tempWhere;
 							} else if (dataInput.getElementNode().getParentNode().getLocalName()
 									.equals(BPMNTypes.DATA_INPUT_OBJECT_LOCAL)) {
-								where += "\"" + dataInput.getAttribute("value") + "\"";
+								tempWhere = "\"" + dataInput.getAttribute("value") + "\"" + tempWhere;
 							} else {
-								where += "" + dataInput.getName() + "";
+								tempWhere = "" + dataInput.getName() + "" + tempWhere;
 							}
 						}
-						where += " AND ";
+						where += tempWhere + " AND ";
 					}
 					table += cond.getAttribute("type") + ", ";
 				}

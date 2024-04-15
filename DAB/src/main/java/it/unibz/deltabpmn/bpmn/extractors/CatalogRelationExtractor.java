@@ -29,18 +29,21 @@ public final class CatalogRelationExtractor {
 
 		BPMNProcess openProcess = modelInstance.openDefaultProces();
 		Map<String, Map<String, Object>> dataStoreVariables = openProcess.getDataStoresExtensions();
-
+		System.out.println("data store Catalog: ");
 		dataStoreVariables.forEach((name, values) -> {
 			if (Boolean.parseBoolean((String) values.get("readonly")) == true) {
 				String catalogRelationName = ((String) values.get("type")).trim();
+				System.out.println(catalogRelationName);
 				CatalogRelation catalogRelation = dataSchema.newCatalogRelation(catalogRelationName);
 
 				((Set<DataObjectAttributeExtension>) values.get("attributes")).forEach((attr) -> {
-					Sort attrSort = dataSchema.newSort(attr.getAttribute("type"));
-					catalogRelation.addAttribute(attr.getName(), attrSort);
+					Sort attrSort = dataSchema.newSort(attr.getAttribute("type").trim());
+					catalogRelation.addAttribute(attr.getName().trim(), attrSort);
+					System.out.println("-" + attr.getName().trim()+ ":" + attr.getAttribute("type").trim());
 				});
 			}
 		});
+		System.out.println("---------------------");
 		return dataSchema;
 
 	}

@@ -281,6 +281,7 @@ public final class DataSchema implements SortProvider, ConstantProvider, Reposit
         // 3 process the array and look if one is free (it means it is not in the local map)
         else {
             for (String globalEevar : eevarAvailable) {
+            	System.out.println(globalEevar);
                 // case in which current one is not already used, I can use it
                 if (!this.eevars.containsValue(globalEevar)) {
                     this.eevars.put(name, globalEevar);

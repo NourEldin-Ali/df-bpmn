@@ -3,9 +3,6 @@ package it.unibz.deltabpmn.bpmn.parsers;
 import it.unibz.deltabpmn.bpmn.utils.SQL.SelectParser;
 import it.unibz.deltabpmn.datalogic.ConjunctiveSelectQuery;
 import it.unibz.deltabpmn.dataschema.core.DataSchema;
-import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
-import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
-import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperty;
 
 import java.util.Collection;
 

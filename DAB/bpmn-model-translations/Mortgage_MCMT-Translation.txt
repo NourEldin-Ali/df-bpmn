@@ -350,8 +350,7 @@
 :comment [t6] = SendOutAppFormSET
 :transition
 :var j
-:var x
-:guard (= Archive1[x] a) (= lifecycleSendOutAppForm Enabled)
+:guard (not (= a NULL_CustomerID)) (= lifecycleSendOutAppForm Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2671,8 +2670,7 @@
 :comment [t49] = ExtractInfoSET
 :transition
 :var j
-:var x
-:guard (= Archive1[x] a) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleExtractInfo Enabled)
+:guard (not (= a NULL_CustomerID)) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleExtractInfo Enabled)
 :numcases 1
 :case
 :val Archive1[j]
@@ -2733,56 +2731,6 @@
 :val #length
 :val lifecycleProvideAccInfo
 :val lifecycleSEQBlock8
-:val lifecycleMakeOffer
-:val lifecycleCompleteApplication
-:val lifecycleMortgage
-:val lifecycleSEQblock1
-:val lifecycleSEQblock2
-:val Active
-:val lifecycleEventNotInterested
-:val lifecycleXORPossibleCompletion
-:val #amount
-:val #status
-:val #maxAmount
-:val lifecycleSendOutAppForm
-:val lifecycleEmpty
-:val #tid
-:val lifecycleExtractInfo
-:val lifecycleSelectEligibleAcc
-:val #statusInfo
-:val lifecycleArchiveDetails
-:val #duration
-:val #cid
-:val #bid
-:val lifecycleLOOPBlock1
-:val lifecycleXORblock1
-:val lifecycleMakeAssessment
-:val lifecycleSEQBlock3
-:val #bankAmount
-:val #liability
-:val lifecycleSEQBlock5
-:val lifecycleEventAppFilled
-:val lifecycleSEQBlock4
-:val Enabled
-:val lifecycleSEQBlock7
-:val lifecycleSEQBlock6
-
-
-:comment [t51] = XORChoiceblock2--{2nd}
-:transition
-:var j
-:guard (= lifecycleXORChoiceblock2 Enabled) (not (= #duration #length)) 
-:numcases 1
-:case
-:val Archive1[j]
-:val Info1[j]
-:val Info2[j]
-:val Info3[j]
-
-:val lifecycleSEQBlock9
-:val #length
-:val lifecycleProvideAccInfo
-:val lifecycleSEQBlock8
 :val Enabled
 :val lifecycleCompleteApplication
 :val lifecycleMortgage
@@ -2818,10 +2766,10 @@
 :val lifecycleSEQBlock6
 
 
-:comment [t52] = XORChoiceblock2--{3rd}
+:comment [t51] = XORChoiceblock2--{2nd}
 :transition
 :var j
-:guard (= lifecycleSendRejection Completed) 
+:guard (= lifecycleXORChoiceblock2 Enabled) (not (= #duration #length)) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2838,7 +2786,7 @@
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
-:val Completed
+:val Active
 :val lifecycleEventNotInterested
 :val lifecycleXORPossibleCompletion
 :val #amount
@@ -2863,12 +2811,12 @@
 :val lifecycleSEQBlock5
 :val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val Idle
+:val Enabled
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
 
-:comment [t53] = XORChoiceblock2--{4th}
+:comment [t52] = XORChoiceblock2--{3rd}
 :transition
 :var j
 :guard (= lifecycleMakeOffer Completed) 
@@ -2918,10 +2866,10 @@
 :val lifecycleSEQBlock6
 
 
-:comment [t54] = SendRejectionSET
+:comment [t53] = XORChoiceblock2--{4th}
 :transition
 :var j
-:guard (= lifecycleSendRejection Enabled)
+:guard (= lifecycleSendRejection Completed) 
 :numcases 1
 :case
 :val Archive1[j]
@@ -2938,11 +2886,11 @@
 :val lifecycleMortgage
 :val lifecycleSEQblock1
 :val lifecycleSEQblock2
-:val lifecycleXORChoiceblock2
+:val Completed
 :val lifecycleEventNotInterested
 :val lifecycleXORPossibleCompletion
 :val #amount
-:val RejectSent
+:val #status
 :val #maxAmount
 :val lifecycleSendOutAppForm
 :val lifecycleEmpty
@@ -2963,11 +2911,12 @@
 :val lifecycleSEQBlock5
 :val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
-:val Completed
+:val Idle
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 
-:comment [t55] = MakeOfferSET
+
+:comment [t54] = MakeOfferSET
 :transition
 :var j
 :guard (= lifecycleMakeOffer Enabled)
@@ -3013,6 +2962,55 @@
 :val lifecycleEventAppFilled
 :val lifecycleSEQBlock4
 :val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t55] = SendRejectionSET
+:transition
+:var j
+:guard (= lifecycleSendRejection Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val RejectSent
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val Completed
 :val lifecycleSEQBlock7
 :val lifecycleSEQBlock6
 

@@ -38,7 +38,7 @@
     <bpmn2:task expand="true" id="ArchiveDetails" isMultiple="false" name="Archive Details">
       <bpmn2:documentation id="documentation_EnHQMg"/>
       <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_xAoINg" isMultiple="false" isReadOnly="false" name="archive" state="init" type="Archive">
-        <bpmn2:attribute id="DataObjectAttributeExtension_jBZmRA" name="Cid" type="CustomerID">
+        <bpmn2:attribute id="DataObjectAttributeExtension_jBZmRA" name="C" type="CustomerID">
           <bpmn2:incoming>DataFlowExtension_0UKofg</bpmn2:incoming>
         </bpmn2:attribute>
       </bpmn2:dataOutputObjectDataStore>
@@ -514,7 +514,7 @@
         <dc:Bounds height="50.0" width="160.0" x="1348.48779296875" y="-8.18708324432373"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_ScAGIw" id="BPMNShape_nqG02Q">
-        <dc:Bounds height="50.0" width="130.0" x="1647.9191799128637" y="-8.18708324432373"/>
+        <dc:Bounds height="50.0" width="130.0" x="1647.919189453125" y="-8.18708324432373"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_jBZmRA" id="BPMNShape_xyw93A">
         <dc:Bounds height="25.0" width="110.0" x="1672.919189453125" y="-65.35396575927734"/>

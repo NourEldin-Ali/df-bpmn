@@ -16,10 +16,13 @@
       <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_AoopQg" isMultiple="false" name="salary after tax" state="init" type="any">
         <bpmn2:incoming>DataFlowExtension_4ZW1vw</bpmn2:incoming>
       </bpmn2:dataOutputObjectProcess>
-      <bpmn2:dataProcessing documentation="d" gherkin="Feature: Net Salary Calculation&#10;&#10;Scenario: Calculate net salary for income up to 10,722&#10;  Given the salary is up to 10,722&#10;  When the net salary is calculated&#10;  Then there should be no tax applied&#10;&#10;Scenario: Calculate net salary for income exceeding 10,722&#10;  Given the salary is exceeding 10,722&#10;  When the net salary is calculated&#10;  Then the tax applied should be 45% of the salary&#10;" id="DataProcessingExtension_FvnXvQ" name="kkk">
+      <bpmn2:dataProcessing documentation="d" gherkin="testtttttt" id="DataProcessingExtension_FvnXvQ" name="dataProcessing-1">
         <bpmn2:documentation id="documentation_vizDnw"><![CDATA[need to calculation the net salary is as follows:
 For an income up to 10,722, there is no tax.
-For an income exceeding 10,722, the tax is 45%]]></bpmn2:documentation>
+For an income ranging from 10,777 to 27,478, the tax is 11%.
+For an income ranging from 27,478 to 78,570, the tax is 30%.
+For an income ranging from 78,570 to 168,994, the tax is 41%.
+For an income exceeding 168,994, the tax is 45%]]></bpmn2:documentation>
         <bpmn2:incoming>DataFlowExtension_jn7i0g</bpmn2:incoming>
         <bpmn2:outgoing>DataFlowExtension_4ZW1vw</bpmn2:outgoing>
       </bpmn2:dataProcessing>
@@ -105,18 +108,16 @@ For an income exceeding 10,722, the tax is 45%]]></bpmn2:documentation>
         <dc:Bounds height="50.0" width="130.0" x="621.008544921875" y="150.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_FvnXvQ" id="BPMNShape_WszPEA">
-        <dc:Bounds height="50.0" width="50.0" x="495.008544921875" y="150.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="498.008544921875" y="150.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_lbb8Fw">
-          <dc:Bounds height="16.0" width="100.0" x="470.008544921875" y="202.0"/>
+          <dc:Bounds height="16.0" width="100.0" x="473.008544921875" y="202.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_jn7i0g" id="BPMNEdge_KOwtjw">
         <di:waypoint x="177.02728271484375" y="107.67877197265625"/>
-        <di:waypoint x="227.03582763671875" y="107.67877197265625"/>
-        <di:waypoint x="228.03582763671875" y="107.67877197265625"/>
+        <di:waypoint x="231.03582763671875" y="107.67877197265625"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_4ZW1vw" id="BPMNEdge_qJGIGA">
-        <di:waypoint x="278.03582763671875" y="107.67877197265625"/>
         <di:waypoint x="281.03582763671875" y="107.67877197265625"/>
         <di:waypoint x="354.03582763671875" y="107.67877197265625"/>
       </bpmndi:BPMNEdge>

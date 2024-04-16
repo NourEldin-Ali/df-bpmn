@@ -397,9 +397,8 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                             />
                             <input type="button" className="favorite styled" value="Export" onClick={() => {
                                   console.log('export to bonita has started');
-                                  this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
+                                //   this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
                                   this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
-  
                                   this.actionDispatcher.request(
                                       MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'toBonita' })
                                   );
@@ -421,7 +420,7 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                             <input type="button" className="favorite styled" value="Generate Behavior" onClick={async () => {
                                 console.log('generate gherkin has started');
 
-                                this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
+                                // this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
                                 this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
                                 this.actionDispatcher.request(
                                     MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'gherkin' })
@@ -511,7 +510,7 @@ export class MyCustomResponseActionHandler implements IActionHandler {
     handle(action: MyCustomResponseAction): void | Action {
         // implement your custom logic to handle the action
         // Optionally issue a response action
-        this.actionDispatcher.dispatch(ServerStatusAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
+        // this.actionDispatcher.dispatch(ServerStatusAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
         this.actionDispatcher.dispatch(ServerMessageAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
     }
 }

@@ -107,11 +107,13 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 			// fallback
 			uri = options.get("uri");
 		}
+
 		Optional<String> uriOpt = action.getFileUri();
 		if (uriOpt.isPresent() && !uriOpt.isEmpty()) {
 			// we got a new URI which means we have a 'saveAs' situaiton!
 			uri = uriOpt.get();
 		}
+
 		BPMNModel model = modelState.getBpmnModel();
 		try {
 			// check protocol
@@ -121,7 +123,7 @@ public class BPMNSourceModelStorage implements SourceModelStorage {
 
 			File f = new File(uri);
 //			logger.info(f.toURI());
-			java.net.URI targetURI =f.toURI();
+			java.net.URI targetURI = f.toURI();
 //			java.net.URI targetURI = new URI(uri);
 			model.save(targetURI);
 

@@ -1,3 +1,4 @@
+import re
 from flask import Flask, request
 import sys
 
@@ -142,5 +143,49 @@ def generateGroovy():
     # if("NO" in result2):
     #    return "CANNOT CONVERT GHERKIN TO CODE, TRY AGAIN"
     # return result
+
+
+@app.route("/unittest", methods=['post'])
+def generateUnittest():
+    
+    if('script' not in request.form):
+        return "Error: Script is required"
+    
+
+    api_key = sys.argv[1]
+
+    llm = ChatOpenAI(
+        model_name='gpt-4',
+        temperature=temperature,
+        openai_api_key=api_key
+        )
+    
+    f = open("unittest.prompt", "r")
+    template = f.read()
+  
+    
+    prompt = PromptTemplate(template=template, input_variables=["script"])
+    llm_chain = LLMChain(prompt=prompt, llm=llm)
+    prompt_input = {'script':request.form['script']}
+    result = llm_chain.run(prompt_input)
+    # print(result)
+    cleaned_code = extract_code_and_remove_specific_lines(
+                    result,
+                    "UNITTEST CODE:\n",
+                    "```"
+                )
+    print(cleaned_code)
+    return extract_substring(cleaned_code)
+
+def extract_substring(input_string):
+    start_index = input_string.find("import")
+    if start_index == -1:
+        return ""
+    
+    end_index = input_string.rfind("}")
+    if end_index == -1:
+        return ""
+    
+    return input_string[start_index:end_index+1]
 
 app.run(debug=True,host='0.0.0.0',port=3001)

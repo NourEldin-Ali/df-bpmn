@@ -15,7 +15,11 @@
  ********************************************************************************/
 package org.openbpmn.glsp.model;
 
+import java.io.File;
+import java.util.Map;
+
 import org.eclipse.glsp.server.model.DefaultGModelState;
+import org.eclipse.glsp.server.utils.MapUtil;
 import org.openbpmn.bpmn.BPMNModel;
 
 /**
@@ -60,6 +64,27 @@ public class BPMNGModelState extends DefaultGModelState {
      */
     public void reset() {
         this.initialized = false;
+    }
+    
+    public void forceSave() {
+    	Map<String, String> options = this.getClientOptions();
+		String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+		if (uri == null || uri.isEmpty()) {
+			uri = options.get("uri");
+		}
+		BPMNModel model = this.getBpmnModel();
+		File f = new File(uri);
+		java.net.URI targetURI = f.toURI();
+		model.save(targetURI);
+    }
+    
+    public String getPath() {
+    	Map<String, String> options = this.getClientOptions();
+		String uri = MapUtil.getValue(options, "sourceUri").orElse(null);
+		if (uri == null || uri.isEmpty()) {
+			uri = options.get("uri");
+		}
+		return uri;
     }
 
 }

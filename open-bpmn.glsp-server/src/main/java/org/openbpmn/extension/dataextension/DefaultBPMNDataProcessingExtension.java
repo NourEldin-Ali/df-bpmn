@@ -92,14 +92,14 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				.addData("name", bpmnElement.getName()) //
 				.addData("documentation", bpmnElement.getDocumentation()) //
 				.addData("gherkin", bpmnElement.getAttribute("gherkin")) //
+				.addData("groovy", bpmnElement.getAttribute("groovy")) //
 				.addData("exporter", ""); //
-		
 
 		schemaBuilder //
 				.addProperty("name", "string", null) //
 				.addProperty("documentation", "string", "Add data processing description")
 				.addProperty("gherkin", "string", "update data processing behavior description")
-				.addProperty("exporter", "string", null);
+				.addProperty("groovy", "string", "update data processing code").addProperty("exporter", "string", null);
 
 		Map<String, String> multilineOption = new HashMap<>();
 		multilineOption.put("multi", "true");
@@ -112,9 +112,11 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				.addCategory("Behavior") //
 				.addLayout(Layout.VERTICAL) //
 				.addElement("gherkin", "Documentation", multilineOption) //
-				.addElements("generate") //
-		;
-
+				.addCategory("Code") //
+				.addLayout(Layout.VERTICAL) //
+				.addElement("groovy", "Documentation", multilineOption) //
+				.addElements("behavior") //
+				.addElements("code").addElements("unittest");
 	}
 
 	@Override
@@ -141,42 +143,20 @@ public class DefaultBPMNDataProcessingExtension extends AbstractBPMNElementExten
 				continue;
 			}
 			if ("gherkin".equals(feature)) {
-				
-				bpmnElement.setAttribute("gherkin",json.getString(feature));
+
+				bpmnElement.setAttribute("gherkin", json.getString(feature));
 				continue;
 			}
+			
 		}
-		if(!features.contains("gherkin")) {
+		
+		if (!features.contains("gherkin")) {
 			bpmnElement.removeAttribute("gherkin");
 		}
-		if(!features.contains("documentation")) {
+		if (!features.contains("documentation")) {
 			bpmnElement.setDocumentation("");
 		}
 		modelState.reset();
-//		if ("generate".equals(category.toLowerCase())) {
-//			System.out.println("Generate behavior");
-//			DataProcessingExtension dataProcessing = (DataProcessingExtension) bpmnElement;
-//			List<String> input = dataProcessing.activity.getDataProcessingIncoming(bpmnElement.getId()).stream()
-//					.map((element) -> element.getName()).collect(Collectors.toList());
-//
-//			modelState.reset();
-//			List<String> output = dataProcessing.activity.getDataProcessingOutgoing(bpmnElement.getId()).stream()
-//					.map((element) -> element.getName()).collect(Collectors.toList());
-//
-//			
-//			try {
-//				String results =sendPost(input.toString(), dataProcessing.getDocumentation(), output.get(0));
-//				bpmnElement.setAttribute("gherkin",results);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//
-//			// activity.getDataProcessingIncoming
-//		}
-
 	}
-
 
 }

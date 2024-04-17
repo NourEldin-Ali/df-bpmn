@@ -15,7 +15,7 @@
  ********************************************************************************/
 import {
     EditorContextService, EnableToolPaletteAction,
-    GLSPActionDispatcher, RequestAction, ResponseAction, ServerMessageAction, ServerStatusAction, hasArguments, hasStringProp
+    GLSPActionDispatcher, RequestAction, ResponseAction, ServerMessageAction, hasArguments, hasStringProp
 } from '@eclipse-glsp/client';
 import { Action, RequestContextActions, SetContextActions } from '@eclipse-glsp/protocol';
 import {
@@ -383,7 +383,8 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
 
                 // render JSONForm // vanillaRenderers
                 // we also set the key to the current elementID to reinitialize the form panel
-                if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/export')) {
+                if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/export') &&
+                    hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/tomcmt')) {
                     this.panelContainer.render(
                         <div>
                             <JsonForms
@@ -395,17 +396,28 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                                 onChange={({ errors, data }) => this.setState({ data })}
                                 key={this.selectedElementId}
                             />
-                            <input type="button" className="favorite styled" value="Export" onClick={() => {
-                                  console.log('export to bonita has started');
-                                //   this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
-                                  this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
-                                  this.actionDispatcher.request(
-                                      MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'toBonita' })
-                                  );
+                            <input type="button" className="favorite styled" value="Export to Bonita" onClick={() => {
+                                console.log('export to bonita has started');
+                                // eslint-disable-next-line max-len
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting DF-BPMN to Bonita proc', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.request(
+                                    MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'toBonita' })
+                                );
+                            }
+                            } />
+
+                            <input type="button" className="favorite styled" value="Export to MCMT" onClick={() => {
+                                console.log('export to bonita has started');
+                                // eslint-disable-next-line max-len
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting DF-BPMN to MCMT', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.request(
+                                    MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'toMCMT' })
+                                );
                             }
                             } />
                         </div>);
-                } else if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/generate')) {
+                } else if (hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/behavior') &&
+                    hasKeyValue(bpmnPropertiesUISchema, 'scope', '#/properties/code')) {
                     this.panelContainer.render(
                         <div>
                             <JsonForms
@@ -417,13 +429,36 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
                                 onChange={({ errors, data }) => this.setState({ data })}
                                 key={this.selectedElementId}
                             />
+                            {/* this button for generate gherkin syntax */}
                             <input type="button" className="favorite styled" value="Generate Behavior" onClick={async () => {
-                                console.log('generate gherkin has started');
+                                console.log('generate gherkin has been started');
 
-                                // this.actionDispatcher.dispatch(ServerStatusAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
-                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting text to Gherkin', { severity: 'INFO', timeout: 5000 }));
+                                // eslint-disable-next-line max-len
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting Text to Gherkin', { severity: 'INFO', timeout: 5000 }));
                                 this.actionDispatcher.request(
                                     MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'gherkin' })
+                                );
+                            }
+                            } />
+                            {/* this button for generate groovy script code */}
+                            <input type="button" className="favorite styled" value="Generate Code" onClick={async () => {
+                                console.log('generate groovy has been started');
+
+                                // eslint-disable-next-line max-len
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Converting Gherkin to Groovy', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.request(
+                                    MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'groovy' })
+                                );
+                            }
+                            } />
+                            {/* this button for generate groovy script code */}
+                            <input type="button" className="favorite styled" value="Unit Test Generator" onClick={async () => {
+                                console.log('generate unit test has been started');
+
+                                // eslint-disable-next-line max-len
+                                this.actionDispatcher.dispatch(ServerMessageAction.create('Start Generating unit-test for Groovy', { severity: 'INFO', timeout: 5000 }));
+                                this.actionDispatcher.request(
+                                    MyCustomAction.create({ elementId: this.selectedElementId, additionalInformation: 'unittest' })
                                 );
                             }
                             } />
@@ -452,12 +487,12 @@ export class BPMNPropertyPanel extends AbstractUIExtension implements SelectionL
         }
 
     }
-    clickExport(_newData: any): void {
-        console.log('click export');
-        const newJsonData = JSON.stringify(_newData.data);
-        const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'Bonita Integration');
-        this.actionDispatcher.dispatch(action);
-    }
+    // clickExport(_newData: any): void {
+    //     console.log('click export');
+    //     const newJsonData = JSON.stringify(_newData.data);
+    //     const action = new BPMNApplyPropertiesUpdateOperation(this.selectedElementId, newJsonData, 'Bonita Integration');
+    //     this.actionDispatcher.dispatch(action);
+    // }
     /*
      * This method is responsible to send the new data in a
      * ApplyEditOperation Action to the server....
@@ -510,8 +545,34 @@ export class MyCustomResponseActionHandler implements IActionHandler {
     handle(action: MyCustomResponseAction): void | Action {
         // implement your custom logic to handle the action
         // Optionally issue a response action
-        // this.actionDispatcher.dispatch(ServerStatusAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
-        this.actionDispatcher.dispatch(ServerMessageAction.create('Converting has done', { severity: 'INFO', timeout: 5000 }));
+
+        if (action.responceCode === '200') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Converting has been done', { severity: 'INFO', timeout: 5000 }));
+        }
+        else if (action.responceCode === '400') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Error in converting', { severity: 'ERROR', timeout: 5000 }));
+        } else if (action.responceCode === '401') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Error in converting: No text to convert to Gherkin',
+                { severity: 'ERROR', timeout: 5000 }));
+        } else if (action.responceCode === '402') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Error in converting: No gherkin to convert to groovy script',
+                { severity: 'ERROR', timeout: 5000 }));
+        } else if (action.responceCode === '403') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Error in generating unit-test: No groovy script',
+                { severity: 'ERROR', timeout: 5000 }));
+        } else if (action.responceCode === '203') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Generating unit-test success',
+                { severity: 'INFO', timeout: 5000 }));
+            window.open(action.additionalInformation);
+            console.log(action.additionalInformation);
+        }else if (action.responceCode === '204') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('The conversion of DF-BPMN to MCMT was successful',
+                { severity: 'INFO', timeout: 5000 }));
+        } else if (action.responceCode === '404') {
+            this.actionDispatcher.dispatch(ServerMessageAction.create('Error in converting DF-BPMN to MCMT: check the logs',
+                { severity: 'ERROR', timeout: 5000 }));
+        }
+        console.log('Recieved response from server');
     }
 }
 
@@ -609,16 +670,20 @@ export namespace MyCustomAction {
 
 export interface MyCustomResponseAction extends ResponseAction {
     kind: typeof MyCustomResponseAction.KIND;
+    responceCode: string;
+    additionalInformation: string;
 }
 
 export namespace MyCustomResponseAction {
     export const KIND = 'myCustomResponse';
 
     export function is(object: any): object is MyCustomResponseAction {
-        return Action.hasKind(object, KIND);
+        return Action.hasKind(object, KIND) &&
+            hasStringProp(object, 'responceCode') &&
+            hasStringProp(object, 'additionalInformation');
     }
 
-    export function create(options: { responseId?: string } = {}): MyCustomResponseAction {
+    export function create(options: { responceCode: string, additionalInformation: string, responseId?: string }): MyCustomResponseAction {
         return {
             kind: KIND,
             responseId: '',

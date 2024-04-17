@@ -1,0 +1,3017 @@
+:max_transitions_number 500
+:index int
+:smt (define-type StringSort)
+:smt (define-type Bool)
+:smt (define-type BankAccountID)
+:smt (define-type Num)
+:smt (define-type String)
+:smt (define-type CustomerID)
+:smt (define-type MortgageTypeID)
+
+:smt (define MortgageTypeF1 ::(-> MortgageTypeID Num))
+:smt (define MortgageTypeF2 ::(-> MortgageTypeID Num))
+:smt (define BankAccountF1 ::(-> CustomerID String))
+:smt (define BankAccountF2 ::(-> CustomerID BankAccountID))
+:smt (define BankAccountF3 ::(-> CustomerID Num))
+
+:smt (define No ::String)
+:smt (define CompletedApplication ::String)
+:smt (define NotInterested ::String)
+:smt (define Yes ::String)
+:smt (define RejectSent ::String)
+:smt (define OfferMade ::String)
+:smt (define Enabled ::StringSort)
+:smt (define Error ::StringSort)
+:smt (define True ::Bool)
+:smt (define False ::Bool)
+:smt (define InfoProvided ::String)
+:smt (define Archived ::String)
+:smt (define FillApplication ::String)
+:smt (define Active ::StringSort)
+:smt (define ActiveAllPath ::StringSort)
+:smt (define ActiveOnePath ::StringSort)
+:smt (define Idle ::StringSort)
+:smt (define fraud ::String)
+:smt (define AssessmentMade ::String)
+:smt (define Completed ::StringSort)
+:smt (define InfoExtracted ::String)
+
+:db_driven ENTRY
+:db_sorts StringSort Bool BankAccountID Num String CustomerID MortgageTypeID 
+:db_functions MortgageTypeF1 MortgageTypeF2 BankAccountF1 BankAccountF2 BankAccountF3 
+:db_constants No CompletedApplication NotInterested Yes RejectSent OfferMade Enabled Error True False InfoProvided Archived FillApplication Active ActiveAllPath ActiveOnePath Idle fraud AssessmentMade Completed InfoExtracted 
+
+:local Archive1 CustomerID
+:local Info1 BankAccountID
+:local Info2 String
+:local Info3 String
+
+:global lifecycleSEQBlock9 StringSort
+:global #length Num
+:global lifecycleProvideAccInfo StringSort
+:global lifecycleSEQBlock8 StringSort
+:global lifecycleMakeOffer StringSort
+:global lifecycleCompleteApplication StringSort
+:global lifecycleMortgage StringSort
+:global lifecycleSEQblock1 StringSort
+:global lifecycleSEQblock2 StringSort
+:global lifecycleXORChoiceblock2 StringSort
+:global lifecycleEventNotInterested StringSort
+:global lifecycleXORPossibleCompletion StringSort
+:global #amount Num
+:global #status String
+:global #maxAmount Num
+:global lifecycleSendOutAppForm StringSort
+:global lifecycleEmpty StringSort
+:global #tid MortgageTypeID
+:global lifecycleExtractInfo StringSort
+:global lifecycleSelectEligibleAcc StringSort
+:global #statusInfo String
+:global lifecycleArchiveDetails StringSort
+:global #duration Num
+:global #cid CustomerID
+:global #bid BankAccountID
+:global lifecycleLOOPBlock1 StringSort
+:global lifecycleXORblock1 StringSort
+:global lifecycleMakeAssessment StringSort
+:global lifecycleSEQBlock3 StringSort
+:global #bankAmount Num
+:global #liability String
+:global lifecycleSEQBlock5 StringSort
+:global lifecycleEventAppFilled StringSort
+:global lifecycleSEQBlock4 StringSort
+:global lifecycleSendRejection StringSort
+:global lifecycleSEQBlock7 StringSort
+:global lifecycleSEQBlock6 StringSort
+
+:initial
+:var x
+:cnj (= Archive1[x] NULL_CustomerID) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String)  (= lifecycleSEQBlock9 Idle) (= #length NULL_Num) (= lifecycleProvideAccInfo Idle) (= lifecycleSEQBlock8 Idle) (= lifecycleMakeOffer Idle) (= lifecycleCompleteApplication Idle) (= lifecycleMortgage Enabled) (= lifecycleSEQblock1 Idle) (= lifecycleSEQblock2 Idle) (= lifecycleXORChoiceblock2 Idle) (= lifecycleEventNotInterested Idle) (= lifecycleXORPossibleCompletion Idle) (= #amount NULL_Num) (= #status NULL_String) (= #maxAmount NULL_Num) (= lifecycleSendOutAppForm Idle) (= lifecycleEmpty NULL_StringSort) (= #tid NULL_MortgageTypeID) (= lifecycleExtractInfo Idle) (= lifecycleSelectEligibleAcc Idle) (= #statusInfo NULL_String) (= lifecycleArchiveDetails Idle) (= #duration NULL_Num) (= #cid NULL_CustomerID) (= #bid NULL_BankAccountID) (= lifecycleLOOPBlock1 Idle) (= lifecycleXORblock1 Idle) (= lifecycleMakeAssessment Idle) (= lifecycleSEQBlock3 Idle) (= #bankAmount NULL_Num) (= #liability NULL_String) (= lifecycleSEQBlock5 Idle) (= lifecycleEventAppFilled Idle) (= lifecycleSEQBlock4 Idle) (= lifecycleSendRejection Idle) (= lifecycleSEQBlock7 Idle) (= lifecycleSEQBlock6 Idle) 
+:u_cnj (not (= #status Archived)) (= lifecycleMortgage Completed) 
+:eevar b Num
+:eevar c Num
+:eevar o Num
+:eevar h CustomerID
+:eevar a CustomerID
+:eevar e String
+:eevar g String
+:eevar d MortgageTypeID
+:eevar f BankAccountID
+:comment [t1] = Mortgage--{1st}
+:transition
+:var j
+:guard (= lifecycleMortgage Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Enabled
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val Active
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t2] = Mortgage--{2nd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock9 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Idle
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val Completed
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t3] = SEQBlock9--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock9 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Active
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val Enabled
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t4] = SEQBlock9--{2nd}
+:transition
+:var j
+:guard (= lifecycleSendOutAppForm Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val Enabled
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val Idle
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t5] = SEQBlock9--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock8 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val Completed
+:val #length
+:val lifecycleProvideAccInfo
+:val Idle
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t6] = SendOutAppFormSET
+:transition
+:var j
+:guard (not (= a NULL_CustomerID)) (= lifecycleSendOutAppForm Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val Completed
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val a
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t7] = SEQBlock8--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock8 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val Active
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Enabled
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t8] = SEQBlock8--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Idle
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val Enabled
+:val lifecycleSEQBlock6
+
+
+:comment [t9] = SEQBlock8--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock7 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val Completed
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val Idle
+:val lifecycleSEQBlock6
+
+
+:comment [t10] = XORblock1--{1st}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val Enabled
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Active
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t11] = XORblock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Enabled
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Active
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t12] = XORblock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQblock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val Idle
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Completed
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t13] = XORblock1--{4th}
+:transition
+:var j
+:guard (= lifecycleSEQblock2 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Idle
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val Completed
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t14] = SEQblock1--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQblock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val Active
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val Enabled
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t15] = SEQblock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleEventNotInterested Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val Idle
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val Enabled
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t16] = SEQblock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleArchiveDetails Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val Completed
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val Idle
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t17] = EventNotInterestedSET
+:transition
+:var j
+:guard (= lifecycleEventNotInterested Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val Completed
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val NotInterested
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t18] = ArchiveDetailsINSERT
+:transition
+:var j
+:var x
+:guard (= Archive1[x] NULL_CustomerID) (= lifecycleArchiveDetails Enabled)
+:numcases 2
+:case (= j x)
+:val #cid
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val Archived
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val Completed
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val Archived
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val Completed
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t19] = SEQblock2--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQblock2 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Active
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val Enabled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t20] = SEQblock2--{2nd}
+:transition
+:var j
+:guard (= lifecycleEventAppFilled Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val Enabled
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val Idle
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t21] = SEQblock2--{3rd}
+:transition
+:var j
+:guard (= lifecycleCompleteApplication Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val Idle
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val Completed
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t22] = EventAppFilledSET
+:transition
+:var j
+:guard (= lifecycleEventAppFilled Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val FillApplication
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val Completed
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t23] = CompleteApplicationSET
+:transition
+:var j
+:guard (not (= d NULL_MortgageTypeID)) (= lifecycleCompleteApplication Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val Completed
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val b
+:val CompletedApplication
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val d
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val c
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t24] = SEQBlock7--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock7 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val Enabled
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val Active
+:val lifecycleSEQBlock6
+
+
+:comment [t25] = SEQBlock7--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORPossibleCompletion Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val Idle
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val Enabled
+
+
+:comment [t26] = SEQBlock7--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock6 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val Completed
+:val Idle
+
+
+:comment [t27] = XORPossibleCompletion--{1st}
+:transition
+:var j
+:guard (= lifecycleXORPossibleCompletion Enabled) (not (= #status Archived)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val Completed
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t28] = XORPossibleCompletion--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORPossibleCompletion Enabled) (= #status Archived) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val Completed
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val Error
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t29] = SEQBlock6--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock6 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val Enabled
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val Active
+
+
+:comment [t30] = SEQBlock6--{2nd}
+:transition
+:var j
+:guard (= lifecycleLOOPBlock1 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val Idle
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val Enabled
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t31] = SEQBlock6--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock5 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val Idle
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val Completed
+
+
+:comment [t32] = LOOPBlock1--{1st}
+:transition
+:var j
+:guard (= lifecycleLOOPBlock1 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val Enabled
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val Active
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t33] = LOOPBlock1--{2nd}
+:transition
+:var j
+:guard (= lifecycleProvideAccInfo Completed) (not (= #statusInfo InfoProvided)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val Idle
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val Enabled
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t34] = LOOPBlock1--{3rd}
+:transition
+:var j
+:guard (= lifecycleEmpty Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val Enabled
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val Idle
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t35] = LOOPBlock1--{4th}
+:transition
+:var j
+:guard (= lifecycleProvideAccInfo Completed) (= #statusInfo InfoProvided) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val Idle
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val Completed
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t36] = ProvideAccInfoINSERT
+:transition
+:var j
+:var x
+:guard (not (= a NULL_CustomerID)) (= (BankAccountF1 a) e) (= (BankAccountF2 a) f) (= #cid a) (= Info1[x] NULL_BankAccountID) (= Info2[x] NULL_String) (= Info3[x] NULL_String) (= lifecycleProvideAccInfo Enabled)
+:numcases 2
+:case (= j x)
+:val Archive1[j]
+:val f
+:val e
+:val NULL_String
+
+:val lifecycleSEQBlock9
+:val #length
+:val Completed
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val g
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val Completed
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val g
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t37] = arrowEmptyBlockTransition
+:transition
+:var j
+:guard (= True True)(= lifecycleEmpty Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val Completed
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t38] = SEQBlock5--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock5 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val Enabled
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val Active
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t39] = SEQBlock5--{2nd}
+:transition
+:var j
+:guard (= lifecycleMakeAssessment Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val Idle
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val Enabled
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t40] = SEQBlock5--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock4 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val Completed
+:val lifecycleEventAppFilled
+:val Idle
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t41] = MakeAssessmentUPDATE
+:transition
+:var j
+:var x
+:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= lifecycleMakeAssessment Enabled)
+:numcases 2
+:case (not (= Info2[j] fraud))
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Yes
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val AssessmentMade
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val Completed
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case (= Info2[j] fraud)
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val No
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val AssessmentMade
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val Completed
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t42] = SEQBlock4--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock4 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val Enabled
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val Active
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t43] = SEQBlock4--{2nd}
+:transition
+:var j
+:guard (= lifecycleSelectEligibleAcc Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val Idle
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val Enabled
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t44] = SEQBlock4--{3rd}
+:transition
+:var j
+:guard (= lifecycleSEQBlock3 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val Idle
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val Completed
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t45] = SelectEligibleAccDELETE
+:transition
+:var j
+:var x
+:guard (= Info1[x] f) (= Info2[x] e) (= Info3[x] g) (= Info2[x] e) (= lifecycleSelectEligibleAcc Enabled)
+:numcases 2
+:case (= j x)
+:val Archive1[j]
+:val NULL_BankAccountID
+:val NULL_String
+:val NULL_String
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val Completed
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val f
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val g
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val Completed
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val f
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val g
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+:comment [t46] = SEQBlock3--{1st}
+:transition
+:var j
+:guard (= lifecycleSEQBlock3 Enabled) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val Enabled
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val Active
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t47] = SEQBlock3--{2nd}
+:transition
+:var j
+:guard (= lifecycleExtractInfo Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Enabled
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val Idle
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t48] = SEQBlock3--{3rd}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Idle
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val Completed
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t49] = ExtractInfoSET
+:transition
+:var j
+:guard (not (= a NULL_CustomerID)) (not (= h NULL_CustomerID)) (= (BankAccountF2 h) f) (= (BankAccountF3 h) b) (not (= d NULL_MortgageTypeID)) (= (MortgageTypeF1 d) c) (= (MortgageTypeF2 d) o) (= #cid a) (= #bid f) (= #tid d) (= lifecycleExtractInfo Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val o
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val InfoExtracted
+:val c
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val Completed
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val b
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t50] = XORChoiceblock2--{1st}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Enabled) (= #duration #length) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val Enabled
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Active
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t51] = XORChoiceblock2--{2nd}
+:transition
+:var j
+:guard (= lifecycleXORChoiceblock2 Enabled) (not (= #duration #length)) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Active
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val Enabled
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t52] = XORChoiceblock2--{3rd}
+:transition
+:var j
+:guard (= lifecycleMakeOffer Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val Idle
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Completed
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t53] = XORChoiceblock2--{4th}
+:transition
+:var j
+:guard (= lifecycleSendRejection Completed) 
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val Completed
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val #status
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val Idle
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+
+:comment [t54] = MakeOfferSET
+:transition
+:var j
+:guard (= lifecycleMakeOffer Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val Completed
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val OfferMade
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val lifecycleSendRejection
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+:comment [t55] = SendRejectionSET
+:transition
+:var j
+:guard (= lifecycleSendRejection Enabled)
+:numcases 1
+:case
+:val Archive1[j]
+:val Info1[j]
+:val Info2[j]
+:val Info3[j]
+
+:val lifecycleSEQBlock9
+:val #length
+:val lifecycleProvideAccInfo
+:val lifecycleSEQBlock8
+:val lifecycleMakeOffer
+:val lifecycleCompleteApplication
+:val lifecycleMortgage
+:val lifecycleSEQblock1
+:val lifecycleSEQblock2
+:val lifecycleXORChoiceblock2
+:val lifecycleEventNotInterested
+:val lifecycleXORPossibleCompletion
+:val #amount
+:val RejectSent
+:val #maxAmount
+:val lifecycleSendOutAppForm
+:val lifecycleEmpty
+:val #tid
+:val lifecycleExtractInfo
+:val lifecycleSelectEligibleAcc
+:val #statusInfo
+:val lifecycleArchiveDetails
+:val #duration
+:val #cid
+:val #bid
+:val lifecycleLOOPBlock1
+:val lifecycleXORblock1
+:val lifecycleMakeAssessment
+:val lifecycleSEQBlock3
+:val #bankAmount
+:val #liability
+:val lifecycleSEQBlock5
+:val lifecycleEventAppFilled
+:val lifecycleSEQBlock4
+:val Completed
+:val lifecycleSEQBlock7
+:val lifecycleSEQBlock6
+
+

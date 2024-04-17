@@ -26,7 +26,7 @@ public class DEMO {
 //        System.out.println("Processing!");
     	String path = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\open-bpmn\\open-bpmn.glsp-client\\workspace\\delta_bpmn_final.bpmn";
         
-        DfbpmnModelReader modelReader = new DfbpmnModelReader(path);
+        DfbpmnModelReader modelReader = new DfbpmnModelReader(path,null);
 
         for (DABProcessTranslator processTranslator : modelReader.getProcessTranslators())
             processTranslator.generateMCMTTranslation();
@@ -131,7 +131,7 @@ public class DEMO {
         ProcessBlock root = processSchema.newProcessBlock("root_process");
         root.addBlock(seq);
 
-        DABProcessTranslator assign_job_process = new DABProcessTranslator("job_hiring_process", root, dataSchema);
+        DABProcessTranslator assign_job_process = new DABProcessTranslator("job_hiring_process", root, dataSchema,null);
 
         //this property can be assigned to a list of properties to check in the BPMN model! the properties get parsed and (they're just conjunctive queries! we have a parser for conjunctive queries!)
         //run MCMT on the generated files

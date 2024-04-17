@@ -116,34 +116,45 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 				.addData("documentation", bpmnElement.getDocumentation()) //
 				.addData("targetNamespace", definitions.getAttribute("targetNamespace")) //
 				.addData("exporter", definitions.getAttribute("exporter")) //
-				.addData("exporterVersion", definitions.getAttribute("exporterVersion"));
+				.addData("exporterVersion", definitions.getAttribute("exporterVersion")) //
+//				.addData("mcmtpath", definitions.getAttribute("mcmtpath"))
+				;
 
 		schemaBuilder. //
 				addProperty("name", "string", null). //
-				addProperty("verify", "string", null). //
+				
 				addProperty("targetNamespace", "string", null). //
 				addProperty("exporter", "string", null). //
 				addProperty("exporterVersion", "string", null). //
-				addProperty("documentation", "string", "Model description.");
+				addProperty("documentation", "string", "Model description.").
+				addProperty("verify", "string", null). //
+				addProperty("mcmtpath", "string", null)
+				;
 
 		Map<String, String> multilineOption = new HashMap<>();
 		multilineOption.put("multi", "true");
 		uiSchemaBuilder. //
 				addCategory("General"). //
 				addLayout(Layout.HORIZONTAL). //
-				addElements("name", "verify"). //
+				addElements("name"). //
 				addLayout(Layout.HORIZONTAL). //
 				addElement("documentation", "Documentation", multilineOption). //
 				// Category Definitions...
 				addCategory("Definitions"). //
 				addLayout(Layout.VERTICAL). //
-				addElements("targetNamespace", "exporter", "export"); //
+				addElements("targetNamespace", "exporter"); //
 
 		uiSchemaBuilder.
 		// Category Bonita Project...
 				addCategory("Bonita Integration"). //
 				addLayout(Layout.VERTICAL). //
 				addElements("bonitaProjectPath", "exportName", "export");
+		
+		uiSchemaBuilder.
+		// Category Bonita Project...
+				addCategory("MCMT"). //
+				addLayout(Layout.VERTICAL). //
+				addElements("verify","mcmtpath","tomcmt");
 
 		// get Bonita project from the Bonita Workspace
 		BonitaWorkspaceInfo bonitaProjects = new BonitaWorkspaceInfo("/usr/src/app/bonita");
@@ -156,6 +167,12 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 
 		dataBuilder.addData("bonitaProjectPath", bpmnElement.getAttribute("bonitaProjectPath")).addData("exportName",
 				bpmnElement.getAttribute("exportName"))
+//				.addData("export", false)
+		;
+		
+		dataBuilder.
+		addData("mcmtpath",
+				bpmnElement.getAttribute("mcmtpath"))
 //				.addData("export", false)
 		;
 		// Signal List
@@ -230,7 +247,6 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 
 		if ("General".equals(category)) {
 			bpmnElement.setName(json.getString("name", ""));
-			bpmnElement.setAttribute("verify", json.getString("verify", ""));
 			bpmnElement.setDocumentation(json.getString("documentation", ""));
 		}
 		if ("Definitions".equals(category)) {
@@ -242,6 +258,10 @@ public class DefaultBPMNDefinitionsExtension extends AbstractBPMNElementExtensio
 		if ("Bonita Integration".equals(category)) {
 			bpmnElement.setAttribute("bonitaProjectPath", json.getString("bonitaProjectPath", ""));
 			bpmnElement.setAttribute("exportName", json.getString("exportName", ""));
+		}
+		if ("MCMT".equals(category)) {
+			bpmnElement.setAttribute("verify", json.getString("verify", ""));
+			bpmnElement.setAttribute("mcmtpath", json.getString("mcmtpath", ""));
 		}
 //		if ("Export".equals(category)) {
 //			DFBPMNToProc dfbpmnToProc = new DFBPMNToProc(modelState.getBpmnModel(),

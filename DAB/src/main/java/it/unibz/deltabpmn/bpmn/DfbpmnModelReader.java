@@ -86,10 +86,11 @@ public class DfbpmnModelReader {
 	private ProcessBlock dabProcess;
 	private List<ConjunctiveSelectQuery> propertiesToVerify = new ArrayList<>();
 	private String processName;
+	private String exportPath;
 
-	public DfbpmnModelReader(String filePath) throws Exception {
+	public DfbpmnModelReader(String filePath, String exportPath) throws Exception {
 		File file = new File(filePath);
-
+		this.exportPath = exportPath;
 		this.modelInstanceNew = BPMNModelFactory.read(file);
 		// 1. generate the DAB data schema
 		this.dataSchema = DataSchema.getInstance();
@@ -132,14 +133,14 @@ public class DfbpmnModelReader {
 		List<DABProcessTranslator> processTranslators = new ArrayList<>();
 		if (this.propertiesToVerify.size() == 1) {
 			DABProcessTranslator processTranslator = new DABProcessTranslator(processName, this.dabProcess,
-					this.dataSchema);
+					this.dataSchema, this.exportPath);
 			processTranslator.setSafetyFormula(propertiesToVerify.get(0));
 			processTranslators.add(processTranslator);
 		} else {
 			int cnt = 1;
 			for (ConjunctiveSelectQuery property : this.propertiesToVerify) {
 				DABProcessTranslator processTranslator = new DABProcessTranslator(processName + cnt, this.dabProcess,
-						this.dataSchema);
+						this.dataSchema, this.exportPath);
 				processTranslator.setSafetyFormula(property);
 				processTranslators.add(processTranslator);
 				cnt++;
@@ -322,7 +323,8 @@ public class DfbpmnModelReader {
 						&& currentNode.getIngoingSequenceFlows().size() == 1
 						&& !currentNode.getOutgoingSequenceFlows().stream()
 								.anyMatch((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
-										.equals(BPMNTypes.END_EVENT)) // to check that it's not a possible completion block
+										.equals(BPMNTypes.END_EVENT)) // to check that it's not a possible completion
+																		// block
 						&& lookAheadLoop(newFrontier, this.visitedOpenXORLoopGatesNew) == null) {
 					System.out.println("--------[XOR SPLIT] : " + currentNode.getId() + " - " + currentNode.getName());
 					// the order has to be reversed as forEach reverses the order of added elements;
@@ -548,9 +550,8 @@ public class DfbpmnModelReader {
 				// ****************************************
 				if (currentNode.getElementNode().getLocalName().equals(BPMNTypes.EXCLUSIVE_GATEWAY)
 						&& currentNode.getIngoingSequenceFlows().size() == 1
-						&& currentNode.getOutgoingSequenceFlows().stream()
-								.anyMatch((sequence) -> sequence.getTargetElement().getElementNode().getLocalName()
-										.equals(BPMNTypes.END_EVENT))) {
+						&& currentNode.getOutgoingSequenceFlows().stream().anyMatch((sequence) -> sequence
+								.getTargetElement().getElementNode().getLocalName().equals(BPMNTypes.END_EVENT))) {
 
 //                if (currentNode instanceof ExclusiveGateway && currentNode.getIncoming().size() == 1 && !currentNode.getSucceedingNodes().filterByType(EndEvent.class).list().isEmpty()) {
 					System.out.println("--------[Possible COMPLETION XOR] : " + currentNode.getId() + " - "

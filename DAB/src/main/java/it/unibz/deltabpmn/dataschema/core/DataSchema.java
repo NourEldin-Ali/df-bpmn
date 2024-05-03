@@ -26,7 +26,7 @@ public final class DataSchema implements SortProvider, ConstantProvider, Reposit
     private DbSchema schema;
 
 
-    private DataSchema() {
+    public DataSchema() {
         //1. initialize all the components needed for sorts
         this.sorts = new HashMap<String, Sort>();
         initializeSorts();

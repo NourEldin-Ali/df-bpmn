@@ -93,7 +93,7 @@ public class DfbpmnModelReader {
 		this.exportPath = exportPath;
 		this.modelInstanceNew = BPMNModelFactory.read(file);
 		// 1. generate the DAB data schema
-		this.dataSchema = DataSchema.getInstance();
+		this.dataSchema = new DataSchema();//DataSchema.getInstance();
 		// extract case variables
 		this.dataSchema = CaseVariableExtractor.extract(this.modelInstanceNew, this.dataSchema);
 		// extract catalog relations

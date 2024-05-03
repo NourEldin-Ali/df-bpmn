@@ -1,0 +1,1068 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="org.openbpmn" exporterVersion="1.0.0" targetNamespace="http://open-bpmn.org">
+  <bpmn2:process id="process_1" mcmtpath="C:\Users\AliNourEldin\Desktop\mcmt" name="Mortgage" processType="Public" verify="#status != Archived AND lifecycleMortgage = Completed">
+    <bpmn2:documentation id="documentation_uBwHhw"/>
+    <bpmn2:startEvent id="event_8hyTjQ" name="Event-1">
+      <bpmn2:documentation id="documentation_TwCdqA"/>
+      <bpmn2:outgoing>sequenceFlow_KWV0Kg</bpmn2:outgoing>
+      <bpmn2:messageEventDefinition id="messageEventDefinition_AT86qA" messageRef="message_1"/>
+    </bpmn2:startEvent>
+    <bpmn2:task expand="true" id="SendOutAppForm" isMultiple="false" name="Send Out Application Form">
+      <bpmn2:documentation id="documentation_ejcu0A"/>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_Z5ifBQ" isMultiple="false" isReadOnly="true" name="customer" state="read" type="Customer">
+        <bpmn2:attribute id="DataObjectAttributeExtension_BRSDzA" name="Cid" type="CustomerID">
+          <bpmn2:outgoing>DataFlowExtension_EkIduA</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_s9B1qA" isMultiple="false" name="cid" state="init" type="CustomerID">
+        <bpmn2:incoming>DataFlowExtension_EkIduA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_EkIduA" sourceRef="DataObjectAttributeExtension_BRSDzA" targetRef="DataOutputObjectExtension_s9B1qA">
+        <bpmn2:documentation id="documentation_f2tAFA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_KWV0Kg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_fJIbyQ</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_KWV0Kg" sourceRef="event_8hyTjQ" targetRef="SendOutAppForm">
+      <bpmn2:documentation id="documentation_U8Hd0A"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway condition="TRUE" gatewayDirection="Diverging" id="SplitXOR1" name="Gateway-1">
+      <bpmn2:documentation id="documentation_kQ9o3g"/>
+      <bpmn2:incoming>sequenceFlow_fJIbyQ</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_zEWxag</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_DhTEzw</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_fJIbyQ" sourceRef="SendOutAppForm" targetRef="SplitXOR1">
+      <bpmn2:documentation id="documentation_DtqegA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="ArchiveDetails" isMultiple="false" name="Archive Details">
+      <bpmn2:documentation id="documentation_EnHQMg"/>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_xAoINg" isMultiple="false" isReadOnly="false" name="archive" state="init" type="Archive">
+        <bpmn2:attribute id="DataObjectAttributeExtension_jBZmRA" name="C" type="CustomerID">
+          <bpmn2:incoming>DataFlowExtension_0UKofg</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_DhXc8Q" isMultiple="false" name="cid" type="CustomerID">
+        <bpmn2:outgoing>DataFlowExtension_0UKofg</bpmn2:outgoing>
+      </bpmn2:dataInputObjectProcess>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_4Tp0mA" isMultiple="false" name="status" type="String" value="Archived">
+        <bpmn2:outgoing>DataFlowExtension_h08ZCA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_ScAGIw" isMultiple="false" name="status" state="update" type="String">
+        <bpmn2:incoming>DataFlowExtension_h08ZCA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_h08ZCA" sourceRef="DataInputObjectExtension_4Tp0mA" targetRef="DataOutputObjectExtension_ScAGIw">
+        <bpmn2:documentation id="documentation_XQFizQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_0UKofg" sourceRef="DataInputObjectExtension_DhXc8Q" targetRef="DataObjectAttributeExtension_jBZmRA">
+        <bpmn2:documentation id="documentation_GEp0jg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:outgoing>sequenceFlow_SibATg</bpmn2:outgoing>
+      <bpmn2:incoming>sequenceFlow_VhC4RA</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="CompleteApplication" isMultiple="false" name="Process Complete Application">
+      <bpmn2:documentation id="documentation_03xdYA"/>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_7AYa5g" isMultiple="false" name="e" type="Num">
+        <bpmn2:outgoing>DataFlowExtension_eLM2tQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_eCShtQ" isMultiple="false" name="g" type="Num">
+        <bpmn2:outgoing>DataFlowExtension_0aC0ww</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_oDICbw" isMultiple="false" name="duration" state="init" type="Num">
+        <bpmn2:incoming>DataFlowExtension_eLM2tQ</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_a41sfg" isMultiple="false" name="amount" state="init" type="Num">
+        <bpmn2:incoming>DataFlowExtension_0aC0ww</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_0aC0ww" sourceRef="DataInputObjectExtension_eCShtQ" targetRef="DataOutputObjectExtension_a41sfg">
+        <bpmn2:documentation id="documentation_y4lu7g"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_eLM2tQ" sourceRef="DataInputObjectExtension_7AYa5g" targetRef="DataOutputObjectExtension_oDICbw">
+        <bpmn2:documentation id="documentation_d1c4Nw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_2jGJ6g" isMultiple="false" name="status" type="String" value="CompletedApplication">
+        <bpmn2:outgoing>DataFlowExtension_iG6usA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_e4Ql1Q" isMultiple="false" name="status" state="update" type="String">
+        <bpmn2:incoming>DataFlowExtension_iG6usA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_iG6usA" sourceRef="DataInputObjectExtension_2jGJ6g" targetRef="DataOutputObjectExtension_e4Ql1Q">
+        <bpmn2:documentation id="documentation_49zv1Q"/>
+      </bpmn2:dataFlow>
+      <bpmn2:outgoing>sequenceFlow_Joh0Rw</bpmn2:outgoing>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_QtHfFw" isMultiple="false" isReadOnly="true" name="mortgageType" state="read" type="MortgageType">
+        <bpmn2:attribute id="DataObjectAttributeExtension_JcbUfw" name="Mid" type="MortgageTypeID">
+          <bpmn2:outgoing>DataFlowExtension_27rWMA</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_b43FQg" isMultiple="false" name="tid" state="init" type="MortgageTypeID">
+        <bpmn2:incoming>DataFlowExtension_27rWMA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_27rWMA" sourceRef="DataObjectAttributeExtension_JcbUfw" targetRef="DataOutputObjectExtension_b43FQg">
+        <bpmn2:documentation id="documentation_eV2S2w"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_COoLNA</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway condition="" gatewayDirection="Diverging" id="JoinXOR1" name="Gateway-2">
+      <bpmn2:documentation id="documentation_9axBAA"/>
+      <bpmn2:incoming>sequenceFlow_SibATg</bpmn2:incoming>
+      <bpmn2:incoming>sequenceFlow_Joh0Rw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_xpVW6A</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_SibATg" sourceRef="ArchiveDetails" targetRef="JoinXOR1">
+      <bpmn2:documentation id="documentation_nPNXyA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_Joh0Rw" sourceRef="CompleteApplication" targetRef="JoinXOR1">
+      <bpmn2:documentation id="documentation_57iMcw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway condition="#status = Archived" gatewayDirection="Diverging" id="XORPossibleCompletion" name="Gateway-3">
+      <bpmn2:documentation id="documentation_qqgigQ"/>
+      <bpmn2:incoming>sequenceFlow_xpVW6A</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_8JCiDg</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_7Ofjcg</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_xpVW6A" sourceRef="JoinXOR1" targetRef="XORPossibleCompletion">
+      <bpmn2:documentation id="documentation_eFfBlg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="event_d6nl9g" name="Event-2">
+      <bpmn2:documentation id="documentation_0XBPOw"/>
+      <bpmn2:incoming>sequenceFlow_7Ofjcg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="LoopXOR1" name="Gateway-4">
+      <bpmn2:documentation id="documentation_PczFYQ"/>
+      <bpmn2:outgoing>sequenceFlow_VH8E0g</bpmn2:outgoing>
+      <bpmn2:incoming>sequenceFlow_p202oQ</bpmn2:incoming>
+      <bpmn2:incoming>sequenceFlow_8JCiDg</bpmn2:incoming>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:task expand="true" id="ProvideAccInfo" isMultiple="false" name="Provide Bank Account Info">
+      <bpmn2:documentation id="documentation_SDnMUA"/>
+      <bpmn2:incoming>sequenceFlow_VH8E0g</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_oac0CA</bpmn2:outgoing>
+      <bpmn2:dataInputObjectEnvironmentDataUser id="DataInputObjectExtension_g3Iftg" isMultiple="false" name="f" type="String">
+        <bpmn2:outgoing>DataFlowExtension_rtps9g</bpmn2:outgoing>
+      </bpmn2:dataInputObjectEnvironmentDataUser>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_xVaFMg" isMultiple="false" name="cid" type="CustomerID">
+        <bpmn2:outgoing>DataFlowExtension_Akmt0w</bpmn2:outgoing>
+      </bpmn2:dataInputObjectProcess>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_wnJ3Kg" isMultiple="false" isReadOnly="true" name="bankAcc" state="read" type="BankAccount">
+        <bpmn2:attribute id="DataObjectAttributeExtension_HIzWcQ" name="CBA" type="CustomerID">
+          <bpmn2:incoming>DataFlowExtension_Akmt0w</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_KN9Dag" name="StatusBank" type="String">
+          <bpmn2:outgoing>DataFlowExtension_RmvwFQ</bpmn2:outgoing>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_9rQYQw" name="BAid" type="BankAccountID">
+          <bpmn2:outgoing>DataFlowExtension_tFpQFA</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_Akmt0w" sourceRef="DataInputObjectExtension_xVaFMg" targetRef="DataObjectAttributeExtension_HIzWcQ">
+        <bpmn2:documentation id="documentation_0Ec15Q"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_0jvLrw" isMultiple="false" isReadOnly="false" name="info" state="init" type="Info">
+        <bpmn2:attribute id="DataObjectAttributeExtension_CktRLA" name="Bank" type="BankAccountID">
+          <bpmn2:incoming>DataFlowExtension_tFpQFA</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_2Zy6vg" name="StatusB" type="String">
+          <bpmn2:incoming>DataFlowExtension_RmvwFQ</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_ecTCWw" isMultiple="false" name="statusInfo " state="init" type="String">
+        <bpmn2:incoming>DataFlowExtension_rtps9g</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_rtps9g" sourceRef="DataInputObjectExtension_g3Iftg" targetRef="DataOutputObjectExtension_ecTCWw">
+        <bpmn2:documentation id="documentation_l6HZHw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_tFpQFA" sourceRef="DataObjectAttributeExtension_9rQYQw" targetRef="DataObjectAttributeExtension_CktRLA">
+        <bpmn2:documentation id="documentation_Pxi2hA"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_RmvwFQ" sourceRef="DataObjectAttributeExtension_KN9Dag" targetRef="DataObjectAttributeExtension_2Zy6vg">
+        <bpmn2:documentation id="documentation_k6Tpww"/>
+      </bpmn2:dataFlow>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_VH8E0g" sourceRef="LoopXOR1" targetRef="ProvideAccInfo">
+      <bpmn2:documentation id="documentation_nx0PJg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway condition="#statusInfo = InfoProvided" gatewayDirection="Diverging" id="LoopXOR2" name="Gateway-5">
+      <bpmn2:documentation id="documentation_2cXpWg"/>
+      <bpmn2:incoming>sequenceFlow_oac0CA</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_p202oQ</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_1SvI6Q</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_oac0CA" sourceRef="ProvideAccInfo" targetRef="LoopXOR2">
+      <bpmn2:documentation id="documentation_CTG0Ug"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_p202oQ" sourceRef="LoopXOR2" targetRef="LoopXOR1">
+      <bpmn2:documentation id="documentation_30zESg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="MakeAssessment" isMultiple="false" name="Make Assessment">
+      <bpmn2:documentation id="documentation_O4dK6A"/>
+      <bpmn2:incoming>sequenceFlow_1SvI6Q</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_UK0ivw</bpmn2:outgoing>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_NXSqaA" isMultiple="false" name="status" state="update" type="String">
+        <bpmn2:incoming>DataFlowExtension_mfJaMA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_FOxTbg" isMultiple="false" name="status" type="String" value="AssessmentMade">
+        <bpmn2:outgoing>DataFlowExtension_mfJaMA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataFlow id="DataFlowExtension_mfJaMA" sourceRef="DataInputObjectExtension_FOxTbg" targetRef="DataOutputObjectExtension_NXSqaA">
+        <bpmn2:documentation id="documentation_oqsbSw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_sGB5BA" isMultiple="false" isReadOnly="false" name="info" state="update" type="Info">
+        <bpmn2:attribute id="DataObjectAttributeExtension_T7jppA" name="Liability" type="String">
+          <bpmn2:incoming>DataFlowExtension_7yrq6g</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataProcessing gherkin="Given Cases&#10;When Info.StatusB != fraud&#10;Then Yes&#10;&#10;Given default&#10;Then No" id="DataProcessingExtension_7W4KQA" name="dataProcessing-1">
+        <bpmn2:documentation id="documentation_cQXriQ"/>
+        <bpmn2:outgoing>DataFlowExtension_7yrq6g</bpmn2:outgoing>
+        <bpmn2:incoming>DataFlowExtension_7ReT5w</bpmn2:incoming>
+      </bpmn2:dataProcessing>
+      <bpmn2:dataFlow id="DataFlowExtension_7yrq6g" sourceRef="DataProcessingExtension_7W4KQA" targetRef="DataObjectAttributeExtension_T7jppA">
+        <bpmn2:documentation id="documentation_fWl1Ew"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_igau0w" isMultiple="false" isReadOnly="false" name="info" type="Info">
+        <bpmn2:attribute id="DataObjectAttributeExtension_1aXpSw" name="StatusB" type="String">
+          <bpmn2:outgoing>DataFlowExtension_7ReT5w</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataInputObjectDataStore>
+      <bpmn2:dataFlow id="DataFlowExtension_7ReT5w" sourceRef="DataObjectAttributeExtension_1aXpSw" targetRef="DataProcessingExtension_7W4KQA">
+        <bpmn2:documentation id="documentation_QW8aUA"/>
+      </bpmn2:dataFlow>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_1SvI6Q" sourceRef="LoopXOR2" targetRef="MakeAssessment">
+      <bpmn2:documentation id="documentation_PnVkXw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="SelectEligibleAcc" isMultiple="false" name="Select Eligible Account">
+      <bpmn2:documentation id="documentation_tEKslw"/>
+      <bpmn2:incoming>sequenceFlow_UK0ivw</bpmn2:incoming>
+      <bpmn2:dataInputObjectDataStore id="DataInputObjectExtension_PRCfDA" isMultiple="false" isReadOnly="false" name="info" type="Info">
+        <bpmn2:attribute id="DataObjectAttributeExtension_ce0PZA" name="Liability" type="String">
+          <bpmn2:outgoing>DataFlowExtension_0MGABw</bpmn2:outgoing>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_M4MSlQ" name="Bank" type="BankAccountID">
+          <bpmn2:outgoing>DataFlowExtension_rtugCQ</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataInputObjectDataStore>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_s0Vxlg" isMultiple="false" name="liability" state="init" type="String">
+        <bpmn2:incoming>DataFlowExtension_0MGABw</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_69z2hQ" isMultiple="false" name="bid" state="init" type="BankAccountID">
+        <bpmn2:incoming>DataFlowExtension_rtugCQ</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_rtugCQ" sourceRef="DataObjectAttributeExtension_M4MSlQ" targetRef="DataOutputObjectExtension_69z2hQ">
+        <bpmn2:documentation id="documentation_7FU1rQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_0MGABw" sourceRef="DataObjectAttributeExtension_ce0PZA" targetRef="DataOutputObjectExtension_s0Vxlg">
+        <bpmn2:documentation id="documentation_OYsT4Q"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_EYApNQ" isMultiple="false" isReadOnly="false" name="info" state="delete" type="Info"/>
+      <bpmn2:outgoing>sequenceFlow_EHtQUQ</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_UK0ivw" sourceRef="MakeAssessment" targetRef="SelectEligibleAcc">
+      <bpmn2:documentation id="documentation_moP10A"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="MakeOffer" isMultiple="false" name="Make Offer">
+      <bpmn2:documentation id="documentation_OIGwXA"/>
+      <bpmn2:outgoing>sequenceFlow_OfQblg</bpmn2:outgoing>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_S5ubMw" isMultiple="false" name="status" type="String" value="OfferMade">
+        <bpmn2:outgoing>DataFlowExtension_h0OUdw</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_JJeWHQ" isMultiple="false" name="status" state="init" type="String">
+        <bpmn2:incoming>DataFlowExtension_h0OUdw</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_h0OUdw" sourceRef="DataInputObjectExtension_S5ubMw" targetRef="DataOutputObjectExtension_JJeWHQ">
+        <bpmn2:documentation id="documentation_MDkAUg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_00SGRw</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="SendRejection" isMultiple="false" name="Send Rejection">
+      <bpmn2:documentation id="documentation_KdMkWw"/>
+      <bpmn2:outgoing>sequenceFlow_agCaWg</bpmn2:outgoing>
+      <bpmn2:dataOutputObjectProcess bonitaProjectPath="" documentation="" exportName="" exporter="org.openbpmn" exporterVersion="1.0.0" id="DataOutputObjectExtension_3f2TSA" isMultiple="false" name="status" state="init" targetNamespace="http://open-bpmn.org" type="String" verify="#status = Archived AND lifecycleMortgage = Completed">
+        <bpmn2:incoming>DataFlowExtension_ORU4QA</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_M60dJw" isMultiple="false" name="status" type="String" value="RejectSent">
+        <bpmn2:outgoing>DataFlowExtension_ORU4QA</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataFlow id="DataFlowExtension_ORU4QA" sourceRef="DataInputObjectExtension_M60dJw" targetRef="DataOutputObjectExtension_3f2TSA">
+        <bpmn2:documentation id="documentation_JVmcWw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_tLTf9Q</bpmn2:incoming>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway condition="" gatewayDirection="Diverging" id="JoinXOR2" name="Gateway-8">
+      <bpmn2:documentation id="documentation_xyY0bA"/>
+      <bpmn2:incoming>sequenceFlow_agCaWg</bpmn2:incoming>
+      <bpmn2:incoming>sequenceFlow_OfQblg</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_ft89bQ</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_agCaWg" sourceRef="SendRejection" targetRef="JoinXOR2">
+      <bpmn2:documentation id="documentation_CWoXog"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_OfQblg" sourceRef="MakeOffer" targetRef="JoinXOR2">
+      <bpmn2:documentation id="documentation_Aw6Tlw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="event_6urBcQ" name="Event-3">
+      <bpmn2:documentation id="documentation_0WHNWg"/>
+      <bpmn2:incoming>sequenceFlow_ft89bQ</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="sequenceFlow_ft89bQ" sourceRef="JoinXOR2" targetRef="event_6urBcQ">
+      <bpmn2:documentation id="documentation_UWZRUw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway condition="#duration = #length" gatewayDirection="Diverging" id="SplitXOR2" name="Gateway-7">
+      <bpmn2:documentation id="documentation_fI7HKw"/>
+      <bpmn2:outgoing>sequenceFlow_00SGRw</bpmn2:outgoing>
+      <bpmn2:outgoing>sequenceFlow_tLTf9Q</bpmn2:outgoing>
+      <bpmn2:incoming>sequenceFlow_raXvFg</bpmn2:incoming>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sequenceFlow_8JCiDg" sourceRef="XORPossibleCompletion" targetRef="LoopXOR1">
+      <bpmn2:documentation id="documentation_vHw7Mw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_7Ofjcg" sourceRef="XORPossibleCompletion" targetRef="event_d6nl9g">
+      <bpmn2:documentation id="documentation_FF36bQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_00SGRw" sourceRef="SplitXOR2" targetRef="MakeOffer">
+      <bpmn2:documentation id="documentation_MOZGbQ"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_tLTf9Q" sourceRef="SplitXOR2" targetRef="SendRejection">
+      <bpmn2:documentation id="documentation_n8Y0yw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="ExtractInfo" isMultiple="false" name="Extract Info for Mortgage">
+      <bpmn2:documentation id="documentation_A1MuOg"/>
+      <bpmn2:incoming>sequenceFlow_EHtQUQ</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_raXvFg</bpmn2:outgoing>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_QbsepA" isMultiple="false" name="status" state="update" type="String">
+        <bpmn2:incoming>DataFlowExtension_U3xwew</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_q2eACw" isMultiple="false" name="status" type="String" value="InfoExtracted">
+        <bpmn2:outgoing>DataFlowExtension_U3xwew</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataFlow id="DataFlowExtension_U3xwew" sourceRef="DataInputObjectExtension_q2eACw" targetRef="DataOutputObjectExtension_QbsepA">
+        <bpmn2:documentation id="documentation_lK94tw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_BLbqhw" isMultiple="false" isReadOnly="true" name="customer" state="read" type="Customer">
+        <bpmn2:attribute id="DataObjectAttributeExtension_JR6nbQ" name="Cid" type="CustomerID">
+          <bpmn2:incoming>DataFlowExtension_F9SSBw</bpmn2:incoming>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_IKrTcA" isMultiple="false" name="cid" type="CustomerID">
+        <bpmn2:outgoing>DataFlowExtension_F9SSBw</bpmn2:outgoing>
+      </bpmn2:dataInputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_F9SSBw" sourceRef="DataInputObjectExtension_IKrTcA" targetRef="DataObjectAttributeExtension_JR6nbQ">
+        <bpmn2:documentation id="documentation_fNKNwg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_VZSW0A" isMultiple="false" isReadOnly="false" name="bankAcc" state="read" type="BankAccount">
+        <bpmn2:attribute id="DataObjectAttributeExtension_5R0ohA" name="BAid" type="BankAccountID">
+          <bpmn2:incoming>DataFlowExtension_Ed71CQ</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_U61SnA" name="Deposit" type="Num">
+          <bpmn2:outgoing>DataFlowExtension_bznNvg</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_9Ws8Hg" isMultiple="false" name="bid" type="BankAccountID">
+        <bpmn2:outgoing>DataFlowExtension_Ed71CQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_Ed71CQ" sourceRef="DataInputObjectExtension_9Ws8Hg" targetRef="DataObjectAttributeExtension_5R0ohA">
+        <bpmn2:documentation id="documentation_DSJrQQ"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectDataStore id="DataOutputObjectExtension_x0MgzQ" isMultiple="false" isReadOnly="false" name="mortgageType" state="read" type="MortgageType">
+        <bpmn2:attribute id="DataObjectAttributeExtension_or7gWg" name="Mid" type="MortgageTypeID">
+          <bpmn2:incoming>DataFlowExtension_IrZy3A</bpmn2:incoming>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_apw4uQ" name="Amount" type="Num">
+          <bpmn2:outgoing>DataFlowExtension_WIxVYw</bpmn2:outgoing>
+        </bpmn2:attribute>
+        <bpmn2:attribute id="DataObjectAttributeExtension_ybNwtA" name="Duration" type="Num">
+          <bpmn2:outgoing>DataFlowExtension_BPlknw</bpmn2:outgoing>
+        </bpmn2:attribute>
+      </bpmn2:dataOutputObjectDataStore>
+      <bpmn2:dataInputObjectProcess id="DataInputObjectExtension_gfa9rg" isMultiple="false" name="tid" type="MortgageTypeID">
+        <bpmn2:outgoing>DataFlowExtension_IrZy3A</bpmn2:outgoing>
+      </bpmn2:dataInputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_IrZy3A" sourceRef="DataInputObjectExtension_gfa9rg" targetRef="DataObjectAttributeExtension_or7gWg">
+        <bpmn2:documentation id="documentation_LM6lTg"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_Dz2J0Q" isMultiple="false" name="bankAmount" state="init" type="Num">
+        <bpmn2:incoming>DataFlowExtension_bznNvg</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_VZEfXA" isMultiple="false" name="maxAmount" state="init" type="Num">
+        <bpmn2:incoming>DataFlowExtension_WIxVYw</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_TbEgbA" isMultiple="false" name="length" state="init" type="Num">
+        <bpmn2:incoming>DataFlowExtension_BPlknw</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_bznNvg" sourceRef="DataObjectAttributeExtension_U61SnA" targetRef="DataOutputObjectExtension_Dz2J0Q">
+        <bpmn2:documentation id="documentation_oZGQqw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_WIxVYw" sourceRef="DataObjectAttributeExtension_apw4uQ" targetRef="DataOutputObjectExtension_VZEfXA">
+        <bpmn2:documentation id="documentation_HXRzZw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:dataFlow id="DataFlowExtension_BPlknw" sourceRef="DataObjectAttributeExtension_ybNwtA" targetRef="DataOutputObjectExtension_TbEgbA">
+        <bpmn2:documentation id="documentation_CL5Eqw"/>
+      </bpmn2:dataFlow>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_EHtQUQ" sourceRef="SelectEligibleAcc" targetRef="ExtractInfo">
+      <bpmn2:documentation id="documentation_gHVlKg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_raXvFg" sourceRef="ExtractInfo" targetRef="SplitXOR2">
+      <bpmn2:documentation id="documentation_gKrQuA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="task_s6BmzQ" isMultiple="false" name="Not Interested">
+      <bpmn2:documentation id="documentation_8al4fg"/>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_QLckSw" isMultiple="false" name="status" type="String" value="NotInterested">
+        <bpmn2:outgoing>DataFlowExtension_XaX5vQ</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_qCoedA" isMultiple="false" name="status" state="init" type="String">
+        <bpmn2:incoming>DataFlowExtension_XaX5vQ</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_XaX5vQ" sourceRef="DataInputObjectExtension_QLckSw" targetRef="DataOutputObjectExtension_qCoedA">
+        <bpmn2:documentation id="documentation_tEtOHw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_zEWxag</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_VhC4RA</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_zEWxag" sourceRef="SplitXOR1" targetRef="task_s6BmzQ">
+      <bpmn2:documentation id="documentation_qYU2mw"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_VhC4RA" sourceRef="task_s6BmzQ" targetRef="ArchiveDetails">
+      <bpmn2:documentation id="documentation_Ed81Wg"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:task expand="true" id="task_u8jMzg" isMultiple="false" name="Application Filled">
+      <bpmn2:documentation id="documentation_60gdXA"/>
+      <bpmn2:dataInputObjectLocal id="DataInputObjectExtension_ZBTOkg" isMultiple="false" name="status" type="String" value="FillApplication">
+        <bpmn2:outgoing>DataFlowExtension_Xqbzuw</bpmn2:outgoing>
+      </bpmn2:dataInputObjectLocal>
+      <bpmn2:dataOutputObjectProcess id="DataOutputObjectExtension_hvTPeA" isMultiple="false" name="status" state="init" type="String">
+        <bpmn2:incoming>DataFlowExtension_Xqbzuw</bpmn2:incoming>
+      </bpmn2:dataOutputObjectProcess>
+      <bpmn2:dataFlow id="DataFlowExtension_Xqbzuw" sourceRef="DataInputObjectExtension_ZBTOkg" targetRef="DataOutputObjectExtension_hvTPeA">
+        <bpmn2:documentation id="documentation_FARhZw"/>
+      </bpmn2:dataFlow>
+      <bpmn2:incoming>sequenceFlow_DhTEzw</bpmn2:incoming>
+      <bpmn2:outgoing>sequenceFlow_COoLNA</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sequenceFlow_DhTEzw" sourceRef="SplitXOR1" targetRef="task_u8jMzg">
+      <bpmn2:documentation id="documentation_ByH0MA"/>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="sequenceFlow_COoLNA" sourceRef="task_u8jMzg" targetRef="CompleteApplication">
+      <bpmn2:documentation id="documentation_RD6TIA"/>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmn2:message id="message_1" name="Message 1"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="event_8hyTjQ" id="BPMNShape_fE5kUA">
+        <dc:Bounds height="36.0" width="36.0" x="84.0" y="159.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_YPfnKg">
+          <dc:Bounds height="16.0" width="100.0" x="52.0" y="198.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SendOutAppForm" id="BPMNShape_dk9tKA">
+        <dc:Bounds height="225.0" width="516.0" x="266.03796454752757" y="64.5"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_Z5ifBQ" id="BPMNShape_eGMvTA">
+        <dc:Bounds height="50.0" width="130.0" x="584.0167236328125" y="93.41351318359375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_BRSDzA" id="BPMNShape_40PngA">
+        <dc:Bounds height="25.0" width="110.0" x="609.0167236328125" y="143.41351318359375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_s9B1qA" id="BPMNShape_aGM4Zw">
+        <dc:Bounds height="50.0" width="130.0" x="584.0167236328125" y="228.41351318359375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_EkIduA" id="BPMNEdge_uqnDbA">
+        <di:waypoint x="397.978759765625" y="103.91351318359375"/>
+        <di:waypoint x="397.978759765625" y="128.91351318359375"/>
+        <di:waypoint x="397.978759765625" y="141.41351318359375"/>
+        <di:waypoint x="382.978759765625" y="141.41351318359375"/>
+        <di:waypoint x="382.978759765625" y="163.91351318359375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_KWV0Kg" id="BPMNEdge_n3Xqrw" sourceElement="BPMNShape_fE5kUA" targetElement="BPMNShape_dk9tKA">
+        <di:waypoint x="120.0" y="177.0"/>
+        <di:waypoint x="197.5" y="177.0"/>
+        <di:waypoint x="266.0379638671875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="SplitXOR1" id="BPMNShape_waIvLg">
+        <dc:Bounds height="50.0" width="50.0" x="821.7761840820312" y="152.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_DpaRpA">
+          <dc:Bounds height="16.0" width="100.0" x="796.7761840820312" y="205.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_fJIbyQ" id="BPMNEdge_ERqMUQ" sourceElement="BPMNShape_dk9tKA" targetElement="BPMNShape_waIvLg">
+        <di:waypoint x="782.0379638671875" y="177.0"/>
+        <di:waypoint x="794.478759765625" y="177.0"/>
+        <di:waypoint x="797.7761840820312" y="177.0"/>
+        <di:waypoint x="814.7761840820312" y="177.0"/>
+        <di:waypoint x="821.7761840820312" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_uUahAA" id="BPMNShape_QJ0Spg">
+        <dc:Bounds height="50.0" width="160.0" x="885.1052093505859" y="-70.83849907976841"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_h94f5w" id="BPMNShape_zONHBQ">
+        <dc:Bounds height="50.0" width="160.0" x="875.5399932861328" y="399.047072908348"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_jFl1Jg" id="BPMNShape_CmfdGw">
+        <dc:Bounds height="50.0" width="130.0" x="1089.0027923583984" y="-70.83849907976841"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_OhuY0w" id="BPMNShape_cdGAfA">
+        <dc:Bounds height="50.0" width="130.0" x="1089.0025634765625" y="399.04705810546875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_pgnnhg" id="BPMNEdge_DYWqPg">
+        <di:waypoint x="164.9461669921875" y="86.77420043945312"/>
+        <di:waypoint x="218.40869140625" y="86.77420043945312"/>
+        <di:waypoint x="218.40875244140625" y="86.77420043945312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_ziiumw" id="BPMNEdge_cHMaew">
+        <di:waypoint x="161.648681640625" y="87.1658935546875"/>
+        <di:waypoint x="205.54620361328125" y="87.1658935546875"/>
+        <di:waypoint x="205.5462646484375" y="87.1658935546875"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="ArchiveDetails" id="BPMNShape_RO2dug">
+        <dc:Bounds height="275.9286403620825" width="493.0955550004894" x="1348.48779296875" y="-187.1002655029297"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_xAoINg" id="BPMNShape_KfBWOw">
+        <dc:Bounds height="50.0" width="130.0" x="1647.919189453125" y="-115.35396575927734"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_DhXc8Q" id="BPMNShape_zaZSVw">
+        <dc:Bounds height="50.0" width="160.0" x="1348.48779296875" y="-115.35396575927734"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_4Tp0mA" id="BPMNShape_3XiVgw">
+        <dc:Bounds height="50.0" width="160.0" x="1348.48779296875" y="-8.18708324432373"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_ScAGIw" id="BPMNShape_nqG02Q">
+        <dc:Bounds height="50.0" width="130.0" x="1647.919189453125" y="-8.18708324432373"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_jBZmRA" id="BPMNShape_xyw93A">
+        <dc:Bounds height="25.0" width="110.0" x="1672.919189453125" y="-65.35396575927734"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_h08ZCA" id="BPMNEdge_TvspOA">
+        <di:waypoint x="160.0" y="203.91318225860596"/>
+        <di:waypoint x="299.431396484375" y="203.91318225860596"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_0UKofg" id="BPMNEdge_6NyUjA">
+        <di:waypoint x="160.0" y="96.74629974365234"/>
+        <di:waypoint x="242.2156982421875" y="96.74629974365234"/>
+        <di:waypoint x="242.2156982421875" y="134.2462921142578"/>
+        <di:waypoint x="324.431396484375" y="134.2462921142578"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="CompleteApplication" id="BPMNShape_Iji8cg">
+        <dc:Bounds height="375.0" width="533.0" x="1493.5338134765625" y="239.85226440429688"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_7AYa5g" id="BPMNShape_Kh0lVw">
+        <dc:Bounds height="50.0" width="160.0" x="1493.5338134765625" y="483.2421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_eCShtQ" id="BPMNShape_AGHYeA">
+        <dc:Bounds height="50.0" width="160.0" x="1493.5338134765625" y="549.2421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_oDICbw" id="BPMNShape_aW0ZVg">
+        <dc:Bounds height="50.0" width="130.0" x="1784.176513671875" y="483.2421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_a41sfg" id="BPMNShape_ZkwU6A">
+        <dc:Bounds height="50.0" width="130.0" x="1784.176513671875" y="549.2421875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_0aC0ww" id="BPMNEdge_u0yTTQ">
+        <di:waypoint x="160.0" y="334.3899230957031"/>
+        <di:waypoint x="290.6427001953125" y="334.3899230957031"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_eLM2tQ" id="BPMNEdge_os0IsQ">
+        <di:waypoint x="160.0" y="268.3899230957031"/>
+        <di:waypoint x="290.6427001953125" y="268.3899230957031"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_2jGJ6g" id="BPMNShape_cbaiUg">
+        <dc:Bounds height="50.0" width="160.0" x="1493.5338134765625" y="397.890380859375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_e4Ql1Q" id="BPMNShape_XSyU4g">
+        <dc:Bounds height="50.0" width="130.0" x="1784.176513671875" y="397.890380859375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_iG6usA" id="BPMNEdge_lh0R0Q">
+        <di:waypoint x="160.0" y="183.03811645507812"/>
+        <di:waypoint x="290.6427001953125" y="183.03811645507812"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="JoinXOR1" id="BPMNShape_VCKMWw">
+        <dc:Bounds height="50.0" width="50.0" x="2087.739013671875" y="152.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_RZhAZw">
+          <dc:Bounds height="16.0" width="100.0" x="2062.739013671875" y="205.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_SibATg" id="BPMNEdge_1Z0sFg" sourceElement="BPMNShape_RO2dug" targetElement="BPMNShape_VCKMWw">
+        <di:waypoint x="1841.5833435058594" y="-49.13594055175781"/>
+        <di:waypoint x="2111.1611328125" y="-49.13594055175781"/>
+        <di:waypoint x="2111.1611328125" y="153.577880859375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_Joh0Rw" id="BPMNEdge_eGm9bg" sourceElement="BPMNShape_Iji8cg" targetElement="BPMNShape_VCKMWw">
+        <di:waypoint x="2026.5338134765625" y="427.3522644042969"/>
+        <di:waypoint x="2113.636474609375" y="427.3522644042969"/>
+        <di:waypoint x="2113.636474609375" y="201.1025390625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_QtHfFw" id="BPMNShape_slQH6w">
+        <dc:Bounds height="50.0" width="130.0" x="1521.176513671875" y="280.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_JcbUfw" id="BPMNShape_jqgEew">
+        <dc:Bounds height="25.0" width="110.0" x="1546.176513671875" y="330.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_b43FQg" id="BPMNShape_28FH9w">
+        <dc:Bounds height="50.0" width="130.0" x="1784.176513671875" y="331.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_27rWMA" id="BPMNEdge_dEieXA">
+        <di:waypoint x="162.6427001953125" y="102.64773559570312"/>
+        <di:waypoint x="226.6427001953125" y="102.64773559570312"/>
+        <di:waypoint x="226.6427001953125" y="116.14773559570312"/>
+        <di:waypoint x="290.6427001953125" y="116.14773559570312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="XORPossibleCompletion" id="BPMNShape_DTy8Lw">
+        <dc:Bounds height="50.0" width="50.0" x="2201.561279296875" y="152.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_iOYMEQ">
+          <dc:Bounds height="16.0" width="100.0" x="2176.561279296875" y="205.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_xpVW6A" id="BPMNEdge_FX8X0A" sourceElement="BPMNShape_VCKMWw" targetElement="BPMNShape_DTy8Lw">
+        <di:waypoint x="2137.739013671875" y="177.0"/>
+        <di:waypoint x="2201.561279296875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="event_d6nl9g" id="BPMNShape_tdcdUw">
+        <dc:Bounds height="36.0" width="36.0" x="2298.561279296875" y="269.81024169921875"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_hYsriQ">
+          <dc:Bounds height="16.0" width="100.0" x="2266.561279296875" y="308.81024169921875"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="LoopXOR1" id="BPMNShape_SajmNg">
+        <dc:Bounds height="50.0" width="50.0" x="2346.561279296875" y="152.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_rrLqoA">
+          <dc:Bounds height="16.0" width="100.0" x="2321.561279296875" y="205.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ProvideAccInfo" id="BPMNShape_X3klYw">
+        <dc:Bounds height="444.5975646972656" width="470.9461669921875" x="2476.061279296875" y="55.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_VH8E0g" id="BPMNEdge_OeUm9Q" sourceElement="BPMNShape_SajmNg" targetElement="BPMNShape_X3klYw">
+        <di:waypoint x="2396.561279296875" y="177.0"/>
+        <di:waypoint x="2456.811279296875" y="177.0"/>
+        <di:waypoint x="2456.811279296875" y="184.3102264404297"/>
+        <di:waypoint x="2471.061279296875" y="184.3102264404297"/>
+        <di:waypoint x="2471.061279296875" y="243.5"/>
+        <di:waypoint x="2476.061279296875" y="243.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="LoopXOR2" id="BPMNShape_10vk6g">
+        <dc:Bounds height="50.0" width="50.0" x="2997.561279296875" y="152.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_pzJ7HQ">
+          <dc:Bounds height="16.0" width="100.0" x="2972.561279296875" y="205.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_oac0CA" id="BPMNEdge_0CiVqQ" sourceElement="BPMNShape_X3klYw" targetElement="BPMNShape_10vk6g">
+        <di:waypoint x="2947.0074462890625" y="203.0"/>
+        <di:waypoint x="2971.311279296875" y="203.0"/>
+        <di:waypoint x="2971.311279296875" y="177.0"/>
+        <di:waypoint x="2997.561279296875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_p202oQ" id="BPMNEdge_TCeR9Q" sourceElement="BPMNShape_10vk6g" targetElement="BPMNShape_SajmNg">
+        <di:waypoint x="3019.561279296875" y="155.0"/>
+        <di:waypoint x="3019.561279296875" y="5.0"/>
+        <di:waypoint x="2371.561279296875" y="5.0"/>
+        <di:waypoint x="2371.561279296875" y="152.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="MakeAssessment" id="BPMNShape_C7zsfg">
+        <dc:Bounds height="259.0" width="518.0" x="3104.061279296875" y="47.5"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_1SvI6Q" id="BPMNEdge_M7eClA" sourceElement="BPMNShape_10vk6g" targetElement="BPMNShape_C7zsfg">
+        <di:waypoint x="3047.561279296875" y="177.0"/>
+        <di:waypoint x="3075.311279296875" y="177.0"/>
+        <di:waypoint x="3075.311279296875" y="163.5"/>
+        <di:waypoint x="3103.061279296875" y="163.5"/>
+        <di:waypoint x="3103.061279296875" y="177.0"/>
+        <di:waypoint x="3104.061279296875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="SelectEligibleAcc" id="BPMNShape_poXDcg">
+        <dc:Bounds height="276.0" width="444.0" x="3719.061279296875" y="39.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_UK0ivw" id="BPMNEdge_02BSjQ" sourceElement="BPMNShape_C7zsfg" targetElement="BPMNShape_poXDcg">
+        <di:waypoint x="3622.061279296875" y="160.5"/>
+        <di:waypoint x="3623.061279296875" y="160.5"/>
+        <di:waypoint x="3623.061279296875" y="212.5"/>
+        <di:waypoint x="3662.561279296875" y="212.5"/>
+        <di:waypoint x="3662.561279296875" y="177.0"/>
+        <di:waypoint x="3695.061279296875" y="177.0"/>
+        <di:waypoint x="3719.061279296875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="MakeOffer" id="BPMNShape_HpDr4A">
+        <dc:Bounds height="158.0" width="443.0" x="5184.650015858776" y="-117.94575818496993"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SendRejection" id="BPMNShape_Xe229g">
+        <dc:Bounds height="154.0" width="353.0" x="5291.975699452526" y="231.05424181503008"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="JoinXOR2" id="BPMNShape_PgACmQ">
+        <dc:Bounds height="50.0" width="50.0" x="5738.4755859375" y="183.1491241455078"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_QcB0WQ">
+          <dc:Bounds height="16.0" width="100.0" x="5713.4755859375" y="236.1491241455078"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_agCaWg" id="BPMNEdge_02u3LA" sourceElement="BPMNShape_Xe229g" targetElement="BPMNShape_PgACmQ">
+        <di:waypoint x="5395.4814453125" y="231.0542449951172"/>
+        <di:waypoint x="5395.4814453125" y="197.6080780029297"/>
+        <di:waypoint x="5409.7314453125" y="197.6080780029297"/>
+        <di:waypoint x="5409.7314453125" y="208.1491241455078"/>
+        <di:waypoint x="5738.4755859375" y="208.1491241455078"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_OfQblg" id="BPMNEdge_0giy4Q" sourceElement="BPMNShape_HpDr4A" targetElement="BPMNShape_PgACmQ">
+        <di:waypoint x="5391.4814453125" y="40.05424499511719"/>
+        <di:waypoint x="5391.4814453125" y="197.6080780029297"/>
+        <di:waypoint x="5409.7314453125" y="197.6080780029297"/>
+        <di:waypoint x="5409.7314453125" y="208.1491241455078"/>
+        <di:waypoint x="5738.4755859375" y="208.1491241455078"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="event_6urBcQ" id="BPMNShape_31wp0Q">
+        <dc:Bounds height="36.0" width="36.0" x="5870.475699452526" y="190.14912689783057"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_VsFAYQ">
+          <dc:Bounds height="16.0" width="100.0" x="5838.475699452526" y="229.14912689783057"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_ft89bQ" id="BPMNEdge_cWjxiA" sourceElement="BPMNShape_PgACmQ" targetElement="BPMNShape_31wp0Q">
+        <di:waypoint x="5738.4755859375" y="208.1491241455078"/>
+        <di:waypoint x="5458.7314453125" y="208.1491241455078"/>
+        <di:waypoint x="5458.7314453125" y="196.6080780029297"/>
+        <di:waypoint x="5540.7314453125" y="196.6080780029297"/>
+        <di:waypoint x="5540.7314453125" y="208.1491241455078"/>
+        <di:waypoint x="5870.4755859375" y="208.1491241455078"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="message_1" id="BPMNShape_MxUEAw">
+        <dc:Bounds height="20.0" width="30.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_Lg9kag">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_g3Iftg" id="BPMNShape_ghuMKA">
+        <dc:Bounds height="50.0" width="160.0" x="2487.602294921875" y="426.9593505859375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_xVaFMg" id="BPMNShape_tOxfbQ">
+        <dc:Bounds height="50.0" width="160.0" x="2476.061279296875" y="97.1835708618164"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_wnJ3Kg" id="BPMNShape_00Kl9g">
+        <dc:Bounds height="50.0" width="130.0" x="2741.5712890625" y="97.1835708618164"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_HIzWcQ" id="BPMNShape_Rkdqnw">
+        <dc:Bounds height="25.0" width="110.0" x="2766.5712890625" y="147.1835708618164"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Akmt0w" id="BPMNEdge_T7gfQw">
+        <di:waypoint x="160.0" y="67.1835708618164"/>
+        <di:waypoint x="225.2550048828125" y="67.1835708618164"/>
+        <di:waypoint x="225.2550048828125" y="104.68356323242188"/>
+        <di:waypoint x="290.510009765625" y="104.68356323242188"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_KN9Dag" id="BPMNShape_eP6OtQ">
+        <dc:Bounds height="25.0" width="110.0" x="2766.5712890625" y="172.1835708618164"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_9rQYQw" id="BPMNShape_J0tTxg">
+        <dc:Bounds height="25.0" width="110.0" x="2766.5712890625" y="197.1835708618164"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_0jvLrw" id="BPMNShape_Dw4f7w">
+        <dc:Bounds height="50.0" width="130.0" x="2741.5712890625" y="269.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_CktRLA" id="BPMNShape_XWK9qQ">
+        <dc:Bounds height="25.0" width="110.0" x="2766.5712890625" y="319.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_2Zy6vg" id="BPMNShape_8O6TMg">
+        <dc:Bounds height="25.0" width="110.0" x="2766.5712890625" y="344.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_ecTCWw" id="BPMNShape_nIelrQ">
+        <dc:Bounds height="50.0" width="130.0" x="2741.5712890625" y="426.9593505859375"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_rtps9g" id="BPMNEdge_ADhs8Q">
+        <di:waypoint x="171.541015625" y="396.9593505859375"/>
+        <di:waypoint x="265.510009765625" y="396.9593505859375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_tFpQFA" id="BPMNEdge_xyRVBA">
+        <di:waypoint x="400.510009765625" y="154.68356323242188"/>
+        <di:waypoint x="436.510009765625" y="154.68356323242188"/>
+        <di:waypoint x="436.510009765625" y="276.5"/>
+        <di:waypoint x="400.510009765625" y="276.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_RmvwFQ" id="BPMNEdge_27jR0A">
+        <di:waypoint x="290.510009765625" y="130.68356323242188"/>
+        <di:waypoint x="235.510009765625" y="130.68356323242188"/>
+        <di:waypoint x="235.510009765625" y="301.5"/>
+        <di:waypoint x="290.510009765625" y="301.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_NXSqaA" id="BPMNShape_Ubqlpw">
+        <dc:Bounds height="50.0" width="130.0" x="3442.55078125" y="76.51297760009766"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_FOxTbg" id="BPMNShape_a7tifg">
+        <dc:Bounds height="50.0" width="160.0" x="3111.061279296875" y="76.51297760009766"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_mfJaMA" id="BPMNEdge_OkqaVg">
+        <di:waypoint x="167.0" y="54.012977600097656"/>
+        <di:waypoint x="338.489501953125" y="54.012977600097656"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_sGB5BA" id="BPMNShape_rEnpzA">
+        <dc:Bounds height="50.0" width="130.0" x="3442.55078125" y="177.8209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_T7jppA" id="BPMNShape_hkAgqQ">
+        <dc:Bounds height="25.0" width="110.0" x="3467.55078125" y="227.8209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_PRCfDA" id="BPMNShape_rRyBPA">
+        <dc:Bounds height="50.0" width="160.0" x="3724.061279296875" y="83.3209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_ce0PZA" id="BPMNShape_Ah3cAw">
+        <dc:Bounds height="25.0" width="110.0" x="3749.061279296875" y="133.3209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_M4MSlQ" id="BPMNShape_0D9Aaw">
+        <dc:Bounds height="25.0" width="110.0" x="3749.061279296875" y="158.3209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_s0Vxlg" id="BPMNShape_xLa6hw">
+        <dc:Bounds height="50.0" width="130.0" x="3975.55078125" y="83.3209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_69z2hQ" id="BPMNShape_DQemFQ">
+        <dc:Bounds height="50.0" width="130.0" x="3975.55078125" y="150.3209228515625"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_rtugCQ" id="BPMNEdge_IZP5Lg">
+        <di:waypoint x="140.0" y="131.8209228515625"/>
+        <di:waypoint x="198.2447509765625" y="131.8209228515625"/>
+        <di:waypoint x="198.2447509765625" y="137.3209228515625"/>
+        <di:waypoint x="256.489501953125" y="137.3209228515625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_0MGABw" id="BPMNEdge_EHM0Gg">
+        <di:waypoint x="140.0" y="106.8209228515625"/>
+        <di:waypoint x="198.2447509765625" y="106.8209228515625"/>
+        <di:waypoint x="198.2447509765625" y="69.3209228515625"/>
+        <di:waypoint x="256.489501953125" y="69.3209228515625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="SplitXOR2" id="BPMNShape_FQH2Iw">
+        <dc:Bounds height="50.0" width="50.0" x="5037.294921875" y="121.9461669921875"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_fOZXaQ">
+          <dc:Bounds height="16.0" width="100.0" x="5012.294921875" y="174.9461669921875"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_S5ubMw" id="BPMNShape_ija6uQ">
+        <dc:Bounds height="50.0" width="160.0" x="5184.650015858776" y="-82.02675946670821"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_JJeWHQ" id="BPMNShape_qfgT0g">
+        <dc:Bounds height="50.0" width="130.0" x="5457.218863515026" y="-82.02675946670821"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_3f2TSA" id="BPMNShape_hx8dUA">
+        <dc:Bounds height="50.0" width="130.0" x="5475.218863515026" y="280.97323290389727"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_M60dJw" id="BPMNShape_pNy6tw">
+        <dc:Bounds height="50.0" width="160.0" x="5291.975699452526" y="280.97323290389727"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_h0OUdw" id="BPMNEdge_xqpPNA">
+        <di:waypoint x="160.0" y="60.91899871826172"/>
+        <di:waypoint x="272.56884765625" y="60.91899871826172"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_ORU4QA" id="BPMNEdge_0taQ0A">
+        <di:waypoint x="160.0" y="74.91899108886719"/>
+        <di:waypoint x="183.2431640625" y="74.91899108886719"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_8JCiDg" id="BPMNEdge_nk8zNQ" sourceElement="BPMNShape_DTy8Lw" targetElement="BPMNShape_SajmNg">
+        <di:waypoint x="2251.561279296875" y="177.0"/>
+        <di:waypoint x="2346.561279296875" y="177.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_7Ofjcg" id="BPMNEdge_KL5xwA" sourceElement="BPMNShape_DTy8Lw" targetElement="BPMNShape_tdcdUw">
+        <di:waypoint x="2251.561279296875" y="177.0"/>
+        <di:waypoint x="2275.061279296875" y="177.0"/>
+        <di:waypoint x="2275.061279296875" y="287.81024169921875"/>
+        <di:waypoint x="2298.561279296875" y="287.81024169921875"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_EYApNQ" id="BPMNShape_nT9Efg">
+        <dc:Bounds height="50.0" width="130.0" x="3975.5508003305226" y="240.4163419919802"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataProcessingExtension_7W4KQA" id="BPMNShape_PkNH3Q">
+        <dc:Bounds height="50.0" width="50.0" x="3343.0" y="204.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_tHNzww">
+          <dc:Bounds height="16.0" width="100.0" x="3318.0" y="257.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_7yrq6g" id="BPMNEdge_NP08gA">
+        <di:waypoint x="288.938720703125" y="181.5"/>
+        <di:waypoint x="326.214111328125" y="181.5"/>
+        <di:waypoint x="326.214111328125" y="192.8209228515625"/>
+        <di:waypoint x="363.489501953125" y="192.8209228515625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_igau0w" id="BPMNShape_TTVlNw">
+        <dc:Bounds height="50.0" width="160.0" x="3104.061279296875" y="185.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_1aXpSw" id="BPMNShape_UkWIhQ">
+        <dc:Bounds height="25.0" width="110.0" x="3129.061279296875" y="235.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_7ReT5w" id="BPMNEdge_r0Ilpw">
+        <di:waypoint x="135.0" y="200.0"/>
+        <di:waypoint x="186.9693603515625" y="200.0"/>
+        <di:waypoint x="186.9693603515625" y="181.5"/>
+        <di:waypoint x="238.938720703125" y="181.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_00SGRw" id="BPMNEdge_IWZ4gg" sourceElement="BPMNShape_FQH2Iw" targetElement="BPMNShape_HpDr4A">
+        <di:waypoint x="5064.728515625" y="124.3797607421879"/>
+        <di:waypoint x="5064.728515625" y="-38.94575500488281"/>
+        <di:waypoint x="5184.64990234375" y="-38.94575500488281"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_tLTf9Q" id="BPMNEdge_FIG4kw" sourceElement="BPMNShape_FQH2Iw" targetElement="BPMNShape_Xe229g">
+        <di:waypoint x="5062.39111328125" y="171.8499755859375"/>
+        <di:waypoint x="5062.39111328125" y="308.05426025390625"/>
+        <di:waypoint x="5291.9755859375" y="308.05426025390625"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="ExtractInfo" id="BPMNShape_heXnRQ">
+        <dc:Bounds height="534.677001953125" width="756.57470703125" x="4240.8740234375" y="9.960281372070312"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_EHtQUQ" id="BPMNEdge_kT4IAw" sourceElement="BPMNShape_poXDcg" targetElement="BPMNShape_heXnRQ">
+        <di:waypoint x="4163.061279296875" y="177.0"/>
+        <di:waypoint x="4190.8740234375" y="177.0"/>
+        <di:waypoint x="4190.8740234375" y="287.81024169921875"/>
+        <di:waypoint x="4235.8740234375" y="287.81024169921875"/>
+        <di:waypoint x="4235.8740234375" y="263.29876708984375"/>
+        <di:waypoint x="4240.8740234375" y="263.29876708984375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_raXvFg" id="BPMNEdge_fB5HzQ" sourceElement="BPMNShape_heXnRQ" targetElement="BPMNShape_FQH2Iw">
+        <di:waypoint x="4997.44873046875" y="277.29876708984375"/>
+        <di:waypoint x="5017.3720703125" y="277.29876708984375"/>
+        <di:waypoint x="5017.3720703125" y="146.9461669921875"/>
+        <di:waypoint x="5037.294921875" y="146.9461669921875"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_QbsepA" id="BPMNShape_dNT4Qg">
+        <dc:Bounds height="50.0" width="130.0" x="4558.0" y="45.762451171875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_q2eACw" id="BPMNShape_xleFfg">
+        <dc:Bounds height="50.0" width="160.0" x="4240.8740234375" y="45.762451171875"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_U3xwew" id="BPMNEdge_MLgJ3w">
+        <di:waypoint x="160.0" y="60.80216979980469"/>
+        <di:waypoint x="317.1259765625" y="60.80216979980469"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_FfghvA" id="BPMNShape_0MyzjQ">
+        <dc:Bounds height="50.0" width="130.0" x="4558.99755859375" y="165.13368225097656"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_byk1gA" id="BPMNShape_ZzaUtg">
+        <dc:Bounds height="50.0" width="130.0" x="4558.99755859375" y="288.1336975097656"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_TdQ7oQ" id="BPMNShape_U7s7PQ">
+        <dc:Bounds height="50.0" width="130.0" x="4558.99755859375" y="407.1336975097656"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_BLbqhw" id="BPMNShape_kvQ6TA">
+        <dc:Bounds height="50.0" width="130.0" x="4558.0" y="159.99998474121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_JR6nbQ" id="BPMNShape_Lejv3g">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="209.99998474121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_IKrTcA" id="BPMNShape_rdzJNw">
+        <dc:Bounds height="50.0" width="160.0" x="4271.0" y="159.99998474121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_F9SSBw" id="BPMNEdge_TjDnRQ">
+        <di:waypoint x="190.1259765625" y="175.03970336914062"/>
+        <di:waypoint x="275.6259765625" y="175.03970336914062"/>
+        <di:waypoint x="275.6259765625" y="211.53970336914062"/>
+        <di:waypoint x="342.1259765625" y="211.53970336914062"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_VZSW0A" id="BPMNShape_SbwlJw">
+        <dc:Bounds height="50.0" width="130.0" x="4558.0" y="259.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_5R0ohA" id="BPMNShape_ES0EyA">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="309.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_9Ws8Hg" id="BPMNShape_MpR7Lw">
+        <dc:Bounds height="50.0" width="160.0" x="4271.0" y="282.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Ed71CQ" id="BPMNEdge_CPCsSA">
+        <di:waypoint x="190.1259765625" y="297.7390441894531"/>
+        <di:waypoint x="266.1259765625" y="297.7390441894531"/>
+        <di:waypoint x="266.1259765625" y="313.2390441894531"/>
+        <di:waypoint x="342.1259765625" y="313.2390441894531"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_x0MgzQ" id="BPMNShape_P94ysw">
+        <dc:Bounds height="50.0" width="130.0" x="4558.0" y="394.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_or7gWg" id="BPMNShape_K7AjlQ">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="444.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_gfa9rg" id="BPMNShape_50DTcQ">
+        <dc:Bounds height="50.0" width="160.0" x="4271.0" y="384.2107849121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_IrZy3A" id="BPMNEdge_k0xZ2g">
+        <di:waypoint x="190.1259765625" y="399.25048828125"/>
+        <di:waypoint x="266.1259765625" y="399.25048828125"/>
+        <di:waypoint x="266.1259765625" y="447.23907470703125"/>
+        <di:waypoint x="342.1259765625" y="447.23907470703125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_U61SnA" id="BPMNShape_2rjBxg">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="334.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_apw4uQ" id="BPMNShape_6Hqd8Q">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="469.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataObjectAttributeExtension_ybNwtA" id="BPMNShape_LNXe4w">
+        <dc:Bounds height="25.0" width="110.0" x="4583.0" y="494.6993408203125"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_Dz2J0Q" id="BPMNShape_ro1r3Q">
+        <dc:Bounds height="50.0" width="130.0" x="4810.171875" y="313.2107849121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_VZEfXA" id="BPMNShape_nEhmVQ">
+        <dc:Bounds height="50.0" width="130.0" x="4810.171875" y="396.2107849121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_TbEgbA" id="BPMNShape_Q0DUcw">
+        <dc:Bounds height="50.0" width="130.0" x="4810.171875" y="482.2107849121094"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_bznNvg" id="BPMNEdge_6rCTMg">
+        <di:waypoint x="452.1259765625" y="337.23907470703125"/>
+        <di:waypoint x="510.7119140625" y="337.23907470703125"/>
+        <di:waypoint x="510.7119140625" y="328.25048828125"/>
+        <di:waypoint x="569.2978515625" y="328.25048828125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_WIxVYw" id="BPMNEdge_HlzBBw">
+        <di:waypoint x="452.1259765625" y="472.23907470703125"/>
+        <di:waypoint x="510.7119140625" y="472.23907470703125"/>
+        <di:waypoint x="510.7119140625" y="411.25048828125"/>
+        <di:waypoint x="569.2978515625" y="411.25048828125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_BPlknw" id="BPMNEdge_xHPFew">
+        <di:waypoint x="452.1259765625" y="497.2390594482422"/>
+        <di:waypoint x="510.7119140625" y="497.2390594482422"/>
+        <di:waypoint x="510.7119140625" y="497.25050354003906"/>
+        <di:waypoint x="569.2978515625" y="497.25050354003906"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="task_s6BmzQ" id="BPMNShape_5CGYJA">
+        <dc:Bounds height="162.1668701171875" width="351.3055114746094" x="905.3472442626953" y="-127.3520860042359"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_QLckSw" id="BPMNShape_yRPRCA">
+        <dc:Bounds height="50.0" width="160.0" x="905.3472442626953" y="-70.44426434896246"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_qCoedA" id="BPMNShape_ZBOHyw">
+        <dc:Bounds height="50.0" width="130.0" x="1099.2604522705078" y="-70.44426434896246"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_XaX5vQ" id="BPMNEdge_WfqC3w">
+        <di:waypoint x="160.0" y="81.90782165527344"/>
+        <di:waypoint x="193.9132080078125" y="81.90782165527344"/>
+        <di:waypoint x="193.91326904296875" y="81.90782165527344"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_zEWxag" id="BPMNEdge_n7ez3A" sourceElement="BPMNShape_waIvLg" targetElement="BPMNShape_5CGYJA">
+        <di:waypoint x="871.7761840820312" y="177.0"/>
+        <di:waypoint x="888.5617065429688" y="177.0"/>
+        <di:waypoint x="888.5617065429688" y="-46.268653869628906"/>
+        <di:waypoint x="905.3472290039062" y="-46.268653869628906"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_VhC4RA" id="BPMNEdge_A6Kr8w" sourceElement="BPMNShape_5CGYJA" targetElement="BPMNShape_RO2dug">
+        <di:waypoint x="1256.6527404785156" y="-46.268653869628906"/>
+        <di:waypoint x="1302.5702667236328" y="-46.268653869628906"/>
+        <di:waypoint x="1302.5702667236328" y="-49.13594055175781"/>
+        <di:waypoint x="1348.48779296875" y="-49.13594055175781"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="task_u8jMzg" id="BPMNShape_dnZ7wg">
+        <dc:Bounds height="134.13861083984375" width="380.98248291015625" x="969.9879885525396" y="340.5630368380854"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataInputObjectExtension_ZBTOkg" id="BPMNShape_xaJg8Q">
+        <dc:Bounds height="50.0" width="160.0" x="969.9879885525396" y="387.5784482150385"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="DataOutputObjectExtension_hvTPeA" id="BPMNShape_Yaelgg">
+        <dc:Bounds height="50.0" width="130.0" x="1165.5499392361335" y="387.5784482150385"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="DataFlowExtension_Xqbzuw" id="BPMNEdge_gHjqHg">
+        <di:waypoint x="160.0" y="72.01541137695312"/>
+        <di:waypoint x="195.56195068359375" y="72.01541137695312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_DhTEzw" id="BPMNEdge_blr0iw" sourceElement="BPMNShape_waIvLg" targetElement="BPMNShape_dnZ7wg">
+        <di:waypoint x="871.7761840820312" y="177.0"/>
+        <di:waypoint x="920.882080078125" y="177.0"/>
+        <di:waypoint x="920.882080078125" y="407.6323547363281"/>
+        <di:waypoint x="969.9879760742188" y="407.6323547363281"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_COoLNA" id="BPMNEdge_WBYJzw" sourceElement="BPMNShape_dnZ7wg" targetElement="BPMNShape_Iji8cg">
+        <di:waypoint x="1350.970458984375" y="407.6323547363281"/>
+        <di:waypoint x="1422.252197265625" y="407.6323547363281"/>
+        <di:waypoint x="1422.252197265625" y="427.3522644042969"/>
+        <di:waypoint x="1493.5338134765625" y="427.3522644042969"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

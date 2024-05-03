@@ -131,8 +131,6 @@ public class DFBPMNToProc {
 						return 0;
 					}).max();
 
-					System.out.println(String.valueOf(width.getAsInt()));
-					System.out.println(String.valueOf(height.getAsInt()));
 					Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram, openProcess.getName(),
 							String.valueOf(height.getAsInt()), String.valueOf(width.getAsInt()));
 					Map<String, String> processVariable = openProcess.getDataObjectsExtensions();
@@ -140,9 +138,6 @@ public class DFBPMNToProc {
 					Map<String, Map<String, Object>> businessDataModel = openProcess.getDataStoresExtensions();
 					addBusinessDataToProc(pool, businessDataModel, doc);
 					addActor(pool, doc);
-//						Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250",
-//								actor.getAttribute("xmi:id"));
-//						System.out.println(openProcess.getActivities().size());
 					addElements(pool, false, null, doc, openProcess.getActivities(), openProcess.getEvents(),
 							openProcess.getGateways());
 					addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
@@ -153,11 +148,8 @@ public class DFBPMNToProc {
 					try {
 						openProcess = model.openProcess(participant.getProcessRef());
 
-//					System.out.println(openProcess.getActivities().size());
 						if (openProcess.isPublicProcess()) {
 							if (openProcess.getAllElementNodes().size() != 0) {
-//								Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
-//										openProcess.getName(), "1320", "250");
 								OptionalInt width = openProcess.getAllElementNodes().stream().mapToInt(bpmnElement -> {
 									try {
 										return (int) bpmnElement.getBounds().getPosition().getY()
@@ -177,8 +169,6 @@ public class DFBPMNToProc {
 									return 0;
 								}).max();
 
-								System.out.println(String.valueOf(width.getAsInt()));
-								System.out.println(String.valueOf(height.getAsInt()));
 								Map<String, Element> pool = addPoolToProc(doc, mainProcess, mainDiagram,
 										openProcess.getName(), String.valueOf(height.getAsInt()),
 										String.valueOf(width.getAsInt()));
@@ -188,9 +178,7 @@ public class DFBPMNToProc {
 										.getDataStoresExtensions();
 								addBusinessDataToProc(pool, businessDataModel, doc);
 								Element actor = addActor(pool, doc);
-//							Map<String, Element> lane = addLaneToProc(pool, doc, "Default Lane", "1320", "250",
-//									actor.getAttribute("xmi:id"));
-//							System.out.println(openProcess.getActivities().size());
+
 								addElements(pool, false, null, doc, openProcess.getActivities(),
 										openProcess.getEvents(), openProcess.getGateways());
 								addSquenceFlowFromBPMN(pool, mainDiagram, doc, openProcess.getSequenceFlows());
@@ -259,7 +247,6 @@ public class DFBPMNToProc {
 											});
 											addElements(lane, true, laneBpmn, doc, activityList, eventsList,
 													gatwayList);
-//										addSequenceFlowToProc(mainProcess,diagram,)
 										} catch (XPathExpressionException e) {
 											e.printStackTrace();
 										}
@@ -914,7 +901,8 @@ public class DFBPMNToProc {
 				else {
 					// get the data type
 					if (dataTypes.containsKey(objectData.getAttribute("type").toLowerCase())) {
-						dataElement.setAttribute("type", dataTypes.get(objectData.getAttribute("type").toLowerCase()).toUpperCase());
+						dataElement.setAttribute("type",
+								dataTypes.get(objectData.getAttribute("type").toLowerCase()).toUpperCase());
 					} else {
 						dataElement.setAttribute("type", dataTypes.get("text").toUpperCase());
 					}
@@ -1074,7 +1062,7 @@ public class DFBPMNToProc {
 					// no code needed here
 					// define the attributes of the left operand
 					if (activity.checkObjectIsMulti(parentElement)) {
-						leftOperand.setAttribute("name", parentElement.getName()+"Itr"); // name
+						leftOperand.setAttribute("name", parentElement.getName() + "Itr"); // name
 					} else {
 						leftOperand.setAttribute("name", parentElement.getName()); // name
 					}
@@ -2031,9 +2019,15 @@ public class DFBPMNToProc {
 		List<String> output = activity.getDataProcessingOutgoing(sourceElement.getId()).stream()
 				.map((element) -> element.getName()).collect(Collectors.toList());
 		try {
+			String results;
+			if (sourceElement.getAttribute("groovy").isEmpty()) {
+				results = sendPost(inputs.toString(), sourceElement.getAttribute("gherkin"), output.get(0));
+			} else {
+				results = sourceElement.getAttribute("groovy");
+			}
 			// get data result by connecting to LLM
 			// convert gherkin to code
-			String results = sendPost(inputs.toString(), sourceElement.getAttribute("gherkin"), output.get(0));
+
 			return results;
 		} catch (Exception e) {
 			e.printStackTrace();

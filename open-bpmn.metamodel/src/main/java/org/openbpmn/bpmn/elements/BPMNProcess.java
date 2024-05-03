@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -1608,41 +1610,46 @@ public class BPMNProcess extends BPMNElement {
 	 * @return
 	 */
 	public Map<String, Map<String, Object>> getDataStoresExtensions() {
-		//data store information
+		// data store information
 		Map<String, Map<String, Object>> dataStores = new HashMap<String, Map<String, Object>>();
-		
-		//need to get the data store from all the activities
+
+		// need to get the data store from all the activities
 		activities.stream().forEach(activity -> {
-			//start by all the data store input
+			// start by all the data store input
 			List<DataInputObjectExtension> dataInputObjectExtensions = activity.getDataInputObjects().stream()
 					.filter(data -> data.getElementNode().getLocalName().equals(BPMNTypes.DATA_INPUT_OBJECT_DATA_STORE))
 					.collect(Collectors.toList());
-			
+
 			// get information of each input object
 			dataInputObjectExtensions.stream().forEach(dataObject -> {
-				//check if already exisits
+				// check if already exisits
 				if (!dataStores.containsKey(dataObject.getName())) {
 					Map<String, Object> dataInfo = new HashMap<String, Object>();
 					dataInfo.put("type", dataObject.getAttribute("type"));
 					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
-					dataInfo.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
+					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty() ? "false"
+							: dataObject.getAttribute("isReadOnly"));
+					dataInfo.put("attributes",
+							new LinkedHashSet<DataObjectAttributeExtension>(dataObject.getDataAttributes()));
 					dataStores.put(dataObject.getName(), dataInfo);
-				} 
-				//already exists
+				}
+				// already exists
 				else {
-					
+
 					// append the attributes (net existing attributes
 					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
-					if(Boolean.parseBoolean((String) dataInfoExists.get("readonly"))==false) {
-						dataInfoExists.put("readonly",  dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					if (Boolean.parseBoolean((String) dataInfoExists.get("readonly")) == false) {
+						dataInfoExists.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty() ? "false"
+								: dataObject.getAttribute("isReadOnly"));
 					}
 					if (dataInfoExists.get("attributes") == null) {
-						dataInfoExists.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
+						dataInfoExists.put("attributes",
+								new LinkedHashSet<DataObjectAttributeExtension>(dataObject.getDataAttributes()));
 					} else {
-						//get attributes
-						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");
-						//check attributes
+						// get attributes
+						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists
+								.get("attributes");
+						// check attributes
 						for (DataObjectAttributeExtension att : dataObject.getDataAttributes()) {
 							if (attributesList.stream()
 									.filter((exisitingAtt) -> exisitingAtt.getName().contentEquals(att.getName()))
@@ -1660,30 +1667,35 @@ public class BPMNProcess extends BPMNElement {
 					.collect(Collectors.toList());
 			// collect information about these output
 			dataOutputObjectExtension.stream().forEach(dataObject -> {
-				//check if already added
+				// check if already added
 				if (!dataStores.containsKey(dataObject.getName())) {
 					Map<String, Object> dataInfo = new HashMap<String, Object>();
 					dataInfo.put("type", dataObject.getAttribute("type"));
 					dataInfo.put("multiple", dataObject.getAttribute("isMultiple"));
-					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
-					dataInfo.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
+					dataInfo.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty() ? "false"
+							: dataObject.getAttribute("isReadOnly"));
+					dataInfo.put("attributes",
+							new LinkedHashSet<DataObjectAttributeExtension>(dataObject.getDataAttributes()));
 					dataStores.put(dataObject.getName(), dataInfo);
-				
-				} 
-				//already exists
+
+				}
+				// already exists
 				else {
 					// append the attributes (net existing attributes
 					Map<String, Object> dataInfoExists = dataStores.get(dataObject.getName());
-					if(Boolean.parseBoolean((String) dataInfoExists.get("readonly"))==false) {
-						dataInfoExists.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty()?"false":dataObject.getAttribute("isReadOnly"));
+					if (Boolean.parseBoolean((String) dataInfoExists.get("readonly")) == false) {
+						dataInfoExists.put("readonly", dataObject.getAttribute("isReadOnly").isEmpty() ? "false"
+								: dataObject.getAttribute("isReadOnly"));
 					}
-					
+
 					if (dataInfoExists.get("attributes") == null) {
-						dataInfoExists.put("attributes",  new LinkedHashSet<DataObjectAttributeExtension>( dataObject.getDataAttributes()));
+						dataInfoExists.put("attributes",
+								new LinkedHashSet<DataObjectAttributeExtension>(dataObject.getDataAttributes()));
 					} else {
-						//get attributes
-						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists.get("attributes");
-						//check attributes
+						// get attributes
+						Set<DataObjectAttributeExtension> attributesList = (Set<DataObjectAttributeExtension>) dataInfoExists
+								.get("attributes");
+						// check attributes
 						for (DataObjectAttributeExtension att : dataObject.getDataAttributes()) {
 							if (attributesList.stream()
 									.filter((exisitingAtt) -> exisitingAtt.getName().contentEquals(att.getName()))
@@ -1699,4 +1711,58 @@ public class BPMNProcess extends BPMNElement {
 		});
 		return dataStores;
 	}
+
+	public boolean isProcceding(BPMNElementNode sourceElement, BPMNElementNode targetElement) {
+		Queue<BPMNElementNode> queue = new LinkedList<>();
+		Set<BPMNElementNode> visited = new HashSet<>();
+
+		visited.add(targetElement);
+		queue.add(targetElement);
+		 while (!queue.isEmpty()) {
+			 BPMNElementNode current = queue.poll();
+	            if (current.getId().contentEquals(sourceElement.getId())) {
+	                return true;
+	            }
+	            List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq ->sq.getSourceElement()).collect(Collectors.toList());
+	            for (BPMNElementNode child : children ) {
+	                if (!visited.contains(child)) {
+	                    visited.add(child);
+	                    queue.add(child);
+	                }
+	            }
+		 }
+
+		return false;
+	}
+
+//	public boolean isProccedingHelper(BPMNElementNode sourceElement, BPMNElementNode targetElement, Set<String> visited,
+//			Queue<BPMNElementNode> queue) {
+//
+////	            for (String neighbor : neighbors) {
+////	                pairs.add(new Pair(node, neighbor));
+////	                if (!visited.contains(neighbor)) {
+////	                    dfsHelper(graph, neighbor, visited, pairs);
+////	                }
+////	            }
+//
+////				
+////				for (SequenceFlow currentSq : sq) {
+////					BPMNElementNode proceesorElement = currentSq.getSourceElement();
+////					if (proceesorElement.getId().contentEquals(sourceElement.getId())) {
+////						return true;
+////					}else {
+////						if(proceesorElement.getIngoingSequenceFlows().size()==0) {
+////							return false;
+////						}else {
+////							List<SequenceFlow> sq1 = proceesorElement.getIngoingSequenceFlows().stream().collect(Collectors.toList());
+////							for (SequenceFlow currenctSecquenceFlow : sq1) {
+////								BPMNElementNode currenctProcessor = currenctSecquenceFlow.getSourceElement();
+////								return isProccedingHelper(sourceElement, currenctProcessor,visited);
+////							}
+////						}
+////					}
+////				}
+//		return false;
+//	}
+
 }

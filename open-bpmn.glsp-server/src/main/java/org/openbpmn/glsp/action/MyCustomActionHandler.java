@@ -56,9 +56,9 @@ public class MyCustomActionHandler extends AbstractActionHandler<MyCustomRespons
 			System.out.println("DF-BPMN to MCMT has been started");
 			System.out.println(modelState.getPath());
 			String exportPath = modelState.getBpmnModel().openDefaultProces().getAttribute("mcmtpath");
-			DfbpmnModelReader modelReader;
+			
 			try {
-				modelReader = new DfbpmnModelReader(modelState.getPath(),exportPath.isEmpty()?null:exportPath);
+				DfbpmnModelReader modelReader = new DfbpmnModelReader(modelState.getPath(),exportPath.isEmpty()?null:exportPath);
 
 				for (DABProcessTranslator processTranslator : modelReader.getProcessTranslators())
 					processTranslator.generateMCMTTranslation();

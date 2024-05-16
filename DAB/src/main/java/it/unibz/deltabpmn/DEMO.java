@@ -37,6 +37,7 @@ public class DEMO {
         //to run mcmt:
         // cd /mnt/c/Users/AliNourEldin/Downloads/MCMT_distrib_v3.0Y/MCMT_distrib_v3.0Y/linux64/bin
         // ./bin/mcmt /mnt/c/Users/AliNourEldin/Desktop/da-bpmn/open-bpmn/DAB/bpmn-model-translations/Mortgage_MCMT-Translation.txt
+     // ./bin/mcmt /mnt/c/Users/AliNourEldin/Desktop/mcmt/Mortgage_MCMT-Translation.txt
 
     }
     

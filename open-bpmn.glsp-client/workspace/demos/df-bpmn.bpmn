@@ -132,14 +132,10 @@ For an income exceeding 10,722, the tax is 45%]]></bpmn2:documentation>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_ugKxyg" id="BPMNEdge_RzVD1A" sourceElement="BPMNShape_f01s2A" targetElement="BPMNShape_v76EIQ">
-        <di:waypoint x="797.3359985351562" y="188.74563598632812"/>
-        <di:waypoint x="886.3359985351562" y="188.74563598632812"/>
-        <di:waypoint x="886.3359985351562" y="193.74563598632812"/>
-        <di:waypoint x="930.3359985351562" y="193.74563598632812"/>
-        <di:waypoint x="930.3359985351562" y="235.52490234375"/>
-        <di:waypoint x="981.1722412109375" y="235.52490234375"/>
-        <di:waypoint x="981.1722412109375" y="189.02490234375"/>
-        <di:waypoint x="917.0063784109817" y="189.02490234375"/>
+        <di:waypoint x="797.3359985351562" y="189.02490234375"/>
+        <di:waypoint x="839.1722717285156" y="189.02490234375"/>
+        <di:waypoint x="839.1722717285156" y="188.74563598632812"/>
+        <di:waypoint x="881.008544921875" y="188.74563598632812"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sequenceFlow_JEdZaA" id="BPMNEdge_kUg0Jw" sourceElement="BPMNShape_YytoXA" targetElement="BPMNShape_f01s2A">
         <di:waypoint x="182.008544921875" y="189.02490234375"/>

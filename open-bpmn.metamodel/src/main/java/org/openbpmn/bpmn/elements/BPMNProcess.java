@@ -1712,7 +1712,7 @@ public class BPMNProcess extends BPMNElement {
 		return dataStores;
 	}
 
-	public boolean isProcceding(BPMNElementNode sourceElement, BPMNElementNode targetElement) {
+	public boolean isPreceding(BPMNElementNode sourceElement, BPMNElementNode targetElement) {
 		Queue<BPMNElementNode> queue = new LinkedList<>();
 		Set<BPMNElementNode> visited = new HashSet<>();
 
@@ -1735,6 +1735,31 @@ public class BPMNProcess extends BPMNElement {
 		return false;
 	}
 
+	
+	
+	
+	public boolean isLoop(BPMNElementNode sourceElement, BPMNElementNode targetElement,BPMNElement prefix) {
+		Queue<BPMNElementNode> queue = new LinkedList<>();
+		Set<BPMNElementNode> visited = new HashSet<>();
+
+		visited.add(targetElement);
+		queue.add(targetElement);
+		 while (!queue.isEmpty()) {
+			 BPMNElementNode current = queue.poll();
+	            if (current.getId().contentEquals(sourceElement.getId())) {
+	                return true;
+	            }
+	            List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq ->sq.getSourceElement()).collect(Collectors.toList());
+	            for (BPMNElementNode child : children ) {
+	                if (!visited.contains(child)) {
+	                    visited.add(child);
+	                    queue.add(child);
+	                }
+	            }
+		 }
+
+		return false;
+	}
 //	public boolean isProccedingHelper(BPMNElementNode sourceElement, BPMNElementNode targetElement, Set<String> visited,
 //			Queue<BPMNElementNode> queue) {
 //

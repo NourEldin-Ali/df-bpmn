@@ -143,6 +143,7 @@ public class BPMNDiscovery {
 								for (SequenceFlow flow : sequenceFlowList) {
 									// get succeed
 									BPMNElementNode srcElement = flow.getSourceElement();
+									System.out.println(srcElement.getId());
 									process.deleteSequenceFlow(flow.getId());
 									process.addSequenceFlow("sq-" + seqenceFlowId.toString(), srcElement.getId(),
 											newGateway.getId());
@@ -199,7 +200,7 @@ public class BPMNDiscovery {
 			BPMNElementNode succeedElement = sq.getTargetElement();
 			if ( // check activity; TODO: look at the type
 			succeedElement.getType().contentEquals(BPMNTypes.TASK)) {
-
+				System.out.println("Add new gateway after the activity");
 				process.deleteSequenceFlow(sq.getId());
 
 				// add new gateway
@@ -223,7 +224,8 @@ public class BPMNDiscovery {
 				SequenceFlow flowToProbablyGateway = (SequenceFlow) sq;
 				probablyRelationType = new HashMap();
 				isAdded = false;
-				addNewTarget(sq, selectedGateway, sourceElement, targetElement, probablySelectedGateway,flowToProbablyGateway);
+				addNewTarget(sq, selectedGateway, sourceElement, targetElement, probablySelectedGateway,
+						flowToProbablyGateway);
 				if (isAdded == false) {
 					System.out.println("add new gateway before the existing gateway");
 //					System.out.println(probablyRelationType.get(GATEWAY_TYPE));
@@ -234,9 +236,9 @@ public class BPMNDiscovery {
 					gatewayId++;
 					splitGateway = newGateway;
 
-
 					process.deleteSequenceFlow(flowToProbablyGateway.getId());
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), flowToProbablyGateway.getSourceElement().getId(), newGateway.getId());
+					process.addSequenceFlow("sq-" + seqenceFlowId.toString(),
+							flowToProbablyGateway.getSourceElement().getId(), newGateway.getId());
 					seqenceFlowId++;
 					// add 2 new sequence flow
 					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
@@ -262,7 +264,8 @@ public class BPMNDiscovery {
 	 * @throws BPMNModelException
 	 */
 	private boolean addNewTarget(SequenceFlow selectedSequence, Gateway selectedGateway, BPMNElement sourceElement,
-			BPMNElement targetElement, Gateway probablySelectedGateway,SequenceFlow flowToProbablyGateway) throws BPMNModelException {
+			BPMNElement targetElement, Gateway probablySelectedGateway, SequenceFlow flowToProbablyGateway)
+			throws BPMNModelException {
 
 		BPMNProcess process = model.openDefaultProces();
 		List<SequenceFlow> acceptedSequenceFlows = new ArrayList<>();
@@ -278,8 +281,9 @@ public class BPMNDiscovery {
 		for (SequenceFlow currenctSequenceFlow : listSequenceFlow) {
 //			System.out.println("---------------NEW FLOW--------------");
 			BPMNElementNode successor = currenctSequenceFlow.getTargetElement();
-//			System.out.println(successor.getId());
-			if (successor.getType().equals(BPMNTypes.TASK)) {
+//			System.out.println(successor.getType());
+			// TODO: take into account events and activities
+			if (successor.getType().equals(BPMNTypes.TASK) || successor.getType().equals(BPMNTypes.END_EVENT)) {
 				relationType = getGatewayType(successor, targetElement);
 //				System.out.println(relationType.get(GATEWAY_TYPE));
 //				System.out.println("num="+relationType.get(GATEWAY_NUM));
@@ -292,7 +296,7 @@ public class BPMNDiscovery {
 				}
 			} else {
 				boolean result = addNewTarget(currenctSequenceFlow, (Gateway) successor, sourceElement, targetElement,
-						probablySelectedGateway,flowToProbablyGateway);
+						probablySelectedGateway, flowToProbablyGateway);
 
 				if (result) {
 					allAcceptedSequenceFlows.add(currenctSequenceFlow);
@@ -314,20 +318,22 @@ public class BPMNDiscovery {
 		if (selectedGateway.getOutgoingSequenceFlows().size() == acceptedSequenceFlows.size()) {
 			// probably to add new gateway before selected gateway
 			System.out.println("Propbably add before");
+//			System.out.println(selectedSequence.getSourceElement().getId());
 			flowToProbablyGateway = selectedSequence;
 			probablySelectedGateway = selectedGateway;
 			return true;
 		} else if (selectedGateway.getOutgoingSequenceFlows().size() == allAcceptedSequenceFlows.size()
 				&& acceptedSequenceFlows.size() == 0) {
+			isAdded = true;
 			System.out.println("add as successor");
 			// add target as successor
 			// add new element as succeed on the gateway
 			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), selectedGateway.getId(), targetElement.getId());
 			seqenceFlowId++;
 			splitGateway = selectedGateway;
-			isAdded = true;
 
 		} else if (acceptedSequenceFlows.size() >= 1) {
+			isAdded = true;
 			System.out.print("Add new gateway after old gateway: ");
 
 			// add new gateway after selected gateway
@@ -353,7 +359,6 @@ public class BPMNDiscovery {
 			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), targetElement.getId());
 			seqenceFlowId++;
 
-			isAdded = true;
 		}
 
 //		System.out.println("-------------FINISH--------------");
@@ -373,6 +378,7 @@ public class BPMNDiscovery {
 		Integer num = -1;
 		Integer selectedNum = num;
 		List<String> minList = null;
+
 		for (Map.Entry<String, LinkedList<LinkedList<String>>> entry : relations.entrySet()) {
 			LinkedList<LinkedList<String>> lists = entry.getValue();
 			for (LinkedList<String> list : lists) {
@@ -409,7 +415,8 @@ public class BPMNDiscovery {
 		// check if it is activity
 		// TODO: look at the type
 		if (precedingElement.getType().contentEquals(BPMNTypes.TASK)) {
-
+//			if (process.isPreceding(splitGateway, precedingElement)) {
+			System.out.println("add new Gateway after preceding Element (task)");
 			process.deleteSequenceFlow(sq.getId());
 			// add new gateway
 			Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
@@ -423,125 +430,142 @@ public class BPMNDiscovery {
 			seqenceFlowId++;
 			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), targetElement.getId());
 			seqenceFlowId++;
+//			}
 		} else {
-			// is gateway
-			Integer flowCounter = 0;
-			List<SequenceFlow> acceptedSequenceFlowList = new ArrayList<>();
-			List<SequenceFlow> sqflowList = precedingElement.getIngoingSequenceFlows().stream()
-					.collect(Collectors.toList());
-			for (SequenceFlow currenctSecquenceFlow : sqflowList) {
-				BPMNElementNode currenctProcessor = currenctSecquenceFlow.getSourceElement();
-				flowCounter++;
-				if (process.isPreceding(splitGateway, currenctProcessor)) {
-					acceptedSequenceFlowList.add(currenctSecquenceFlow);
-				}
-			}
-			// add to the same gateway
-			if (acceptedSequenceFlowList.size() == flowCounter) {
-				// check if the same gateway type and the num(like id) of the gateway
-				if (precedingElement.getElementNode().getLocalName()
-						.contentEquals(splitGateway.getElementNode().getLocalName())
-						&& precedingElement.getAttribute(GATEWAY_NUM)
-								.contentEquals(splitGateway.getAttribute(GATEWAY_NUM))) {
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-							precedingElement.getId());
-					seqenceFlowId++;
-					splitGateway = null;
-				} else {
-					// add new gateway after the precedingElement
-					Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
-					newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-					gatewayId++;
-					splitGateway = null;
+			addJoinGatewayRec(sourceElement, precedingElement, targetElement);
+		}
+	}
 
-					// add new sequence flow
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), precedingElement.getId(),
-							newGateway.getId());
-					seqenceFlowId++;
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-							newGateway.getId());
-					seqenceFlowId++;
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-							targetElement.getId());
-					seqenceFlowId++;
-					process.deleteSequenceFlow(sq.getId());
-				}
-			} else if (acceptedSequenceFlowList.size() >= 2) {
-				// add new gateway for accepted element
+	private void addJoinGatewayRec(BPMNElementNode sourceElement, BPMNElementNode selectedGateway,
+			BPMNElementNode targetElement) throws BPMNModelException {
+		System.out.println("JOIN-REC: " + sourceElement.getId() + "->" + targetElement.getId());
+		BPMNProcess process = model.openDefaultProces();
+
+//		// get target sequence flow
+//		SequenceFlow sq = targetElement.getIngoingSequenceFlows().iterator().next();
+//		// get succeed
+//		BPMNElementNode precedingElement = sq.getSourceElement();
+		// is gateway
+		Integer flowCounter = 0;
+		List<SequenceFlow> acceptedSequenceFlowList = new ArrayList<>();
+		List<SequenceFlow> sqflowList = selectedGateway.getIngoingSequenceFlows().stream().collect(Collectors.toList());
+
+		for (SequenceFlow currenctSecquenceFlow : sqflowList) {
+			BPMNElementNode currenctProcessor = currenctSecquenceFlow.getSourceElement();
+//			System.out.println(currenctProcessor.getName());
+//			System.out.println(currenctProcessor.getType());
+			flowCounter++;
+			if (process.isPreceding(splitGateway, currenctProcessor)) {
+				acceptedSequenceFlowList.add(currenctSecquenceFlow);
+			}
+		}
+
+		// add to the same gateway
+		if (acceptedSequenceFlowList.size() == flowCounter) {
+
+			// check if the same gateway type and the num(like id) of the gateway
+			if (selectedGateway.getType().contentEquals(splitGateway.getType()) && selectedGateway
+					.getAttribute(GATEWAY_NUM).contentEquals(splitGateway.getAttribute(GATEWAY_NUM))) {
+				System.out.println("Join at the same gateway");
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
+						selectedGateway.getId());
+				seqenceFlowId++;
+				splitGateway = null;
+			} else {
+				System.out.println("add new gateway after the precedingElement (gateway)");
+				// add new gateway after the precedingElement
+				Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
+				newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
+				gatewayId++;
+				splitGateway = null;
+				process.deleteSequenceFlow(targetElement.getIngoingSequenceFlows().iterator().next().getId());
+				// add new sequence flow
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), selectedGateway.getId(), newGateway.getId());
+				seqenceFlowId++;
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), newGateway.getId());
+				seqenceFlowId++;
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), targetElement.getId());
+				seqenceFlowId++;
+//				process.deleteSequenceFlow(sq.getId());
+			}
+		} else if (acceptedSequenceFlowList.size() >= 2) {
+			System.out.println("add new gateway  for accepted element");
+
+			// add new gateway for accepted element
+			Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
+			newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
+			gatewayId++;
+			splitGateway = null;
+
+			// add new sequence flow
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), selectedGateway.getId());
+			seqenceFlowId++;
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), newGateway.getId());
+			seqenceFlowId++;
+			for (SequenceFlow sequence : acceptedSequenceFlowList) {
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sequence.getSourceElement().getId(),
+						newGateway.getId());
+				seqenceFlowId++;
+				process.deleteSequenceFlow(sequence.getId());
+			}
+		} else if (acceptedSequenceFlowList.size() == 1) {
+//			System.out.println("open 1 accepted");
+			BPMNElementNode precedingElement = acceptedSequenceFlowList.get(0).getSourceElement();
+//			System.out.println(precedingElement.getId());
+			if (precedingElement.getType().contentEquals(BPMNTypes.TASK)) {
+				System.out.println("add new gateway  for accepted element");
+				process.deleteSequenceFlow(acceptedSequenceFlowList.get(0).getId());
+				// add new gateway
+
 				Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
 				newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
 				gatewayId++;
 				splitGateway = null;
 
-				// add new sequence flow
-				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), precedingElement.getId());
-				seqenceFlowId++;
+				// add 3 new sequence flow
 				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), newGateway.getId());
 				seqenceFlowId++;
-				for (SequenceFlow sequence : acceptedSequenceFlowList) {
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sequence.getSourceElement().getId(),
-							newGateway.getId());
-					seqenceFlowId++;
-					process.deleteSequenceFlow(sequence.getId());
-				}
-			} else if (acceptedSequenceFlowList.size() == 1) {
-				precedingElement = acceptedSequenceFlowList.get(0).getSourceElement();
-				if (precedingElement.getType().contentEquals(BPMNTypes.TASK)) {
-
-					process.deleteSequenceFlow(acceptedSequenceFlowList.get(0).getId());
-					// add new gateway
-
-					Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "",
-							splitGateway.getType());
-					newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-					gatewayId++;
-					splitGateway = null;
-
-					// add 3 new sequence flow
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-							newGateway.getId());
-					seqenceFlowId++;
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), precedingElement.getId(),
-							newGateway.getId());
-					seqenceFlowId++;
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-							acceptedSequenceFlowList.get(0).getTargetElement().getId());
-					seqenceFlowId++;
-				} else {
-					addJoinGateway(sourceElement, precedingElement);
-				}
-			}else
-				//cannot access the split gateway => should add XOR gateway if the gateway == parallel
-				if (acceptedSequenceFlowList.size() == 0) {
-				// add new gateway for connected to existing element
-				String gatewayType = splitGateway.getType();
-				String gatewayNum = splitGateway.getAttribute(GATEWAY_NUM);
-				//TODO: add generic gateway?
-				if(gatewayType.contentEquals(BPMNTypes.PARALLEL_GATEWAY)) {
-					gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
-					gatewayNum = "-1";
-				}
-				
-				Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
-				newGateway.setAttribute(GATEWAY_NUM, gatewayNum);
-				gatewayId++;
-				splitGateway = null;
-
-				// add new sequence flow
-				
-				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-						sq.getTargetElement().getId());
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), precedingElement.getId(), newGateway.getId());
 				seqenceFlowId++;
-				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-						newGateway.getId());
+				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), selectedGateway.getId());
 				seqenceFlowId++;
-				process.addSequenceFlow("sq-" + seqenceFlowId.toString(),	sq.getSourceElement().getId(), newGateway.getId()
-					);
-				seqenceFlowId++;
-				
-				process.deleteSequenceFlow(sq.getId());
 
+			} else {
+				addJoinGatewayRec(sourceElement, precedingElement, targetElement);
 			}
+		} else
+		// cannot access the split gateway => should add XOR gateway if the gateway ==
+		// parallel
+		if (acceptedSequenceFlowList.size() == 0) {
+			System.out.println("add new Default XOR");
+			// add new gateway for connected to existing element
+			String gatewayType = splitGateway.getType();
+			String gatewayNum = splitGateway.getAttribute(GATEWAY_NUM);
+			// TODO: add generic gateway?
+			if (gatewayType.contentEquals(BPMNTypes.PARALLEL_GATEWAY)) {
+				gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
+				gatewayNum = "-1";
+			}
+
+			Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
+			newGateway.setAttribute(GATEWAY_NUM, gatewayNum);
+			gatewayId++;
+			splitGateway = null;
+
+		
+			SequenceFlow sq = targetElement.getIngoingSequenceFlows().iterator().next();
+			System.out.println(sq.getSourceElement().getId());
+			// add new sequence flow
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), selectedGateway.getId(), targetElement.getId());
+			seqenceFlowId++;
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), newGateway.getId());
+			seqenceFlowId++;
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sq.getSourceElement().getId(),
+					newGateway.getId());
+			seqenceFlowId++;
+
+			process.deleteSequenceFlow(sq.getId());
+
 		}
 	}
 
@@ -557,15 +581,16 @@ public class BPMNDiscovery {
 			sourceGateway.setAttribute(GATEWAY_NUM, "-2");
 			gatewayId++;
 
-			// add 2 new sequence flow
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), sourceGateway.getId());
-			seqenceFlowId++;
 			// get element connected to the target
 			SequenceFlow sqflow = sourceElement.getOutgoingSequenceFlows().iterator().next();
 			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(),
 					sqflow.getTargetElement().getId());
 			seqenceFlowId++;
 			process.deleteSequenceFlow(sqflow.getId());
+
+			// add 2 new sequence flow
+			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), sourceGateway.getId());
+			seqenceFlowId++;
 
 			// add new gateway before target ( end for loop)
 			Gateway targetGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
@@ -767,7 +792,10 @@ public class BPMNDiscovery {
 		// correct
 //		example3();
 		// correct
-		example4();
+//		example4();
+		// double loop
+//		example5();
+		example6();
 	}
 
 	// the ex use to describe the algo in the confluence page
@@ -789,8 +817,297 @@ public class BPMNDiscovery {
 
 		events.add("f->end1");
 
+//		events.add("a->g");
+//		events.add("g->f");
+//		events.add("f->a");
+
+		String startEvent = "start";
+
+		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
+		System.out.println(orderedEvents);
+		List<String> startsEvent = new ArrayList<>();
+		startsEvent.add("start");
+
+		List<String> endEvents = new ArrayList<>();
+		endEvents.add("end");
+		endEvents.add("end1");
+
+		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("b");
+				add("c");
+				add("d");
+				add("e");
+//				add("g");
+			}
+		});
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("d");
+			};
+
+		});
+
+		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
+		parallelRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("e");
+				add("d");
+			}
+		});
+//		parallelRelations.add(new LinkedList<String>() {
+//			{
+//				add("c");
+//				
+//			}
+//		});
+
+		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+		relations.put(DECISION, decisionRelations);
+		relations.put(PARALLEL, parallelRelations);
+
+		try {
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
+			bpmnDiscovery.DependencyGraphToBPMN();
+			bpmnDiscovery.saveMode();
+		} catch (BPMNModelException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ex1 in tested on in the page confluence
+	private static void example2() {
+		LinkedList<String> events = new LinkedList();
+		events.add("start->a");
+		events.add("a->b");
+		events.add("a->c");
+
+		events.add("b->d");
+		events.add("b->g");
+
+		events.add("c->f");
+		events.add("c->e");
+
+		events.add("d->f");
+		events.add("e->g");
+
+		events.add("f->h");
+		events.add("g->h");
+		events.add("h->end");
+
+		String startEvent = "start";
+
+		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
+		System.out.println(orderedEvents);
+		List<String> startsEvent = new ArrayList<>();
+		startsEvent.add("start");
+
+		List<String> endEvents = new ArrayList<>();
+		endEvents.add("end");
+
+		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("b");
+			}
+
+		});
+
+		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
+		parallelRelations.add(new LinkedList<String>() {
+			{
+				add("d");
+				add("g");
+			}
+
+		});
+		parallelRelations.add(new LinkedList<String>() {
+			{
+				add("e");
+				add("f");
+			}
+
+		});
+
+		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+		relations.put(DECISION, decisionRelations);
+		relations.put(PARALLEL, parallelRelations);
+
+		try {
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
+			bpmnDiscovery.DependencyGraphToBPMN();
+			bpmnDiscovery.saveMode();
+		} catch (BPMNModelException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ex2 in tested on in the page confluence
+	private static void example3() {
+		LinkedList<String> events = new LinkedList();
+		events.add("start->a");
+		events.add("start->b");
+
+		events.add("a->c");
+		events.add("a->j");
+
+		events.add("b->d");
+		events.add("b->j");
+
+		events.add("c->i");
+		events.add("j->i");
+
+		events.add("d->k");
+		events.add("i->k");
+
+		events.add("k->end");
+
+		String startEvent = "start";
+
+		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
+		System.out.println(orderedEvents);
+		List<String> startsEvent = new ArrayList<>();
+		startsEvent.add("start");
+
+		List<String> endEvents = new ArrayList<>();
+		endEvents.add("end");
+
+		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("b");
+			}
+
+		});
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("j");
+			}
+
+		});
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("d");
+				add("j");
+			}
+
+		});
+
+		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
+
+		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+		relations.put(DECISION, decisionRelations);
+		relations.put(PARALLEL, parallelRelations);
+
+		try {
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
+			bpmnDiscovery.DependencyGraphToBPMN();
+			bpmnDiscovery.saveMode();
+		} catch (BPMNModelException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ex3 in tested on in the page confluence
+	private static void example4() {
+		LinkedList<String> events = new LinkedList();
+		events.add("start->a");
+		events.add("a->b");
+		events.add("a->c");
+		events.add("a->d");
+
+		events.add("b->e");
+		events.add("b->f");
+
+		events.add("e->h");
+		events.add("f->g");
+
+		events.add("g->h");
+
+		events.add("c->g");
+		events.add("d->g");
+
+		events.add("h->end");
+
+		String startEvent = "start";
+
+		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
+		System.out.println(orderedEvents);
+		List<String> startsEvent = new ArrayList<>();
+		startsEvent.add("start");
+
+		List<String> endEvents = new ArrayList<>();
+		endEvents.add("end");
+
+		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("c");
+				add("d");
+			}
+
+		});
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("e");
+				add("f");
+			}
+
+		});
+
+		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
+		parallelRelations.add(new LinkedList<String>() {
+			{
+				add("b");
+				add("c");
+				add("d");
+			}
+
+		});
+
+		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+		relations.put(DECISION, decisionRelations);
+		relations.put(PARALLEL, parallelRelations);
+
+		try {
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
+			bpmnDiscovery.DependencyGraphToBPMN();
+			bpmnDiscovery.saveMode();
+		} catch (BPMNModelException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// double loop
+	private static void example5() {
+		LinkedList<String> events = new LinkedList();
+		events.add("start->a");
+
+		events.add("a->b");
+		events.add("a->c");
+		events.add("a->d");
+		events.add("a->e");
+
+		events.add("b->end");
+
+		events.add("d->f");
+		events.add("c->f");
+
+		events.add("e->f");
+
+		events.add("f->end1");
+
 		events.add("a->g");
 		events.add("g->f");
+
+		// loop
+		events.add("c->a");
 		events.add("f->a");
 
 		String startEvent = "start";
@@ -845,26 +1162,25 @@ public class BPMNDiscovery {
 		}
 	}
 
-	// ex1 in tested on in the page confluence
-	private static void example2() {
+	// exercice nour
+	private static void example6() {
 		LinkedList<String> events = new LinkedList();
 		events.add("start->a");
+
 		events.add("a->b");
-		events.add("a->c");
-		
-		events.add("b->d");
 		events.add("b->g");
-		
-		events.add("c->f");
-		events.add("c->e");
-		
-		events.add("d->f");
-		events.add("e->g");
-		
-		events.add("f->h");
-		events.add("g->h");
-		events.add("h->end");
-		
+		events.add("g->i");
+		events.add("i->end");
+
+		events.add("a->c");
+		events.add("c->g");
+		events.add("c->h");
+
+		events.add("h->end1");
+
+		events.add("a->d");
+		events.add("d->e");
+		events.add("e->end2");
 
 		String startEvent = "start";
 
@@ -875,33 +1191,38 @@ public class BPMNDiscovery {
 
 		List<String> endEvents = new ArrayList<>();
 		endEvents.add("end");
+		endEvents.add("end1");
+		endEvents.add("end2");
 
 		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
 		decisionRelations.add(new LinkedList<String>() {
 			{
-				add("c");
 				add("b");
+				add("c");
 			}
+		});
+		decisionRelations.add(new LinkedList<String>() {
+			{
+				add("g");
+				add("h");
+			};
 
 		});
-		
 
 		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
 		parallelRelations.add(new LinkedList<String>() {
 			{
+				add("b");
+				add("c");
 				add("d");
-				add("g");
 			}
-
 		});
-		parallelRelations.add(new LinkedList<String>() {
-			{
-				add("e");
-				add("f");
-			}
-
-		});
-
+//		parallelRelations.add(new LinkedList<String>() {
+//			{
+//				add("c");
+//				
+//			}
+//		});
 
 		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
 		relations.put(DECISION, decisionRelations);
@@ -915,150 +1236,5 @@ public class BPMNDiscovery {
 			e.printStackTrace();
 		}
 	}
-
-	// ex2 in tested on in the page confluence
-		private static void example3() {
-			LinkedList<String> events = new LinkedList();
-			events.add("start->a");
-			events.add("start->b");
-			
-			events.add("a->c");
-			events.add("a->j");
-			
-			events.add("b->d");
-			events.add("b->j");
-			
-			events.add("c->i");
-			events.add("j->i");
-			
-			events.add("d->k");
-			events.add("i->k");
-	
-			events.add("k->end");
-			
-
-			String startEvent = "start";
-
-			LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
-			System.out.println(orderedEvents);
-			List<String> startsEvent = new ArrayList<>();
-			startsEvent.add("start");
-
-			List<String> endEvents = new ArrayList<>();
-			endEvents.add("end");
-
-			LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
-			decisionRelations.add(new LinkedList<String>() {
-				{
-					add("c");
-					add("b");
-				}
-
-			});
-			decisionRelations.add(new LinkedList<String>() {
-				{
-					add("c");
-					add("j");
-				}
-
-			});
-			decisionRelations.add(new LinkedList<String>() {
-				{
-					add("d");
-					add("j");
-				}
-
-			});
-			
-
-			LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
-			
-
-
-			Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
-			relations.put(DECISION, decisionRelations);
-			relations.put(PARALLEL, parallelRelations);
-
-			try {
-				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
-				bpmnDiscovery.DependencyGraphToBPMN();
-				bpmnDiscovery.saveMode();
-			} catch (BPMNModelException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// ex3 in tested on in the page confluence
-		private static void example4() {
-			LinkedList<String> events = new LinkedList();
-			events.add("start->a");
-			events.add("a->b");
-			events.add("a->c");
-			events.add("a->d");
-			
-			events.add("b->e");
-			events.add("b->f");
-			
-			events.add("e->h");
-			events.add("f->g");
-			
-			events.add("g->h");
-			
-			events.add("c->g");
-			events.add("d->g");
-			
-			events.add("h->end");
-			
-
-			String startEvent = "start";
-
-			LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
-			System.out.println(orderedEvents);
-			List<String> startsEvent = new ArrayList<>();
-			startsEvent.add("start");
-
-			List<String> endEvents = new ArrayList<>();
-			endEvents.add("end");
-
-			LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
-			decisionRelations.add(new LinkedList<String>() {
-				{
-					add("c");
-					add("d");
-				}
-
-			});
-			decisionRelations.add(new LinkedList<String>() {
-				{
-					add("e");
-					add("f");
-				}
-
-			});
-
-			LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
-			parallelRelations.add(new LinkedList<String>() {
-				{
-					add("b");
-					add("c");
-					add("d");
-				}
-
-			});
-			
-
-
-			Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
-			relations.put(DECISION, decisionRelations);
-			relations.put(PARALLEL, parallelRelations);
-
-			try {
-				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
-				bpmnDiscovery.DependencyGraphToBPMN();
-				bpmnDiscovery.saveMode();
-			} catch (BPMNModelException e) {
-				e.printStackTrace();
-			}
-		}
 
 }

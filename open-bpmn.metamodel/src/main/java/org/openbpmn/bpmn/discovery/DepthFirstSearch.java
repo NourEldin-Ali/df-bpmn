@@ -44,7 +44,7 @@ public class DepthFirstSearch {
 	    
 	    
 	    public static  LinkedList<String> DFSToList(LinkedList<String> events, String startEvent){
-	    	 LinkedList<String> result = new LinkedList();
+	    	LinkedList<String> result = new LinkedList();
 	    	List<Pair> pairs = dfs(RelationConverter.relationsToMap(events),startEvent);
 	        for (Pair pair : pairs) {
 	        	result.add(pair.first+"->"+pair.second);

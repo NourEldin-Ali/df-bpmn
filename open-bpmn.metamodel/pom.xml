@@ -25,7 +25,11 @@
 	</build>
 
 	<dependencies>
-	
+	<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>13.0-rc1</version>
+</dependency>
 		<!-- JUnit Tests -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -33,7 +37,8 @@
 			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
-		
+	
+
 
 	</dependencies>
 

@@ -25,15 +25,22 @@ public class XESAnalyzer {
 
 			Map<String, List<String>> dependencyRelations = RelationConverter
 					.relationsToMap(new ArrayList(dependencyGraph));
+
+			System.out.println(dependencyRelations);
+			Set<Set<String>> loops = findLoop(dependencyRelations, traces);
 			LinkedList<Set<String>> parallels = findParallelPairs(dependencyRelations, traces);
 
 			Map<String, List<String>> dependencyRelationsWithParrallel = RelationConverter
 					.relationsToMap(new ArrayList(dependencyGraph));
+
+			// remove loop
+			removeLoops(dependencyRelationsWithParrallel, loops, traces);
+			System.out.println(dependencyRelationsWithParrallel);
 			LinkedList<Set<String>> decisions = findDecisions(dependencyRelationsWithParrallel, dependencyRelations,
 					traces);
 
-//
 			System.out.println("Dependency Relations: " + dependencyRelations);
+			System.out.println("Loop Events: " + loops);
 			System.out.println("Parallel Events: " + parallels);
 			System.out.println("Decisions: " + decisions);
 
@@ -58,13 +65,13 @@ public class XESAnalyzer {
 			Map<String, LinkedList<LinkedList<String>>> relations1 = new LinkedHashMap<>();
 			relations1.put(BPMNDiscovery.DECISION, convertToListOfLists(decisions));
 			relations1.put(BPMNDiscovery.PARALLEL, convertToListOfLists(parallels));
-			try {
-				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startEvents, endEvents, orderedEvents, relations1);
-				bpmnDiscovery.DependencyGraphToBPMN();
-				bpmnDiscovery.saveMode();
-			} catch (BPMNModelException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startEvents, endEvents, orderedEvents, relations1);
+//				bpmnDiscovery.DependencyGraphToBPMN();
+//				bpmnDiscovery.saveMode();
+//			} catch (BPMNModelException e) {
+//				e.printStackTrace();
+//			}
 			// Stop timing
 			long endTime = System.nanoTime();
 			// Calculate execution time in milliseconds
@@ -73,6 +80,49 @@ public class XESAnalyzer {
 			System.out.println("Execution time: " + duration + " ms");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	static void removeLoops(Map<String, List<String>> dependencyRelationsWithParrallel, Set<Set<String>> loops,
+			Set<List<String>> traces) {
+		for (Set<String> pair : loops) {
+			// self-loop
+			if (pair.size() == 1) {
+				Iterator<String> iter = pair.iterator();
+				String first = iter.next();
+				dependencyRelationsWithParrallel.get(first).remove(first);
+				continue;
+			}
+			Iterator<String> iter = pair.iterator();
+			String first = iter.next();
+			String second = iter.next();
+
+			boolean isFirstElementBeforeSecond = true;
+			for (List<String> trace : traces) {
+				if (trace.indexOf(first) > trace.indexOf(second)) {
+					isFirstElementBeforeSecond = false;
+					break;
+				}
+
+			}
+			String source;
+			String target;
+			if (isFirstElementBeforeSecond) {
+				source = first;
+				target = second;
+			} else {
+				source = second;
+				target = first;
+			}
+			for (Map.Entry<String, List<String>> relations : dependencyRelationsWithParrallel.entrySet()) {
+				if (!relations.getKey().contentEquals(source)) {
+					relations.getValue().remove(target);
+				}
+			}
+			dependencyRelationsWithParrallel.get(target).removeAll(dependencyRelationsWithParrallel.get(source));
+			
+			//TODO: remove source from others base on the order of the sources of this source
+
 		}
 	}
 
@@ -270,6 +320,80 @@ public class XESAnalyzer {
 		return finalDecisionList;
 	}
 
+	public static Set<Set<String>> findLoop(Map<String, List<String>> dependencyRelations, Set<List<String>> traces) {
+		Set<Set<String>> paralellPairs = new HashSet<>();
+
+		// Check for mutual follows, and frequency >1
+		for (Map.Entry<String, List<String>> source : dependencyRelations.entrySet()) {
+			String sourceActivity = source.getKey();
+			for (String follower : source.getValue()) {
+				// Check if follower also directly follows the current event
+				if (dependencyRelations.get(follower) != null
+						&& dependencyRelations.get(follower).contains(sourceActivity)) {
+					// check if sourceAcitivity and follower has the same source
+					if (dependencyRelations.values().stream()
+							.anyMatch(sublist -> sublist.contains(follower) && sublist.contains(sourceActivity))) {
+						Set<String> pair = new TreeSet<>(); // Using TreeSet to keep the order consistent
+						pair.add(sourceActivity);
+						pair.add(follower);
+						paralellPairs.add(pair);
+					}
+				}
+			}
+		}
+
+		Set<Set<String>> loopPairs = new HashSet<>();
+		for (Set<String> pair : paralellPairs) {
+			// self-loop
+			if (pair.size() == 1) {
+				loopPairs.add(pair);
+				Iterator<String> iter = pair.iterator();
+				String first = iter.next();
+				dependencyRelations.get(first).remove(first);
+				continue;
+			}
+			Iterator<String> iter = pair.iterator();
+			String first = iter.next();
+			String second = iter.next();
+			boolean isLoop = false;
+			for (List<String> trace : traces) {
+				if (trace.stream().filter(event -> event.contentEquals(first)).count() > 1
+						&& trace.stream().filter(event -> event.contentEquals(second)).count() > 1) {
+					isLoop = true;
+					loopPairs.add(pair);
+					break;
+				}
+			}
+			if (isLoop) {
+				boolean isFirstElementBeforeSecond = true;
+				for (List<String> trace : traces) {
+					if (trace.indexOf(first) > trace.indexOf(second)) {
+						isFirstElementBeforeSecond = false;
+						break;
+					}
+
+				}
+				String source;
+				String target;
+				if (isFirstElementBeforeSecond) {
+					source = first;
+					target = second;
+				} else {
+					source = second;
+					target = first;
+				}
+				for (Map.Entry<String, List<String>> relations : dependencyRelations.entrySet()) {
+					if (!relations.getKey().contentEquals(source)) {
+						relations.getValue().remove(target);
+					}
+				}
+				dependencyRelations.get(target).removeAll(dependencyRelations.get(source));
+			}
+		}
+
+		return loopPairs;
+	}
+
 	public static LinkedList<Set<String>> findParallelPairs(Map<String, List<String>> dependencyRelations,
 			Set<List<String>> traces) {
 		Set<Set<String>> parallelPairs = new HashSet<>();
@@ -281,15 +405,23 @@ public class XESAnalyzer {
 				// Check if follower also directly follows the current event
 				if (dependencyRelations.get(follower) != null
 						&& dependencyRelations.get(follower).contains(sourceActivity)) {
-					Set<String> pair = new TreeSet<>(); // Using TreeSet to keep the order consistent
-					pair.add(sourceActivity);
-					pair.add(follower);
-					parallelPairs.add(pair);
+					// check if sourceAcitivity and follower has the same source
+					if (dependencyRelations.values().stream()
+							.anyMatch(sublist -> sublist.contains(follower) && sublist.contains(sourceActivity))) {
+						// self-loop
+						if (!sourceActivity.contentEquals(follower)) {
+							Set<String> pair = new TreeSet<>(); // Using TreeSet to keep the order consistent
+							pair.add(sourceActivity);
+							pair.add(follower);
+							parallelPairs.add(pair);
+						}
+
+					}
 				}
 			}
 		}
 
-		removeLoopFromDependecies(parallelPairs, dependencyRelations);
+		removeParallelismFromDependecies(parallelPairs, dependencyRelations);
 
 		// get all sources
 		Map<String, Set<Set<String>>> sortedBySource = new HashMap<>();
@@ -389,8 +521,9 @@ public class XESAnalyzer {
 		return originalSets;
 	}
 
-	private static void removeLoopFromDependecies(Set<Set<String>> parallelPairs,
+	private static void removeParallelismFromDependecies(Set<Set<String>> parallelPairs,
 			Map<String, List<String>> dependencies) {
+		System.out.println(parallelPairs);
 		Iterator<Set<String>> iterator = parallelPairs.iterator();
 		while (iterator.hasNext()) {
 			Set<String> set = iterator.next();

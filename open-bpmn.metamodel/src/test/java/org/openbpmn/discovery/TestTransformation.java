@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.openbpm.bpmn.converter.DFBPMNToProc;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
-import org.openbpmn.bpmn.discovery.RelationConverter;
+import org.openbpmn.bpmn.discovery.model.RelationConverter;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.SequenceFlow;

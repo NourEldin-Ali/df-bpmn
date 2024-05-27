@@ -1948,4 +1948,46 @@ public class BPMNModel {
 
         // === BUGFIX END ===
     }
+    
+    public String getXml() throws TransformerException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+        /*
+         * The following code section is to handle a bad implementation in the
+         * Imixs-BPMN (Eclipse-BPMN2) implementation
+         * 
+         * To ensure that the Open-BPMN model file is still readable by eclipse-bpmn we
+         * need to remove the whitespace before and after CDATA tags.
+         * 
+         * See details: https://github.com/imixs/open-bpmn/issues/194
+         * 
+         * Otherwise we could just do here:
+         * 
+         * StreamResult result = new StreamResult(output);
+         * transformer.transform(source, result);
+         */
+        // === BUGFIX START ===
+
+        // first transform the result xml into a string
+        StringWriter w = new StringWriter();
+        Result dest = new StreamResult(w);
+        transformer.transform(source, dest);
+        String xmlString = w.toString();
+        // No indentation (whitespace) for elements with a CDATA section.
+        // See
+        // https://stackoverflow.com/questions/55853220/handling-change-in-newlines-by-xml-transformation-for-cdata-from-java-8-to-java/75568933
+        // xmlString =
+        // xmlString.replaceAll(">\\s*+(<\\!\\[CDATA\\[(.|\\n|\\r\\n)*?]\\]>)\\s*</",
+        // ">$1</");
+        xmlString = BPMNXMLUtil.cleanCDATAWhiteSpace(xmlString);
+        return xmlString;
+        // write output
+       
+    }
 }

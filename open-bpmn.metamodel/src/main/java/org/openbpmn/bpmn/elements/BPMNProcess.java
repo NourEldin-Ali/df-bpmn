@@ -1715,7 +1715,9 @@ public class BPMNProcess extends BPMNElement {
 	public boolean isPreceding(BPMNElementNode sourceElement, BPMNElementNode targetElement) {
 		Queue<BPMNElementNode> queue = new LinkedList<>();
 		Set<BPMNElementNode> visited = new HashSet<>();
-
+		if(sourceElement.getId().contentEquals(targetElement.getId())) {
+			return true;
+		}
 		visited.add(targetElement);
 		queue.add(targetElement);
 		 while (!queue.isEmpty()) {

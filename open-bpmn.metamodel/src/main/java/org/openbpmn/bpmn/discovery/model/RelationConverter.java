@@ -1,4 +1,4 @@
-package org.openbpmn.bpmn.discovery;
+package org.openbpmn.bpmn.discovery.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

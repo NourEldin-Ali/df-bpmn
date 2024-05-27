@@ -1,6 +1,10 @@
 package org.openbpmn.bpmn.discovery;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -8,10 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
+import org.openbpmn.bpmn.discovery.model.DepthFirstSearch;
 import org.openbpmn.bpmn.elements.Activity;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Gateway;
@@ -21,6 +28,14 @@ import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidIDException;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import org.openbpmn.bpmn.util.BPMNModelFactory;
+
+import io.process.analytics.tools.bpmn.generator.App;
+import io.process.analytics.tools.bpmn.generator.BPMNLayoutGenerator;
+import io.process.analytics.tools.bpmn.generator.BPMNLayoutGenerator.ExportType;
+import io.process.analytics.tools.bpmn.generator.internal.FileUtils;
+
+// mvn compile assembly:single
+// java -cp open-bpmn.metamodel-1.0.0-SNAPSHOT-jar-with-dependencies.jar;lib\* org.openbpmn.bpmn.discovery.BPMNDiscovery test/test.bpmn
 
 public class BPMNDiscovery {
 	private static Logger logger = Logger.getLogger(BPMNDiscovery.class.getName());
@@ -72,19 +87,21 @@ public class BPMNDiscovery {
 			// Extract source and target
 			String source = parts[0];
 			String target = parts[1];
+			String sourceId = parts[0].replace(" ", "-").toLowerCase();
+			String targetId = parts[1].replace(" ", "-").toLowerCase();
 			boolean isNewTarget = false;
-			BPMNElementNode sourceElement = (BPMNElementNode) process.findElementById(source);
-			BPMNElementNode targetElement = (BPMNElementNode) process.findElementById(target);
+			BPMNElementNode sourceElement = (BPMNElementNode) process.findElementById(sourceId);
+			BPMNElementNode targetElement = (BPMNElementNode) process.findElementById(targetId);
 
 			// element source is not added to the process mode
 			if (sourceElement == null) {
 				// add new start event
 				if (startsEvent.contains(source)) {
-					sourceElement = process.addEvent(source, source, BPMNTypes.START_EVENT);
+					sourceElement = process.addEvent(sourceId, source, BPMNTypes.START_EVENT);
 				}
 				// add new activity
 				else {
-					sourceElement = process.addTask(source, source, BPMNTypes.TASK);
+					sourceElement = process.addTask(sourceId, source, BPMNTypes.TASK);
 				}
 				// TODO: Take into account the events
 			}
@@ -94,12 +111,12 @@ public class BPMNDiscovery {
 				isNewTarget = true;
 				// add new start event
 				if (endsEvent.contains(target)) {
-					targetElement = process.addEvent(target, target, BPMNTypes.END_EVENT);
+					targetElement = process.addEvent(targetId, target, BPMNTypes.END_EVENT);
 					splitGateway = null;
 				}
 				// add new activity
 				else {
-					targetElement = process.addTask(target, target, BPMNTypes.TASK);
+					targetElement = process.addTask(targetId, target, BPMNTypes.TASK);
 				}
 				// TODO: Take into account the events
 			}
@@ -115,12 +132,12 @@ public class BPMNDiscovery {
 					// call split gateway function
 					addSplitGateway(sourceElement, targetElement);
 				} else {
-					if (splitGateway == null) {
-						// probably there exists a loop
-						if (process.isPreceding(targetElement, sourceElement)) {
-							loopOperations.add(dependency);
-						} else {
 
+					// probably there exists a loop
+					if (process.isPreceding(targetElement, sourceElement)) {
+						loopOperations.add(dependency);
+					} else {
+						if (splitGateway == null) {
 							// probably split
 							if (sourceElement.getOutgoingSequenceFlows().size() > 0) {
 								// call split gateway function
@@ -156,12 +173,13 @@ public class BPMNDiscovery {
 								seqenceFlowId++;
 
 							}
-						}
-					} else {
+						} else {
 
-						// call join gateway function
-						addJoinGateway(sourceElement, targetElement);
+							// call join gateway function
+							addJoinGateway(sourceElement, targetElement);
+						}
 					}
+
 				}
 			}
 
@@ -187,6 +205,7 @@ public class BPMNDiscovery {
 
 	private void addSplitGateway(BPMNElementNode sourceElement, BPMNElementNode targetElement)
 			throws BPMNModelException {
+		System.out.println();
 		System.out.println("SPLIT: " + sourceElement.getId() + "->" + targetElement.getId());
 		BPMNProcess process = model.openDefaultProces();
 
@@ -276,8 +295,8 @@ public class BPMNDiscovery {
 //		System.out.println("---------------GATEWAY--------------");
 //		System.out.println(selectedGateway.getId());
 //		System.out.println(selectedGateway.getType());
-//		System.out.println("num="+selectedGateway.getAttribute(GATEWAY_NUM));
-//		System.out.println("next="+selectedGateway.getOutgoingSequenceFlows().size());
+//		System.out.println("num=" + selectedGateway.getAttribute(GATEWAY_NUM));
+//		System.out.println("next=" + selectedGateway.getOutgoingSequenceFlows().size());
 		for (SequenceFlow currenctSequenceFlow : listSequenceFlow) {
 //			System.out.println("---------------NEW FLOW--------------");
 			BPMNElementNode successor = currenctSequenceFlow.getTargetElement();
@@ -285,8 +304,10 @@ public class BPMNDiscovery {
 			// TODO: take into account events and activities
 			if (successor.getType().equals(BPMNTypes.TASK) || successor.getType().equals(BPMNTypes.END_EVENT)) {
 				relationType = getGatewayType(successor, targetElement);
+//				System.out.println((successor.getId()));
+//				System.out.println((targetElement.getId()));
 //				System.out.println(relationType.get(GATEWAY_TYPE));
-//				System.out.println("num="+relationType.get(GATEWAY_NUM));
+//				System.out.println("num=" + relationType.get(GATEWAY_NUM));
 				if (!relationType.get(GATEWAY_NUM).contentEquals("-1")) {
 					allAcceptedSequenceFlows.add(currenctSequenceFlow);
 					if (!relationType.get(GATEWAY_NUM).contentEquals(selectedGateway.getAttribute(GATEWAY_NUM))) {
@@ -312,9 +333,9 @@ public class BPMNDiscovery {
 
 //		System.out.println("---------------OUTPUT--------------");
 //		System.out.println(selectedGateway.getId());
-//		System.out.println("accepted="+acceptedSequenceFlows.size());
-//		System.out.println("all="+allAcceptedSequenceFlows.size());
-//		System.out.println("next="+selectedGateway.getOutgoingSequenceFlows().size());
+//		System.out.println("accepted=" + acceptedSequenceFlows.size());
+//		System.out.println("all=" + allAcceptedSequenceFlows.size());
+//		System.out.println("next=" + selectedGateway.getOutgoingSequenceFlows().size());
 		if (selectedGateway.getOutgoingSequenceFlows().size() == acceptedSequenceFlows.size()) {
 			// probably to add new gateway before selected gateway
 			System.out.println("Propbably add before");
@@ -335,10 +356,13 @@ public class BPMNDiscovery {
 		} else if (acceptedSequenceFlows.size() >= 1) {
 			isAdded = true;
 			System.out.print("Add new gateway after old gateway: ");
-
+			String gatewayType = probablyRelationType.get(GATEWAY_TYPE);
+			// TODO: general gateway
+			if (gatewayType == null) {
+				gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
+			}
 			// add new gateway after selected gateway
-			Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "",
-					probablyRelationType.get(GATEWAY_TYPE));
+			Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
 			newGateway.setAttribute(GATEWAY_NUM, probablyRelationType.get(GATEWAY_NUM));
 			gatewayId++;
 			splitGateway = newGateway;
@@ -404,6 +428,7 @@ public class BPMNDiscovery {
 
 	private void addJoinGateway(BPMNElementNode sourceElement, BPMNElementNode targetElement)
 			throws BPMNModelException {
+		System.out.println();
 		System.out.println("JOIN: " + sourceElement.getId() + "->" + targetElement.getId());
 		BPMNProcess process = model.openDefaultProces();
 
@@ -552,7 +577,6 @@ public class BPMNDiscovery {
 			gatewayId++;
 			splitGateway = null;
 
-		
 			SequenceFlow sq = targetElement.getIngoingSequenceFlows().iterator().next();
 			System.out.println(sq.getSourceElement().getId());
 			// add new sequence flow
@@ -575,228 +599,222 @@ public class BPMNDiscovery {
 		BPMNProcess process = model.openDefaultProces();
 		if (targetElement.getOutgoingSequenceFlows().size() > 0) {
 
-			System.out.println("add new loop gateways");
-			// add new gateway after source ( to start loop)
-			Gateway sourceGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
-			sourceGateway.setAttribute(GATEWAY_NUM, "-2");
-			gatewayId++;
-
-			// get element connected to the target
-			SequenceFlow sqflow = sourceElement.getOutgoingSequenceFlows().iterator().next();
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(),
-					sqflow.getTargetElement().getId());
-			seqenceFlowId++;
-			process.deleteSequenceFlow(sqflow.getId());
-
-			// add 2 new sequence flow
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), sourceGateway.getId());
-			seqenceFlowId++;
-
-			// add new gateway before target ( end for loop)
-			Gateway targetGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
-			targetGateway.setAttribute(GATEWAY_NUM, "-2");
-			gatewayId++;
-
-			// get element connected to the target
-			sqflow = targetElement.getIngoingSequenceFlows().iterator().next();
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sqflow.getSourceElement().getId(),
-					targetGateway.getId());
-			seqenceFlowId++;
-			process.deleteSequenceFlow(sqflow.getId());
-			// add new sequence flow
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), targetGateway.getId(), targetElement.getId());
-			seqenceFlowId++;
-
-			// connect the gateways
-			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(), targetGateway.getId());
-			seqenceFlowId++;
-
-			splitGateway = null;
+//			System.out.println("add new loop gateways");
+//			// add new gateway after source ( to start loop)
+//			Gateway sourceGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
+//			sourceGateway.setAttribute(GATEWAY_NUM, "-2");
+//			gatewayId++;
+//
+//			// get element connected to the target
+//			SequenceFlow sqflow = sourceElement.getOutgoingSequenceFlows().iterator().next();
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(),
+//					sqflow.getTargetElement().getId());
+//			seqenceFlowId++;
+//			process.deleteSequenceFlow(sqflow.getId());
+//
+//			// add 2 new sequence flow
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), sourceGateway.getId());
+//			seqenceFlowId++;
+//
+//			// add new gateway before target ( end for loop)
+//			Gateway targetGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
+//			targetGateway.setAttribute(GATEWAY_NUM, "-2");
+//			gatewayId++;
+//
+//			// get element connected to the target
+//			sqflow = targetElement.getIngoingSequenceFlows().iterator().next();
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sqflow.getSourceElement().getId(),
+//					targetGateway.getId());
+//			seqenceFlowId++;
+//			process.deleteSequenceFlow(sqflow.getId());
+//			// add new sequence flow
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), targetGateway.getId(), targetElement.getId());
+//			seqenceFlowId++;
+//
+//			// connect the gateways
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(), targetGateway.getId());
+//			seqenceFlowId++;
+//
+//			splitGateway = null;
 		}
 	}
 
-	// old JOIND CODE
-//	private void addJoinGatewayOld(BPMNElementNode sourceElement, BPMNElementNode targetElement)
-//			throws BPMNModelException {
-//		System.out.println("JOIN: " + sourceElement.getId() + "->" + targetElement.getId());
-//		BPMNProcess process = model.openDefaultProces();
-//
-//		// There is a loop
-//		if (splitGateway == null) {
-////			throw new BPMNInvalidIDException("LOOP IS NOT SUPPORTED CURRENTLY");
-////			TODO: I should work within the is procesor in the to make sure that I'm not get the target more than time (after get the children)
-////			
-////			if (targetElement.getOutgoingSequenceFlows().size() > 0) {
-////
-////				System.out.println("add new loop gateways");
-////				// add new gateway after source ( to start loop)
-////				Gateway sourceGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
-////				sourceGateway.setAttribute(GATEWAY_NUM, "-1");
-////				gatewayId++;
-////
-////				// add 2 new sequence flow
-////				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), sourceGateway.getId());
-////				seqenceFlowId++;
-////				
-////				
-////
-////				// add new gateway before target ( end for loop)
-////				Gateway targetGateway = process.addGateway("gt-" + gatewayId.toString(), "", BPMNTypes.EXCLUSIVE_GATEWAY);
-////				targetGateway.setAttribute(GATEWAY_NUM, "-1");
-////				gatewayId++;
-////
-////			
-////				// get element connected to the target
-////				SequenceFlow sqflow = targetElement.getIngoingSequenceFlows().iterator().next();
-////				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sqflow.getSourceElement().getId(), targetGateway.getId());
-////				seqenceFlowId++;
-////				process.deleteSequenceFlow(sqflow.getId());
-////				// add new sequence flow
-////				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), targetGateway.getId(),
-////						targetElement.getId());
-////				seqenceFlowId++;
-////				
-////				//connect the gateways
-////				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceGateway.getId(), targetGateway.getId());
-////				seqenceFlowId++;
-////			
-////				
-////				splitGateway = null;
-////			}
-//		} else {
-//			// get target sequence flow
-//			SequenceFlow sq = targetElement.getIngoingSequenceFlows().iterator().next();
-//			// get succeed
-//			BPMNElementNode proceesorElement = sq.getSourceElement();
-//			if (!targetElement.getType().contentEquals(BPMNTypes.TASK)) {
-//				proceesorElement = targetElement;
-//			}
-//			// check if it is activity
-//			// TODO: look at the type
-//			if (proceesorElement.getType().contentEquals(BPMNTypes.TASK)) {
-//
-//				process.deleteSequenceFlow(sq.getId());
-//				// add new gateway
-//
-//				Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
-//				newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-//				gatewayId++;
-//				splitGateway = null;
-//
-//				// add 3 new sequence flow
-//				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(), newGateway.getId());
-//				seqenceFlowId++;
-//				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), proceesorElement.getId(), newGateway.getId());
-//				seqenceFlowId++;
-//				process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(), targetElement.getId());
-//				seqenceFlowId++;
-//			} else {
-//				// is gateway
-//				Integer flowCounter = 0;
-//				List<SequenceFlow> acceptedSequenceFlowList = new ArrayList<>();
-//				List<SequenceFlow> sqflowList = proceesorElement.getIngoingSequenceFlows().stream()
-//						.collect(Collectors.toList());
-//				for (SequenceFlow currenctSecquenceFlow : sqflowList) {
-//					BPMNElementNode currenctProcessor = currenctSecquenceFlow.getSourceElement();
-//					flowCounter++;
-//					if (process.isProcceding(splitGateway, currenctProcessor)) {
-//						acceptedSequenceFlowList.add(currenctSecquenceFlow);
-//					}
-//				}
-//				// add to the same gateway
-//				if (acceptedSequenceFlowList.size() == flowCounter) {
-//					// check if the same gateway type
-//					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-//							proceesorElement.getId());
-//					seqenceFlowId++;
-//					splitGateway = null;
-//				} else if (acceptedSequenceFlowList.size() > 1) {
-//					// add new gateway for accepted element
-//					Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
-//					newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-//					gatewayId++;
-//					splitGateway = null;
-//
-//					// add new sequence flow
-//					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), proceesorElement.getId(),
-//							newGateway.getId());
-//					seqenceFlowId++;
-//					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-//							newGateway.getId());
-//					seqenceFlowId++;
-//					for (SequenceFlow sequence : acceptedSequenceFlowList) {
-//						process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sequence.getSourceElement().getId(),
-//								newGateway.getId());
-//						seqenceFlowId++;
-//						process.deleteSequenceFlow(sequence.getId());
-//					}
-//				} else if (acceptedSequenceFlowList.size() == 0) {
-//					// add new gateway for connected to exsitng element
-//					Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", splitGateway.getType());
-//					newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-//					gatewayId++;
-//					splitGateway = null;
-//
-//					// add new sequence flow
-//					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-//							proceesorElement.getId());
-//					seqenceFlowId++;
-//					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-//							newGateway.getId());
-//					seqenceFlowId++;
-//
-//				} else if (acceptedSequenceFlowList.size() == 1) {
-//					proceesorElement = acceptedSequenceFlowList.get(0).getSourceElement();
-//					if (proceesorElement.getType().contentEquals(BPMNTypes.TASK)) {
-//
-//						process.deleteSequenceFlow(acceptedSequenceFlowList.get(0).getId());
-//						// add new gateway
-//
-//						Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "",
-//								splitGateway.getType());
-//						newGateway.setAttribute(GATEWAY_NUM, splitGateway.getAttribute(GATEWAY_NUM));
-//						gatewayId++;
-//						splitGateway = null;
-//
-//						// add 3 new sequence flow
-//						process.addSequenceFlow("sq-" + seqenceFlowId.toString(), sourceElement.getId(),
-//								newGateway.getId());
-//						seqenceFlowId++;
-//						process.addSequenceFlow("sq-" + seqenceFlowId.toString(), proceesorElement.getId(),
-//								newGateway.getId());
-//						seqenceFlowId++;
-//						process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-//								acceptedSequenceFlowList.get(0).getTargetElement().getId());
-//						seqenceFlowId++;
-//					} else {
-//						addJoinGateway(sourceElement, proceesorElement);
-//					}
-//				} else {
-//					// repeat
-//					addJoinGateway(sourceElement, proceesorElement);
-//				}
-//			}
-//		}
-//	}
+	public void saveMode(String path) {
+		try {
+			String output;
+			BPMNLayoutGenerator bpmnLayoutGenerator = new BPMNLayoutGenerator();
+			output = bpmnLayoutGenerator.generateLayoutFromBPMNSemantic(model.getXml(), ExportType.valueOf("BPMN"));
 
-	public void saveMode() {
-		model.save("C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt.bpmn");
+			File outputFile = new File(path);
+			FileUtils.touch(outputFile);
+			Files.write(outputFile.toPath(), output.getBytes());
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			model.save(path);
+			System.out.println("ERROR- The model is saved without layouting");
+			e.printStackTrace();
+		}
+
+//		String[] args = new  String[]{  
+//				"-o", "C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt2.bpmn",
+//				"C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt.bpmn"};
+//		try {
+//			App.main(args);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		logger.info("...model creation sucessful");
 	}
 
 	public static void main(String[] args) {
-		// correct
-//		example1();
-		// correct
-//		example2();
-		// correct
-//		example3();
-		// correct
-//		example4();
-		// double loop
-//		example5();
-		example6();
+		// Start timing
+		long startTime = System.nanoTime();
+//		System.out.println(args.length);
+		if (args.length == 6) {
+			/**
+			 * "start_a" "[end_f,end_b]" "[a->b, a->c, a->d, a->e, c->f, d->f, e->f,
+			 * start_a->a, b->end_b, f->end_f]" "[[b, c, d, e], [c, d]]" "[[c, e, d]]"
+			 */
+			String output = args[0];
+			String startEventString = args[1];
+			String endEventsString = args[2];
+			String dependencyRelationsString = args[3];
+			String parallelRelationString = args[4];
+			String decisionRelationString = args[5];
+
+			List<String> startsEvents = new ArrayList<>();
+			startsEvents.add(startEventString);
+			List<String> endEvents = stringToList(endEventsString);
+			LinkedList<String> events = stringToList(dependencyRelationsString);
+
+			LinkedList<LinkedList<String>> decisionRelations = transformStringToList(decisionRelationString);
+			System.out.println(decisionRelations);
+			System.out.println(decisionRelations.size());
+
+			LinkedList<LinkedList<String>> parallelRelations = transformStringToList(parallelRelationString);
+			System.out.println(parallelRelations);
+			System.out.println(parallelRelations.size());
+
+//			System.out.println(events);
+			LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEventString);
+//			System.out.println(orderedEvents);
+
+			Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+			relations.put(DECISION, decisionRelations);
+
+			relations.put(PARALLEL, parallelRelations);
+			System.out.println(parallelRelations);
+			try {
+				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvents, endEvents, orderedEvents, relations);
+				bpmnDiscovery.DependencyGraphToBPMN();
+				System.out.println("Finish discovery ...");
+				bpmnDiscovery.saveMode(output);
+			} catch (BPMNModelException e) {
+				e.printStackTrace();
+			}
+		} else {
+//			String output = path;
+//			String startEventString = "Customer brings in a defective computer";
+//			String endEventsString = "[Customer takes the computer home unrepaired,Repair process is considered complete]";
+//			String dependencyRelationsString = "[Customer brings in a defective computer->Bring in defective computer,Bring in defective computer->Check defect and calculate repair cost,Check defect and calculate repair cost->Present repair cost,Present repair cost->Decide on repair cost acceptability,Decide on repair cost acceptability->Check and repair hardware,Decide on repair cost acceptability->Check and configure software,Decide on repair cost acceptability->Take computer home unrepaired,Check and repair hardware->Test system functionality,Check and configure software->Test system functionality,Test system functionality->Consider repair process complete,Consider repair process complete->Repair process is considered complete,Take computer home unrepaired->Customer takes the computer home unrepaired]";
+//			String parallelRelationString = "[[Check and configure software,Check and repair hardware]]";
+//			String decisionRelationString = " [[Take computer home unrepaired, Check and configure software, Check and repair hardware]]";
+//
+//			List<String> startsEvents = new ArrayList<>();
+//			startsEvents.add(startEventString);
+//			List<String> endEvents = stringToList(endEventsString);
+//			LinkedList<String> events = stringToList(dependencyRelationsString);
+//
+//			LinkedList<LinkedList<String>> decisionRelations = transformStringToList(decisionRelationString);
+//			System.out.println(decisionRelations);
+//			System.out.println(decisionRelations.size());
+//
+//			LinkedList<LinkedList<String>> parallelRelations = transformStringToList(parallelRelationString);
+//			System.out.println(parallelRelations);
+//			System.out.println(parallelRelations.size());
+//
+////			System.out.println(events);
+//			LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEventString);
+////			System.out.println(orderedEvents);
+//
+//			Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
+//			relations.put(DECISION, decisionRelations);
+//			relations.put(PARALLEL, parallelRelations);
+//			try {
+//				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvents, endEvents, orderedEvents, relations);
+//				bpmnDiscovery.DependencyGraphToBPMN();
+//				System.out.println("Finish discovery ...");
+//				bpmnDiscovery.saveMode(output);
+//			} catch (BPMNModelException e) {
+//				e.printStackTrace();
+//			}
+			System.out.println(
+					"INVALID INPUTS: outputPath (/src/example.bpmn), startEvent, endEvents (List), dependencyRelations(List), parallelRelation (List[List]), decisionRelation(List[List])");
+			// correct
+//			example1();
+			// correct
+			// example2();
+			// correct
+			// example3();
+			// correct
+			// example4();
+			// double loop
+			// example5();
+			// example6();
+		}
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / 1_000_000; // Convert nanoseconds to milliseco
+		System.out.println("Execution time: " + duration + " ms");
 	}
+
+	private static LinkedList<String> stringToList(String data) {
+		// Remove the surrounding square brackets
+		data = data.substring(1, data.length() - 1);
+
+		// Split the string by commas
+		String[] elements = data.split(",\\s*");
+
+		// Create a list and add the elements
+		LinkedList<String> list = new LinkedList<>();
+		for (String element : elements) {
+			list.add(element.trim());
+		}
+		return list;
+	}
+
+	private static LinkedList<LinkedList<String>> transformStringToList(String data) {
+		LinkedList<LinkedList<String>> outerList = new LinkedList<>();
+
+		// Remove the outer brackets
+		String trimmedInput = data.substring(1, data.length() - 1);
+		if (!trimmedInput.isEmpty()) {
+			// Handle the case for a single list inside the outer brackets
+			if (trimmedInput.charAt(0) == '[') {
+				trimmedInput = trimmedInput.substring(1, trimmedInput.length() - 1);
+			}
+
+			// Split into individual list strings
+			String[] listStrings = trimmedInput.split("],\\[");
+
+			for (String listString : listStrings) {
+				// Remove any remaining brackets
+				listString = listString.replaceAll("[\\[\\]]", "");
+
+				// Split the string by commas and convert to a list
+				LinkedList<String> innerList = new LinkedList<>(Arrays.asList(listString.split(",")));
+				innerList.replaceAll(String::trim);
+				innerList.replaceAll(s -> s.replace(" ", "-"));
+				innerList.replaceAll(String::toLowerCase);
+				// Add the inner list to the outer list
+				outerList.add(innerList);
+			}
+		}
+		return outerList;
+	}
+
+	static String path = "C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt.bpmn";
 
 	// the ex use to describe the algo in the confluence page
 	private static void example1() {
@@ -817,8 +835,8 @@ public class BPMNDiscovery {
 
 		events.add("f->end1");
 
-//		events.add("a->g");
-//		events.add("g->f");
+		events.add("a->g");
+		events.add("g->f");
 //		events.add("f->a");
 
 		String startEvent = "start";
@@ -839,7 +857,7 @@ public class BPMNDiscovery {
 				add("c");
 				add("d");
 				add("e");
-//				add("g");
+				add("g");
 			}
 		});
 		decisionRelations.add(new LinkedList<String>() {
@@ -858,21 +876,15 @@ public class BPMNDiscovery {
 				add("d");
 			}
 		});
-//		parallelRelations.add(new LinkedList<String>() {
-//			{
-//				add("c");
-//				
-//			}
-//		});
 
 		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
 		relations.put(DECISION, decisionRelations);
 		relations.put(PARALLEL, parallelRelations);
-
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			System.out.println("Finish discovery ...");
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}
@@ -940,7 +952,7 @@ public class BPMNDiscovery {
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}
@@ -1008,7 +1020,7 @@ public class BPMNDiscovery {
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}
@@ -1078,7 +1090,7 @@ public class BPMNDiscovery {
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}
@@ -1156,7 +1168,7 @@ public class BPMNDiscovery {
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}
@@ -1231,7 +1243,7 @@ public class BPMNDiscovery {
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode();
+			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		}

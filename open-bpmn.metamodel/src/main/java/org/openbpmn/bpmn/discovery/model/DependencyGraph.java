@@ -148,6 +148,73 @@ public class DependencyGraph {
 		return loops;
 	}
 
+	// TODO: valide it, it was generated using LLM
+	public Map<String, List<List<String>>> mergeLoop() {
+        // Get the loop relations from the dependency graph
+        Set<List<String>> loopRelations = loops;
+        System.out.println(loopRelations);
+
+        // Get all targets of loop relations
+        Map<String, List<List<String>>> sortedByTarget = new HashMap<>();
+        for (List<String> pair : loopRelations) {
+            String element2 = pair.get(1);
+            sortedByTarget.computeIfAbsent(element2, k -> new ArrayList<>()).add(pair);
+        }
+
+        System.out.println(sortedByTarget);
+        // Merge loop relations
+        Map<String, List<List<String>>> mergeByTarget = new HashMap<>();
+
+        for (Entry<String, List<List<String>>> entry : sortedByTarget.entrySet()) {
+            String target = entry.getKey();
+            List<List<String>> loopList = entry.getValue();
+            List<List<String>> resultList = new ArrayList<>();
+
+            for (int i = 0; i < loopList.size(); i++) {
+                if (i >= loopList.size()) {
+                    break;
+                }
+                // Self-loop
+                if (loopList.get(i).get(0).equals(loopList.get(i).get(1))) {
+                    resultList.add(Collections.singletonList(loopList.get(i).get(0)));
+                    continue;
+                } else {
+                    List<List<String>> listToRemove = new ArrayList<>();
+                    List<String> mergeElements = new ArrayList<>();
+                    String element1 = loopList.get(i).get(0);
+                    mergeElements.add(element1);
+
+                    for (int j = i + 1; j < loopList.size(); j++) {
+                        if (j >= loopList.size()) {
+                            break;
+                        }
+                        String element2 = loopList.get(j).get(0);
+
+                        // Check if the elements have the same successors
+                        Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element1);
+            			List<String> l1 = new ArrayList<String>();
+            			outgoingEdgeSource.stream().forEach(edge -> l1.add(dependencyGraph.getEdgeTarget(edge)));
+            			
+            			outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element2);
+             			List<String> l2 = new ArrayList<String>();
+             			outgoingEdgeSource.stream().forEach(edge -> l2.add(dependencyGraph.getEdgeTarget(edge)));
+    
+                        if (l1.equals(l2)) {
+                            mergeElements.add(element2);
+                            listToRemove.add(loopList.get(j));
+                        }
+                    }
+
+                    // Remove merged list from initial loop relation
+                    loopList.removeAll(listToRemove);
+                    resultList.add(mergeElements);
+                }
+            }
+            mergeByTarget.put(target, resultList);
+        }
+        return mergeByTarget;
+    }
+	
 	public LinkedList<Set<String>> getParallelims() {
 		return mergeParallelism();
 	}
@@ -157,7 +224,7 @@ public class DependencyGraph {
 		// get pair decisions
 		Set<Set<String>> pairDecisionPoints = new HashSet<>();
 		for (String activity : dependencyGraph.vertexSet()) {
-			Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.incomingEdgesOf(activity);
+			Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(activity);
 			List<String> targetActivities = new ArrayList();
 			outgoingEdgeSource.stream().forEach(edge -> targetActivities.add(dependencyGraph.getEdgeTarget(edge)));
 

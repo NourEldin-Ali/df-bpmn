@@ -6,8 +6,6 @@ import it.unibz.deltabpmn.exception.EevarOverflowException;
 import it.unibz.deltabpmn.exception.InvalidInputException;
 import it.unibz.deltabpmn.exception.UnmatchingSortException;
 import it.unibz.deltabpmn.processschema.blocks.Block;
-import it.unibz.deltabpmn.processschema.blocks.Event;
-import it.unibz.deltabpmn.processschema.blocks.Task;
 
 class XORSplitGate implements Block {
 

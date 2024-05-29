@@ -65,7 +65,7 @@ import org.w3c.dom.NodeList;
  * @author rsoika
  *
  */
-public class BPMNModel {
+public class BPMNModel implements Cloneable {
     protected static Logger logger = Logger.getLogger(BPMNModel.class.getName());
 
     private static final SecureRandom random = new SecureRandom();
@@ -1990,4 +1990,8 @@ public class BPMNModel {
         // write output
        
     }
+    @Override
+	 public Object clone() throws CloneNotSupportedException {
+	 return super.clone();
+	 }
 }

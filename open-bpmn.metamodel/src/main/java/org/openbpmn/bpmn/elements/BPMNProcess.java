@@ -1,5 +1,6 @@
 package org.openbpmn.bpmn.elements;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1712,84 +1713,95 @@ public class BPMNProcess extends BPMNElement {
 		return dataStores;
 	}
 
-	public boolean isPreceding(BPMNElementNode sourceElement, BPMNElementNode targetElement) {
+	public boolean isPreceding(BPMNElementNode sourceElement, BPMNElementNode targetElement, BPMNElementNode prefix) {
 		Queue<BPMNElementNode> queue = new LinkedList<>();
 		Set<BPMNElementNode> visited = new HashSet<>();
-		if(sourceElement.getId().contentEquals(targetElement.getId())) {
+		if (sourceElement.getId().contentEquals(targetElement.getId())) {
 			return true;
 		}
 		visited.add(targetElement);
+		visited.add(prefix);
 		queue.add(targetElement);
-		 while (!queue.isEmpty()) {
-			 BPMNElementNode current = queue.poll();
-	            if (current.getId().contentEquals(sourceElement.getId())) {
-	                return true;
-	            }
-	            List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq ->sq.getSourceElement()).collect(Collectors.toList());
-	            for (BPMNElementNode child : children ) {
-	                if (!visited.contains(child)) {
-	                    visited.add(child);
-	                    queue.add(child);
-	                }
-	            }
-		 }
+		while (!queue.isEmpty()) {
+			BPMNElementNode current = queue.poll();
+			if (current.getId().contentEquals(sourceElement.getId())) {
+				return true;
+			}
+			List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq -> sq.getSourceElement())
+					.collect(Collectors.toList());
+			for (BPMNElementNode child : children) {
+				if (!visited.contains(child)) {
+					visited.add(child);
+					queue.add(child);
+				}
+			}
+		}
 
 		return false;
 	}
 
-	
-	
-	
-	public boolean isLoop(BPMNElementNode sourceElement, BPMNElementNode targetElement,BPMNElement prefix) {
+	public boolean isLoop(BPMNElementNode sourceElement, BPMNElementNode targetElement, BPMNElement prefix) {
 		Queue<BPMNElementNode> queue = new LinkedList<>();
 		Set<BPMNElementNode> visited = new HashSet<>();
 
 		visited.add(targetElement);
 		queue.add(targetElement);
-		 while (!queue.isEmpty()) {
-			 BPMNElementNode current = queue.poll();
-	            if (current.getId().contentEquals(sourceElement.getId())) {
-	                return true;
-	            }
-	            List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq ->sq.getSourceElement()).collect(Collectors.toList());
-	            for (BPMNElementNode child : children ) {
-	                if (!visited.contains(child)) {
-	                    visited.add(child);
-	                    queue.add(child);
-	                }
-	            }
-		 }
+		while (!queue.isEmpty()) {
+			BPMNElementNode current = queue.poll();
+			if (current.getId().contentEquals(sourceElement.getId())) {
+				return true;
+			}
+			List<BPMNElementNode> children = current.getIngoingSequenceFlows().stream().map(sq -> sq.getSourceElement())
+					.collect(Collectors.toList());
+			for (BPMNElementNode child : children) {
+				if (!visited.contains(child)) {
+					visited.add(child);
+					queue.add(child);
+				}
+			}
+		}
 
 		return false;
 	}
-//	public boolean isProccedingHelper(BPMNElementNode sourceElement, BPMNElementNode targetElement, Set<String> visited,
-//			Queue<BPMNElementNode> queue) {
-//
-////	            for (String neighbor : neighbors) {
-////	                pairs.add(new Pair(node, neighbor));
-////	                if (!visited.contains(neighbor)) {
-////	                    dfsHelper(graph, neighbor, visited, pairs);
-////	                }
-////	            }
-//
-////				
-////				for (SequenceFlow currentSq : sq) {
-////					BPMNElementNode proceesorElement = currentSq.getSourceElement();
-////					if (proceesorElement.getId().contentEquals(sourceElement.getId())) {
-////						return true;
-////					}else {
-////						if(proceesorElement.getIngoingSequenceFlows().size()==0) {
-////							return false;
-////						}else {
-////							List<SequenceFlow> sq1 = proceesorElement.getIngoingSequenceFlows().stream().collect(Collectors.toList());
-////							for (SequenceFlow currenctSecquenceFlow : sq1) {
-////								BPMNElementNode currenctProcessor = currenctSecquenceFlow.getSourceElement();
-////								return isProccedingHelper(sourceElement, currenctProcessor,visited);
-////							}
-////						}
-////					}
-////				}
-//		return false;
-//	}
+
+	public List<BPMNElementNode> getAllSuccesssors(BPMNElementNode element) {
+		List<BPMNElementNode> activities = new ArrayList<>();
+
+		Queue<BPMNElementNode> queue = new LinkedList<>();
+		Set<BPMNElementNode> visited = new HashSet<>();
+
+		List<BPMNElementNode> children = element.getOutgoingSequenceFlows().stream().map(sq -> sq.getTargetElement())
+				.collect(Collectors.toList());
+
+		for (BPMNElementNode child : children) {
+			if (!visited.contains(child)) {
+				visited.add(child);
+				queue.add(child);
+			}
+		}
+
+		visited.add(element);
+		queue.add(element);
+		while (!queue.isEmpty()) {
+			BPMNElementNode current = queue.poll();
+			if (BPMNTypes.BPMN_ACTIVITIES.contains(current.getType())
+					|| BPMNTypes.BPMN_EVENTS.contains(current.getType())) {
+				activities.add(current);
+				continue;
+			}
+
+			children = current.getOutgoingSequenceFlows().stream().map(sq -> sq.getTargetElement())
+					.collect(Collectors.toList());
+
+			for (BPMNElementNode child : children) {
+				if (!visited.contains(child)) {
+					visited.add(child);
+					queue.add(child);
+				}
+			}
+		}
+
+		return activities;
+	}
 
 }

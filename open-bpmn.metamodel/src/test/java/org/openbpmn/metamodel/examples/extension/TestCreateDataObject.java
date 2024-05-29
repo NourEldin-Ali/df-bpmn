@@ -48,10 +48,10 @@ public class TestCreateDataObject {
         try {
             BPMNProcess process = model.openDefaultProces();
             Activity activity =  process.addTask("task_1", "Task-1", BPMNTypes.TASK);
-            
             //add input with attribute
             DataInputObjectExtension  dataObjectInput =  activity.addDataInputObject(BPMNTypes.DATA_INPUT_OBJECT_PROCESS,"inputTest","Sting",true,null);
-//            dataObjectInput.addAttributeObject(BPMNTypes.DATA_OBJECT_ATTRIBUTE, "attInputTest","string");
+            //dataObjectInput.addAttributeObject(BPMNTypes.DATA_OBJECT_ATTRIBUTE, "attInputTest","string");
+
 
             //add output with attribute
             DataOutputObjectExtension  dataObjectOutput =  activity.addDataOutputObject(BPMNTypes.DATA_OUTPUT_OBJECT_ENVIRONMENT_DATA,"outTest","Sting",true,"state");

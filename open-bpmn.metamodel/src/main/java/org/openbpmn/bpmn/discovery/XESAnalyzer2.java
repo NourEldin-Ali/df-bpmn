@@ -74,17 +74,17 @@ public class XESAnalyzer2 {
 			Map<String, LinkedList<LinkedList<String>>> relations1 = new LinkedHashMap<>();
 			relations1.put(BPMNDiscovery.DECISION, convertToListOfLists(decisions));
 			relations1.put(BPMNDiscovery.PARALLEL, convertToListOfLists(mergeParralelism));
-			try {
-				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startEvents, endEvents, orderedEvents, relations1);
-				bpmnDiscovery.DependencyGraphToBPMN();
-				long endTime = System.nanoTime();
-				long duration = (endTime - startTime) / 1_000_000; // Convert nanoseconds to milliseco
-				System.out.println("Execution time: " + duration + " ms");
-				bpmnDiscovery.saveMode("C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt.bpmn");
+//			try {
+//				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startEvents, endEvents, orderedEvents, relations1);
+//				bpmnDiscovery.DependencyGraphToBPMN();
+//				long endTime = System.nanoTime();
+//				long duration = (endTime - startTime) / 1_000_000; // Convert nanoseconds to milliseco
+//				System.out.println("Execution time: " + duration + " ms");
+//				bpmnDiscovery.saveMode("C:\\Users\\AliNourEldin\\Desktop\\bpmn-layout\\bpmn-auto-layout\\test\\fixtures\\testt.bpmn");
 
-			} catch (BPMNModelException e) {
-				e.printStackTrace();
-			}
+//			} catch (BPMNModelException e) {
+//				e.printStackTrace();
+//			}
 			// Stop timing
 			long endTime = System.nanoTime();
 			// Calculate execution time in milliseconds

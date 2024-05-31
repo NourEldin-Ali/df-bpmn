@@ -1,16 +1,21 @@
 package org.openbpmn.bpmn.discovery.model;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
@@ -20,6 +25,8 @@ import org.jgrapht.alg.cycle.StackBFSFundamentalCycleBasis;
 import org.jgrapht.alg.cycle.SzwarcfiterLauerSimpleCycles;
 import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.alg.cycle.TiernanSimpleCycles;
+import org.jgrapht.alg.lca.HeavyPathLCAFinder;
+import org.jgrapht.alg.lca.NaiveLCAFinder;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
@@ -81,9 +88,9 @@ public class DependencyGraph {
 	}
 
 	public void findLoopsAndParrallelism() {
-		Set<Set<String>> tempLoop = new HashSet();
+		Set<List<String>> tempLoop = new HashSet();
 		if (dependencyGraphWithLoop != null) {
-			//TODO: error in loop detections
+			// TODO: error in loop detections
 			// self-loop, loops, parallelism detections
 			SzwarcfiterLauerSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new SzwarcfiterLauerSimpleCycles<>(
 					dependencyGraphWithLoop);
@@ -93,19 +100,23 @@ public class DependencyGraph {
 				for (List<String> cycle : cyclesList) {
 					// in case of self-loop or loop
 					if (cycle.size() == 1) {
-						tempLoop.add(new HashSet(Arrays.asList(cycle.get(0), cycle.get(0))));
+						loops.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
+						tempLoop.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
 					} else {
 						String element1 = cycle.get(0);
 						String element2 = cycle.get(cycle.size() - 1);
-						tempLoop.add(new HashSet(Arrays.asList(element2, element1)));
+						tempLoop.add(new ArrayList(Arrays.asList(element2, element1)));
 					}
 				}
 			}
 		}
-		System.out.println(tempLoop);
 		// remove loops from dependency graph
 		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
-		loops.stream().forEach(edge -> dependencyGraph.removeEdge(edge.get(0), edge.get(1)));
+//		System.out.println(loops);
+		loops.stream().forEach(edge -> {
+			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
+
+		});
 
 		JohnsonSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new JohnsonSimpleCycles<>(
 				dependencyGraphWithLoop);
@@ -137,11 +148,33 @@ public class DependencyGraph {
 					Set<String> intersection = new HashSet<>(sourceElement1); // Make a copy of set1
 					intersection.retainAll(sourceElement2); // Retain only elements that are also in set2
 					if (!intersection.isEmpty()) {
-						parallelism.add(new HashSet<String>(Arrays.asList(cycle.get(1), cycle.get(0))));
+						parallelism.add(new HashSet<String>(Arrays.asList(element2, element1)));
 					}
 				}
 			}
 		}
+//		System.out.println(parallelism);
+		parallelism.stream().forEach(edge -> {
+			Iterator<String> edges = edge.iterator();
+			String element1 = edges.next();
+			String element2 = edges.next();
+			dependencyGraph.removeEdge(element2, element1);
+			dependencyGraph.removeEdge(element1, element2);
+
+		});
+
+		//remove parallel from temp loop
+		Set<List<String>> resultSet = new HashSet<>();
+		for (List<String> list : tempLoop) {
+			Set<String> tempSet = new HashSet<>(list);
+			if (!parallelism.contains(tempSet)) {
+				resultSet.add(list);
+			}
+		}
+		loops = resultSet;
+		loops.stream().forEach(edge -> {
+			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
+		});
 	}
 
 	public Set<List<String>> getLoops() {
@@ -150,76 +183,79 @@ public class DependencyGraph {
 
 	// TODO: valide it, it was generated using LLM
 	public Map<String, List<List<String>>> mergeLoop() {
-        // Get the loop relations from the dependency graph
-        Set<List<String>> loopRelations = loops;
-        System.out.println(loopRelations);
+		// Get the loop relations from the dependency graph
+		Set<List<String>> loopRelations = loops;
+//		System.out.println(loopRelations);
 
-        // Get all targets of loop relations
-        Map<String, List<List<String>>> sortedByTarget = new HashMap<>();
-        for (List<String> pair : loopRelations) {
-            String element2 = pair.get(1);
-            sortedByTarget.computeIfAbsent(element2, k -> new ArrayList<>()).add(pair);
-        }
+		// Get all targets of loop relations
+		Map<String, List<List<String>>> sortedByTarget = new HashMap<>();
+		for (List<String> pair : loopRelations) {
+			String element2 = pair.get(1);
+			sortedByTarget.computeIfAbsent(element2, k -> new ArrayList<>()).add(pair);
+		}
 
-        System.out.println(sortedByTarget);
-        // Merge loop relations
-        Map<String, List<List<String>>> mergeByTarget = new HashMap<>();
+//		System.out.println(sortedByTarget);
+		// Merge loop relations
+		Map<String, List<List<String>>> mergeByTarget = new HashMap<>();
 
-        for (Entry<String, List<List<String>>> entry : sortedByTarget.entrySet()) {
-            String target = entry.getKey();
-            List<List<String>> loopList = entry.getValue();
-            List<List<String>> resultList = new ArrayList<>();
+		for (Entry<String, List<List<String>>> entry : sortedByTarget.entrySet()) {
+			String target = entry.getKey();
+			List<List<String>> loopList = entry.getValue();
+			List<List<String>> resultList = new ArrayList<>();
 
-            for (int i = 0; i < loopList.size(); i++) {
-                if (i >= loopList.size()) {
-                    break;
-                }
-                // Self-loop
-                if (loopList.get(i).get(0).equals(loopList.get(i).get(1))) {
-                    resultList.add(Collections.singletonList(loopList.get(i).get(0)));
-                    continue;
-                } else {
-                    List<List<String>> listToRemove = new ArrayList<>();
-                    List<String> mergeElements = new ArrayList<>();
-                    String element1 = loopList.get(i).get(0);
-                    mergeElements.add(element1);
+			for (int i = 0; i < loopList.size(); i++) {
+				if (i >= loopList.size()) {
+					break;
+				}
+				// Self-loop
+				if (loopList.get(i).get(0).equals(loopList.get(i).get(1))) {
+					resultList.add(Collections.singletonList(loopList.get(i).get(0)));
+					continue;
+				} else {
+					List<List<String>> listToRemove = new ArrayList<>();
+					List<String> mergeElements = new ArrayList<>();
+					String element1 = loopList.get(i).get(0);
+					mergeElements.add(element1);
 
-                    for (int j = i + 1; j < loopList.size(); j++) {
-                        if (j >= loopList.size()) {
-                            break;
-                        }
-                        String element2 = loopList.get(j).get(0);
+					for (int j = i + 1; j < loopList.size(); j++) {
+						if (j >= loopList.size()) {
+							break;
+						}
+						String element2 = loopList.get(j).get(0);
 
-                        // Check if the elements have the same successors
-                        Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element1);
-            			List<String> l1 = new ArrayList<String>();
-            			outgoingEdgeSource.stream().forEach(edge -> l1.add(dependencyGraph.getEdgeTarget(edge)));
-            			
-            			outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element2);
-             			List<String> l2 = new ArrayList<String>();
-             			outgoingEdgeSource.stream().forEach(edge -> l2.add(dependencyGraph.getEdgeTarget(edge)));
-    
-                        if (l1.equals(l2)) {
-                            mergeElements.add(element2);
-                            listToRemove.add(loopList.get(j));
-                        }
-                    }
+						// Check if the elements have the same successors
+						Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element1);
+						List<String> l1 = new ArrayList<String>();
+						outgoingEdgeSource.stream().forEach(edge -> l1.add(dependencyGraph.getEdgeTarget(edge)));
 
-                    // Remove merged list from initial loop relation
-                    loopList.removeAll(listToRemove);
-                    resultList.add(mergeElements);
-                }
-            }
-            mergeByTarget.put(target, resultList);
-        }
-        return mergeByTarget;
-    }
-	
-	public LinkedList<Set<String>> getParallelims() {
-		return mergeParallelism();
+						outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element2);
+						List<String> l2 = new ArrayList<String>();
+						outgoingEdgeSource.stream().forEach(edge -> l2.add(dependencyGraph.getEdgeTarget(edge)));
+
+						if (l1.equals(l2)) {
+							mergeElements.add(element2);
+							listToRemove.add(loopList.get(j));
+						}
+					}
+
+					// Remove merged list from initial loop relation
+					loopList.removeAll(listToRemove);
+					resultList.add(mergeElements);
+				}
+			}
+			mergeByTarget.put(target, resultList);
+		}
+		return mergeByTarget;
 	}
 
-	public LinkedList<Set<String>> getDecisions() {
+	public List<List<String>> getParallelims() {
+//		Set<List<String>> setWithoutDuplicates = new LinkedHashSet<>(mergeParallelism());
+		// Converting set back to list
+		List<List<String>> listWithoutDuplicates = new LinkedList(mergeParallelism());
+		return listWithoutDuplicates;
+	}
+
+	public List<List<String>> getDecisions() {
 
 		// get pair decisions
 		Set<Set<String>> pairDecisionPoints = new HashSet<>();
@@ -227,7 +263,8 @@ public class DependencyGraph {
 			Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(activity);
 			List<String> targetActivities = new ArrayList();
 			outgoingEdgeSource.stream().forEach(edge -> targetActivities.add(dependencyGraph.getEdgeTarget(edge)));
-
+//			System.out.println(activity);
+//			System.out.println(targetActivities);
 			if (targetActivities.size() > 1) {
 				for (int i = 0; i < targetActivities.size() - 1; i++) {
 					for (int j = i + 1; j < targetActivities.size(); j++) {
@@ -283,7 +320,7 @@ public class DependencyGraph {
 			}
 		}
 
-		LinkedList<Set<String>> finalDecisionList = new LinkedList();
+		Set<Set<String>> finalDecisionList = new HashSet();
 
 		// get most frequent element
 		for (Map.Entry<String, Map<String, Set<String>>> source : sortedBySource.entrySet()) {
@@ -314,7 +351,8 @@ public class DependencyGraph {
 				}
 			}
 		}
-		return finalDecisionList;
+
+		return new LinkedList(finalDecisionList);
 	}
 
 	/**
@@ -323,7 +361,7 @@ public class DependencyGraph {
 	 * 
 	 * @return
 	 */
-	public LinkedList<Set<String>> mergeParallelism() {
+	public Set<Set<String>> mergeParallelism() {
 		// get all sources
 		Map<String, Set<Set<String>>> sortedBySource = new HashMap<>();
 		for (Set<String> pair : parallelism.stream().collect(Collectors.toList())) {
@@ -386,7 +424,7 @@ public class DependencyGraph {
 		}
 
 		// union
-		LinkedList<Set<String>> finalParalellList = new LinkedList();
+		Set<Set<String>> finalParalellList = new LinkedHashSet<>();
 		for (Map.Entry<String, Set<Set<String>>> source : sortedBySource.entrySet()) {
 			finalParalellList.addAll(unionSetsWithCommonElements(new ArrayList(source.getValue())));
 		}
@@ -430,6 +468,42 @@ public class DependencyGraph {
 		return originalSets;
 	}
 
+	public String findLCA(String v1, String v2) {
+		Set<String> ancestors1 = findAllAncestors(v1);
+		Set<String> ancestors2 = findAllAncestors(v2);
+
+		// Find common ancestors
+		ancestors1.retainAll(ancestors2);
+
+		// Optionally, determine the "lowest" or "closest" common ancestor if needed
+		// This part is tricky without specific rules on how to select the LCA if
+		// multiple are found
+
+		return ancestors1.stream().findFirst().orElse(null); // Simplistic approach: just find any common ancestor
+	}
+
+	private Set<String> findAllAncestors(String start) {
+		Set<String> visited = new HashSet<>();
+		Deque<String> stack = new ArrayDeque<>();
+		stack.push(start);
+
+		while (!stack.isEmpty()) {
+			String vertex = stack.pop();
+			for (DefaultWeightedEdge edge : dependencyGraph.incomingEdgesOf(vertex)) {
+				String source = dependencyGraph.getEdgeSource(edge);
+				if (visited.add(source)) {
+					stack.push(source);
+				}
+			}
+		}
+
+		return visited;
+	}
+
+	public String getLCA(String element1, String element2) {
+		NaiveLCAFinder<String, DefaultWeightedEdge> lcaFinder = new NaiveLCAFinder<>(this.dependencyGraph);
+		return  lcaFinder.getLCA(element1, element2);
+	}
 	public static void main(String[] args) {
 		DependencyGraph graph = new DependencyGraph();
 		// Create a directed graph
@@ -439,6 +513,10 @@ public class DependencyGraph {
 		graph.addVertex("b");
 		graph.addVertex("c");
 		graph.addVertex("d");
+		graph.addVertex("f");
+		graph.addVertex("e");
+		graph.addVertex("g");
+		graph.addVertex("k");
 
 		// Add edges
 		graph.addEdge("a", "b");
@@ -447,21 +525,26 @@ public class DependencyGraph {
 		graph.addEdge("c", "b");
 //		graph.addEdge("c", "a"); // This creates a cycle: a -> b -> c -> a
 		graph.addEdge("a", "d"); // This creates a cycle
+		graph.addEdge("d", "e");
+		graph.addEdge("e", "f");
+		graph.addEdge("e", "g");
+		graph.addEdge("g", "k");
+		graph.addEdge("f", "k");
 //		graph.addEdge("d", "d"); // This is a self-loop
 
 		graph.findLoopsAndParrallelism();
-		System.out.println(graph.getLoops());
-		System.out.println(graph.getParallelims());
-		System.out.println(graph.getDecisions());
+//		graph.dependencyGraph.get
+		System.out.println(graph.dependencyGraph.toString());
+//		System.out.println(graph.getLoops());
+//		System.out.println(graph.getParallelims());
+//		System.out.println(graph.getDecisions());
+//		String root = graph.findLCA("f", "g");
+//		System.out.println(root);
 		// Detect cycles
-//		JohnsonSimpleCycles<String, DefaultEdge> cycleDetector = new JohnsonSimpleCycles<>(graph);
-//		boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
-//		System.out.println(cycleDetector.findSimpleCycles());
-//		System.out.println("Theerter detected? : " + (hasCycle ? "Yes" : "No"));
+		NaiveLCAFinder<String, DefaultWeightedEdge> lcaFinder = new NaiveLCAFinder<>(graph.dependencyGraph);
+		String lca = lcaFinder.getLCA("c", "k");
 
-		// Detect self-loops
-//        boolean hasLoop = hasSelfLoops(graph);
-//        System.out.println("Self-loop detected? : " + hasLoop);
+		System.out.println("The LCA of 4 and 5 is: " + lca);
 
 	}
 

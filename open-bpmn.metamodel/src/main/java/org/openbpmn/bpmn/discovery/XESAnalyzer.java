@@ -29,12 +29,10 @@ public class XESAnalyzer {
 			DependencyGraph dependencyGraph = generateDependencyGraph(log);
 			dependencyGraph.findLoopsAndParrallelism();
 			System.out.println(dependencyGraph.getLoops());
-			System.out.println(dependencyGraph.parallelism);
 			System.out.println(dependencyGraph.getParallelims());
 			System.out.println(dependencyGraph.getDecisions());
 			
-//			
-//			
+			System.out.println(dependencyGraph.mergeLoop());
 //			
 //			Set<String> startActivities = findStartActivities(traces);
 //			Set<String> endActivities = findEndActivities(traces);
@@ -149,7 +147,7 @@ public class XESAnalyzer {
 				graph.addVertex(eventName);
 				
 				if(lastEvent!=null) {
-					graph.addEdge(eventName, lastEvent);
+					graph.addEdge(lastEvent, eventName);
 				}
 				lastEvent = eventName;
 			}

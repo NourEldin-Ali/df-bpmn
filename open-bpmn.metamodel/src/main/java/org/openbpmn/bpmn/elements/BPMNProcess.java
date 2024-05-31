@@ -1780,8 +1780,8 @@ public class BPMNProcess extends BPMNElement {
 			}
 		}
 
-		visited.add(element);
-		queue.add(element);
+//		visited.add(element);
+//		queue.add(element);
 		while (!queue.isEmpty()) {
 			BPMNElementNode current = queue.poll();
 			if (BPMNTypes.BPMN_ACTIVITIES.contains(current.getType())

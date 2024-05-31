@@ -1,5 +1,6 @@
 package org.openbpmn.bpmn.discovery.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,10 +93,13 @@ public class DependencyGraph {
 		if (dependencyGraphWithLoop != null) {
 			// TODO: error in loop detections
 			// self-loop, loops, parallelism detections
-			SzwarcfiterLauerSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new SzwarcfiterLauerSimpleCycles<>(
+//			SzwarcfiterLauerSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new SzwarcfiterLauerSimpleCycles<>(
+//					dependencyGraphWithLoop);
+			TiernanSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new TiernanSimpleCycles<>(
 					dependencyGraphWithLoop);
 			boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
 			if (hasCycle) {
+//				System.out.println(cycleDetector.findSimpleCycles());
 				List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
 				for (List<String> cycle : cyclesList) {
 					// in case of self-loop or loop
@@ -105,14 +109,14 @@ public class DependencyGraph {
 					} else {
 						String element1 = cycle.get(0);
 						String element2 = cycle.get(cycle.size() - 1);
-						tempLoop.add(new ArrayList(Arrays.asList(element2, element1)));
+						tempLoop.add(new ArrayList(Arrays.asList(element1, element2)));
 					}
 				}
 			}
 		}
 		// remove loops from dependency graph
 		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
-//		System.out.println(loops);
+//		System.out.println(tempLoop);
 		loops.stream().forEach(edge -> {
 			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
 
@@ -163,7 +167,7 @@ public class DependencyGraph {
 
 		});
 
-		//remove parallel from temp loop
+		// remove parallel from temp loop
 		Set<List<String>> resultSet = new HashSet<>();
 		for (List<String> list : tempLoop) {
 			Set<String> tempSet = new HashSet<>(list);
@@ -177,8 +181,45 @@ public class DependencyGraph {
 		});
 	}
 
-	public Set<List<String>> getLoops() {
-		return loops;
+	public LinkedList<Pair<List<String>, List<String>>> getLoops() {
+		Map<String, List<List<String>>> mergedLoop = mergeLoop();
+		LinkedList<Pair<List<String>, List<String>>> pairLoops = new LinkedList<>();
+
+		for (Entry<String, List<List<String>>> entryKeys : mergedLoop.entrySet()) {
+			String Key = entryKeys.getKey();
+			for (List<String> lst : entryKeys.getValue()) {
+				pairLoops.add(new Pair<List<String>, List<String>>(Arrays.asList(Key), lst));
+			}
+		}
+		
+		 // Map to hold merged sources based on unique targets
+        Map<List<String>, List<String>> map = new HashMap<>();
+
+        // Iterate over the LinkedList
+        for (Pair<List<String>, List<String>> pair : pairLoops) {
+            List<String> target = pair.getTarget();
+            List<String> source = pair.getSource();
+
+            // Merge sources if target already exists
+            if (map.containsKey(target)) {
+                map.get(target).addAll(source); // Merge the source lists
+            } else {
+                map.put(target, new ArrayList<>(source)); // Add new entry if target is not found
+            }
+        }
+
+        // Rebuild the LinkedList from the map
+        LinkedList<Pair<List<String>, List<String>>> mergedList = new LinkedList<>();
+        for (Map.Entry<List<String>, List<String>> entry : map.entrySet()) {
+        	mergedList.add(new Pair<>(entry.getValue(), entry.getKey()));
+        }
+
+        // Output the merged list
+        for (Pair<List<String>, List<String>> pair : mergedList) {
+            System.out.println("Source: " + pair.getSource() + ", Target: " + pair.getTarget());
+        }
+    
+		return mergedList;
 	}
 
 	// TODO: valide it, it was generated using LLM
@@ -502,8 +543,9 @@ public class DependencyGraph {
 
 	public String getLCA(String element1, String element2) {
 		NaiveLCAFinder<String, DefaultWeightedEdge> lcaFinder = new NaiveLCAFinder<>(this.dependencyGraph);
-		return  lcaFinder.getLCA(element1, element2);
+		return lcaFinder.getLCA(element1, element2);
 	}
+
 	public static void main(String[] args) {
 		DependencyGraph graph = new DependencyGraph();
 		// Create a directed graph

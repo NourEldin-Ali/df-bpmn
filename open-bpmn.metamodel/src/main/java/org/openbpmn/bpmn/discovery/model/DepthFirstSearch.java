@@ -53,33 +53,4 @@ public class DepthFirstSearch {
 	    }
 	    
 	    
-	    
-//	    public static void main(String[] args) {
-//	       LinkedList<String> events = new LinkedList();
-//			events.add("start->a");
-//			events.add("a->b");
-//			events.add("b->end");
-//
-//			events.add("a->c");
-//			events.add("c->h");
-//			events.add("h->end1");
-//
-//			events.add("a->d");
-//			events.add("d->h");
-//
-//			events.add("a->e");
-//			events.add("e->h");
-//
-//			events.add("a->f");
-//			events.add("f->h");
-//
-//			events.add("a->g");
-//			events.add("g->h");
-//
-//			
-//	        List<Pair> pairs = dfs(RelationConverter.relationsToMap(events), "start");
-//	        for (Pair pair : pairs) {
-//	            System.out.println(pair.toString());
-//	        }
-//	    }
 }

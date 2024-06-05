@@ -28,11 +28,14 @@ public class XESAnalyzer {
 			XLog log = new XESAnalyzer().readLog("C:\\Users\\AliNourEldin\\Downloads\\splitminerwg\\diagram.xes");
 			DependencyGraph dependencyGraph = generateDependencyGraph(log);
 			dependencyGraph.findLoopsAndParrallelism();
+			System.out.println(dependencyGraph.loops);
+			System.out.println(dependencyGraph.parallelism);
 			System.out.println(dependencyGraph.getLoops());
+//			System.out.println(dependencyGraph.mergeLoop());
 			System.out.println(dependencyGraph.getParallelims());
 			System.out.println(dependencyGraph.getDecisions());
 			
-			System.out.println(dependencyGraph.mergeLoop());
+			
 //			
 //			Set<String> startActivities = findStartActivities(traces);
 //			Set<String> endActivities = findEndActivities(traces);

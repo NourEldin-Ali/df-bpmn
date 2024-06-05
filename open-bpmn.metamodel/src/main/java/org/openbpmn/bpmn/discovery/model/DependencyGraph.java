@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,21 +38,24 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 public class DependencyGraph {
 	public DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraph;
 	public DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraphWithLoop;
-	public Set<String> startActivities;
-	public Set<String> endActivities;
+	public List<String> startActivities;
+	public List<String> endActivities;
 
 	public Set<List<String>> loops;
 	public Set<Set<String>> parallelism;
 	public Set<Set<String>> decisions;
 
+	public Map<String, Integer> vertexWeights;
+
 	public DependencyGraph() {
 		dependencyGraph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
 		dependencyGraphWithLoop = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
-		startActivities = new HashSet<>();
-		endActivities = new HashSet<>();
+		startActivities = new ArrayList<>();
+		endActivities = new ArrayList<>();
 		loops = new HashSet<>();
 		parallelism = new HashSet<>();
 		decisions = new HashSet<>();
+		vertexWeights = new HashMap<>();
 	}
 
 	/**
@@ -63,6 +67,9 @@ public class DependencyGraph {
 		if (!dependencyGraph.vertexSet().contains(v1)) {
 			dependencyGraph.addVertex(v1);
 			dependencyGraphWithLoop.addVertex(v1);
+			vertexWeights.put(v1, 1);
+		} else {
+			vertexWeights.put(v1, vertexWeights.get(v1) + 1);
 		}
 	}
 
@@ -88,24 +95,59 @@ public class DependencyGraph {
 		}
 	}
 
-	public void findLoopsAndParrallelism() {
-		Set<List<String>> tempLoop = new HashSet();
+	/**
+	 * This function is used when we are sure that the dependency graph dones not
+	 * contains parallelism, and only contais loop Used to take input from LLM
+	 */
+	public void findAndRemoveLoops() {
 		if (dependencyGraphWithLoop != null) {
 			// TODO: error in loop detections
 			// self-loop, loops, parallelism detections
-//			SzwarcfiterLauerSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new SzwarcfiterLauerSimpleCycles<>(
-//					dependencyGraphWithLoop);
 			TiernanSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new TiernanSimpleCycles<>(
 					dependencyGraphWithLoop);
 			boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
 			if (hasCycle) {
-//				System.out.println(cycleDetector.findSimpleCycles());
 				List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
 				for (List<String> cycle : cyclesList) {
 					// in case of self-loop or loop
 					if (cycle.size() == 1) {
 						loops.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
-						tempLoop.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
+
+					} else {
+						String element1 = cycle.get(0);
+						String element2 = cycle.get(cycle.size() - 1);
+						loops.add(new ArrayList(Arrays.asList(element1, element2)));
+					}
+				}
+			}
+		}
+		// remove loops from dependency graph
+//		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
+		System.out.println(loops);
+		loops.stream().forEach(edge -> {
+			dependencyGraph.removeEdge(edge.get(1), edge.get(0));
+		});
+	}
+
+	public void findLoopsAndParrallelism() {
+		Set<List<String>> tempLoop = new HashSet();
+		if (dependencyGraphWithLoop != null) {
+			// TODO: error in loop detections
+			// self-loop, loops, parallelism detections
+			TiernanSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new TiernanSimpleCycles<>(
+					dependencyGraphWithLoop);
+			boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
+			if (hasCycle) {
+				List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
+				for (List<String> cycle : cyclesList) {
+					// in case of self-loop or loop
+					if (cycle.size() == 1) {
+						loops.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
+
+					} else if (cycle.size() > 2) {
+						String element1 = cycle.get(0);
+						String element2 = cycle.get(cycle.size() - 1);
+						loops.add(new ArrayList(Arrays.asList(element1, element2)));
 					} else {
 						String element1 = cycle.get(0);
 						String element2 = cycle.get(cycle.size() - 1);
@@ -116,48 +158,35 @@ public class DependencyGraph {
 		}
 		// remove loops from dependency graph
 		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
-//		System.out.println(tempLoop);
+
 		loops.stream().forEach(edge -> {
 			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
 
 		});
 
-		JohnsonSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new JohnsonSimpleCycles<>(
-				dependencyGraphWithLoop);
-		boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
-		if (hasCycle) {
-			List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
-			for (List<String> cycle : cyclesList) {
-				if (cycle.size() == 2) {
-					String element1 = cycle.get(0);
-					String element2 = cycle.get(1);
+		for (List<String> cycle : tempLoop) {
+			if (cycle.size() == 2) {
+				String element1 = cycle.get(0);
+				String element2 = cycle.get(1);
+				if (element1.contentEquals(element2)) {
+					continue;
+				}
 
-					// get source of element1
-					Set<DefaultWeightedEdge> incomingEdgeElement1 = dependencyGraph.incomingEdgesOf(element1);
-					Set<String> sourceElement1 = new HashSet<>();
-					incomingEdgeElement1.stream()
-							.forEach(edge -> sourceElement1.add(dependencyGraph.getEdgeSource(edge)));
+				// get source of element1
+				Set<DefaultWeightedEdge> incomingEdgeElement1 = dependencyGraph.incomingEdgesOf(element1);
+				Set<String> sourceElement1 = new HashSet<>();
+				incomingEdgeElement1.stream().forEach(edge -> sourceElement1.add(dependencyGraph.getEdgeSource(edge)));
+				// get source of element2
+				Set<DefaultWeightedEdge> incomingEdgeElement2 = dependencyGraph.incomingEdgesOf(element2);
+				Set<String> sourceElement2 = new HashSet<>();
+				incomingEdgeElement2.stream().forEach(edge -> sourceElement2.add(dependencyGraph.getEdgeSource(edge)));
 
-					// get source of element2
-					Set<DefaultWeightedEdge> incomingEdgeElement2 = dependencyGraph.incomingEdgesOf(element1);
-					Set<String> sourceElement2 = new HashSet<>();
-					incomingEdgeElement2.stream()
-							.forEach(edge -> sourceElement2.add(dependencyGraph.getEdgeSource(edge)));
-
-					sourceElement1.remove(element1);
-					sourceElement1.remove(element2);
-					sourceElement2.remove(element1);
-					sourceElement2.remove(element2);
-					// if the pairs has the same source => parallelism
-					Set<String> intersection = new HashSet<>(sourceElement1); // Make a copy of set1
-					intersection.retainAll(sourceElement2); // Retain only elements that are also in set2
-					if (!intersection.isEmpty()) {
-						parallelism.add(new HashSet<String>(Arrays.asList(element2, element1)));
-					}
+				if (sourceElement2.contains(element1) && sourceElement1.contains(element2)) {
+					parallelism.add(new HashSet<String>(Arrays.asList(element2, element1)));
 				}
 			}
 		}
-//		System.out.println(parallelism);
+
 		parallelism.stream().forEach(edge -> {
 			Iterator<String> edges = edge.iterator();
 			String element1 = edges.next();
@@ -175,10 +204,12 @@ public class DependencyGraph {
 				resultSet.add(list);
 			}
 		}
-		loops = resultSet;
+
+		loops.addAll(resultSet);
 		loops.stream().forEach(edge -> {
 			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
 		});
+		System.out.println(parallelism);
 	}
 
 	public LinkedList<Pair<List<String>, List<String>>> getLoops() {
@@ -191,79 +222,106 @@ public class DependencyGraph {
 				pairLoops.add(new Pair<List<String>, List<String>>(Arrays.asList(Key), lst));
 			}
 		}
-		
-		 // Map to hold merged sources based on unique targets
-        Map<List<String>, List<String>> map = new HashMap<>();
 
-        // Iterate over the LinkedList
-        for (Pair<List<String>, List<String>> pair : pairLoops) {
-            List<String> target = pair.getTarget();
-            List<String> source = pair.getSource();
+		// Map to hold merged sources based on unique targets
+		Map<List<String>, List<String>> map = new HashMap<>();
 
-            // Merge sources if target already exists
-            if (map.containsKey(target)) {
-                map.get(target).addAll(source); // Merge the source lists
-            } else {
-                map.put(target, new ArrayList<>(source)); // Add new entry if target is not found
-            }
-        }
+		// Iterate over the LinkedList
+		for (Pair<List<String>, List<String>> pair : pairLoops) {
+			List<String> source = pair.getSource();
+			List<String> target = pair.getTarget();
 
-        // Rebuild the LinkedList from the map
-        LinkedList<Pair<List<String>, List<String>>> mergedList = new LinkedList<>();
-        for (Map.Entry<List<String>, List<String>> entry : map.entrySet()) {
-        	mergedList.add(new Pair<>(entry.getValue(), entry.getKey()));
-        }
+			// Merge sources if target already exists
+			if (map.containsKey(target)) {
+				map.get(target).addAll(source); // Merge the source lists
+			} else {
+				map.put(target, new ArrayList<>(source)); // Add new entry if target is not found
+			}
+		}
 
-        // Output the merged list
-        for (Pair<List<String>, List<String>> pair : mergedList) {
-            System.out.println("Source: " + pair.getSource() + ", Target: " + pair.getTarget());
-        }
-    
+		// Rebuild the LinkedList from the map
+		LinkedList<Pair<List<String>, List<String>>> mergedList = new LinkedList<>();
+		for (Map.Entry<List<String>, List<String>> entry : map.entrySet()) {
+			mergedList.add(new Pair<>(entry.getKey(), entry.getValue()));
+		}
+
+		// Output the merged list
+//		for (Pair<List<String>, List<String>> pair : mergedList) {
+//			System.out.println("Source: " + pair.getSource() + ", Target: " + pair.getTarget());
+//		}
+		sortLoop(mergedList);
 		return mergedList;
 	}
 
-	// TODO: valide it, it was generated using LLM
+	public void sortLoop(LinkedList<Pair<List<String>, List<String>>> loop) {
+
+		Collections.sort(loop, new Comparator<Pair<List<String>, List<String>>>() {
+			@Override
+			public int compare(Pair<List<String>, List<String>> p1, Pair<List<String>, List<String>> p2) {
+				// block loop
+				if (p2.getSource().size() == p2.getTarget().size()) {
+					return -1;
+				}
+				// First, compare by the size of the source list
+				int sizeComparison = Integer.compare(p2.getSource().size(), p1.getSource().size());
+				if (sizeComparison != 0) {
+					return sizeComparison;
+				}
+
+				// If the sizes are the same, check if source equals target and move such pairs
+				// to the end
+				boolean p1SourceEqualsTarget = p1.getSource().equals(p1.getTarget());
+				boolean p2SourceEqualsTarget = p2.getSource().equals(p2.getTarget());
+				if (p1SourceEqualsTarget && p2SourceEqualsTarget) {
+					return 0;
+				} else {
+					return -1;
+				}
+
+			}
+		});
+	}
+
 	public Map<String, List<List<String>>> mergeLoop() {
 		// Get the loop relations from the dependency graph
 		Set<List<String>> loopRelations = loops;
-//		System.out.println(loopRelations);
-
 		// Get all targets of loop relations
-		Map<String, List<List<String>>> sortedByTarget = new HashMap<>();
+		Map<String, List<String>> sortedByTarget = new HashMap<>();
 		for (List<String> pair : loopRelations) {
-			String element2 = pair.get(1);
-			sortedByTarget.computeIfAbsent(element2, k -> new ArrayList<>()).add(pair);
+			String element2 = pair.get(0);
+			sortedByTarget.computeIfAbsent(element2, k -> new ArrayList<>()).add(pair.get(1));
 		}
-
-//		System.out.println(sortedByTarget);
 		// Merge loop relations
 		Map<String, List<List<String>>> mergeByTarget = new HashMap<>();
 
-		for (Entry<String, List<List<String>>> entry : sortedByTarget.entrySet()) {
+		for (Entry<String, List<String>> entry : sortedByTarget.entrySet()) {
 			String target = entry.getKey();
-			List<List<String>> loopList = entry.getValue();
+			List<String> loopList = entry.getValue();
 			List<List<String>> resultList = new ArrayList<>();
-
+			List<String> visited = new ArrayList<>();
 			for (int i = 0; i < loopList.size(); i++) {
-				if (i >= loopList.size()) {
-					break;
+				String element1 = loopList.get(i);
+				if (visited.contains(element1)) {
+					continue;
 				}
+				visited.add(element1);
 				// Self-loop
-				if (loopList.get(i).get(0).equals(loopList.get(i).get(1))) {
-					resultList.add(Collections.singletonList(loopList.get(i).get(0)));
+				if (element1.equals(target)) {
+					List<String> mergeElements = new ArrayList<>();
+					mergeElements.add(element1);
+					resultList.add(mergeElements);
 					continue;
 				} else {
-					List<List<String>> listToRemove = new ArrayList<>();
+
 					List<String> mergeElements = new ArrayList<>();
-					String element1 = loopList.get(i).get(0);
 					mergeElements.add(element1);
 
-					for (int j = i + 1; j < loopList.size(); j++) {
-						if (j >= loopList.size()) {
-							break;
+					for (int j = 0; j < loopList.size(); j++) {
+//						
+						String element2 = loopList.get(j);
+						if (visited.contains(element2)) {
+							continue;
 						}
-						String element2 = loopList.get(j).get(0);
-
 						// Check if the elements have the same successors
 						Set<DefaultWeightedEdge> outgoingEdgeSource = dependencyGraph.outgoingEdgesOf(element1);
 						List<String> l1 = new ArrayList<String>();
@@ -275,12 +333,12 @@ public class DependencyGraph {
 
 						if (l1.equals(l2)) {
 							mergeElements.add(element2);
-							listToRemove.add(loopList.get(j));
+							visited.add(loopList.get(j));
 						}
 					}
 
 					// Remove merged list from initial loop relation
-					loopList.removeAll(listToRemove);
+//					loopList.removeAll(listToRemove);
 					resultList.add(mergeElements);
 				}
 			}
@@ -289,14 +347,18 @@ public class DependencyGraph {
 		return mergeByTarget;
 	}
 
-	public List<List<String>> getParallelims() {
-//		Set<List<String>> setWithoutDuplicates = new LinkedHashSet<>(mergeParallelism());
+	public LinkedList<LinkedList<String>> getParallelims() {
+		
 		// Converting set back to list
-		List<List<String>> listWithoutDuplicates = new LinkedList(mergeParallelism());
-		return listWithoutDuplicates;
+        LinkedList<LinkedList<String>> result = new LinkedList<>();
+        for (Set<String> innerSet : mergeParallelism()) {
+            LinkedList<String> innerList = new LinkedList<>(innerSet);
+            result.add(innerList);
+        }
+		return result;
 	}
 
-	public List<List<String>> getDecisions() {
+	public LinkedList<LinkedList<String>> getDecisions() {
 
 		// get pair decisions
 		Set<Set<String>> pairDecisionPoints = new HashSet<>();
@@ -393,7 +455,15 @@ public class DependencyGraph {
 			}
 		}
 
-		return new LinkedList(finalDecisionList);
+
+        // Convert Set<Set<String>> to LinkedList<LinkedList<String>>
+        LinkedList<LinkedList<String>> result = new LinkedList<>();
+        for (Set<String> innerSet : finalDecisionList) {
+            LinkedList<String> innerList = new LinkedList<>(innerSet);
+            result.add(innerList);
+        }
+
+		return result;
 	}
 
 	/**
@@ -590,4 +660,87 @@ public class DependencyGraph {
 
 	}
 
+	public static void regex(List<String> list) {
+		list.replaceAll(s -> regex(s));
+	}
+
+	public static String regex(String str) {
+		return str.trim().replaceAll("[^A-Za-z0-9]", "-").toLowerCase();
+	}
+
+	/**
+	 * Get all dependencies including loops
+	 * 
+	 * @return
+	 */
+	public List<String> getFullDependenciesDFA() {
+		LinkedList<String> dependencyRelation = new LinkedList<>();
+		dependencyGraphWithLoop.edgeSet().forEach(edge -> {
+			String source = dependencyGraphWithLoop.getEdgeSource(edge);
+			String target = dependencyGraphWithLoop.getEdgeTarget(edge);
+			dependencyRelation.add(source + "->" + target);
+		});
+
+		return DepthFirstSearch.DFSToList(dependencyRelation, startActivities.get(0));
+
+	}
+
+	/**
+	 * Get dependencies without loops and parallelism
+	 * 
+	 * @return
+	 */
+	public List<String> getDependenciesDFA() {
+		LinkedList<String> dependencyRelation = new LinkedList<>();
+		dependencyGraph.edgeSet().forEach(edge -> {
+			String source = dependencyGraph.getEdgeSource(edge);
+			String target = dependencyGraph.getEdgeTarget(edge);
+			dependencyRelation.add(source + "->" + target);
+		});
+
+		return DepthFirstSearch.DFSToList(dependencyRelation, startActivities.get(0));
+
+	}
+
+	public void changeVertexNameToRegex() {
+
+	 Set<String> vertix = new HashSet<>(dependencyGraph.vertexSet());
+		for(String v :vertix) {
+			changeVertexName(dependencyGraph, v, regex(v));
+			changeVertexName(dependencyGraphWithLoop, v, regex(v));
+		}
+		
+	}
+
+	public void changeVertexName(String oldName, String newName) {
+		changeVertexName(dependencyGraph, oldName, newName);
+		changeVertexName(dependencyGraphWithLoop, oldName, newName);
+	}
+
+	public void changeVertexName(Graph<String, DefaultWeightedEdge> graph, String oldName, String newName) {
+		if (!graph.containsVertex(oldName)) {
+			System.out.println("Vertex '" + oldName + "' not found.");
+			return;
+		}
+
+		// Copy edges
+		Set<DefaultWeightedEdge> incomingEdges = new HashSet<>(graph.incomingEdgesOf(oldName));
+		Set<DefaultWeightedEdge> outgoingEdges = new HashSet<>(graph.outgoingEdgesOf(oldName));
+
+		// Remove the old vertex
+		graph.removeVertex(oldName);
+
+		// Add the new vertex
+		graph.addVertex(newName);
+
+		// Re-create edges
+		for (DefaultWeightedEdge edge : incomingEdges) {
+			String sourceVertex = graph.getEdgeSource(edge);
+			graph.addEdge(sourceVertex, newName);
+		}
+		for (DefaultWeightedEdge edge : outgoingEdges) {
+			String targetVertex = graph.getEdgeTarget(edge);
+			graph.addEdge(newName, targetVertex);
+		}
+	}
 }

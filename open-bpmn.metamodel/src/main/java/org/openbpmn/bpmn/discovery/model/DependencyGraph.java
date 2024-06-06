@@ -29,6 +29,7 @@ import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.alg.cycle.TiernanSimpleCycles;
 import org.jgrapht.alg.lca.HeavyPathLCAFinder;
 import org.jgrapht.alg.lca.NaiveLCAFinder;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
@@ -122,7 +123,7 @@ public class DependencyGraph {
 			}
 		}
 		// remove loops from dependency graph
-//		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
+		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
 		System.out.println(loops);
 		loops.stream().forEach(edge -> {
 			dependencyGraph.removeEdge(edge.get(1), edge.get(0));
@@ -348,13 +349,13 @@ public class DependencyGraph {
 	}
 
 	public LinkedList<LinkedList<String>> getParallelims() {
-		
+
 		// Converting set back to list
-        LinkedList<LinkedList<String>> result = new LinkedList<>();
-        for (Set<String> innerSet : mergeParallelism()) {
-            LinkedList<String> innerList = new LinkedList<>(innerSet);
-            result.add(innerList);
-        }
+		LinkedList<LinkedList<String>> result = new LinkedList<>();
+		for (Set<String> innerSet : mergeParallelism()) {
+			LinkedList<String> innerList = new LinkedList<>(innerSet);
+			result.add(innerList);
+		}
 		return result;
 	}
 
@@ -455,13 +456,12 @@ public class DependencyGraph {
 			}
 		}
 
-
-        // Convert Set<Set<String>> to LinkedList<LinkedList<String>>
-        LinkedList<LinkedList<String>> result = new LinkedList<>();
-        for (Set<String> innerSet : finalDecisionList) {
-            LinkedList<String> innerList = new LinkedList<>(innerSet);
-            result.add(innerList);
-        }
+		// Convert Set<Set<String>> to LinkedList<LinkedList<String>>
+		LinkedList<LinkedList<String>> result = new LinkedList<>();
+		for (Set<String> innerSet : finalDecisionList) {
+			LinkedList<String> innerList = new LinkedList<>(innerSet);
+			result.add(innerList);
+		}
 
 		return result;
 	}
@@ -691,25 +691,62 @@ public class DependencyGraph {
 	 * @return
 	 */
 	public List<String> getDependenciesDFA() {
-		LinkedList<String> dependencyRelation = new LinkedList<>();
-		dependencyGraph.edgeSet().forEach(edge -> {
-			String source = dependencyGraph.getEdgeSource(edge);
-			String target = dependencyGraph.getEdgeTarget(edge);
-			dependencyRelation.add(source + "->" + target);
+
+		List<List<String>> allPaths = new ArrayList<>();
+
+		AllDirectedPaths<String, DefaultWeightedEdge> allDirectedPaths = new AllDirectedPaths<>(dependencyGraph);
+
+		Set<String> endEvent = findEndNodes(dependencyGraph);
+		endEvent.addAll(endActivities);
+		for (String endNode : endEvent) {
+			allDirectedPaths.getAllPaths(startActivities.get(0), endNode, true, null)
+					.forEach(path -> allPaths.add(path.getVertexList()));
+		}
+
+		Collections.sort(allPaths, new Comparator<List<String>>() {
+			@Override
+			public int compare(List<String> o1, List<String> o2) {
+				return Integer.compare(o2.size(), o1.size());
+			}
 		});
 
+		// Print paths
+//		allPaths.forEach(System.out::println);
+		LinkedList<String> dependencyRelation = new LinkedList<>();
+
+		for (List<String> path : allPaths) {
+			for (int i = 0; i < path.size() - 1; i++) {
+				String source = path.get(i);
+				String target = path.get(i + 1);
+				String relation = source + "->" + target;
+
+				if (!dependencyRelation.contains(relation)) {
+					dependencyRelation.add(relation);
+				}
+			}
+		}
 		return DepthFirstSearch.DFSToList(dependencyRelation, startActivities.get(0));
 
 	}
 
+	public static Set<String> findEndNodes(Graph<String, DefaultWeightedEdge> graph) {
+		Set<String> endNodes = new HashSet<>();
+		for (String vertex : graph.vertexSet()) {
+			if (graph.outgoingEdgesOf(vertex).isEmpty()) { // Check if there are no outgoing edges
+				endNodes.add(vertex);
+			}
+		}
+		return endNodes;
+	}
+
 	public void changeVertexNameToRegex() {
 
-	 Set<String> vertix = new HashSet<>(dependencyGraph.vertexSet());
-		for(String v :vertix) {
+		Set<String> vertix = new HashSet<>(dependencyGraph.vertexSet());
+		for (String v : vertix) {
 			changeVertexName(dependencyGraph, v, regex(v));
 			changeVertexName(dependencyGraphWithLoop, v, regex(v));
 		}
-		
+
 	}
 
 	public void changeVertexName(String oldName, String newName) {

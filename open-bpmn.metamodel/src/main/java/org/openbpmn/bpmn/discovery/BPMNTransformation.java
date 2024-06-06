@@ -101,7 +101,7 @@ public class BPMNTransformation {
 //			example5();
 //			 example6();
 			// three loops
-//			example7();
+			example7();
 //			example8();
 //			example0();
 		}
@@ -114,71 +114,117 @@ public class BPMNTransformation {
 
 	private static void example0() {
 		LinkedList<String> events = new LinkedList();
+//		events.add("start->a");
+//
+//		events.add("a->b");
+//	
+//		
+//		events.add("b->d");
+//		events.add("d->e");
+//		events.add("e->f");
+//
+//		events.add("f->end");
+//		
+//		events.add("a->k");
+//		events.add("k->f");
+//		events.add("b->f");
+//		events.add("a->c");
+//		
+//		events.add("c->f");
+//		events.add("c->d");
+		
 		events.add("start->a");
-
+		
+	
+		events.add("a->k");
 		events.add("a->b");
 		events.add("a->c");
-
+		
+		
 		events.add("b->d");
-		events.add("c->d");
-
-		events.add("b->e");
-		events.add("c->e");
 		events.add("d->e");
+		events.add("e->f");
 
-		events.add("e->end");
-
+		events.add("f->end");
+		
+		
+	
+		
+//		events.add("b->f");
+		
+		
+	
+		
+		events.add("d->f");
+		events.add("c->d");
+		events.add("c->z");
+		
+		events.add("k->z");
+		events.add("z->f");
+		
 		String startEvent = "start";
 
-		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(events, startEvent);
-		System.out.println(orderedEvents);
-		List<String> startsEvent = new ArrayList<>();
-		startsEvent.add("start");
+		List<String> startsEvents = new ArrayList<>();
+		startsEvents.add("start");
 
 		List<String> endEvents = new ArrayList<>();
 		endEvents.add("end");
 
-		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
-		decisionRelations.add(new LinkedList<String>() {
-			{
-				add("d");
-				add("e");
-			}
-		});
-//		decisionRelations.add(new LinkedList<String>() {
-//			{
-//				add("e");
-//				add("f");
-//				add("g");
-//			};
-//
-//		});
-
-		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
-		parallelRelations.add(new LinkedList<String>() {
+		Set<Set<String>> parallelRelations = new HashSet<>();
+		parallelRelations.add(new HashSet<String>() {
 			{
 				add("b");
 				add("c");
 			}
 		});
+		parallelRelations.add(new HashSet<String>() {
+			{
+				add("k");
+				add("b");
+			}
+		});
+		parallelRelations.add(new HashSet<String>() {
+			{
+				add("c");
+				add("k");
+			}
+		});
+		parallelRelations.add(new HashSet<String>() {
+			{
+				add("z");
+				add("d");
+			}
+		});
+	
+		DependencyGraph bpmnTransformation = new DependencyGraph();
+		for (String dependency : events) {
+			// Split the dependency string into source and target
+			String[] parts = dependency.split("->");
 
-		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
-		relations.put(BPMNDiscovery.DECISION, decisionRelations);
-		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
-		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+			// Extract source and target
+			String sourceId = parts[0];
+			String targetId = parts[1];
+			bpmnTransformation.addVertex(sourceId);
+			bpmnTransformation.addVertex(targetId);
+			bpmnTransformation.addEdge(sourceId, targetId);
+		}
+		bpmnTransformation.startActivities = startsEvents;
+		bpmnTransformation.endActivities = endEvents;
+		bpmnTransformation.parallelism = parallelRelations;
+		bpmnTransformation.findAndRemoveLoops();
 
 		try {
-			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
 			bpmnDiscovery.DependencyGraphToBPMN();
-
-			System.out.println("Finish discovery ...");
 			bpmnDiscovery.saveMode(path);
+			System.out.println("Finish discovery ...");
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	// the ex use to describe the algo in the confluence page
@@ -642,24 +688,24 @@ public class BPMNTransformation {
 
 	// three loops
 	private static void example7() {
-		 List<String> transitions = new ArrayList<>();
-	        transitions.add("start->a");
-	        transitions.add("a->f");
-	        transitions.add("a->b");
-	        transitions.add("a->c");
-	        transitions.add("a->d");
-	        transitions.add("c->g");
-	        transitions.add("d->e");
-	        transitions.add("e->g");
-	        transitions.add("f->g");
-	        transitions.add("g->end1");
-	        transitions.add("b->end2");
-	        transitions.add("c->a");
-	        transitions.add("f->a");
-	        transitions.add("e->a");
-	        transitions.add("g->a");
-	        transitions.add("g->z");
-	        transitions.add("z->g");
+		List<String> transitions = new ArrayList<>();
+		transitions.add("start->a");
+		transitions.add("a->f");
+		transitions.add("a->b");
+		transitions.add("a->c");
+		transitions.add("a->d");
+		transitions.add("c->g");
+		transitions.add("d->e");
+		transitions.add("e->g");
+		transitions.add("f->g");
+		transitions.add("g->end1");
+		transitions.add("b->end2");
+		transitions.add("c->a");
+		transitions.add("f->a");
+		transitions.add("e->a");
+		transitions.add("g->a");
+		transitions.add("g->z");
+		transitions.add("z->g");
 		String startEvent = "start";
 
 		List<String> startsEvent = new ArrayList<>();
@@ -674,7 +720,7 @@ public class BPMNTransformation {
 			{
 				add("c");
 				add("f");
-				
+
 			}
 		});
 

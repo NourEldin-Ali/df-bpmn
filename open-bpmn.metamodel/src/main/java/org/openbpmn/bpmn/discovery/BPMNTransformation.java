@@ -2,6 +2,7 @@ package org.openbpmn.bpmn.discovery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -32,9 +33,10 @@ public class BPMNTransformation {
 			 */
 			String output = args[0];
 			String startEventString = args[1];
-			String endEventsString = args[2];
-			String dependencyRelationsString = args[3];
-			String parallelRelationString = args[4];
+//			String endEventsString = args[2];
+			String dependencyRelationsString = args[2];
+			String parallelRelationString = args[3];
+			String elementInfoString = args[4];
 
 			List<String> startsEvents = new ArrayList<>();
 			startsEvents.add(startEventString);
@@ -50,11 +52,18 @@ public class BPMNTransformation {
 			}.getType();
 			Type listOfStringsType = new TypeToken<List<String>>() {
 			}.getType();
-
+			Type listOfMapType = new TypeToken<Map<String, Map<String, String>>>() {
+			}.getType();
 			// Deserialize JSON to Java objects
-			List<String> endEvents = gson.fromJson(endEventsString, listOfStringsType);
 			List<String> events = gson.fromJson(dependencyRelationsString, listOfStringsType);
 			Set<Set<String>> parallelRelations = gson.fromJson(parallelRelationString, listOfListsType);
+			Map<String, Map<String, String>> elementsInfo = gson.fromJson(elementInfoString, listOfMapType);
+			List<String> endEvents = new LinkedList();
+			for (Map.Entry<String, Map<String, String>> entry : elementsInfo.entrySet()) {
+				if (entry.getValue().get("type").contentEquals("end")) {
+					endEvents.add(entry.getKey());
+				}
+			}
 
 			// Initialize the HashMap
 
@@ -64,8 +73,8 @@ public class BPMNTransformation {
 				String[] parts = dependency.split("->");
 
 				// Extract source and target
-				String sourceId = parts[0];
-				String targetId = parts[1];
+				String sourceId = parts[0].trim();
+				String targetId = parts[1].trim();
 				bpmnTransformation.addVertex(sourceId);
 				bpmnTransformation.addVertex(targetId);
 				bpmnTransformation.addEdge(sourceId, targetId);
@@ -73,6 +82,7 @@ public class BPMNTransformation {
 			bpmnTransformation.startActivities = startsEvents;
 			bpmnTransformation.endActivities = endEvents;
 			bpmnTransformation.parallelism = parallelRelations;
+			bpmnTransformation.elementInformations = elementsInfo;
 			bpmnTransformation.findAndRemoveLoops();
 
 			try {
@@ -86,7 +96,6 @@ public class BPMNTransformation {
 				e.printStackTrace();
 			}
 		} else {
-
 			System.out.println(
 					"INVALID INPUTS: outputPath (/src/example.bpmn), startEvent, endEvents (List), dependencyRelations(List), parallelRelation (List[List])");
 			// correct
@@ -101,8 +110,8 @@ public class BPMNTransformation {
 //			example5();
 //			 example6();
 			// three loops
-			example7();
-//			example8();
+//			example0();
+			example8();
 //			example0();
 		}
 		long endTime = System.nanoTime();
@@ -113,97 +122,49 @@ public class BPMNTransformation {
 	static String path = "C:\\Users\\AliNourEldin\\Desktop\\testt.bpmn";
 
 	private static void example0() {
-		LinkedList<String> events = new LinkedList();
-//		events.add("start->a");
-//
-//		events.add("a->b");
-//	
-//		
-//		events.add("b->d");
-//		events.add("d->e");
-//		events.add("e->f");
-//
-//		events.add("f->end");
-//		
-//		events.add("a->k");
-//		events.add("k->f");
-//		events.add("b->f");
-//		events.add("a->c");
-//		
-//		events.add("c->f");
-//		events.add("c->d");
-		
-		events.add("start->a");
-		
-	
-		events.add("a->k");
-		events.add("a->b");
-		events.add("a->c");
-		
-		
-		events.add("b->d");
-		events.add("d->e");
-		events.add("e->f");
-
-		events.add("f->end");
-		
-		
-	
-		
-//		events.add("b->f");
-		
-		
-	
-		
-		events.add("d->f");
-		events.add("c->d");
-		events.add("c->z");
-		
-		events.add("k->z");
-		events.add("z->f");
-		
-		String startEvent = "start";
+		String output = path;
+		String startEventString = "Client application not submitted";
+		String dependencyRelationsString = "[\"Client application not submitted -> Submit application\", \"Submit application -> Receive application\", \"Receive application -> Review application for completeness and accuracy\", \"Review application for completeness and accuracy -> Send application back for correction\", \"Send application back for correction -> Submit application\", \"Review application for completeness and accuracy -> Check application against regulatory requirements\", \"Check application against regulatory requirements -> Reject application\", \"Reject application -> Inform client of rejection\", \"Inform client of rejection -> Application rejected\", \"Check application against regulatory requirements -> Create account\", \"Create account -> Notify client of successful account creation\", \"Notify client of successful account creation -> Account successfully created\", \"Submit application -> Application withdrawn\", \"Receive application -> Application withdrawn\", \"Review application for completeness and accuracy -> Application withdrawn\", \"Send application back for correction -> Application withdrawn\", \"Check application against regulatory requirements -> Application withdrawn\", \"Reject application -> Application withdrawn\", \"Inform client of rejection -> Application withdrawn\", \"Create account -> Application withdrawn\", \"Notify client of successful account creation -> Application withdrawn\"]";
+		String parallelRelationString = "[[\"Receive application\", \"Application withdrawn\"], [\"Review application for completeness and accuracy\", \"Application withdrawn\"], [\"Send application back for correction\", \"Application withdrawn\"], [\"Check application against regulatory requirements\", \"Application withdrawn\"], [\"Submit application\", \"Application withdrawn\"], [\"Reject application\", \"Application withdrawn\"], [\"Create account\", \"Application withdrawn\"], [\"Inform client of rejection\", \"Application withdrawn\"], [\"Application rejected\", \"Application withdrawn\"], [\"Notify client of successful account creation\", \"Application withdrawn\"], [\"Account successfully created\", \"Application withdrawn\"]]";
+		String elementInfoString = "{\"Client application not submitted\": {\"type\": \"start\", \"participant\": \"Client\"}, \"Account successfully created\": {\"type\": \"end\", \"participant\": \"Customer Service Department\"}, \"Application rejected\": {\"type\": \"end\", \"participant\": \"Compliance Department\"}, \"Application withdrawn\": {\"type\": \"end\", \"participant\": \"Client\"}, \"Submit application\": {\"type\": \"human\", \"participant\": \"Client\"}, \"Receive application\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Review application for completeness and accuracy\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Send application back for correction\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Check application against regulatory requirements\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Reject application\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Inform client of rejection\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Create account\": {\"type\": \"service\", \"participant\": \"Compliance Department\"}, \"Notify client of successful account creation\": {\"type\": \"service\", \"participant\": \"Compliance Department\"}}";
 
 		List<String> startsEvents = new ArrayList<>();
-		startsEvents.add("start");
+		startsEvents.add(startEventString);
 
-		List<String> endEvents = new ArrayList<>();
-		endEvents.add("end");
+//		List<String> endEvents = stringToList(endEventsString);
+//		LinkedList<String> events = stringToList(dependencyRelationsString);
+//		Set<Set<String>> parallelRelations = transformStringToList(parallelRelationString);
 
-		Set<Set<String>> parallelRelations = new HashSet<>();
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("b");
-				add("c");
+		Gson gson = new Gson();
+
+		// Define the type of the data structure for deserialization
+		Type listOfListsType = new TypeToken<Set<Set<String>>>() {
+		}.getType();
+		Type listOfStringsType = new TypeToken<List<String>>() {
+		}.getType();
+		Type listOfMapType = new TypeToken<Map<String, Map<String, String>>>() {
+		}.getType();
+		// Deserialize JSON to Java objects
+		List<String> events = gson.fromJson(dependencyRelationsString, listOfStringsType);
+		Set<Set<String>> parallelRelations = gson.fromJson(parallelRelationString, listOfListsType);
+		Map<String, Map<String, String>> elementsInfo = gson.fromJson(elementInfoString, listOfMapType);
+		List<String> endEvents = new LinkedList();
+		for (Map.Entry<String, Map<String, String>> entry : elementsInfo.entrySet()) {
+			if (entry.getValue().get("type").contentEquals("end")) {
+				endEvents.add(entry.getKey());
 			}
-		});
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("k");
-				add("b");
-			}
-		});
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("c");
-				add("k");
-			}
-		});
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("z");
-				add("d");
-			}
-		});
-	
+		}
+
+		// Initialize the HashMap
+
 		DependencyGraph bpmnTransformation = new DependencyGraph();
 		for (String dependency : events) {
 			// Split the dependency string into source and target
 			String[] parts = dependency.split("->");
 
 			// Extract source and target
-			String sourceId = parts[0];
-			String targetId = parts[1];
+			String sourceId = parts[0].trim();
+			String targetId = parts[1].trim();
 			bpmnTransformation.addVertex(sourceId);
 			bpmnTransformation.addVertex(targetId);
 			bpmnTransformation.addEdge(sourceId, targetId);
@@ -211,13 +172,14 @@ public class BPMNTransformation {
 		bpmnTransformation.startActivities = startsEvents;
 		bpmnTransformation.endActivities = endEvents;
 		bpmnTransformation.parallelism = parallelRelations;
+		bpmnTransformation.elementInformations = elementsInfo;
 		bpmnTransformation.findAndRemoveLoops();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
+			System.out.println(bpmnDiscovery.dependencies);
 			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode(path);
-			System.out.println("Finish discovery ...");
+			bpmnDiscovery.saveMode(output);
 		} catch (BPMNModelException e) {
 			e.printStackTrace();
 		} catch (CloneNotSupportedException e) {
@@ -688,48 +650,44 @@ public class BPMNTransformation {
 
 	// three loops
 	private static void example7() {
-		List<String> transitions = new ArrayList<>();
-		transitions.add("start->a");
-		transitions.add("a->f");
-		transitions.add("a->b");
-		transitions.add("a->c");
-		transitions.add("a->d");
-		transitions.add("c->g");
-		transitions.add("d->e");
-		transitions.add("e->g");
-		transitions.add("f->g");
-		transitions.add("g->end1");
-		transitions.add("b->end2");
-		transitions.add("c->a");
-		transitions.add("f->a");
-		transitions.add("e->a");
-		transitions.add("g->a");
-		transitions.add("g->z");
-		transitions.add("z->g");
-		String startEvent = "start";
 
 		List<String> startsEvent = new ArrayList<>();
-		startsEvent.add("start");
+		startsEvent.add("Client without bank account");
 
-		List<String> endEvents = new ArrayList<>();
-		endEvents.add("end1");
-		endEvents.add("end2");
+		List<String> transitions = new ArrayList<>();
+
+		transitions.add("Client without bank account -> Submit application");
+		transitions.add("Submit application -> Review application");
+		transitions.add("Review application -> Notify rejection");
+		transitions.add("Notify rejection -> Account creation failed due to incomplete or incorrect information");
+
+		transitions.add("Review application -> Verify application");
+		transitions.add("Verify application -> Notify rejection");
+		transitions.add("Notify rejection -> Account creation failed due to compliance issues");
+
+		transitions.add("Verify application -> Create bank account");
+		transitions.add("Create bank account -> Notify account creation");
+
+		transitions.add("Notify account creation -> Account successfully created");
 
 		Set<Set<String>> parallelRelations = new HashSet();
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("c");
-				add("f");
 
-			}
-		});
+		Map<String, Map<String, String>> elementsInfo = new HashMap<>();
+		Map<String, String> ele1 = new HashMap<>();
+		ele1.put("type", "start");
+		elementsInfo.put("Client without bank account", ele1);
 
-		parallelRelations.add(new HashSet<String>() {
-			{
-				add("d");
-				add("f");
-			}
-		});
+		Map<String, String> ele2 = new HashMap<>();
+		ele2.put("type", "end");
+		elementsInfo.put("Account successfully created", ele2);
+		
+		ele2 = new HashMap<>();
+		ele2.put("type", "end");
+		elementsInfo.put("Account creation failed due to compliance issues", ele2);
+		
+		ele2 = new HashMap<>();
+		ele2.put("type", "end");
+		elementsInfo.put("Account creation failed due to incomplete or incorrect information", ele2);
 
 		DependencyGraph bpmnTransformation = new DependencyGraph();
 		for (String dependency : transitions) {
@@ -737,20 +695,32 @@ public class BPMNTransformation {
 			String[] parts = dependency.split("->");
 
 			// Extract source and target
-			String sourceId = parts[0];
-			String targetId = parts[1];
+			String sourceId = parts[0].trim();
+			String targetId = parts[1].trim();
 			bpmnTransformation.addVertex(sourceId);
 			bpmnTransformation.addVertex(targetId);
 			bpmnTransformation.addEdge(sourceId, targetId);
 		}
-		bpmnTransformation.startActivities = startsEvent;
+		List<String> endEvents = new LinkedList();
+		for (Map.Entry<String, Map<String, String>> entry : elementsInfo.entrySet()) {
+			if (entry.getValue().get("type").contentEquals("end")) {
+				endEvents.add(entry.getKey());
+			}
+		}
 		bpmnTransformation.endActivities = endEvents;
+
+		bpmnTransformation.startActivities = startsEvent;
 		bpmnTransformation.parallelism = parallelRelations;
-		bpmnTransformation.findAndRemoveLoops();
+
+		bpmnTransformation.elementInformations = elementsInfo;
+//		bpmnTransformation.findAndRemoveLoops();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
-			System.out.println(bpmnDiscovery.dependenciesGraph.toString());
+			System.out.println(bpmnDiscovery.dependenciesGraph.dependencyGraphWithLoop.toString());
+//			bpmnDiscovery.dependenciesGraph.vertixLevel();
+//			System.out.println(bpmnDiscovery.loops);
+//			System.out.println(bpmnDiscovery.dependenciesGraph.toString());
 			bpmnDiscovery.DependencyGraphToBPMN();
 			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {
@@ -766,83 +736,81 @@ public class BPMNTransformation {
 		LinkedList<String> list = new LinkedList<>();
 		list.add("start->a");
 		list.add("a->b");
-
-		list.add("b->c");
-		list.add("b->e");
+		list.add("a->c");
 		list.add("b->d");
-		list.add("b->g");
-		list.add("g->end1");
-
-		list.add("c->z");
-		list.add("z->end2");
-
-		list.add("c->k");
-		list.add("k->end3");
-
-		list.add("e->z");
-		list.add("e->k");
-
 		list.add("d->f");
-		list.add("f->z");
-		list.add("f->k");
+		list.add("c->e");
+		list.add("e->f");
+		list.add("f->end");
+		
+		list.add("f->d");
+		list.add("f->e");
+
+		
+		
+		
+		
 		String startEvent = "start";
 
-		LinkedList<String> orderedEvents = DepthFirstSearch.DFSToList(list, startEvent);
-		System.out.println(orderedEvents);
+	
 		List<String> startsEvent = new ArrayList<>();
-		startsEvent.add("start");
+		startsEvent.add(startEvent);
 
-		List<String> endEvents = new ArrayList<>();
-		endEvents.add("end1");
-		endEvents.add("end2");
-		endEvents.add("end3");
-
-		LinkedList<LinkedList<String>> decisionRelations = new LinkedList();
-		decisionRelations.add(new LinkedList<String>() {
+	
+		
+		Set<Set<String>> parallelRelations = new HashSet();
+//		parallelRelations.add(new HashSet<>() {
+//			{
+//				add("c");
+//				add("b");
+//			}
+//		});
+		parallelRelations.add(new HashSet<>() {
 			{
-				add("c");
-				add("e");
 				add("d");
-				add("g");
+				add("e");
 			}
 		});
-		decisionRelations.add(new LinkedList<String>() {
-			{
-				add("z");
-				add("k");
-			};
+		Map<String, Map<String, String>> elementsInfo = new HashMap<>();
+		Map<String, String> ele1 = new HashMap<>();
+		ele1.put("type", "start");
+		elementsInfo.put(startEvent, ele1);
 
-		});
-		decisionRelations.add(new LinkedList<String>() {
-			{
-				add("e");
-				add("d");
-			};
+		Map<String, String> ele2 = new HashMap<>();
+		ele2.put("type", "end");
+		elementsInfo.put("end", ele2);
+		
+		DependencyGraph bpmnTransformation = new DependencyGraph();
+		for (String dependency : list) {
+			// Split the dependency string into source and target
+			String[] parts = dependency.split("->");
 
-		});
-		LinkedList<LinkedList<String>> parallelRelations = new LinkedList();
-		parallelRelations.add(new LinkedList<String>() {
-			{
-				add("c");
-				add("e");
-				add("d");
-			};
-
-		});
-		Map<String, LinkedList<LinkedList<String>>> relations = new LinkedHashMap<>();
-		relations.put(BPMNDiscovery.DECISION, decisionRelations);
-		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
-
-		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
-
-		// Populate the map with values
-//			loops.put("a", new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("c", "e", "f")),
-//					new LinkedList<>(Arrays.asList("a")), new LinkedList<>(Arrays.asList("g")))));
-//			loops.put("g", new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("g")))));
+			// Extract source and target
+			String sourceId = parts[0].trim();
+			String targetId = parts[1].trim();
+			bpmnTransformation.addVertex(sourceId);
+			bpmnTransformation.addVertex(targetId);
+			bpmnTransformation.addEdge(sourceId, targetId);
+		}
+		List<String> endEvents = new LinkedList();
+		for (Map.Entry<String, Map<String, String>> entry : elementsInfo.entrySet()) {
+			if (entry.getValue().get("type").contentEquals("end")) {
+				endEvents.add(entry.getKey());
+			}
+		}
+		bpmnTransformation.endActivities = endEvents;
+		bpmnTransformation.startActivities = startsEvent;
+		bpmnTransformation.parallelism = parallelRelations;
+		bpmnTransformation.elementInformations = elementsInfo;
+		bpmnTransformation.findAndRemoveLoops();
 
 		try {
-			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
+			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
+			System.out.println(bpmnDiscovery.relations);
+//			System.out.println(bpmnDiscovery.dependenciesGraph.dependencyGraphWithLoop.toString());
+//			bpmnDiscovery.dependenciesGraph.vertixLevel();
+			System.out.println(bpmnDiscovery.loops);
+			System.out.println(bpmnDiscovery.dependencies);
 			bpmnDiscovery.DependencyGraphToBPMN();
 			bpmnDiscovery.saveMode(path);
 		} catch (BPMNModelException e) {

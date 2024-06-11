@@ -51,8 +51,8 @@ public class RelationConverter {
 		Map<String, List<String>> graph = new HashMap<>();
 		for (String relation : relations) {
 			String[] parts = relation.split("->");
-			String start = parts[0];
-			String end = parts[1];
+			String start = parts[0].trim();
+			String end = parts[1].trim();
 			if (!graph.containsKey(start)) {
 				 graph.put(start, new ArrayList<>());
 			}

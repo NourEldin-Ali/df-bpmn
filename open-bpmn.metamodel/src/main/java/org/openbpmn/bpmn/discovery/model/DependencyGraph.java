@@ -21,7 +21,9 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.alg.cycle.CycleDetector;
+import org.jgrapht.alg.cycle.HawickJamesSimpleCycles;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.alg.cycle.StackBFSFundamentalCycleBasis;
 import org.jgrapht.alg.cycle.SzwarcfiterLauerSimpleCycles;
@@ -30,6 +32,7 @@ import org.jgrapht.alg.cycle.TiernanSimpleCycles;
 import org.jgrapht.alg.lca.HeavyPathLCAFinder;
 import org.jgrapht.alg.lca.NaiveLCAFinder;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
@@ -41,7 +44,7 @@ public class DependencyGraph {
 	public DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraphWithLoop;
 	public List<String> startActivities;
 	public List<String> endActivities;
-
+	public Map<String, Map<String, String>> elementInformations;
 	public Set<List<String>> loops;
 	public Set<Set<String>> parallelism;
 	public Set<Set<String>> decisions;
@@ -57,6 +60,7 @@ public class DependencyGraph {
 		parallelism = new HashSet<>();
 		decisions = new HashSet<>();
 		vertexWeights = new HashMap<>();
+		elementInformations = new HashMap<>();
 	}
 
 	/**
@@ -102,29 +106,61 @@ public class DependencyGraph {
 	 */
 	public void findAndRemoveLoops() {
 		if (dependencyGraphWithLoop != null) {
-			// TODO: error in loop detections
-			// self-loop, loops, parallelism detections
-			TiernanSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new TiernanSimpleCycles<>(
-					dependencyGraphWithLoop);
-			boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
-			if (hasCycle) {
-				List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
-				for (List<String> cycle : cyclesList) {
-					// in case of self-loop or loop
-					if (cycle.size() == 1) {
-						loops.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
+//			List<List<String>> tempLoops = new ArrayList<>();
+			DirectedWeightedPseudograph<String, DefaultWeightedEdge> tempGraph = new DirectedWeightedPseudograph<String, DefaultWeightedEdge>(
+					DefaultWeightedEdge.class);
+			Set<DefaultWeightedEdge> edges = dependencyGraphWithLoop.edgeSet();
+			AllDirectedPaths<String, DefaultWeightedEdge> allPaths = new AllDirectedPaths<>(tempGraph);
 
+			for (DefaultWeightedEdge edge : edges) {
+				String source = dependencyGraphWithLoop.getEdgeSource(edge);
+				String target = dependencyGraphWithLoop.getEdgeTarget(edge);
+				if (tempGraph.containsVertex(source) && tempGraph.containsVertex(target)) {
+					List<GraphPath<String, DefaultWeightedEdge>> paths = allPaths.getAllPaths(target, source, true,
+							null);
+
+					if (paths.size() > 0) {
+						loops.add(new ArrayList<>(Arrays.asList(target,source)));
 					} else {
-						String element1 = cycle.get(0);
-						String element2 = cycle.get(cycle.size() - 1);
-						loops.add(new ArrayList(Arrays.asList(element1, element2)));
+						tempGraph.addVertex(source);
+						tempGraph.addVertex(target);
+						tempGraph.addEdge(source, target);
 					}
+				} else {
+					tempGraph.addVertex(source);
+					tempGraph.addVertex(target);
+					tempGraph.addEdge(source, target);
 				}
 			}
+
+			System.out.println(loops);
+
+			// TODO: error in loop detections
+			// self-loop, loops, parallelism detections
+//			TiernanSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new TiernanSimpleCycles<>(
+//					dependencyGraphWithLoop);
+////			JohnsonSimpleCycles<String, DefaultWeightedEdge> cycleDetector = new JohnsonSimpleCycles<>(
+////					dependencyGraphWithLoop);
+////			System.out.println("test");
+////			System.out.println(cycleDetector.findSimpleCycles());
+//			boolean hasCycle = cycleDetector.findSimpleCycles().size() > 0;
+//			if (hasCycle) {
+//				List<List<String>> cyclesList = cycleDetector.findSimpleCycles();
+//				for (List<String> cycle : cyclesList) {
+//					// in case of self-loop or loop
+//					if (cycle.size() == 1) {
+//						loops.add(new ArrayList(Arrays.asList(cycle.get(0), cycle.get(0))));
+//
+//					} else {
+//						String element1 = cycle.get(0);
+//						String element2 = cycle.get(cycle.size() - 1);
+//						loops.add(new ArrayList(Arrays.asList(element1, element2)));
+//					}
+//				}
+//			}
 		}
 		// remove loops from dependency graph
 		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
-		System.out.println(loops);
 		loops.stream().forEach(edge -> {
 			dependencyGraph.removeEdge(edge.get(1), edge.get(0));
 		});
@@ -211,6 +247,10 @@ public class DependencyGraph {
 			dependencyGraph.removeEdge(edge.get(0), edge.get(1));
 		});
 		System.out.println(parallelism);
+	}
+
+	public void findLoops() {
+
 	}
 
 	public LinkedList<Pair<List<String>, List<String>>> getLoops() {
@@ -352,10 +392,18 @@ public class DependencyGraph {
 
 		// Converting set back to list
 		LinkedList<LinkedList<String>> result = new LinkedList<>();
-		for (Set<String> innerSet : mergeParallelism()) {
+		Set<Set<String>> mergedPara = mergeParallelism();
+		for(Set<String> check : parallelism) {
+			if(!mergedPara.containsAll(check)) {
+				mergedPara.add(check);
+			}
+		}
+		for (Set<String> innerSet : mergedPara) {
 			LinkedList<String> innerList = new LinkedList<>(innerSet);
 			result.add(innerList);
 		}
+		
+		
 		return result;
 	}
 
@@ -664,6 +712,15 @@ public class DependencyGraph {
 		list.replaceAll(s -> regex(s));
 	}
 
+	public static void regex(Set<String> set) {
+		Set<String> updatedSet = new HashSet<>();
+		for (String s : set) {
+			updatedSet.add(regex(s)); // Assume regex(s) is a method that processes the string `s`
+		}
+		set.clear();
+		set.addAll(updatedSet);
+	}
+
 	public static String regex(String str) {
 		return str.trim().replaceAll("[^A-Za-z0-9]", "-").toLowerCase();
 	}
@@ -676,13 +733,67 @@ public class DependencyGraph {
 	public List<String> getFullDependenciesDFA() {
 		LinkedList<String> dependencyRelation = new LinkedList<>();
 		dependencyGraphWithLoop.edgeSet().forEach(edge -> {
-			String source = dependencyGraphWithLoop.getEdgeSource(edge);
-			String target = dependencyGraphWithLoop.getEdgeTarget(edge);
+			String source = dependencyGraphWithLoop.getEdgeSource(edge).trim();
+			String target = dependencyGraphWithLoop.getEdgeTarget(edge).trim();
 			dependencyRelation.add(source + "->" + target);
 		});
 
-		return DepthFirstSearch.DFSToList(dependencyRelation, startActivities.get(0));
+		return DepthFirstSearch.DFSToList(dependencyRelation, startActivities.get(0).trim());
 
+	}
+
+	public void vertixLevel() {
+		// Step 2: Apply Bellman-Ford
+//        BellmanFordShortestPath<String, DefaultWeightedEdge> bellmanFord = new BellmanFordShortestPath<>(dependencyGraphWithLoop);
+//        String sourceVertex = startActivities.get(0);
+//
+//        // Print shortest path "levels" from source vertex
+//        dependencyGraphWithLoop.vertexSet().forEach(vertex -> {
+//            double pathCost = bellmanFord.getPathWeight(sourceVertex,vertex);
+//            System.out.println("Vertex: " + vertex + ", Level (Shortest Path Cost from '" + sourceVertex + "'): " + pathCost);
+//        });	
+
+		List<String> requiredVertices = List.of("h", "k", "c");
+
+		// Create a BFS iterator from vertex1
+
+		Set<GraphPath<String, DefaultWeightedEdge>> selectedPath = new HashSet();
+		// Find all paths from start to end vertex, consider all combinations of
+		// required vertices
+		AllDirectedPaths<String, DefaultWeightedEdge> allPaths = new AllDirectedPaths<>(dependencyGraphWithLoop);
+		for (int i = 0; i < endActivities.size(); i++) {
+			String end = endActivities.get(i);
+
+			List<GraphPath<String, DefaultWeightedEdge>> paths = allPaths.getAllPaths(startActivities.get(0), end, true,
+					null);
+
+			// Filter paths to include all required vertices
+			List<GraphPath<String, DefaultWeightedEdge>> filteredPaths = paths.stream()
+					.filter(path -> requiredVertices.stream().allMatch(path.getVertexList()::contains))
+					.collect(Collectors.toList());
+			// Print the paths
+//                filteredPaths.forEach(path -> System.out.println(path.getVertexList()));
+			selectedPath.addAll(filteredPaths);
+
+		}
+		System.out.println(selectedPath);
+		if (selectedPath != null) {
+
+			for (GraphPath<String, DefaultWeightedEdge> path : selectedPath) {
+				List<String> vertices = path.getVertexList();
+				List<DefaultWeightedEdge> edges = path.getEdgeList();
+
+				System.out.println("Vertices in path:");
+				for (int i = 0; i < vertices.size(); i++) {
+					System.out.println("Position " + (i + 1) + ": Vertex " + vertices.get(i));
+				}
+
+				System.out.println("Edges in path:");
+				for (int i = 0; i < edges.size(); i++) {
+					System.out.println("Position " + (i + 1) + ": Edge " + edges.get(i));
+				}
+			}
+		}
 	}
 
 	/**
@@ -697,9 +808,13 @@ public class DependencyGraph {
 		AllDirectedPaths<String, DefaultWeightedEdge> allDirectedPaths = new AllDirectedPaths<>(dependencyGraph);
 
 		Set<String> endEvent = findEndNodes(dependencyGraph);
-		endEvent.addAll(endActivities);
+		for(String act: endActivities) {
+			if(dependencyGraph.containsVertex(act)) {
+				endEvent.add(act);
+			}
+		}
 		for (String endNode : endEvent) {
-			allDirectedPaths.getAllPaths(startActivities.get(0), endNode, true, null)
+			allDirectedPaths.getAllPaths(startActivities.get(0).trim(), endNode.trim(), true, null)
 					.forEach(path -> allPaths.add(path.getVertexList()));
 		}
 
@@ -746,7 +861,6 @@ public class DependencyGraph {
 			changeVertexName(dependencyGraph, v, regex(v));
 			changeVertexName(dependencyGraphWithLoop, v, regex(v));
 		}
-
 	}
 
 	public void changeVertexName(String oldName, String newName) {
@@ -779,5 +893,36 @@ public class DependencyGraph {
 			String targetVertex = graph.getEdgeTarget(edge);
 			graph.addEdge(newName, targetVertex);
 		}
+	}
+
+	public void regexOnElementInfo() {
+		regex(startActivities);
+		regex(endActivities);
+
+		Iterator<List<String>> loopIter = loops.iterator();
+		while (loopIter.hasNext()) {
+			List<String> elements = loopIter.next();
+			regex(elements);
+		}
+
+		Iterator<Set<String>> paramItem = parallelism.iterator();
+		while (paramItem.hasNext()) {
+			Set<String> elements = paramItem.next();
+			regex(elements);
+
+		}
+		System.out.println(parallelism);
+		// Creating a new map to hold keys without spaces
+		Map<String, Map<String, String>> newMap = new HashMap<>();
+
+		// Iterating over the original map to remove spaces from keys
+		for (Map.Entry<String, Map<String, String>> entry : elementInformations.entrySet()) {
+			String newKey = regex(entry.getKey()); // Removing spaces
+			newMap.put(newKey, entry.getValue()); // Putting the new key and value in the new map
+		}
+
+		// Optional: If the original map is no longer needed, you can replace it with
+		// the new map
+		elementInformations = newMap;
 	}
 }

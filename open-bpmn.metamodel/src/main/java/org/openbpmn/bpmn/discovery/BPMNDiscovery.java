@@ -207,7 +207,6 @@ public class BPMNDiscovery {
 	public void DependencyGraphToBPMN() throws BPMNModelException, CloneNotSupportedException {
 
 		BPMNProcess process = model.openDefaultProces();
-		
 
 		// it is used for the sequence flow
 		for (String dependency : dependencies) {
@@ -1202,18 +1201,13 @@ public class BPMNDiscovery {
 					+ sourceElements.stream().map(src -> src.getId()).collect(Collectors.toList()));
 			String tempActivity = "___temp___";
 			BPMNElementNode tempElement = process.addTask(tempActivity, tempActivity, BPMNTypes.TASK);
-			System.out.println(tempElement.getId());
 			for (String target : targetIds) {
 				BPMNElementNode targetElement = process.findElementNodeById(target);
 				System.out.println(targetElement.getId());
 				if (tempElement.getOutgoingSequenceFlows().size() > 0) {
 					addSplitGateway(tempElement, targetElement);
 					splitGateway = null;
-					// probably XOR join
-//					if (targetElement.getIngoingSequenceFlows().size() > 1) {
-//						addXorGateway(process, targetElement);
-//					}
-//					splitGateway = null;
+
 				} else {
 					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), tempActivity, target);
 					seqenceFlowId++;
@@ -1224,8 +1218,15 @@ public class BPMNDiscovery {
 				process.deleteSequenceFlow(sq.getId());
 			}
 			process.deleteElementNode(tempElement.getId());
+			for (String target : targetIds) {
+				BPMNElementNode targetElement = process.findElementNodeById(target);
+//			 probably XOR join
+				if (targetElement.getIngoingSequenceFlows().size() > 1) {
+					addXorGateway(process, targetElement);
+				}
+				splitGateway = null;
+			}
 
-//			}
 		}
 
 	}

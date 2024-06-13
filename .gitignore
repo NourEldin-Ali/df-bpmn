@@ -3,6 +3,7 @@
 .project
 .classpath
 open-bpmn.glsp-server/.classpath
+lib
 
 ### Maven ###
 target/
@@ -23,7 +24,6 @@ buildNumber.properties
 node_modules
 node_modules/.yarn-integrity
 .browser_modules
-lib
 *.log
 tsconfig.tsbuildinfo
 gen-webpack.config.js

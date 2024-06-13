@@ -110,8 +110,8 @@ public class BPMNTransformation {
 //			example5();
 //			 example6();
 			// three loops
-//			example0();
-			example8();
+			example0();
+//			example8();
 //			example0();
 		}
 		long endTime = System.nanoTime();
@@ -123,10 +123,10 @@ public class BPMNTransformation {
 
 	private static void example0() {
 		String output = path;
-		String startEventString = "Client application not submitted";
-		String dependencyRelationsString = "[\"Client application not submitted -> Submit application\", \"Submit application -> Receive application\", \"Receive application -> Review application for completeness and accuracy\", \"Review application for completeness and accuracy -> Send application back for correction\", \"Send application back for correction -> Submit application\", \"Review application for completeness and accuracy -> Check application against regulatory requirements\", \"Check application against regulatory requirements -> Reject application\", \"Reject application -> Inform client of rejection\", \"Inform client of rejection -> Application rejected\", \"Check application against regulatory requirements -> Create account\", \"Create account -> Notify client of successful account creation\", \"Notify client of successful account creation -> Account successfully created\", \"Submit application -> Application withdrawn\", \"Receive application -> Application withdrawn\", \"Review application for completeness and accuracy -> Application withdrawn\", \"Send application back for correction -> Application withdrawn\", \"Check application against regulatory requirements -> Application withdrawn\", \"Reject application -> Application withdrawn\", \"Inform client of rejection -> Application withdrawn\", \"Create account -> Application withdrawn\", \"Notify client of successful account creation -> Application withdrawn\"]";
-		String parallelRelationString = "[[\"Receive application\", \"Application withdrawn\"], [\"Review application for completeness and accuracy\", \"Application withdrawn\"], [\"Send application back for correction\", \"Application withdrawn\"], [\"Check application against regulatory requirements\", \"Application withdrawn\"], [\"Submit application\", \"Application withdrawn\"], [\"Reject application\", \"Application withdrawn\"], [\"Create account\", \"Application withdrawn\"], [\"Inform client of rejection\", \"Application withdrawn\"], [\"Application rejected\", \"Application withdrawn\"], [\"Notify client of successful account creation\", \"Application withdrawn\"], [\"Account successfully created\", \"Application withdrawn\"]]";
-		String elementInfoString = "{\"Client application not submitted\": {\"type\": \"start\", \"participant\": \"Client\"}, \"Account successfully created\": {\"type\": \"end\", \"participant\": \"Customer Service Department\"}, \"Application rejected\": {\"type\": \"end\", \"participant\": \"Compliance Department\"}, \"Application withdrawn\": {\"type\": \"end\", \"participant\": \"Client\"}, \"Submit application\": {\"type\": \"human\", \"participant\": \"Client\"}, \"Receive application\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Review application for completeness and accuracy\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Send application back for correction\": {\"type\": \"human\", \"participant\": \"Customer Service Department\"}, \"Check application against regulatory requirements\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Reject application\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Inform client of rejection\": {\"type\": \"human\", \"participant\": \"Compliance Department\"}, \"Create account\": {\"type\": \"service\", \"participant\": \"Compliance Department\"}, \"Notify client of successful account creation\": {\"type\": \"service\", \"participant\": \"Compliance Department\"}}";
+		String startEventString = "Applicant needs loan";
+		String dependencyRelationsString = "[\"Applicant needs loan -> Submit loan application form\", \"Submit loan application form -> Loan application submitted\", \"Receive loan application form -> Loan application received\", \"Review application -> Check application completeness\", \"Review application -> Determine eligibility\", \"Check application completeness -> Perform further assessments\", \"Determine eligibility -> Perform further assessments\", \"Perform further assessments -> Make decision on loan approval\", \"Make decision on loan approval -> Disburse loan\", \"Disburse loan -> Loan application submitted\", \"Check application completeness -> Request additional information\", \"Determine eligibility -> Request additional information\", \"Request additional information -> Loan application received\", \"Check application completeness -> Reject application\", \"Determine eligibility -> Reject application\", \"Reject application -> Loan application received\"]";
+		String parallelRelationString = "[[\"Check application completeness\", \"Determine eligibility\"]]";
+		String elementInfoString = "{\"Applicant needs loan\": {\"type\": \"start\", \"participant\": \"Applicant\"}, \"Loan application submitted\": {\"type\": \"end\", \"participant\": \"Applicant\"}, \"Loan application received\": {\"type\": \"end\", \"participant\": \"Loan Processing Department\"}, \"Submit loan application form\": {\"type\": \"human\", \"participant\": \"Applicant\"}, \"Receive loan application form\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Review application\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Determine eligibility\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Check application completeness\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Request additional information\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Reject application\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Perform further assessments\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Make decision on loan approval\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Disburse loan\": {\"type\": \"service\", \"participant\": \"Loan Processing Department\"}}";
 
 		List<String> startsEvents = new ArrayList<>();
 		startsEvents.add(startEventString);
@@ -154,7 +154,7 @@ public class BPMNTransformation {
 				endEvents.add(entry.getKey());
 			}
 		}
-
+		System.out.println(endEvents);
 		// Initialize the HashMap
 
 		DependencyGraph bpmnTransformation = new DependencyGraph();
@@ -169,15 +169,18 @@ public class BPMNTransformation {
 			bpmnTransformation.addVertex(targetId);
 			bpmnTransformation.addEdge(sourceId, targetId);
 		}
+		
 		bpmnTransformation.startActivities = startsEvents;
 		bpmnTransformation.endActivities = endEvents;
 		bpmnTransformation.parallelism = parallelRelations;
 		bpmnTransformation.elementInformations = elementsInfo;
+//		System.out.println(bpmnTransformation.dependencyGraph.toString());
 		bpmnTransformation.findAndRemoveLoops();
-
+//		System.out.println(bpmnTransformation.dependencyGraph.toString());
+		System.out.println(bpmnTransformation.getDependenciesDFA());
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
-			System.out.println(bpmnDiscovery.dependencies);
+			System.out.println(bpmnDiscovery.dependenciesGraph.getDependenciesDFA());
 			bpmnDiscovery.DependencyGraphToBPMN();
 			bpmnDiscovery.saveMode(output);
 		} catch (BPMNModelException e) {

@@ -68,6 +68,11 @@ RUN mkdir /usr/src/app/workspace
 # COPY . /usr/src/app/open-bpmn
 RUN git clone https://github.com/NourEldin-Ali/open-bpmn.git
 
+# COMPILE DEPENDENCIES METAMODEL part
+WORKDIR /usr/src/app/open-bpmn/open-bpmn.metamodel/dependencies
+RUN bash compile.sh
+
+
 # BUILD GLSP Server part
 WORKDIR /usr/src/app/open-bpmn/
 RUN mvn clean install -DskipTest

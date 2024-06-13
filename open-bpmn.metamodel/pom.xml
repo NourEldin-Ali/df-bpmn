@@ -12,10 +12,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>11</maven.compiler.release>
+		<local.repository.folder>${pom.basedir}/dependencies/</local.repository.folder>
 	</properties>
 
 	<build>
 		<plugins>
+	
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
@@ -26,8 +28,8 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.openbpmn.bpmn.discovery.BPMNDiscovery</mainClass>
-							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>org.openbpmn.bpmn.discovery.BPMNTransformation</mainClass>
+							<classpathPrefix>lib/*</classpathPrefix>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -35,9 +37,9 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
@@ -59,6 +61,32 @@
 			<artifactId>gson</artifactId>
 			<version>2.10</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.discovery</groupId>
+			<artifactId>discovery-bonita-bpmn-layout-generator</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.discovery</groupId>
+			<artifactId>discovery-bonita-javax.activation-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.discovery</groupId>
+			<artifactId>discovery-bonita-jaxb-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.discovery</groupId>
+			<artifactId>discovery-bonita-open-xes</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.discovery</groupId>
+			<artifactId>discovery-bonita-openxes-xstream</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- JUnit Tests -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -66,9 +94,6 @@
 			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
-
-
+		
 	</dependencies>
-
-
 </project>

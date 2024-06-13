@@ -26,7 +26,9 @@ jobs:
     - name: Execute Bash script
       run: |
         chmod +x ./open-bpmn.metamodel/dependencies/compile.sh
-        bash ./open-bpmn.metamodel/dependencies/compile.sh
+        cd ./open-bpmn.metamodel/dependencies/
+        bash compile.sh
+        cd ../../..
 
     - name: Building Open-BPMN Server with Maven
       run: mvn -B package --file pom.xml

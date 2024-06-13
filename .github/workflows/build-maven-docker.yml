@@ -25,8 +25,8 @@ jobs:
         cache: maven
     - name: Execute Bash script
       run: |
-        chmod +x ../open-bpmn.metamodel/dependencies/compile.sh
-        bash ../open-bpmn.metamodel/dependencies/compile.sh
+        chmod +x ./open-bpmn.metamodel/dependencies/compile.sh
+        bash ./open-bpmn.metamodel/dependencies/compile.sh
 
     - name: Building Open-BPMN Server with Maven
       run: mvn -B package --file pom.xml

@@ -6,7 +6,22 @@ public class DepthFirstSearch {
 	 public static List<Pair> dfs(Map<String, List<String>> graph, String start) {
 	        Set<String> visited = new HashSet<>();
 	        List<Pair> pairs = new ArrayList<>();
+	        
+	        // Ensure all nodes are included, even those not in the key set but present in values
+	        Set<String> allNodes = new HashSet<>(graph.keySet());
+	        for (List<String> neighbors : graph.values()) {
+	            for (String neighbor : neighbors) {
+	                allNodes.add(neighbor);
+	            }
+	        }
+	        
 	        dfsHelper(graph, start, visited, pairs);
+	        // Start DFS from each unvisited node
+	        for (String node : allNodes) {
+	            if (!visited.contains(node)) {
+	                dfsHelper(graph, node, visited, pairs);
+	            }
+	        }
 	        return pairs;
 	    }
 

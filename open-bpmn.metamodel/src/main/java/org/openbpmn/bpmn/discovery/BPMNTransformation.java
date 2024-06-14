@@ -65,16 +65,19 @@ public class BPMNTransformation {
 				}
 			}
 
-			// Initialize the HashMap
-
+			Map<String,String> elementsName = new HashMap();
 			DependencyGraph bpmnTransformation = new DependencyGraph();
 			for (String dependency : events) {
 				// Split the dependency string into source and target
 				String[] parts = dependency.split("->");
-
+				
 				// Extract source and target
-				String sourceId = parts[0].trim();
-				String targetId = parts[1].trim();
+				String sourceId = DependencyGraph.regex(parts[0]);
+				String targetId = DependencyGraph.regex(parts[1]);
+				
+				elementsName.put(sourceId, parts[0]);
+				elementsName.put(targetId, parts[1]);
+				
 				bpmnTransformation.addVertex(sourceId);
 				bpmnTransformation.addVertex(targetId);
 				bpmnTransformation.addEdge(sourceId, targetId);
@@ -83,8 +86,11 @@ public class BPMNTransformation {
 			bpmnTransformation.endActivities = endEvents;
 			bpmnTransformation.parallelism = parallelRelations;
 			bpmnTransformation.elementInformations = elementsInfo;
+			bpmnTransformation.elementsName = elementsName;
+			bpmnTransformation.changeVertexNameToRegex();
+			bpmnTransformation.regexOnElementInfo();
 			bpmnTransformation.findAndRemoveLoops();
-
+			
 			try {
 				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
 				bpmnDiscovery.DependencyGraphToBPMN();
@@ -123,10 +129,10 @@ public class BPMNTransformation {
 
 	private static void example0() {
 		String output = path;
-		String startEventString = "Applicant needs loan";
-		String dependencyRelationsString = "[\"Applicant needs loan -> Submit loan application form\", \"Submit loan application form -> Loan application submitted\", \"Receive loan application form -> Loan application received\", \"Review application -> Check application completeness\", \"Review application -> Determine eligibility\", \"Check application completeness -> Perform further assessments\", \"Determine eligibility -> Perform further assessments\", \"Perform further assessments -> Make decision on loan approval\", \"Make decision on loan approval -> Disburse loan\", \"Disburse loan -> Loan application submitted\", \"Check application completeness -> Request additional information\", \"Determine eligibility -> Request additional information\", \"Request additional information -> Loan application received\", \"Check application completeness -> Reject application\", \"Determine eligibility -> Reject application\", \"Reject application -> Loan application received\"]";
-		String parallelRelationString = "[[\"Check application completeness\", \"Determine eligibility\"]]";
-		String elementInfoString = "{\"Applicant needs loan\": {\"type\": \"start\", \"participant\": \"Applicant\"}, \"Loan application submitted\": {\"type\": \"end\", \"participant\": \"Applicant\"}, \"Loan application received\": {\"type\": \"end\", \"participant\": \"Loan Processing Department\"}, \"Submit loan application form\": {\"type\": \"human\", \"participant\": \"Applicant\"}, \"Receive loan application form\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Review application\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Determine eligibility\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Check application completeness\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Request additional information\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Reject application\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Perform further assessments\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Make decision on loan approval\": {\"type\": \"human\", \"participant\": \"Loan Processing Department\"}, \"Disburse loan\": {\"type\": \"service\", \"participant\": \"Loan Processing Department\"}}";
+		String startEventString = "No bpmn test model request";
+		String dependencyRelationsString = "[\"No bpmn test model request -> Receive request\", \"Receive request -> Review request\", \"Review request -> Request additional information\", \"Request additional information -> Provide additional information\", \"Provide additional information -> Review request\", \"Review request -> Model process\", \"Model process -> Review process model\", \"Review process model -> Revise process model\", \"Revise process model -> Review process model\", \"Review process model -> Approve process model\", \"Approve process model -> Share process model\", \"Share process model -> Bpmn test model approved and shared\"]";
+		String parallelRelationString = "[]";
+		String elementInfoString = "{\"No bpmn test model request\": {\"type\": \"start\", \"participant\": \"Requester\"}, \"Bpmn test model approved and shared\": {\"type\": \"end\", \"participant\": \"Requester\"}, \"Receive request\": {\"type\": \"service\", \"participant\": \"Process Owner\"}, \"Review request\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Request additional information\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Provide additional information\": {\"type\": \"human\", \"participant\": \"Requester\"}, \"Model process\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Review process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Approve process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Share process model\": {\"type\": \"service\", \"participant\": \"Process Owner\"}, \"Revise process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}}";
 
 		List<String> startsEvents = new ArrayList<>();
 		startsEvents.add(startEventString);
@@ -154,33 +160,39 @@ public class BPMNTransformation {
 				endEvents.add(entry.getKey());
 			}
 		}
-		System.out.println(endEvents);
 		// Initialize the HashMap
-
+		Map<String,String> elementsName = new HashMap();
 		DependencyGraph bpmnTransformation = new DependencyGraph();
 		for (String dependency : events) {
 			// Split the dependency string into source and target
 			String[] parts = dependency.split("->");
-
+			
 			// Extract source and target
-			String sourceId = parts[0].trim();
-			String targetId = parts[1].trim();
+			String sourceId = DependencyGraph.regex(parts[0]);
+			String targetId = DependencyGraph.regex(parts[1]);
+			
+			elementsName.put(sourceId, parts[0]);
+			elementsName.put(targetId, parts[1]);
+			
 			bpmnTransformation.addVertex(sourceId);
 			bpmnTransformation.addVertex(targetId);
 			bpmnTransformation.addEdge(sourceId, targetId);
 		}
-		
+		System.out.println(events);
 		bpmnTransformation.startActivities = startsEvents;
 		bpmnTransformation.endActivities = endEvents;
 		bpmnTransformation.parallelism = parallelRelations;
 		bpmnTransformation.elementInformations = elementsInfo;
-//		System.out.println(bpmnTransformation.dependencyGraph.toString());
+		bpmnTransformation.elementsName = elementsName;
+		bpmnTransformation.changeVertexNameToRegex();
+		bpmnTransformation.regexOnElementInfo();
 		bpmnTransformation.findAndRemoveLoops();
+		
+//		System.out.println(bpmnTransformation.getLoops());
 //		System.out.println(bpmnTransformation.dependencyGraph.toString());
-		System.out.println(bpmnTransformation.getDependenciesDFA());
+//		System.out.println(bpmnTransformation.getDependenciesDFA());
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
-			System.out.println(bpmnDiscovery.dependenciesGraph.getDependenciesDFA());
 			bpmnDiscovery.DependencyGraphToBPMN();
 			bpmnDiscovery.saveMode(output);
 		} catch (BPMNModelException e) {

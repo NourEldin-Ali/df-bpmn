@@ -129,10 +129,10 @@ public class BPMNTransformation {
 
 	private static void example0() {
 		String output = path;
-		String startEventString = "Order not received";
-		String dependencyRelationsString = "[\"Order not received -> Receive order\", \"Receive order -> Review order\", \"Review order -> Reject order\", \"Reject order -> Order rejected\", \"Review order -> Accept order\", \"Accept order -> Inform storehouse\", \"Accept order -> Inform engineering department\", \"Inform storehouse -> Process part list\", \"Process part list -> Check part quantity\", \"Check part quantity -> Reserve part\", \"Check part quantity -> Back-order part\", \"Reserve part -> Check part quantity\", \"Back-order part -> Check part quantity\", \"Inform engineering department -> Prepare for assembly\", \"Prepare for assembly -> Assemble bicycle\", \"Check part quantity -> Assemble bicycle\", \"Assemble bicycle -> Ship bicycle\", \"Ship bicycle -> Bicycle shipped\"]";
-		String parallelRelationString = "[[\"Inform storehouse\", \"Inform engineering department\"]]";
-		String elementInfoString = "{\"Order not received\": {\"type\": \"start\", \"participant\": \"Sales Department\"}, \"Order rejected\": {\"type\": \"end\", \"participant\": \"Sales Department\"}, \"Bicycle shipped\": {\"type\": \"end\", \"participant\": \"Sales Department\"}, \"Receive order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Review order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Reject order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Accept order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Inform storehouse\": {\"type\": \"service\", \"participant\": \"Sales Department\"}, \"Inform engineering department\": {\"type\": \"service\", \"participant\": \"Sales Department\"}, \"Process part list\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Check part quantity\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Reserve part\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Back-order part\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Prepare for assembly\": {\"type\": \"service\", \"participant\": \"Engineering Department\"}, \"Assemble bicycle\": {\"type\": \"human\", \"participant\": \"Engineering Department\"}, \"Ship bicycle\": {\"type\": \"human\", \"participant\": \"Sales Department\"}}";
+		String startEventString = "Customer has a defective computer";
+		String dependencyRelationsString = "[\"Customer has a defective computer -> Bring defective computer\", \"Bring defective computer -> Check defect\", \"Check defect -> Provide repair cost calculation\", \"Provide repair cost calculation -> Accept repair costs\", \"Provide repair cost calculation -> Take computer home unrepaired\", \"Accept repair costs -> Repair hardware\", \"Accept repair costs -> Configure software\", \"Repair hardware -> Test system functionality\", \"Configure software -> Test system functionality\", \"Test system functionality -> Execute another repair activity\", \"Execute another repair activity -> Repair hardware\", \"Execute another repair activity -> Configure software\", \"Test system functionality -> Repair finished with no errors detected\", \"Take computer home unrepaired -> Customer takes computer home unrepaired\"]";
+		String parallelRelationString = "[[\"Repair hardware\", \"Configure software\"], [\"Repair hardware\", \"Configure software\"]]";
+		String elementInfoString = "{\"Customer has a defective computer\": {\"type\": \"start\", \"participant\": \"Customer\"}, \"Customer takes computer home unrepaired\": {\"type\": \"end\", \"participant\": \"Customer\"}, \"Repair finished with no errors detected\": {\"type\": \"end\", \"participant\": \"Repair Technician\"}, \"Bring defective computer\": {\"type\": \"human\", \"participant\": \"Customer\"}, \"Check defect\": {\"type\": \"human\", \"participant\": \"Customer Service Representative (CRS)\"}, \"Provide repair cost calculation\": {\"type\": \"human\", \"participant\": \"Customer Service Representative (CRS)\"}, \"Accept repair costs\": {\"type\": \"human\", \"participant\": \"Customer\"}, \"Take computer home unrepaired\": {\"type\": \"human\", \"participant\": \"Customer\"}, \"Check hardware\": {\"type\": \"human\", \"participant\": \"Repair Technician\"}, \"Repair hardware\": {\"type\": \"human\", \"participant\": \"Repair Technician\"}, \"Check software\": {\"type\": \"human\", \"participant\": \"Repair Technician\"}, \"Configure software\": {\"type\": \"human\", \"participant\": \"Repair Technician\"}, \"Test system functionality\": {\"type\": \"service\", \"participant\": \"System\"}, \"Execute another repair activity\": {\"type\": \"human\", \"participant\": \"Repair Technician\"}}";
 
 		List<String> startsEvents = new ArrayList<>();
 		startsEvents.add(startEventString);
@@ -188,7 +188,7 @@ public class BPMNTransformation {
 		bpmnTransformation.regexOnElementInfo();
 		bpmnTransformation.findAndRemoveLoops();
 		
-//		System.out.println(bpmnTransformation.getLoops());
+		System.out.println(bpmnTransformation.getLoops());
 //		System.out.println(bpmnTransformation.dependencyGraph.toString());
 //		System.out.println(bpmnTransformation.getDependenciesDFA());
 		try {
@@ -753,13 +753,11 @@ public class BPMNTransformation {
 		list.add("a->b");
 		list.add("a->c");
 		list.add("b->d");
-		list.add("d->f");
-		list.add("c->e");
-		list.add("e->f");
+		list.add("b->f");
+		list.add("c->d");
+		list.add("c->f");
 		list.add("f->end");
-		
-		list.add("f->d");
-		list.add("f->e");
+		list.add("d->end");
 
 		
 		
@@ -783,7 +781,7 @@ public class BPMNTransformation {
 		parallelRelations.add(new HashSet<>() {
 			{
 				add("d");
-				add("e");
+				add("f");
 			}
 		});
 		Map<String, Map<String, String>> elementsInfo = new HashMap<>();

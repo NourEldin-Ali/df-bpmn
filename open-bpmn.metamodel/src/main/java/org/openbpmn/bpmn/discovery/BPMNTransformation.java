@@ -116,7 +116,7 @@ public class BPMNTransformation {
 //			example5();
 //			 example6();
 			// three loops
-			example0();
+//			example0();
 //			example8();
 //			example0();
 		}
@@ -129,10 +129,10 @@ public class BPMNTransformation {
 
 	private static void example0() {
 		String output = path;
-		String startEventString = "No bpmn test model request";
-		String dependencyRelationsString = "[\"No bpmn test model request -> Receive request\", \"Receive request -> Review request\", \"Review request -> Request additional information\", \"Request additional information -> Provide additional information\", \"Provide additional information -> Review request\", \"Review request -> Model process\", \"Model process -> Review process model\", \"Review process model -> Revise process model\", \"Revise process model -> Review process model\", \"Review process model -> Approve process model\", \"Approve process model -> Share process model\", \"Share process model -> Bpmn test model approved and shared\"]";
-		String parallelRelationString = "[]";
-		String elementInfoString = "{\"No bpmn test model request\": {\"type\": \"start\", \"participant\": \"Requester\"}, \"Bpmn test model approved and shared\": {\"type\": \"end\", \"participant\": \"Requester\"}, \"Receive request\": {\"type\": \"service\", \"participant\": \"Process Owner\"}, \"Review request\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Request additional information\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Provide additional information\": {\"type\": \"human\", \"participant\": \"Requester\"}, \"Model process\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Review process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Approve process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}, \"Share process model\": {\"type\": \"service\", \"participant\": \"Process Owner\"}, \"Revise process model\": {\"type\": \"human\", \"participant\": \"Process Owner\"}}";
+		String startEventString = "Order not received";
+		String dependencyRelationsString = "[\"Order not received -> Receive order\", \"Receive order -> Review order\", \"Review order -> Reject order\", \"Reject order -> Order rejected\", \"Review order -> Accept order\", \"Accept order -> Inform storehouse\", \"Accept order -> Inform engineering department\", \"Inform storehouse -> Process part list\", \"Process part list -> Check part quantity\", \"Check part quantity -> Reserve part\", \"Check part quantity -> Back-order part\", \"Reserve part -> Check part quantity\", \"Back-order part -> Check part quantity\", \"Inform engineering department -> Prepare for assembly\", \"Prepare for assembly -> Assemble bicycle\", \"Check part quantity -> Assemble bicycle\", \"Assemble bicycle -> Ship bicycle\", \"Ship bicycle -> Bicycle shipped\"]";
+		String parallelRelationString = "[[\"Inform storehouse\", \"Inform engineering department\"]]";
+		String elementInfoString = "{\"Order not received\": {\"type\": \"start\", \"participant\": \"Sales Department\"}, \"Order rejected\": {\"type\": \"end\", \"participant\": \"Sales Department\"}, \"Bicycle shipped\": {\"type\": \"end\", \"participant\": \"Sales Department\"}, \"Receive order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Review order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Reject order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Accept order\": {\"type\": \"human\", \"participant\": \"Sales Department\"}, \"Inform storehouse\": {\"type\": \"service\", \"participant\": \"Sales Department\"}, \"Inform engineering department\": {\"type\": \"service\", \"participant\": \"Sales Department\"}, \"Process part list\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Check part quantity\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Reserve part\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Back-order part\": {\"type\": \"service\", \"participant\": \"Storehouse\"}, \"Prepare for assembly\": {\"type\": \"service\", \"participant\": \"Engineering Department\"}, \"Assemble bicycle\": {\"type\": \"human\", \"participant\": \"Engineering Department\"}, \"Ship bicycle\": {\"type\": \"human\", \"participant\": \"Sales Department\"}}";
 
 		List<String> startsEvents = new ArrayList<>();
 		startsEvents.add(startEventString);

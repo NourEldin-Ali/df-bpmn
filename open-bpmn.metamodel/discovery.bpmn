@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn2:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="demo" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <bpmn2:process id="process_1" name="Default Process" processType="Public">
+    <bpmn2:startEvent id="start" name="">
+      <bpmn2:outgoing>sq-0</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:task expand="true" id="a" name="">
+      <bpmn2:incoming>sq-0</bpmn2:incoming>
+      <bpmn2:outgoing>sq-10</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="sq-0" sourceRef="start" targetRef="a"/>
+    <bpmn2:task expand="true" id="c" name="">
+      <bpmn2:incoming>sq-11</bpmn2:incoming>
+      <bpmn2:outgoing>sq-13</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:task expand="true" id="f" name="">
+      <bpmn2:incoming>sq-5</bpmn2:incoming>
+      <bpmn2:outgoing>sq-8</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:endEvent id="end" name="">
+      <bpmn2:incoming>sq-9</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:task expand="true" id="d" name="">
+      <bpmn2:incoming>sq-6</bpmn2:incoming>
+      <bpmn2:outgoing>sq-7</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:parallelGateway gatewayDirection="Diverging" id="gt-0" name="" num="1">
+      <bpmn2:outgoing>sq-5</bpmn2:outgoing>
+      <bpmn2:outgoing>sq-6</bpmn2:outgoing>
+      <bpmn2:incoming>sq-15</bpmn2:incoming>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="sq-5" sourceRef="gt-0" targetRef="f"/>
+    <bpmn2:sequenceFlow id="sq-6" sourceRef="gt-0" targetRef="d"/>
+    <bpmn2:parallelGateway gatewayDirection="Diverging" id="gt-1" name="" num="1">
+      <bpmn2:incoming>sq-7</bpmn2:incoming>
+      <bpmn2:incoming>sq-8</bpmn2:incoming>
+      <bpmn2:outgoing>sq-9</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="sq-7" sourceRef="d" targetRef="gt-1"/>
+    <bpmn2:sequenceFlow id="sq-8" sourceRef="f" targetRef="gt-1"/>
+    <bpmn2:sequenceFlow id="sq-9" sourceRef="gt-1" targetRef="end"/>
+    <bpmn2:task expand="true" id="b" name="">
+      <bpmn2:incoming>sq-12</bpmn2:incoming>
+      <bpmn2:outgoing>sq-14</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="gt-2" name="" num="0">
+      <bpmn2:incoming>sq-10</bpmn2:incoming>
+      <bpmn2:outgoing>sq-11</bpmn2:outgoing>
+      <bpmn2:outgoing>sq-12</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sq-10" sourceRef="a" targetRef="gt-2"/>
+    <bpmn2:sequenceFlow id="sq-11" sourceRef="gt-2" targetRef="c"/>
+    <bpmn2:sequenceFlow id="sq-12" sourceRef="gt-2" targetRef="b"/>
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="gt-3" name="" num="0">
+      <bpmn2:incoming>sq-13</bpmn2:incoming>
+      <bpmn2:incoming>sq-14</bpmn2:incoming>
+      <bpmn2:outgoing>sq-15</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="sq-13" sourceRef="c" targetRef="gt-3"/>
+    <bpmn2:sequenceFlow id="sq-14" sourceRef="b" targetRef="gt-3"/>
+    <bpmn2:sequenceFlow id="sq-15" sourceRef="gt-3" targetRef="gt-0"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="OpenBPMN Diagram">
+    <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_bbRL0A">
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2AoBxQ">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="a" id="BPMNShape_dWslpg">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-0" id="BPMNEdge_qrRhhA" sourceElement="BPMNShape_bbRL0A" targetElement="BPMNShape_dWslpg">
+        <di:waypoint x="18.0" y="18.0"/>
+        <di:waypoint x="82.5" y="27.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="c" id="BPMNShape_YskL3Q">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="f" id="BPMNShape_Li20Dg">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_J9sBlQ">
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_ZJ00eQ">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="d" id="BPMNShape_lLHXXA">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-0" id="BPMNShape_m3uwfg">
+        <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_TSV5nQ">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-5" id="BPMNEdge_vNf9zA" sourceElement="BPMNShape_m3uwfg" targetElement="BPMNShape_Li20Dg">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="82.5" y="27.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-6" id="BPMNEdge_jqmGCA" sourceElement="BPMNShape_m3uwfg" targetElement="BPMNShape_lLHXXA">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="82.5" y="27.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="gt-1" id="BPMNShape_DAIL7A">
+        <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_CQa6Rg">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-7" id="BPMNEdge_aFELUQ" sourceElement="BPMNShape_lLHXXA" targetElement="BPMNShape_DAIL7A">
+        <di:waypoint x="82.5" y="27.5"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-8" id="BPMNEdge_0SEt5Q" sourceElement="BPMNShape_Li20Dg" targetElement="BPMNShape_DAIL7A">
+        <di:waypoint x="82.5" y="27.5"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-9" id="BPMNEdge_r1n2gg" sourceElement="BPMNShape_DAIL7A" targetElement="BPMNShape_J9sBlQ">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="18.0" y="18.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="b" id="BPMNShape_RSDVYw">
+        <dc:Bounds height="55.0" width="165.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-2" id="BPMNShape_0Zqp7g">
+        <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_FP8kEA">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-10" id="BPMNEdge_0d7HOA" sourceElement="BPMNShape_dWslpg" targetElement="BPMNShape_0Zqp7g">
+        <di:waypoint x="82.5" y="27.5"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-11" id="BPMNEdge_eNRAhw" sourceElement="BPMNShape_0Zqp7g" targetElement="BPMNShape_YskL3Q">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="82.5" y="27.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-12" id="BPMNEdge_0V5QnQ" sourceElement="BPMNShape_0Zqp7g" targetElement="BPMNShape_RSDVYw">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="82.5" y="27.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="gt-3" id="BPMNShape_VstWLQ">
+        <dc:Bounds height="50.0" width="50.0" x="0.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_o7U02A">
+          <dc:Bounds x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-13" id="BPMNEdge_1ZwyZg" sourceElement="BPMNShape_YskL3Q" targetElement="BPMNShape_VstWLQ">
+        <di:waypoint x="82.5" y="27.5"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-14" id="BPMNEdge_qFKfbw" sourceElement="BPMNShape_RSDVYw" targetElement="BPMNShape_VstWLQ">
+        <di:waypoint x="82.5" y="27.5"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-15" id="BPMNEdge_3vxzoQ" sourceElement="BPMNShape_VstWLQ" targetElement="BPMNShape_m3uwfg">
+        <di:waypoint x="25.0" y="25.0"/>
+        <di:waypoint x="25.0" y="25.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

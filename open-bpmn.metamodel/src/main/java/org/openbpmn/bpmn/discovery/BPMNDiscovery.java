@@ -67,7 +67,6 @@ public class BPMNDiscovery {
 	private Gateway splitGateway = null;
 	private Boolean isAdded = false;
 
-
 	public BPMNDiscovery(DependencyGraph dependenciesGraph) {
 		logger.info("...Creating BPMN stated");
 		model = BPMNModelFactory.createInstance("demo", "1.0.0", "http://org.openbpmn");
@@ -304,45 +303,51 @@ public class BPMNDiscovery {
 						if (sourceElement.getOutgoingSequenceFlows().size() > 0) {
 							System.out.println(
 									"--- probably split ---: " + sourceElement.getId() + "->" + targetElement.getId());
-
-							BPMNElementNode precedingOfTarget = targetElement.getIngoingSequenceFlows().iterator()
-									.next().getSourceElement();
-							if (BPMNTypes.BPMN_GATEWAYS.contains(precedingOfTarget.getType())) {
-								System.out.println("--- probably do nothing ---");
+//							System.out.println(targetElement.getIngoingSequenceFlows().size());
+							if (targetElement.getIngoingSequenceFlows().size() > 0) {
+								BPMNElementNode precedingOfTarget = targetElement.getIngoingSequenceFlows().iterator()
+										.next().getSourceElement();
+								if (BPMNTypes.BPMN_GATEWAYS.contains(precedingOfTarget.getType())) {
+									System.out.println("--- probably do nothing ---");
 //								System.out.println(precedingOfTarget.getId());
-								Set<String> targetsElementFromBPMN = model.openDefaultProces()
-										.getAllSuccesssors(precedingOfTarget).stream().map(e -> e.getId())
-										.collect(Collectors.toSet());
-								// get source of element1
-								Set<DefaultWeightedEdge> targetsEdgeElementEdge = dependenciesGraph.dependencyGraph
-										.outgoingEdgesOf(sourceElement.getId());
-								Set<String> targetsElement = new HashSet<>();
-								targetsEdgeElementEdge.stream().forEach(edge -> targetsElement
-										.add(dependenciesGraph.dependencyGraph.getEdgeTarget(edge)));
+									Set<String> targetsElementFromBPMN = model.openDefaultProces()
+											.getAllSuccesssors(precedingOfTarget).stream().map(e -> e.getId())
+											.collect(Collectors.toSet());
+									// get source of element1
+									Set<DefaultWeightedEdge> targetsEdgeElementEdge = dependenciesGraph.dependencyGraph
+											.outgoingEdgesOf(sourceElement.getId());
+									Set<String> targetsElement = new HashSet<>();
+									targetsEdgeElementEdge.stream().forEach(edge -> targetsElement
+											.add(dependenciesGraph.dependencyGraph.getEdgeTarget(edge)));
 //								System.out.println(targetsElementFromBPMN);
 //								System.out.println(targetsElement);
-								// TODO: valide it by examples
-								if (targetsElement.containsAll(targetsElementFromBPMN)) {
+									// TODO: valide it by examples
+									if (targetsElement.containsAll(targetsElementFromBPMN)) {
 
-									if (!process.isPreceding(sourceElement, targetElement, targetElement)) {
-										System.out.println("--- error gateway---");
-										continue;
+										if (!process.isPreceding(sourceElement, targetElement, targetElement)) {
+											System.out.println("--- error gateway---");
+											continue;
+										} else {
+											// call split gateway function
+
+											System.out.print("--- nothing to do ---");
+											System.out.println("--- PROBABLY SKIP ---");
+											continue;
+										}
+
 									} else {
 										// call split gateway function
-
-										System.out.print("--- nothing to do ---");
-										System.out.println("--- PROBABLY SKIP ---");
-										continue;
+										System.out.println("--- split1 ---");
+										addSplitGateway(sourceElement, targetElement);
 									}
 
 								} else {
+									System.out.println("--- split2 ---");
 									// call split gateway function
-									System.out.println("--- split1 ---");
 									addSplitGateway(sourceElement, targetElement);
 								}
-
 							} else {
-								System.out.println("--- split2 ---");
+								System.out.println("--- split3 ---");
 								// call split gateway function
 								addSplitGateway(sourceElement, targetElement);
 							}

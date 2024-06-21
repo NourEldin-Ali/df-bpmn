@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<semantic:definitions targetNamespace="http://org.openbpmn" exporter="demo" exporterVersion="1.0.0" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+    <semantic:process processType="Public" name="Default Process" id="process_1">
+        <semantic:startEvent name="Order read " id="order-read">
+            <semantic:outgoing xmlns="">sq-0</semantic:outgoing>
+        </semantic:startEvent>
+        <semantic:serviceTask name="Read order from automatic order management system " id="read-order-from-automatic-order-management-system" expand="true">
+            <semantic:incoming xmlns="">sq-0</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-8</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:sequenceFlow sourceRef="order-read" targetRef="read-order-from-automatic-order-management-system" id="sq-0"/>
+        <semantic:serviceTask name=" Check if first product is in stock" id="check-if-first-product-is-in-stock" expand="true">
+            <semantic:incoming xmlns="">sq-9</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-22</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:serviceTask name="Reorder product from wholesaler " id="reorder-product-from-wholesaler" expand="true">
+            <semantic:incoming xmlns="">sq-21</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-3</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:serviceTask name="Demand delivery delay penalty " id="demand-delivery-delay-penalty" expand="true">
+            <semantic:incoming xmlns="">sq-3</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-25</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:sequenceFlow sourceRef="reorder-product-from-wholesaler" targetRef="demand-delivery-delay-penalty" id="sq-3"/>
+        <semantic:endEvent name=" Delivery delay penalty demanded" id="delivery-delay-penalty-demanded">
+            <semantic:incoming xmlns="">sq-24</semantic:incoming>
+        </semantic:endEvent>
+        <semantic:serviceTask name="Pack products " id="pack-products" expand="true">
+            <semantic:incoming xmlns="">sq-30</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-14</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:serviceTask name="Ship products " id="ship-products" expand="true">
+            <semantic:incoming xmlns="">sq-15</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-6</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:endEvent name=" Products shipped" id="products-shipped">
+            <semantic:incoming xmlns="">sq-6</semantic:incoming>
+        </semantic:endEvent>
+        <semantic:sequenceFlow sourceRef="ship-products" targetRef="products-shipped" id="sq-6"/>
+        <semantic:serviceTask name="Verify if entire order is ready for shipment " id="verify-if-entire-order-is-ready-for-shipment" expand="true">
+            <semantic:incoming xmlns="">sq-20</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-10</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-0" num="-4">
+            <semantic:incoming xmlns="">sq-8</semantic:incoming>
+            <semantic:incoming xmlns="">sq-11</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-9</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="read-order-from-automatic-order-management-system" targetRef="gt-0" id="sq-8"/>
+        <semantic:sequenceFlow sourceRef="gt-0" targetRef="check-if-first-product-is-in-stock" id="sq-9"/>
+        <semantic:serviceTask name="Request courier " id="request-courier" expand="true">
+            <semantic:incoming xmlns="">sq-29</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-13</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-1" num="0">
+            <semantic:incoming xmlns="">sq-10</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-11</semantic:outgoing>
+            <semantic:outgoing xmlns="">sq-29</semantic:outgoing>
+            <semantic:outgoing xmlns="">sq-30</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="verify-if-entire-order-is-ready-for-shipment" targetRef="gt-1" id="sq-10"/>
+        <semantic:sequenceFlow sourceRef="gt-1" targetRef="gt-0" id="sq-11"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-2" num="0">
+            <semantic:incoming xmlns="">sq-13</semantic:incoming>
+            <semantic:incoming xmlns="">sq-14</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-15</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="request-courier" targetRef="gt-2" id="sq-13"/>
+        <semantic:sequenceFlow sourceRef="pack-products" targetRef="gt-2" id="sq-14"/>
+        <semantic:sequenceFlow sourceRef="gt-2" targetRef="ship-products" id="sq-15"/>
+        <semantic:serviceTask name="Withdraw product from warehouse " id="withdraw-product-from-warehouse" expand="true">
+            <semantic:incoming xmlns="">sq-23</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-26</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:serviceTask name="Register ordered product in stock management system " id="register-ordered-product-in-stock-management-system" expand="true">
+            <semantic:incoming xmlns="">sq-27</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-20</semantic:outgoing>
+        </semantic:serviceTask>
+        <semantic:sequenceFlow sourceRef="register-ordered-product-in-stock-management-system" targetRef="verify-if-entire-order-is-ready-for-shipment" id="sq-20"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-4" num="-2">
+            <semantic:incoming xmlns="">sq-22</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-21</semantic:outgoing>
+            <semantic:outgoing xmlns="">sq-23</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="gt-4" targetRef="reorder-product-from-wholesaler" id="sq-21"/>
+        <semantic:sequenceFlow sourceRef="check-if-first-product-is-in-stock" targetRef="gt-4" id="sq-22"/>
+        <semantic:sequenceFlow sourceRef="gt-4" targetRef="withdraw-product-from-warehouse" id="sq-23"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-5" num="-2">
+            <semantic:incoming xmlns="">sq-25</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-24</semantic:outgoing>
+            <semantic:outgoing xmlns="">sq-28</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="gt-5" targetRef="delivery-delay-penalty-demanded" id="sq-24"/>
+        <semantic:sequenceFlow sourceRef="demand-delivery-delay-penalty" targetRef="gt-5" id="sq-25"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-6" num="-2">
+            <semantic:incoming xmlns="">sq-26</semantic:incoming>
+            <semantic:incoming xmlns="">sq-28</semantic:incoming>
+            <semantic:outgoing xmlns="">sq-27</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow sourceRef="withdraw-product-from-warehouse" targetRef="gt-6" id="sq-26"/>
+        <semantic:sequenceFlow sourceRef="gt-6" targetRef="register-ordered-product-in-stock-management-system" id="sq-27"/>
+        <semantic:sequenceFlow sourceRef="gt-5" targetRef="gt-6" id="sq-28"/>
+        <semantic:sequenceFlow sourceRef="gt-1" targetRef="request-courier" id="sq-29"/>
+        <semantic:sequenceFlow sourceRef="gt-1" targetRef="pack-products" id="sq-30"/>
+    </semantic:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1" xmlns="">
+            <bpmndi:BPMNShape bpmnElement="delivery-delay-penalty-demanded" id="BPMNShape_delivery-delay-penalty-demanded">
+                <dc:Bounds x="1685.0" y="35.0" width="30.0" height="30.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="1685.0" y="80.0" width="30.0" height="30.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="reorder-product-from-wholesaler" id="BPMNShape_reorder-product-from-wholesaler">
+                <dc:Bounds x="1040.0" y="120.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="demand-delivery-delay-penalty" id="BPMNShape_demand-delivery-delay-penalty">
+                <dc:Bounds x="1240.0" y="120.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-5" id="BPMNShape_gt-5">
+                <dc:Bounds x="1470.0" y="120.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="1440.0" y="90.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-1" id="BPMNShape_gt-1">
+                <dc:Bounds x="2270.0" y="320.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="2240.0" y="290.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="request-courier" id="BPMNShape_request-courier">
+                <dc:Bounds x="2440.0" y="220.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-2" id="BPMNShape_gt-2">
+                <dc:Bounds x="2670.0" y="320.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="2640.0" y="290.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="ship-products" id="BPMNShape_ship-products">
+                <dc:Bounds x="2840.0" y="320.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="products-shipped" id="BPMNShape_products-shipped">
+                <dc:Bounds x="3085.0" y="335.0" width="30.0" height="30.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="3085.0" y="380.0" width="30.0" height="30.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="check-if-first-product-is-in-stock" id="BPMNShape_check-if-first-product-is-in-stock">
+                <dc:Bounds x="640.0" y="220.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-4" id="BPMNShape_gt-4">
+                <dc:Bounds x="870.0" y="220.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="840.0" y="190.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-6" id="BPMNShape_gt-6">
+                <dc:Bounds x="1670.0" y="220.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="1640.0" y="190.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="register-ordered-product-in-stock-management-system" id="BPMNShape_register-ordered-product-in-stock-management-system">
+                <dc:Bounds x="1840.0" y="220.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="verify-if-entire-order-is-ready-for-shipment" id="BPMNShape_verify-if-entire-order-is-ready-for-shipment">
+                <dc:Bounds x="2040.0" y="220.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="order-read" id="BPMNShape_order-read">
+                <dc:Bounds x="85.0" y="435.0" width="30.0" height="30.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="85.0" y="480.0" width="30.0" height="30.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="read-order-from-automatic-order-management-system" id="BPMNShape_read-order-from-automatic-order-management-system">
+                <dc:Bounds x="240.0" y="420.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-0" id="BPMNShape_gt-0">
+                <dc:Bounds x="470.0" y="420.0" width="60.0" height="60.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="440.0" y="390.0" width="60.0" height="60.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="withdraw-product-from-warehouse" id="BPMNShape_withdraw-product-from-warehouse">
+                <dc:Bounds x="1040.0" y="420.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="pack-products" id="BPMNShape_pack-products">
+                <dc:Bounds x="2440.0" y="420.0" width="120.0" height="60.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sq-0" id="BPMNEdge_sq-0">
+                <di:waypoint x="115.0" y="450.0"/>
+                <di:waypoint x="240.0" y="450.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-3" id="BPMNEdge_sq-3">
+                <di:waypoint x="1160.0" y="150.0"/>
+                <di:waypoint x="1240.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-6" id="BPMNEdge_sq-6">
+                <di:waypoint x="2960.0" y="350.0"/>
+                <di:waypoint x="3085.0" y="350.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-8" id="BPMNEdge_sq-8">
+                <di:waypoint x="360.0" y="450.0"/>
+                <di:waypoint x="470.0" y="450.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-9" id="BPMNEdge_sq-9">
+                <di:waypoint x="530.0" y="450.0"/>
+                <di:waypoint x="700.0" y="450.0"/>
+                <di:waypoint x="700.0" y="280.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-10" id="BPMNEdge_sq-10">
+                <di:waypoint x="2160.0" y="250.0"/>
+                <di:waypoint x="2300.0" y="250.0"/>
+                <di:waypoint x="2300.0" y="320.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-11" id="BPMNEdge_sq-11">
+                <di:waypoint x="2300.0" y="380.0"/>
+                <di:waypoint x="2300.0" y="450.0"/>
+                <di:waypoint x="530.0" y="450.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-13" id="BPMNEdge_sq-13">
+                <di:waypoint x="2560.0" y="250.0"/>
+                <di:waypoint x="2700.0" y="250.0"/>
+                <di:waypoint x="2700.0" y="320.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-14" id="BPMNEdge_sq-14">
+                <di:waypoint x="2560.0" y="450.0"/>
+                <di:waypoint x="2700.0" y="450.0"/>
+                <di:waypoint x="2700.0" y="380.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-15" id="BPMNEdge_sq-15">
+                <di:waypoint x="2730.0" y="350.0"/>
+                <di:waypoint x="2840.0" y="350.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-20" id="BPMNEdge_sq-20">
+                <di:waypoint x="1960.0" y="250.0"/>
+                <di:waypoint x="2040.0" y="250.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-21" id="BPMNEdge_sq-21">
+                <di:waypoint x="900.0" y="220.0"/>
+                <di:waypoint x="900.0" y="150.0"/>
+                <di:waypoint x="1040.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-22" id="BPMNEdge_sq-22">
+                <di:waypoint x="760.0" y="250.0"/>
+                <di:waypoint x="870.0" y="250.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-23" id="BPMNEdge_sq-23">
+                <di:waypoint x="900.0" y="280.0"/>
+                <di:waypoint x="900.0" y="450.0"/>
+                <di:waypoint x="1040.0" y="450.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-24" id="BPMNEdge_sq-24">
+                <di:waypoint x="1500.0" y="120.0"/>
+                <di:waypoint x="1500.0" y="50.0"/>
+                <di:waypoint x="1685.0" y="50.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-25" id="BPMNEdge_sq-25">
+                <di:waypoint x="1360.0" y="150.0"/>
+                <di:waypoint x="1470.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-26" id="BPMNEdge_sq-26">
+                <di:waypoint x="1160.0" y="450.0"/>
+                <di:waypoint x="1700.0" y="450.0"/>
+                <di:waypoint x="1700.0" y="280.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-27" id="BPMNEdge_sq-27">
+                <di:waypoint x="1730.0" y="250.0"/>
+                <di:waypoint x="1840.0" y="250.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-28" id="BPMNEdge_sq-28">
+                <di:waypoint x="1530.0" y="150.0"/>
+                <di:waypoint x="1700.0" y="150.0"/>
+                <di:waypoint x="1700.0" y="220.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-29" id="BPMNEdge_sq-29">
+                <di:waypoint x="2300.0" y="320.0"/>
+                <di:waypoint x="2300.0" y="250.0"/>
+                <di:waypoint x="2440.0" y="250.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-30" id="BPMNEdge_sq-30">
+                <di:waypoint x="2300.0" y="380.0"/>
+                <di:waypoint x="2300.0" y="450.0"/>
+                <di:waypoint x="2440.0" y="450.0"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</semantic:definitions>

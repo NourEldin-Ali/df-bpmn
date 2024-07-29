@@ -24,6 +24,7 @@ public class S6 {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
+
 		String path = "src/test/resources/discovery/loop/s6.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
@@ -96,6 +97,8 @@ public class S6 {
 		BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
 		bpmnDiscovery.DependencyGraphToBPMN();
 		bpmnDiscovery.saveMode(path);
+
+
 
 
 	}

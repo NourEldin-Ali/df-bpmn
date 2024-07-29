@@ -4,9 +4,7 @@ import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
-import org.openbpmn.bpmn.discovery.model.DependencyGraph;
-import org.openbpmn.bpmn.discovery.model.DepthFirstSearch;
-import org.openbpmn.bpmn.discovery.model.RelationConverter;
+import org.openbpmn.bpmn.discovery.model.*;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 
 import io.process.analytics.tools.bpmn.generator.App;
@@ -27,13 +25,21 @@ public class XESAnalyzer {
 			long startTime = System.nanoTime();
 			XLog log = new XESAnalyzer().readLog("C:\\Users\\AliNourEldin\\Downloads\\splitminerwg\\diagram.xes");
 			DependencyGraph dependencyGraph = generateDependencyGraph(log);
-			dependencyGraph.findLoopsAndParrallelism();
+//			dependencyGraph.findLoopsAndParrallelism();
 			System.out.println(dependencyGraph.loops);
 			System.out.println(dependencyGraph.parallelism);
-			System.out.println(dependencyGraph.getLoops());
-//			System.out.println(dependencyGraph.mergeLoop());
-			System.out.println(dependencyGraph.getParallelims());
-			System.out.println(dependencyGraph.getDecisions());
+
+			//get parallelism
+			ParallelismMerger parallelismMerger = new ParallelismMerger(dependencyGraph.parallelism,
+					dependencyGraph.dependencyGraph);
+			LinkedList<LinkedList<String>> parallelRelations = parallelismMerger.getParallelims();
+			System.out.println(parallelismMerger.getParallelims());
+
+
+			//get decisions
+			DecisionMerger decisionMerger = new DecisionMerger(dependencyGraph.exlusive, dependencyGraph.dependencyGraph);
+			LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
+			System.out.println(decisionRelations);
 			
 			
 //			

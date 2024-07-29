@@ -3,8 +3,6 @@ package org.openbpmn.bpmn.discovery;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,24 +14,20 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.core.filter.RegexFilter;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
 import org.openbpmn.bpmn.BPMNModel;
 import org.openbpmn.bpmn.BPMNTypes;
-import org.openbpmn.bpmn.discovery.model.DependencyGraph;
-import org.openbpmn.bpmn.discovery.model.DepthFirstSearch;
-import org.openbpmn.bpmn.discovery.model.Pair;
+import org.openbpmn.bpmn.discovery.model.*;
 import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Gateway;
 import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
+import org.openbpmn.bpmn.elements.core.BPMNElementEdge;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
@@ -48,10 +42,18 @@ import io.process.analytics.tools.bpmn.generator.internal.FileUtils;
 // mvn compile assembly:single
 // java -cp open-bpmn.metamodel-1.0.0-SNAPSHOT-jar-with-dependencies.jar;lib\* org.openbpmn.bpmn.discovery.BPMNDiscovery test/test.bpmn
 
+//TODO: clean the code
+//TODO: loop remove to be resolved
+//TODO: to validate in split add target as successor
+//TODO: Validate loop block construction (target !=1) why create always new block??
+//TODO: post processing to avoid deadlock
+//TODO: post processing should not merge all the gateways (only loops?)
+//TODO: bug in loop: results_part_3/doc-5.4-gpt-4o-2.json 
 public class BPMNDiscovery {
 	private static Logger logger = Logger.getLogger(BPMNDiscovery.class.getName());
 	public static String PARALLEL = "parallel";
 	public static String DECISION = "decision";
+	public static String INCLUSIVE = "inclusive";
 
 	static String GATEWAY_TYPE = "gatewayType";
 	static String GATEWAY_NUM = "num";
@@ -60,7 +62,7 @@ public class BPMNDiscovery {
 	public List<String> endsEvent;
 	public LinkedList<String> dependencies;
 	public Map<String, LinkedList<LinkedList<String>>> relations;
-	public LinkedList<Pair<List<String>, List<String>>> loops;
+	public List<Pair<Set<String>, Set<String>>> loops;
 	public DependencyGraph dependenciesGraph = new DependencyGraph();
 	private Integer seqenceFlowId = 0;
 	private Integer gatewayId = 0;
@@ -80,24 +82,39 @@ public class BPMNDiscovery {
 		DependencyGraph.regex(endsEvent);
 
 		this.dependenciesGraph = dependenciesGraph;
-		this.loops = dependenciesGraph.getLoops();
-//		this.dependenciesGraph.changeVertexNameToRegex();
-		LinkedList<LinkedList<String>> decisionRelations = dependenciesGraph.getDecisions();
-		LinkedList<LinkedList<String>> parallelRelations = dependenciesGraph.getParallelims();
+
+		LoopMerger loopMerger = new LoopMerger(dependenciesGraph.loops, dependenciesGraph.dependencyGraph);
+		this.loops = loopMerger.getMergedLoop();
+
+		this.dependenciesGraph.changeVertexNameToRegex();
+
+		//get exclusive
+		DecisionMerger decisionMerger = new DecisionMerger(dependenciesGraph.exlusive, dependenciesGraph.dependencyGraph);
+		LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
+
+		//get parallelism
+		ParallelismMerger parallelismMerger = new ParallelismMerger(dependenciesGraph.parallelism,
+				dependenciesGraph.dependencyGraph);
+		LinkedList<LinkedList<String>> parallelRelations = parallelismMerger.getParallelims();
+
+		//get inclusive
+		ParallelismMerger inclusiveMerger = new ParallelismMerger(dependenciesGraph.inclusive,
+				dependenciesGraph.dependencyGraph);
+		LinkedList<LinkedList<String>> inclusiveRelations = inclusiveMerger.getParallelims();
+
 
 		this.relations = new LinkedHashMap<>();
 		this.relations.put(BPMNDiscovery.DECISION, decisionRelations);
 		this.relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
+		this.relations.put(BPMNDiscovery.INCLUSIVE, inclusiveRelations);
 
 		relations.values().forEach(elements -> {
-			elements.forEach(innerList -> {
-				DependencyGraph.regex(innerList);
-			});
+			elements.forEach(DependencyGraph::regex);
 		});
 
-		Iterator<Pair<List<String>, List<String>>> loopIter = loops.iterator();
+		Iterator<Pair<Set<String>, Set<String>>> loopIter = loops.iterator();
 		while (loopIter.hasNext()) {
-			Pair<List<String>, List<String>> elements = loopIter.next();
+			Pair<Set<String>, Set<String>> elements = loopIter.next();
 			DependencyGraph.regex(elements.getSource());
 			DependencyGraph.regex(elements.getTarget());
 		}
@@ -105,7 +122,7 @@ public class BPMNDiscovery {
 	}
 
 	public BPMNDiscovery(List<String> startsEvent, List<String> endsEvent, LinkedList<String> dependencies,
-			Map<String, LinkedList<LinkedList<String>>> relations, LinkedList<Pair<List<String>, List<String>>> loops) {
+			Map<String, LinkedList<LinkedList<String>>> relations, LinkedList<Pair<Set<String>, Set<String>>> loops) {
 		logger.info("...creating new empty model");
 		model = BPMNModelFactory.createInstance("demo", "1.0.0", "http://org.openbpmn");
 
@@ -118,9 +135,7 @@ public class BPMNDiscovery {
 		DependencyGraph.regex(startsEvent);
 		DependencyGraph.regex(endsEvent);
 		relations.values().forEach(elements -> {
-			elements.forEach(innerList -> {
-				DependencyGraph.regex(innerList);
-			});
+			elements.forEach(DependencyGraph::regex);
 		});
 		loops.forEach(elements -> {
 			DependencyGraph.regex(elements.getSource());
@@ -138,7 +153,9 @@ public class BPMNDiscovery {
 			dependenciesGraph.addVertex(targetId);
 			dependenciesGraph.addEdge(sourceId, targetId);
 		}
-		dependenciesGraph.sortLoop(this.loops);
+
+		LoopMerger loopMerger = new LoopMerger(dependenciesGraph.loops, dependenciesGraph.dependencyGraph);
+		this.loops = loopMerger.getMergedLoop();
 	}
 
 	public String getBPMNElementType(String type) {
@@ -168,9 +185,7 @@ public class BPMNDiscovery {
 		DependencyGraph.regex(startsEvent);
 		DependencyGraph.regex(endsEvent);
 		relations.values().forEach(elements -> {
-			elements.forEach(innerList -> {
-				DependencyGraph.regex(innerList);
-			});
+			elements.forEach(DependencyGraph::regex);
 		});
 
 		for (String dependency : dependencies) {
@@ -186,7 +201,8 @@ public class BPMNDiscovery {
 		}
 
 		this.dependenciesGraph.findAndRemoveLoops();
-		this.loops = this.dependenciesGraph.getLoops();
+		LoopMerger loopMerger = new LoopMerger(dependenciesGraph.loops, dependenciesGraph.dependencyGraph);
+		this.loops = loopMerger.getMergedLoop();
 
 		this.dependencies = DepthFirstSearch.DFSToList(dependencies, startsEvent.get(0));
 	}
@@ -194,12 +210,12 @@ public class BPMNDiscovery {
 	/**
 	 * This function is to convert Dependency graph to BPMN
 	 * 
-	 * @param startsEvent
-	 * @param endsEvent
-	 * @param dependencies the relation between pair of element
-	 * @param relations    it contains the decision and parallel relations as list
-	 * @throws BPMNModelException
-	 * @throws CloneNotSupportedException
+	 * /@param startsEvent
+	 * /@param endsEvent
+	 * /@param dependencies the relation between pair of element
+	 * /@param relations    it contains the decision and parallel relations as list
+	 * /@throws BPMNModelException
+	 * /@throws CloneNotSupportedException
 	 */
 	public void DependencyGraphToBPMN() throws BPMNModelException, CloneNotSupportedException {
 
@@ -311,7 +327,7 @@ public class BPMNDiscovery {
 									System.out.println("--- probably do nothing ---");
 //								System.out.println(precedingOfTarget.getId());
 									Set<String> targetsElementFromBPMN = model.openDefaultProces()
-											.getAllSuccesssors(precedingOfTarget).stream().map(e -> e.getId())
+											.getAllSuccesssors(precedingOfTarget).stream().map(BPMNElement::getId)
 											.collect(Collectors.toSet());
 									// get source of element1
 									Set<DefaultWeightedEdge> targetsEdgeElementEdge = dependenciesGraph.dependencyGraph
@@ -405,19 +421,19 @@ public class BPMNDiscovery {
 			}
 		}
 
+
 		// block construction
-		for (Pair<List<String>, List<String>> loop : loops) {
+		for (Pair<Set<String>, Set<String>> loop : loops) {
 			ArrayList<BPMNElementNode> sourceElements = new ArrayList<>();
-			for (String value : loop.getSource()) {
-				String sourceId = value;
+			for (String sourceId : loop.getSource()) {
+
 				BPMNElementNode sourceElement = (BPMNElementNode) process.findElementById(sourceId);
 //				System.out.println(sourceElement);
 //				System.out.println(value);
 				sourceElements.add(sourceElement);
 			}
 			ArrayList<BPMNElementNode> targetElements = new ArrayList<>();
-			for (String value : loop.getTarget()) {
-				String targetId = value;
+			for (String targetId : loop.getTarget()) {
 				BPMNElementNode targetElement = (BPMNElementNode) process.findElementById(targetId);
 //				System.out.println(targetElement);
 //				System.out.println(value);
@@ -431,8 +447,9 @@ public class BPMNDiscovery {
 			}
 		}
 
+		//TODO : check error -------- important
 		// add loops
-		for (Pair<List<String>, List<String>> loop : loops) {
+		for (Pair<Set<String>, Set<String>> loop : loops) {
 			ArrayList<BPMNElementNode> sourceElements = new ArrayList<>();
 			for (String value : loop.getSource()) {
 				String sourceId = value;
@@ -651,15 +668,26 @@ public class BPMNDiscovery {
 				isAdded = false;
 				addNewTarget(sq, selectedGateway, sourceElement, targetElement, probablySelectedGateway,
 						flowToProbablyGateway, new HashMap());
-				if (isAdded == false) {
+				if (!isAdded) {
 					System.out.println("add new gateway before the existing gateway(" + probablySelectedGateway.getId()
 							+ "): gt-" + gatewayId.toString());
 //					System.out.println(probablyRelationType.get(GATEWAY_TYPE));
 //					System.out.println(probablySelectedGateway.getIngoingSequenceFlows().size());
 //					System.out.println(probablySelectedGateway.getOutgoingSequenceFlows().size());
+					// print probablyRelationType.get(GATEWAY_TYPE)
+//					System.out.println(probablyRelationType);
+
+
+					String gatewayType =probablyRelationType.get(GATEWAY_TYPE);
+
+					if(gatewayType == null){
+						gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
+					}
+
+
 					// add gateway before probablySelectedGateway
 					Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "",
-							probablyRelationType.get(GATEWAY_TYPE));
+							gatewayType);
 					newGateway.setAttribute(GATEWAY_NUM, probablyRelationType.get(GATEWAY_NUM));
 					gatewayId++;
 					splitGateway = newGateway;
@@ -781,8 +809,11 @@ public class BPMNDiscovery {
 			System.out.println("add as successor of " + selectedGateway.getId());
 			// add target as successor
 			// add new element as succeed on the gateway
+			// TODO: should add the target as sucction not the selectedSequence flow. getTargetElement
+//			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), selectedGateway.getId(),
+//					selectedSequence.getTargetElement().getId());
 			process.addSequenceFlow("sq-" + seqenceFlowId.toString(), selectedGateway.getId(),
-					selectedSequence.getTargetElement().getId());
+					targetElement.getId());
 			seqenceFlowId++;
 			splitGateway = selectedGateway;
 
@@ -847,6 +878,8 @@ public class BPMNDiscovery {
 						minList = new ArrayList<>(list);
 						if (entry.getKey().contentEquals(DECISION)) {
 							gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
+						} else if (entry.getKey().contentEquals(INCLUSIVE)) {
+							gatewayType = BPMNTypes.INCLUSIVE_GATEWAY;
 						} else {
 							gatewayType = BPMNTypes.PARALLEL_GATEWAY;
 						}
@@ -864,8 +897,8 @@ public class BPMNDiscovery {
 	 * This function to get the gateway type based on the list of relation. it
 	 * return the gateway type and the gateway num (like an id)
 	 * 
-	 * @param succeesor
-	 * @param target
+	 * /@param succeesor
+	 * /@param target
 	 * @return
 	 */
 	private Integer getGatewayNum(List<String> elementsIds) {
@@ -933,7 +966,7 @@ public class BPMNDiscovery {
 		if (selectedGateway.getOutgoingSequenceFlows().size() > 1) {
 			System.out.println("JOIN-REC: " + "SPLIT");
 			Set<String> targetsElementFromBPMN = model.openDefaultProces().getAllSuccesssors(selectedGateway).stream()
-					.map(e -> e.getId()).collect(Collectors.toSet());
+					.map(BPMNElement::getId).collect(Collectors.toSet());
 			// get source of element1
 			Set<DefaultWeightedEdge> targetsEdgeElementEdge = dependenciesGraph.dependencyGraph
 					.outgoingEdgesOf(sourceElement.getId());
@@ -1108,186 +1141,192 @@ public class BPMNDiscovery {
 	private void loopBlockConstruction(List<BPMNElementNode> sourceElements, List<BPMNElementNode> targetElements)
 			throws BPMNModelException, CloneNotSupportedException {
 		BPMNProcess process = model.openDefaultProces();
-		int countSqOfsSource = 0;
-		for (BPMNElementNode element : sourceElements) {
-			if (element.getOutgoingSequenceFlows().size() > 0) {
-				countSqOfsSource++;
-			}
-		}
 
-		if (countSqOfsSource != sourceElements.size()) {
-			System.out.println("LOOP BLOCK CONSTRUCTION: "
-					+ sourceElements.stream().map(src -> src.getId()).collect(Collectors.toList()));
-			List<Pair<BPMNElementNode, BPMNElementNode>> sourcesAsPair = new ArrayList<>();
-			for (int i = 0; i < sourceElements.size() - 1; i++) {
-				for (int j = i + 1; j < sourceElements.size(); j++) {
-					sourcesAsPair.add(
-							new Pair<BPMNElementNode, BPMNElementNode>(sourceElements.get(i), sourceElements.get(j)));
+		//check if we have multiple source elements
+		if(sourceElements.size()>1) {
+			int countSqOfsSource = 0;
+			for (BPMNElementNode element : sourceElements) {
+				if (!element.getOutgoingSequenceFlows().isEmpty()) {
+					countSqOfsSource++;
 				}
 			}
 
-			Map<BPMNElementNode, Set<BPMNElementNode>> splitGateways = new HashMap<>();
+			if (countSqOfsSource != sourceElements.size()) {
+				System.out.println("LOOP BLOCK CONSTRUCTION: "
+						+ sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
+				List<Pair<BPMNElementNode, BPMNElementNode>> sourcesAsPair = new ArrayList<>();
+				for (int i = 0; i < sourceElements.size() - 1; i++) {
+					for (int j = i + 1; j < sourceElements.size(); j++) {
+						sourcesAsPair.add(
+								new Pair<BPMNElementNode, BPMNElementNode>(sourceElements.get(i), sourceElements.get(j)));
+					}
+				}
 
-			// get relation between all pairs
-			for (Pair<BPMNElementNode, BPMNElementNode> pairOfActivites : sourcesAsPair) {
-				Gateway tempSplitGateway = null;
-				String ancestor = dependenciesGraph.getLCA(pairOfActivites.getSource().getId(),
-						pairOfActivites.getTarget().getId());
+				Map<BPMNElementNode, Set<BPMNElementNode>> splitGateways = new HashMap<>();
 
-				BPMNElementNode ancestorNode = process.findElementNodeById(ancestor);
-				List<BPMNElementNode> successorsList = process.getAllSuccesssors(ancestorNode);
-				List<GraphPath<String, DefaultWeightedEdge>> listOfPaths = new ArrayList<>();
-				for (BPMNElementNode successor : successorsList) {
-					AllDirectedPaths path = new AllDirectedPaths(dependenciesGraph.dependencyGraph);
+				// get relation between all pairs
+				for (Pair<BPMNElementNode, BPMNElementNode> pairOfActivites : sourcesAsPair) {
+					Gateway tempSplitGateway = null;
+					String ancestor = dependenciesGraph.getLCA(pairOfActivites.getSource().getId(),
+							pairOfActivites.getTarget().getId());
+
+					BPMNElementNode ancestorNode = process.findElementNodeById(ancestor);
+					List<BPMNElementNode> successorsList = process.getAllSuccesssors(ancestorNode);
+					List<GraphPath<String, DefaultWeightedEdge>> listOfPaths = new ArrayList<>();
+					for (BPMNElementNode successor : successorsList) {
+						AllDirectedPaths path = new AllDirectedPaths(dependenciesGraph.dependencyGraph);
 //					System.out.println(successor.getId());
-					listOfPaths.addAll(
-							path.getAllPaths(successor.getId(), pairOfActivites.getSource().getId(), true, null));
-					listOfPaths.addAll(
-							path.getAllPaths(successor.getId(), pairOfActivites.getTarget().getId(), true, null));
-				}
+						listOfPaths.addAll(
+								path.getAllPaths(successor.getId(), pairOfActivites.getSource().getId(), true, null));
+						listOfPaths.addAll(
+								path.getAllPaths(successor.getId(), pairOfActivites.getTarget().getId(), true, null));
+					}
 //				System.out.println(listOfPaths.size());
-				List<String> sourcesId = listOfPaths.stream().map(path -> path.getStartVertex())
-						.collect(Collectors.toList());
-				int num = getGatewayNum(sourcesId);
-				StringBuffer gatewayNum = new StringBuffer();
-				gatewayNum.append(num);
-				if (!gatewayNum.toString().contentEquals("-1")) {
-					tempSplitGateway = model.openDefaultProces().getGateways().stream()
-							.filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum)
-									&& gateway.getIngoingSequenceFlows().size() == 1)
+					List<String> sourcesId = listOfPaths.stream().map(GraphPath::getStartVertex)
+							.collect(Collectors.toList());
+					int num = getGatewayNum(sourcesId);
+					StringBuffer gatewayNum = new StringBuffer();
+					gatewayNum.append(num);
+					if (!gatewayNum.toString().contentEquals("-1")) {
+						tempSplitGateway = model.openDefaultProces().getGateways().stream()
+								.filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum)
+										&& gateway.getIngoingSequenceFlows().size() == 1)
+								.findAny().orElse(null);
+					} else {
+						System.out.println("Error in detect loop Source relation/ Cannot constract block!");
+						return;
+					}
+					if (splitGateways.containsKey(tempSplitGateway)) {
+						splitGateways.get(tempSplitGateway).add(pairOfActivites.getSource());
+						splitGateways.get(tempSplitGateway).add(pairOfActivites.getTarget());
+					} else {
+						splitGateways.put(tempSplitGateway, new HashSet<>());
+						splitGateways.get(tempSplitGateway).add(pairOfActivites.getSource());
+						splitGateways.get(tempSplitGateway).add(pairOfActivites.getTarget());
+					}
+				}
+				// TreeMap with a custom comparator that sorts keys based on the size of their
+				// sets
+				TreeMap<BPMNElementNode, Set<BPMNElementNode>> sortedGatewaysElements = new TreeMap<>(
+						Comparator.comparingInt(key -> splitGateways.get(key).size()));
+				sortedGatewaysElements.putAll(splitGateways);
+
+				// Print the sorted map
+				for (Map.Entry<BPMNElementNode, Set<BPMNElementNode>> entry : sortedGatewaysElements.entrySet()) {
+					Gateway split = (Gateway) entry.getKey();
+
+					Gateway join = process.getGateways().stream()
+							.filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(
+									split.getAttribute(GATEWAY_NUM)) && gateway.getOutgoingSequenceFlows().size() == 1)
 							.findAny().orElse(null);
-				} else {
-					System.out.println("Error in detect loop Source relation/ Cannot constract block!");
-					return;
-				}
-				if (splitGateways.containsKey(tempSplitGateway)) {
-					splitGateways.get(tempSplitGateway).add(pairOfActivites.getSource());
-					splitGateways.get(tempSplitGateway).add(pairOfActivites.getTarget());
-				} else {
-					splitGateways.put(tempSplitGateway, new HashSet<>());
-					splitGateways.get(tempSplitGateway).add(pairOfActivites.getSource());
-					splitGateways.get(tempSplitGateway).add(pairOfActivites.getTarget());
-				}
-			}
-			// TreeMap with a custom comparator that sorts keys based on the size of their
-			// sets
-			TreeMap<BPMNElementNode, Set<BPMNElementNode>> sortedGatewaysElements = new TreeMap<>(
-					Comparator.comparingInt(key -> splitGateways.get(key).size()));
-			sortedGatewaysElements.putAll(splitGateways);
 
-			// Print the sorted map
-			for (Map.Entry<BPMNElementNode, Set<BPMNElementNode>> entry : sortedGatewaysElements.entrySet()) {
-				Gateway split = (Gateway) entry.getKey();
+					if (join == null) {
+						// should add new join
+						join = process.addGateway("gt-" + gatewayId.toString(), "", split.getType());
+						join.setAttribute(GATEWAY_NUM, split.getAttribute(GATEWAY_NUM));
+						gatewayId++;
+						for (BPMNElementNode element : entry.getValue()) {
+							process.addSequenceFlow("sq-" + seqenceFlowId, element.getId(), join.getId());
+							seqenceFlowId++;
+							if (element.getOutgoingSequenceFlows().size() > 1) {
+								System.out
+										.println("add XOR gateway after the existing element: gt-" + gatewayId.toString());
+								// TODO: XOR is generic?
+								String gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
 
-				Gateway join = process.getGateways().stream()
-						.filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(
-								split.getAttribute(GATEWAY_NUM)) && gateway.getOutgoingSequenceFlows().size() == 1)
-						.findAny().orElse(null);
+								// add gateway before activity
+								Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
+								newGateway.setAttribute(GATEWAY_NUM, "-3");
+								gatewayId++;
 
-				if (join == null) {
-					// should add new join
-					join = process.addGateway("gt-" + gatewayId.toString(), "", split.getType());
-					join.setAttribute(GATEWAY_NUM, split.getAttribute(GATEWAY_NUM));
-					gatewayId++;
-					for (BPMNElementNode element : entry.getValue()) {
-						process.addSequenceFlow("sq-" + seqenceFlowId, element.getId(), join.getId());
-						seqenceFlowId++;
-						if (element.getOutgoingSequenceFlows().size() > 1) {
-							System.out
-									.println("add XOR gateway after the existing element: gt-" + gatewayId.toString());
-							// TODO: XOR is generic?
-							String gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
-
-							// add gateway before activity
-							Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
-							newGateway.setAttribute(GATEWAY_NUM, "-3");
-							gatewayId++;
-
-							List<SequenceFlow> sequenceFlowList = element.getOutgoingSequenceFlows().stream()
-									.collect(Collectors.toList());
-							for (SequenceFlow flow : sequenceFlowList) {
-								// get succeed
-								BPMNElementNode srcElement = flow.getTargetElement();
+								List<SequenceFlow> sequenceFlowList = element.getOutgoingSequenceFlows().stream()
+										.collect(Collectors.toList());
+								for (SequenceFlow flow : sequenceFlowList) {
+									// get succeed
+									BPMNElementNode srcElement = flow.getTargetElement();
 //								System.out.println(srcElement.getId());
-								process.deleteSequenceFlow(flow.getId());
-								process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
-										srcElement.getId());
+									process.deleteSequenceFlow(flow.getId());
+									process.addSequenceFlow("sq-" + seqenceFlowId.toString(), newGateway.getId(),
+											srcElement.getId());
+									seqenceFlowId++;
+								}
+
+								// add new sequence flow
+								process.addSequenceFlow("sq-" + seqenceFlowId.toString(), element.getId(),
+										newGateway.getId());
 								seqenceFlowId++;
 							}
-
-							// add new sequence flow
-							process.addSequenceFlow("sq-" + seqenceFlowId.toString(), element.getId(),
-									newGateway.getId());
-							seqenceFlowId++;
 						}
 					}
-				}
 
-				for (Map.Entry<BPMNElementNode, Set<BPMNElementNode>> gtyList : sortedGatewaysElements.entrySet()) {
-					if (gtyList.getKey() != split) {
-						if (gtyList.getValue().containsAll(entry.getValue())) {
-							gtyList.getValue().removeAll(entry.getValue());
-							gtyList.getValue().add(join);
+					for (Map.Entry<BPMNElementNode, Set<BPMNElementNode>> gtyList : sortedGatewaysElements.entrySet()) {
+						if (gtyList.getKey() != split) {
+							if (gtyList.getValue().containsAll(entry.getValue())) {
+								gtyList.getValue().removeAll(entry.getValue());
+								gtyList.getValue().add(join);
+							}
 						}
 					}
-				}
 
+				}
 			}
 		}
+		if (targetElements.size() > 1) {
 
-		if (targetElements.size() != 1) {
-
-			// get root gateway based on the relation
-			List<String> targetIds = targetElements.stream().map(src -> src.getId()).collect(Collectors.toList());
-//			int num = getGatewayNum(targetIds);
-//			StringBuffer gatewayNum = new StringBuffer();
-//			gatewayNum.append(num);
-//			if (gatewayNum.toString().contentEquals("-1")) {
-			System.out.println("LOOP BLOCK TARGET CONSTRUCTION: "
-					+ sourceElements.stream().map(src -> src.getId()).collect(Collectors.toList()));
-			String tempActivity = "___temp___";
-			BPMNElementNode tempElement = process.addTask(tempActivity, tempActivity, BPMNTypes.TASK);
-			for (String target : targetIds) {
-				BPMNElementNode targetElement = process.findElementNodeById(target);
+			// check if there exists a relation between the targets (relation = gateway)
+			List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
+			int num = getGatewayNum(targetIds);
+			StringBuffer gatewayNum = new StringBuffer();
+			gatewayNum.append(num);
+			// if no gateway added or a default gateway
+			if (num<0) {
+				System.out.println("LOOP BLOCK TARGET CONSTRUCTION: "
+						+ sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
+				//add temp activity
+				String tempActivity = "___temp___";
+				BPMNElementNode tempElement = process.addTask(tempActivity, tempActivity, BPMNTypes.TASK);
+				//use split to add relation between the temp and the targets to add the split gateway (to add the relation correcte relation between them)
+				for (String target : targetIds) {
+					BPMNElementNode targetElement = process.findElementNodeById(target);
 //				System.out.println(targetElement.getId());
-				if (tempElement.getOutgoingSequenceFlows().size() > 0) {
-					addSplitGateway(tempElement, targetElement);
+					if (tempElement.getOutgoingSequenceFlows().size() > 0) {
+						addSplitGateway(tempElement, targetElement);
+						splitGateway = null;
+					} else {
+						process.addSequenceFlow("sq-" + seqenceFlowId.toString(), tempActivity, target);
+						seqenceFlowId++;
+					}
+				}
+				//delete the temp activity
+				for (SequenceFlow sq : tempElement.getOutgoingSequenceFlows()) {
+					process.deleteSequenceFlow(sq.getId());
+				}
+				process.deleteElementNode(tempElement.getId());
+				// in case an activity has more that on incoming sequence flow
+				for (String target : targetIds) {
+					BPMNElementNode targetElement = process.findElementNodeById(target);
+					// probably XOR join
+					if (targetElement.getIngoingSequenceFlows().size() > 1) {
+						addXorGateway(targetElement);
+					}
 					splitGateway = null;
-
-				} else {
-					process.addSequenceFlow("sq-" + seqenceFlowId.toString(), tempActivity, target);
-					seqenceFlowId++;
 				}
 			}
-
-			for (SequenceFlow sq : tempElement.getOutgoingSequenceFlows()) {
-				process.deleteSequenceFlow(sq.getId());
-			}
-			process.deleteElementNode(tempElement.getId());
-			for (String target : targetIds) {
-				BPMNElementNode targetElement = process.findElementNodeById(target);
-				// probably XOR join
-				if (targetElement.getIngoingSequenceFlows().size() > 1) {
-					addXorGateway(targetElement);
-				}
-				splitGateway = null;
-			}
-
 		}
 
 	}
 
 	private void addLoopGateway(List<BPMNElementNode> sourceElements, List<BPMNElementNode> targetElements)
 			throws BPMNModelException, CloneNotSupportedException {
-		System.out.println("LOOP: " + sourceElements.stream().map(src -> src.getId()).collect(Collectors.toList())
-				+ "->" + targetElements.stream().map(src -> src.getId()).collect(Collectors.toList()));
+		System.out.println("LOOP: " + sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList())
+				+ "->" + targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
 		BPMNProcess process = model.openDefaultProces();
 		BPMNElementNode targetElement = null;
 		if (targetElements.size() == 1) {
 			targetElement = targetElements.get(0);
 		} else {
 			// get root gateway based on the relation
-			List<String> targetIds = targetElements.stream().map(src -> src.getId()).collect(Collectors.toList());
+			List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
 			int num = getGatewayNum(targetIds);
 			StringBuffer gatewayNum = new StringBuffer();
 			gatewayNum.append(num);
@@ -1305,7 +1344,7 @@ public class BPMNDiscovery {
 
 				for (BPMNElementNode node : targetElements) {
 					List<BPMNElementNode> children = node.getIngoingSequenceFlows().stream()
-							.map(sq -> sq.getSourceElement()).collect(Collectors.toList());
+							.map(BPMNElementEdge::getSourceElement).collect(Collectors.toList());
 					for (BPMNElementNode child : children) {
 						if (!visited.contains(child)) {
 							visited.add(child);
@@ -1323,7 +1362,7 @@ public class BPMNDiscovery {
 						break;
 					} else {
 						List<BPMNElementNode> children = precedingElement.getIngoingSequenceFlows().stream()
-								.map(sq -> sq.getSourceElement()).collect(Collectors.toList());
+								.map(BPMNElementEdge::getSourceElement).collect(Collectors.toList());
 
 						for (BPMNElementNode child : children) {
 							if (!visited.contains(child)) {
@@ -1347,8 +1386,8 @@ public class BPMNDiscovery {
 		} else {
 
 			// get sourceElement (The merge or the)
-			List<BPMNElementNode> gatewaysofSource = sourceElements.stream().map(src -> src.getOutgoingSequenceFlows())
-					.flatMap(Set::stream).map(sq -> sq.getTargetElement()).collect(Collectors.toList());
+			List<BPMNElementNode> gatewaysofSource = sourceElements.stream().map(BPMNElementNode::getOutgoingSequenceFlows)
+					.flatMap(Set::stream).map(BPMNElementEdge::getTargetElement).collect(Collectors.toList());
 			for (BPMNElementNode target : gatewaysofSource) {
 				int countCanAccess = 0;
 				for (BPMNElementNode src : sourceElements) {
@@ -1372,7 +1411,7 @@ public class BPMNDiscovery {
 			if (targetElement.getIngoingSequenceFlows().size() > 0) {
 				// add only one gateway before the target
 				System.out.println("add new loop gateway before the target (" + targetElement.getIngoingSequenceFlows()
-						.stream().map(sq -> sq.getSourceRef()).collect(Collectors.toList()) + "): gt-"
+						.stream().map(BPMNElementEdge::getSourceRef).collect(Collectors.toList()) + "): gt-"
 						+ gatewayId.toString());
 				Gateway targetGateway = process.addGateway("gt-" + gatewayId.toString(), "",
 						BPMNTypes.EXCLUSIVE_GATEWAY);
@@ -1404,10 +1443,10 @@ public class BPMNDiscovery {
 		} else {
 			if (targetElement.getIngoingSequenceFlows().size() > 0) {
 				System.out.println("add new loop gateways (2) before the target("
-						+ targetElement.getIngoingSequenceFlows().stream().map(sq -> sq.getSourceRef())
+						+ targetElement.getIngoingSequenceFlows().stream().map(BPMNElementEdge::getSourceRef)
 								.collect(Collectors.toList())
 						+ "), and after source (" + sourceElement.getOutgoingSequenceFlows().stream()
-								.map(sq -> sq.getTargetRef()).collect(Collectors.toList())
+								.map(BPMNElementEdge::getTargetRef).collect(Collectors.toList())
 						+ ") : gt-" + gatewayId.toString());
 				// add new gateway after source ( to start loop)
 				Gateway sourceGateway = process.addGateway("gt-" + gatewayId.toString(), "",
@@ -1492,5 +1531,6 @@ public class BPMNDiscovery {
 
 		logger.info("...model creation sucessful");
 	}
+
 
 }

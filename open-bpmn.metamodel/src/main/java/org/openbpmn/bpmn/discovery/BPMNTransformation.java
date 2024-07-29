@@ -33,7 +33,6 @@ public class BPMNTransformation {
 			 */
 			String output = args[0];
 			String startEventString = args[1];
-//			String endEventsString = args[2];
 			String dependencyRelationsString = args[2];
 			String parallelRelationString = args[3];
 			String elementInfoString = args[4];
@@ -41,9 +40,6 @@ public class BPMNTransformation {
 			List<String> startsEvents = new ArrayList<>();
 			startsEvents.add(startEventString);
 
-//			List<String> endEvents = stringToList(endEventsString);
-//			LinkedList<String> events = stringToList(dependencyRelationsString);
-//			Set<Set<String>> parallelRelations = transformStringToList(parallelRelationString);
 
 			Gson gson = new Gson();
 
@@ -90,6 +86,7 @@ public class BPMNTransformation {
 			bpmnTransformation.changeVertexNameToRegex();
 			bpmnTransformation.regexOnElementInfo();
 			bpmnTransformation.findAndRemoveLoops();
+
 			
 			try {
 				BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
@@ -269,7 +266,7 @@ public class BPMNTransformation {
 		relations.put(BPMNDiscovery.DECISION, decisionRelations);
 		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
 		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+		LinkedList<Pair<Set<String>, Set<String>>> loops = new LinkedList<>();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
@@ -346,7 +343,7 @@ public class BPMNTransformation {
 		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
 
 		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+		LinkedList<Pair<Set<String>, Set<String>>> loops = new LinkedList<>();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
@@ -417,7 +414,7 @@ public class BPMNTransformation {
 		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
 
 		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+		LinkedList<Pair<Set<String>, Set<String>>> loops = new LinkedList<>();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
@@ -493,7 +490,7 @@ public class BPMNTransformation {
 		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
 
 		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+		LinkedList<Pair<Set<String>, Set<String>>> loops = new LinkedList<>();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);
@@ -649,7 +646,7 @@ public class BPMNTransformation {
 		relations.put(BPMNDiscovery.DECISION, decisionRelations);
 		relations.put(BPMNDiscovery.PARALLEL, parallelRelations);
 		// Initialize the HashMap
-		LinkedList<Pair<List<String>, List<String>>> loops = new LinkedList<>();
+		LinkedList<Pair<Set<String>, Set<String>>> loops = new LinkedList<>();
 
 		try {
 			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(startsEvent, endEvents, orderedEvents, relations, loops);

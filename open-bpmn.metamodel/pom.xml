@@ -28,7 +28,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.openbpmn.bpmn.discovery.BPMNTransformation</mainClass>
+							<mainClass>org.openbpmn.bpmn.layout.App</mainClass>
 							<classpathPrefix>lib/*</classpathPrefix>
 						</manifest>
 					</archive>
@@ -94,6 +94,5 @@
 			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
-		
 	</dependencies>
 </project>

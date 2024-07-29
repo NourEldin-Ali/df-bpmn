@@ -9,6 +9,11 @@ public class Pair<S, T> {
         this.second = second;
     }
 
+    // create a Pair.of method that returns a new Pair instance
+    public static <S, T> Pair<S, T> of(S first, T second) {
+        return new Pair<>(first, second);
+    }
+
     public S getSource() {
         return first;
     }

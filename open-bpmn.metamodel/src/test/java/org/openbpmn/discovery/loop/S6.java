@@ -25,7 +25,7 @@ public class S6 {
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
 
-		String path = "src/test/resources/discovery/loop/s6.bpmn";
+		String path = "src/test/resources/discovery/loop/s0.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet();

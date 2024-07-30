@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><semantic:definitions xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="17.7.1" targetNamespace="http://org.openbpmn">
+  <semantic:process id="process_1" name="Default Process" processType="Public">
+    <semantic:startEvent id="start" name="start">
+      <semantic:outgoing>sq-55</semantic:outgoing>
+    </semantic:startEvent>
+    <semantic:task id="a" name="a">
+      <semantic:incoming>sq-44</semantic:incoming>
+      <semantic:outgoing>sq-42</semantic:outgoing>
+    </semantic:task>
+    <semantic:task id="c" name="c">
+      <semantic:incoming>sq-39</semantic:incoming>
+      <semantic:outgoing>sq-13</semantic:outgoing>
+    </semantic:task>
+    <semantic:task id="f" name="f">
+      <semantic:incoming>sq-8</semantic:incoming>
+      <semantic:outgoing>sq-11</semantic:outgoing>
+    </semantic:task>
+    <semantic:task id="h" name="h">
+      <semantic:incoming>sq-46</semantic:incoming>
+      <semantic:outgoing>sq-34</semantic:outgoing>
+    </semantic:task>
+    <semantic:task id="k" name="k">
+      <semantic:incoming>sq-22</semantic:incoming>
+      <semantic:outgoing>sq-5</semantic:outgoing>
+    </semantic:task>
+    <semantic:task id="l" name="l">
+      <semantic:incoming>sq-5</semantic:incoming>
+      <semantic:outgoing>sq-6</semantic:outgoing>
+    </semantic:task>
+    <semantic:sequenceFlow id="sq-5" sourceRef="k" targetRef="l"/>
+    <semantic:endEvent id="end_1" name="end_1">
+      <semantic:incoming>sq-6</semantic:incoming>
+    </semantic:endEvent>
+    <semantic:sequenceFlow id="sq-6" sourceRef="l" targetRef="end_1"/>
+    <semantic:task id="e" name="e">
+      <semantic:incoming>sq-9</semantic:incoming>
+      <semantic:outgoing>sq-10</semantic:outgoing>
+    </semantic:task>
+    <semantic:parallelGateway gatewayDirection="Diverging" id="gt-0" name="">
+      <semantic:incoming>sq-49</semantic:incoming>
+      <semantic:outgoing>sq-8</semantic:outgoing>
+      <semantic:outgoing>sq-9</semantic:outgoing>
+    </semantic:parallelGateway>
+    <semantic:sequenceFlow id="sq-8" sourceRef="gt-0" targetRef="f"/>
+    <semantic:sequenceFlow id="sq-9" sourceRef="gt-0" targetRef="e"/>
+    <semantic:parallelGateway gatewayDirection="Diverging" id="gt-1" name="">
+      <semantic:incoming>sq-10</semantic:incoming>
+      <semantic:incoming>sq-11</semantic:incoming>
+      <semantic:outgoing>sq-47</semantic:outgoing>
+    </semantic:parallelGateway>
+    <semantic:sequenceFlow id="sq-10" sourceRef="e" targetRef="gt-1"/>
+    <semantic:sequenceFlow id="sq-11" sourceRef="f" targetRef="gt-1"/>
+    <semantic:task id="z" name="z">
+      <semantic:incoming>sq-15</semantic:incoming>
+      <semantic:outgoing>sq-40</semantic:outgoing>
+    </semantic:task>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-2" name="">
+      <semantic:incoming>sq-13</semantic:incoming>
+      <semantic:outgoing>sq-15</semantic:outgoing>
+      <semantic:outgoing>sq-48</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-13" sourceRef="c" targetRef="gt-2"/>
+    <semantic:sequenceFlow id="sq-15" sourceRef="gt-2" targetRef="z"/>
+    <semantic:task id="d" name="d">
+      <semantic:incoming>sq-18</semantic:incoming>
+      <semantic:outgoing>sq-23</semantic:outgoing>
+    </semantic:task>
+    <semantic:parallelGateway gatewayDirection="Diverging" id="gt-3" name="">
+      <semantic:incoming>sq-53</semantic:incoming>
+      <semantic:outgoing>sq-18</semantic:outgoing>
+      <semantic:outgoing>sq-38</semantic:outgoing>
+    </semantic:parallelGateway>
+    <semantic:sequenceFlow id="sq-18" sourceRef="gt-3" targetRef="d"/>
+    <semantic:task id="j" name="j">
+      <semantic:incoming>sq-24</semantic:incoming>
+      <semantic:outgoing>sq-52</semantic:outgoing>
+    </semantic:task>
+    <semantic:parallelGateway gatewayDirection="Diverging" id="gt-4" name="">
+      <semantic:incoming>sq-51</semantic:incoming>
+      <semantic:incoming>sq-52</semantic:incoming>
+      <semantic:outgoing>sq-22</semantic:outgoing>
+    </semantic:parallelGateway>
+    <semantic:sequenceFlow id="sq-22" sourceRef="gt-4" targetRef="k"/>
+    <semantic:task id="i" name="i">
+      <semantic:incoming>sq-25</semantic:incoming>
+      <semantic:outgoing>sq-51</semantic:outgoing>
+    </semantic:task>
+    <semantic:parallelGateway gatewayDirection="Diverging" id="gt-5" name="">
+      <semantic:incoming>sq-23</semantic:incoming>
+      <semantic:outgoing>sq-24</semantic:outgoing>
+      <semantic:outgoing>sq-25</semantic:outgoing>
+    </semantic:parallelGateway>
+    <semantic:sequenceFlow id="sq-23" sourceRef="d" targetRef="gt-5"/>
+    <semantic:sequenceFlow id="sq-24" sourceRef="gt-5" targetRef="j"/>
+    <semantic:sequenceFlow id="sq-25" sourceRef="gt-5" targetRef="i"/>
+    <semantic:task id="b" name="b">
+      <semantic:incoming>sq-54</semantic:incoming>
+      <semantic:outgoing>sq-32</semantic:outgoing>
+    </semantic:task>
+    <semantic:endEvent id="end" name="end">
+      <semantic:incoming>sq-32</semantic:incoming>
+    </semantic:endEvent>
+    <semantic:sequenceFlow id="sq-32" sourceRef="b" targetRef="end"/>
+    <semantic:sequenceFlow id="sq-34" sourceRef="h" targetRef="gt-12"/>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-10" name="">
+      <semantic:incoming>sq-38</semantic:incoming>
+      <semantic:incoming>sq-40</semantic:incoming>
+      <semantic:outgoing>sq-39</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-38" sourceRef="gt-3" targetRef="gt-10"/>
+    <semantic:sequenceFlow id="sq-39" sourceRef="gt-10" targetRef="c"/>
+    <semantic:sequenceFlow id="sq-40" sourceRef="z" targetRef="gt-10"/>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-11" name="">
+      <semantic:incoming>sq-42</semantic:incoming>
+      <semantic:outgoing>sq-45</semantic:outgoing>
+      <semantic:outgoing>sq-53</semantic:outgoing>
+      <semantic:outgoing>sq-54</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-42" sourceRef="a" targetRef="gt-11"/>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-12" name="">
+      <semantic:incoming>sq-45</semantic:incoming>
+      <semantic:incoming>sq-55</semantic:incoming>
+      <semantic:incoming>sq-34</semantic:incoming>
+      <semantic:outgoing>sq-44</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-44" sourceRef="gt-12" targetRef="a"/>
+    <semantic:sequenceFlow id="sq-45" sourceRef="gt-11" targetRef="gt-12"/>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-13" name="">
+      <semantic:incoming>sq-47</semantic:incoming>
+      <semantic:outgoing>sq-46</semantic:outgoing>
+      <semantic:outgoing>sq-50</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-46" sourceRef="gt-13" targetRef="h"/>
+    <semantic:sequenceFlow id="sq-47" sourceRef="gt-1" targetRef="gt-13"/>
+    <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-14" name="">
+      <semantic:incoming>sq-48</semantic:incoming>
+      <semantic:incoming>sq-50</semantic:incoming>
+      <semantic:outgoing>sq-49</semantic:outgoing>
+    </semantic:exclusiveGateway>
+    <semantic:sequenceFlow id="sq-48" sourceRef="gt-2" targetRef="gt-14"/>
+    <semantic:sequenceFlow id="sq-49" sourceRef="gt-14" targetRef="gt-0"/>
+    <semantic:sequenceFlow id="sq-50" sourceRef="gt-13" targetRef="gt-14"/>
+    <semantic:sequenceFlow id="sq-51" sourceRef="i" targetRef="gt-4"/>
+    <semantic:sequenceFlow id="sq-52" sourceRef="j" targetRef="gt-4"/>
+    <semantic:sequenceFlow id="sq-53" sourceRef="gt-11" targetRef="gt-3"/>
+    <semantic:sequenceFlow id="sq-54" sourceRef="gt-11" targetRef="b"/>
+    <semantic:sequenceFlow id="sq-55" sourceRef="start" targetRef="gt-12"/>
+  </semantic:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <dc:Bounds height="30" width="30" x="155" y="795"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="23" x="159" y="840"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="c" id="BPMNShape_c">
+        <dc:Bounds height="60" width="120" x="1310" y="380"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="f" id="BPMNShape_f">
+        <dc:Bounds height="60" width="120" x="2110" y="380"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="h" id="BPMNShape_h">
+        <dc:Bounds height="60" width="120" x="2710" y="580"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="k" id="BPMNShape_k">
+        <dc:Bounds height="60" width="120" x="1910" y="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="l" id="BPMNShape_l">
+        <dc:Bounds height="60" width="120" x="2110" y="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end_1" id="BPMNShape_end_1">
+        <dc:Bounds height="30" width="30" x="2355" y="95"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="31" x="2355" y="140"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="e" id="BPMNShape_e">
+        <dc:Bounds height="60" width="120" x="2110" y="580"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-0" id="BPMNShape_gt-0">
+        <dc:Bounds height="60" width="60" x="1940" y="480"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1840" y="390"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-1" id="BPMNShape_gt-1">
+        <dc:Bounds height="60" width="60" x="2340" y="480"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="2240" y="390"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="z" id="BPMNShape_z">
+        <dc:Bounds height="60" width="120" x="1310" y="680"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-2" id="BPMNShape_gt-2" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="1540" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1440" y="490"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="d" id="BPMNShape_d">
+        <dc:Bounds height="60" width="120" x="1110" y="180"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-3" id="BPMNShape_gt-3">
+        <dc:Bounds height="60" width="60" x="940" y="280"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="840" y="190"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="j" id="BPMNShape_j">
+        <dc:Bounds height="60" width="120" x="1510" y="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-4" id="BPMNShape_gt-4">
+        <dc:Bounds height="60" width="60" x="1740" y="180"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1640" y="90"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="i" id="BPMNShape_i">
+        <dc:Bounds height="60" width="120" x="1510" y="280"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-5" id="BPMNShape_gt-5">
+        <dc:Bounds height="60" width="60" x="1340" y="180"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1240" y="90"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="b" id="BPMNShape_b">
+        <dc:Bounds height="60" width="120" x="910" y="780"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <dc:Bounds height="30" width="30" x="1155" y="795"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="19" x="1161" y="840"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-10" id="BPMNShape_gt-10" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="1140" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1040" y="490"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-12" id="BPMNShape_gt-12" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="340" y="780"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="240" y="690"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-13" id="BPMNShape_gt-13" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="2540" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="2440" y="490"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-14" id="BPMNShape_gt-14" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="1740" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="1640" y="490"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="a" id="BPMNShape_a">
+        <dc:Bounds height="60" width="120" x="510" y="670"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gt-11" id="BPMNShape_gt-11" isMarkerVisible="true">
+        <dc:Bounds height="60" width="60" x="740" y="780"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="60" width="60" x="640" y="590"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sq-5" id="BPMNEdge_sq-5">
+        <di:waypoint x="2030" y="110"/>
+        <di:waypoint x="2110" y="110"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-6" id="BPMNEdge_sq-6">
+        <di:waypoint x="2230" y="110"/>
+        <di:waypoint x="2355" y="110"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-8" id="BPMNEdge_sq-8">
+        <di:waypoint x="1970" y="480"/>
+        <di:waypoint x="1970" y="410"/>
+        <di:waypoint x="2110" y="410"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-9" id="BPMNEdge_sq-9">
+        <di:waypoint x="1970" y="540"/>
+        <di:waypoint x="1970" y="610"/>
+        <di:waypoint x="2110" y="610"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-10" id="BPMNEdge_sq-10">
+        <di:waypoint x="2230" y="610"/>
+        <di:waypoint x="2370" y="610"/>
+        <di:waypoint x="2370" y="540"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-11" id="BPMNEdge_sq-11">
+        <di:waypoint x="2230" y="410"/>
+        <di:waypoint x="2370" y="410"/>
+        <di:waypoint x="2370" y="480"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-13" id="BPMNEdge_sq-13">
+        <di:waypoint x="1430" y="410"/>
+        <di:waypoint x="1570" y="410"/>
+        <di:waypoint x="1570" y="580"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-15" id="BPMNEdge_sq-15">
+        <di:waypoint x="1570" y="640"/>
+        <di:waypoint x="1570" y="710"/>
+        <di:waypoint x="1430" y="710"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-18" id="BPMNEdge_sq-18">
+        <di:waypoint x="970" y="280"/>
+        <di:waypoint x="970" y="210"/>
+        <di:waypoint x="1110" y="210"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-22" id="BPMNEdge_sq-22">
+        <di:waypoint x="1800" y="210"/>
+        <di:waypoint x="1970" y="210"/>
+        <di:waypoint x="1970" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-23" id="BPMNEdge_sq-23">
+        <di:waypoint x="1230" y="210"/>
+        <di:waypoint x="1340" y="210"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-24" id="BPMNEdge_sq-24">
+        <di:waypoint x="1370" y="180"/>
+        <di:waypoint x="1370" y="110"/>
+        <di:waypoint x="1510" y="110"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-25" id="BPMNEdge_sq-25">
+        <di:waypoint x="1370" y="240"/>
+        <di:waypoint x="1370" y="310"/>
+        <di:waypoint x="1510" y="310"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-32" id="BPMNEdge_sq-32">
+        <di:waypoint x="1030" y="810"/>
+        <di:waypoint x="1155" y="810"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-34" id="BPMNEdge_sq-34">
+        <di:waypoint x="2830" y="610"/>
+        <di:waypoint x="2970" y="610"/>
+        <di:waypoint x="2970" y="960"/>
+        <di:waypoint x="370" y="960"/>
+        <di:waypoint x="370" y="840"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-38" id="BPMNEdge_sq-38">
+        <di:waypoint x="970" y="340"/>
+        <di:waypoint x="970" y="610"/>
+        <di:waypoint x="1140" y="610"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-39" id="BPMNEdge_sq-39">
+        <di:waypoint x="1170" y="580"/>
+        <di:waypoint x="1170" y="410"/>
+        <di:waypoint x="1310" y="410"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-40" id="BPMNEdge_sq-40">
+        <di:waypoint x="1310" y="710"/>
+        <di:waypoint x="1170" y="710"/>
+        <di:waypoint x="1170" y="640"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-42" id="BPMNEdge_sq-42">
+        <di:waypoint x="630" y="700"/>
+        <di:waypoint x="750" y="700"/>
+        <di:waypoint x="750" y="800"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-44" id="BPMNEdge_sq-44">
+        <di:waypoint x="370" y="780"/>
+        <di:waypoint x="370" y="700"/>
+        <di:waypoint x="510" y="700"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-45" id="BPMNEdge_sq-45">
+        <di:waypoint x="740" y="810"/>
+        <di:waypoint x="400" y="810"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-46" id="BPMNEdge_sq-46">
+        <di:waypoint x="2600" y="610"/>
+        <di:waypoint x="2710" y="610"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-47" id="BPMNEdge_sq-47">
+        <di:waypoint x="2400" y="510"/>
+        <di:waypoint x="2570" y="510"/>
+        <di:waypoint x="2570" y="580"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-48" id="BPMNEdge_sq-48">
+        <di:waypoint x="1600" y="610"/>
+        <di:waypoint x="1740" y="610"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-49" id="BPMNEdge_sq-49">
+        <di:waypoint x="1770" y="580"/>
+        <di:waypoint x="1770" y="510"/>
+        <di:waypoint x="1940" y="510"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-50" id="BPMNEdge_sq-50">
+        <di:waypoint x="2570" y="640"/>
+        <di:waypoint x="2570" y="740"/>
+        <di:waypoint x="1770" y="740"/>
+        <di:waypoint x="1770" y="640"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-51" id="BPMNEdge_sq-51">
+        <di:waypoint x="1630" y="310"/>
+        <di:waypoint x="1770" y="310"/>
+        <di:waypoint x="1770" y="240"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-52" id="BPMNEdge_sq-52">
+        <di:waypoint x="1630" y="110"/>
+        <di:waypoint x="1770" y="110"/>
+        <di:waypoint x="1770" y="180"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-53" id="BPMNEdge_sq-53">
+        <di:waypoint x="770" y="780"/>
+        <di:waypoint x="770" y="310"/>
+        <di:waypoint x="940" y="310"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-54" id="BPMNEdge_sq-54">
+        <di:waypoint x="800" y="810"/>
+        <di:waypoint x="910" y="810"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sq-55" id="BPMNEdge_sq-55">
+        <di:waypoint x="185" y="810"/>
+        <di:waypoint x="340" y="810"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</semantic:definitions>

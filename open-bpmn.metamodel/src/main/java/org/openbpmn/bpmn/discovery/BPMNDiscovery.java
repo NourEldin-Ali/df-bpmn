@@ -451,16 +451,13 @@ public class BPMNDiscovery {
 		// add loops
 		for (Pair<Set<String>, Set<String>> loop : loops) {
 			ArrayList<BPMNElementNode> sourceElements = new ArrayList<>();
-			for (String value : loop.getSource()) {
-				String sourceId = value;
-
+			for (String sourceId : loop.getSource()) {
 				BPMNElementNode sourceElement = (BPMNElementNode) process.findElementById(sourceId);
 				sourceElements.add(sourceElement);
 			}
 
 			ArrayList<BPMNElementNode> targetElements = new ArrayList<>();
-			for (String value : loop.getTarget()) {
-				String targetId = value;
+			for (String targetId : loop.getTarget()) {
 				BPMNElementNode targetElement = (BPMNElementNode) process.findElementById(targetId);
 				targetElements.add(targetElement);
 			}

@@ -94,5 +94,26 @@
 			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.camunda.bpm.model</groupId>
+            <artifactId>camunda-bpmn-model</artifactId>
+            <version>7.22.0-alpha3</version>
+        </dependency>
+    </dependencies>
+
+	<repositories>
+		<repository>
+			<id>camunda-bpm-nexus</id>
+			<name>camunda-bpm-nexus</name>
+			<url>https://app.camunda.com/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+<!--	<dependencies>-->
+<!--		<dependency>-->
+<!--			<groupId>org.camunda.bpm.model</groupId>-->
+<!--			<artifactId>camunda-bpmn-model</artifactId>-->
+<!--			<version>7.22.0-alpha3</version>-->
+<!--		</dependency>-->
+<!--	</dependencies>-->
 </project>

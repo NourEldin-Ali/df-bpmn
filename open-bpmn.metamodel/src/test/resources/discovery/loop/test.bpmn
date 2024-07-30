@@ -1,255 +1,254 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<semantic:definitions targetNamespace="http://org.openbpmn" exporter="demo" exporterVersion="1.0.0" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
-    <semantic:process processType="Public" name="Default Process" id="process_1">
-        <semantic:startEvent name="start" id="start">
-            <semantic:outgoing xmlns="">sq-0</semantic:outgoing>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><semantic:definitions xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" exporter="demo" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn">
+    <semantic:process id="process_1" name="Default Process" processType="Public">
+        <semantic:startEvent id="start" name="start">
+            <semantic:outgoing>sq-0</semantic:outgoing>
         </semantic:startEvent>
-        <semantic:task name="a" id="a" expand="true">
-            <semantic:incoming xmlns="">sq-0</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-29</semantic:outgoing>
+        <semantic:task id="a" name="a">
+            <semantic:incoming>sq-0</semantic:incoming>
+            <semantic:outgoing>sq-29</semantic:outgoing>
         </semantic:task>
-        <semantic:sequenceFlow sourceRef="start" targetRef="a" id="sq-0"/>
-        <semantic:task name="c" id="c" expand="true">
-            <semantic:incoming xmlns="">sq-17</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-13</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-0" sourceRef="start" targetRef="a"/>
+        <semantic:task id="c" name="c">
+            <semantic:incoming>sq-17</semantic:incoming>
+            <semantic:outgoing>sq-13</semantic:outgoing>
         </semantic:task>
-        <semantic:task name="f" id="f" expand="true">
-            <semantic:incoming xmlns="">sq-42</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-11</semantic:outgoing>
+        <semantic:task id="f" name="f">
+            <semantic:incoming>sq-42</semantic:incoming>
+            <semantic:outgoing>sq-11</semantic:outgoing>
         </semantic:task>
-        <semantic:task name="h" id="h" expand="true">
-            <semantic:incoming xmlns="">sq-12</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-21</semantic:outgoing>
+        <semantic:task id="h" name="h">
+            <semantic:incoming>sq-12</semantic:incoming>
+            <semantic:outgoing>sq-21</semantic:outgoing>
         </semantic:task>
-        <semantic:task name="k" id="k" expand="true">
-            <semantic:incoming xmlns="">sq-22</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-5</semantic:outgoing>
+        <semantic:task id="k" name="k">
+            <semantic:incoming>sq-22</semantic:incoming>
+            <semantic:outgoing>sq-5</semantic:outgoing>
         </semantic:task>
-        <semantic:task name="l" id="l" expand="true">
-            <semantic:incoming xmlns="">sq-5</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-6</semantic:outgoing>
+        <semantic:task id="l" name="l">
+            <semantic:incoming>sq-5</semantic:incoming>
+            <semantic:outgoing>sq-6</semantic:outgoing>
         </semantic:task>
-        <semantic:sequenceFlow sourceRef="k" targetRef="l" id="sq-5"/>
-        <semantic:endEvent name="end_1" id="end_1">
-            <semantic:incoming xmlns="">sq-6</semantic:incoming>
+        <semantic:sequenceFlow id="sq-5" sourceRef="k" targetRef="l"/>
+        <semantic:endEvent id="end_1" name="end_1">
+            <semantic:incoming>sq-6</semantic:incoming>
         </semantic:endEvent>
-        <semantic:sequenceFlow sourceRef="l" targetRef="end_1" id="sq-6"/>
-        <semantic:task name="e" id="e" expand="true">
-            <semantic:incoming xmlns="">sq-39</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-10</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-6" sourceRef="l" targetRef="end_1"/>
+        <semantic:task id="e" name="e">
+            <semantic:incoming>sq-39</semantic:incoming>
+            <semantic:outgoing>sq-10</semantic:outgoing>
         </semantic:task>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-0" num="3">
-            <semantic:incoming xmlns="">sq-14</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-37</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-41</semantic:outgoing>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-0" name="">
+            <semantic:incoming>sq-14</semantic:incoming>
+            <semantic:outgoing>sq-37</semantic:outgoing>
+            <semantic:outgoing>sq-41</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-1" num="3">
-            <semantic:incoming xmlns="">sq-10</semantic:incoming>
-            <semantic:incoming xmlns="">sq-11</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-12</semantic:outgoing>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-1" name="">
+            <semantic:incoming>sq-10</semantic:incoming>
+            <semantic:incoming>sq-11</semantic:incoming>
+            <semantic:outgoing>sq-12</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:sequenceFlow sourceRef="e" targetRef="gt-1" id="sq-10"/>
-        <semantic:sequenceFlow sourceRef="f" targetRef="gt-1" id="sq-11"/>
-        <semantic:sequenceFlow sourceRef="gt-1" targetRef="h" id="sq-12"/>
-        <semantic:task name="z" id="z" expand="true">
-            <semantic:incoming xmlns="">sq-15</semantic:incoming>
+        <semantic:sequenceFlow id="sq-10" sourceRef="e" targetRef="gt-1"/>
+        <semantic:sequenceFlow id="sq-11" sourceRef="f" targetRef="gt-1"/>
+        <semantic:sequenceFlow id="sq-12" sourceRef="gt-1" targetRef="h"/>
+        <semantic:task id="z" name="z">
+            <semantic:incoming>sq-15</semantic:incoming>
         </semantic:task>
-        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-2" num="0">
-            <semantic:incoming xmlns="">sq-13</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-14</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-15</semantic:outgoing>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-2" name="">
+            <semantic:incoming>sq-13</semantic:incoming>
+            <semantic:outgoing>sq-14</semantic:outgoing>
+            <semantic:outgoing>sq-15</semantic:outgoing>
         </semantic:exclusiveGateway>
-        <semantic:sequenceFlow sourceRef="c" targetRef="gt-2" id="sq-13"/>
-        <semantic:sequenceFlow sourceRef="gt-2" targetRef="gt-0" id="sq-14"/>
-        <semantic:sequenceFlow sourceRef="gt-2" targetRef="z" id="sq-15"/>
-        <semantic:task name="d" id="d" expand="true">
-            <semantic:incoming xmlns="">sq-18</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-23</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-13" sourceRef="c" targetRef="gt-2"/>
+        <semantic:sequenceFlow id="sq-14" sourceRef="gt-2" targetRef="gt-0"/>
+        <semantic:sequenceFlow id="sq-15" sourceRef="gt-2" targetRef="z"/>
+        <semantic:task id="d" name="d">
+            <semantic:incoming>sq-18</semantic:incoming>
+            <semantic:outgoing>sq-23</semantic:outgoing>
         </semantic:task>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-3" num="2">
-            <semantic:incoming xmlns="">sq-30</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-17</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-18</semantic:outgoing>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-3" name="">
+            <semantic:incoming>sq-30</semantic:incoming>
+            <semantic:outgoing>sq-17</semantic:outgoing>
+            <semantic:outgoing>sq-18</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:sequenceFlow sourceRef="gt-3" targetRef="c" id="sq-17"/>
-        <semantic:sequenceFlow sourceRef="gt-3" targetRef="d" id="sq-18"/>
-        <semantic:task name="j" id="j" expand="true">
-            <semantic:incoming xmlns="">sq-24</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-44</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-17" sourceRef="gt-3" targetRef="c"/>
+        <semantic:sequenceFlow id="sq-18" sourceRef="gt-3" targetRef="d"/>
+        <semantic:task id="j" name="j">
+            <semantic:incoming>sq-24</semantic:incoming>
+            <semantic:outgoing>sq-44</semantic:outgoing>
         </semantic:task>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-4" num="2">
-            <semantic:incoming xmlns="">sq-21</semantic:incoming>
-            <semantic:incoming xmlns="">sq-43</semantic:incoming>
-            <semantic:incoming xmlns="">sq-44</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-22</semantic:outgoing>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-4" name="">
+            <semantic:incoming>sq-21</semantic:incoming>
+            <semantic:incoming>sq-43</semantic:incoming>
+            <semantic:incoming>sq-44</semantic:incoming>
+            <semantic:outgoing>sq-22</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:sequenceFlow sourceRef="h" targetRef="gt-4" id="sq-21"/>
-        <semantic:sequenceFlow sourceRef="gt-4" targetRef="k" id="sq-22"/>
-        <semantic:task name="i" id="i" expand="true">
-            <semantic:incoming xmlns="">sq-25</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-43</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-21" sourceRef="h" targetRef="gt-4"/>
+        <semantic:sequenceFlow id="sq-22" sourceRef="gt-4" targetRef="k"/>
+        <semantic:task id="i" name="i">
+            <semantic:incoming>sq-25</semantic:incoming>
+            <semantic:outgoing>sq-43</semantic:outgoing>
         </semantic:task>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-5" num="4">
-            <semantic:incoming xmlns="">sq-23</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-24</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-25</semantic:outgoing>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-5" name="">
+            <semantic:incoming>sq-23</semantic:incoming>
+            <semantic:outgoing>sq-24</semantic:outgoing>
+            <semantic:outgoing>sq-25</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:sequenceFlow sourceRef="d" targetRef="gt-5" id="sq-23"/>
-        <semantic:sequenceFlow sourceRef="gt-5" targetRef="j" id="sq-24"/>
-        <semantic:sequenceFlow sourceRef="gt-5" targetRef="i" id="sq-25"/>
-        <semantic:task name="b" id="b" expand="true">
-            <semantic:incoming xmlns="">sq-31</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-32</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-23" sourceRef="d" targetRef="gt-5"/>
+        <semantic:sequenceFlow id="sq-24" sourceRef="gt-5" targetRef="j"/>
+        <semantic:sequenceFlow id="sq-25" sourceRef="gt-5" targetRef="i"/>
+        <semantic:task id="b" name="b">
+            <semantic:incoming>sq-31</semantic:incoming>
+            <semantic:outgoing>sq-32</semantic:outgoing>
         </semantic:task>
-        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-7" num="1">
-            <semantic:incoming xmlns="">sq-29</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-30</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-31</semantic:outgoing>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-7" name="">
+            <semantic:incoming>sq-29</semantic:incoming>
+            <semantic:outgoing>sq-30</semantic:outgoing>
+            <semantic:outgoing>sq-31</semantic:outgoing>
         </semantic:exclusiveGateway>
-        <semantic:sequenceFlow sourceRef="a" targetRef="gt-7" id="sq-29"/>
-        <semantic:sequenceFlow sourceRef="gt-7" targetRef="gt-3" id="sq-30"/>
-        <semantic:sequenceFlow sourceRef="gt-7" targetRef="b" id="sq-31"/>
-        <semantic:endEvent name="end" id="end">
-            <semantic:incoming xmlns="">sq-32</semantic:incoming>
+        <semantic:sequenceFlow id="sq-29" sourceRef="a" targetRef="gt-7"/>
+        <semantic:sequenceFlow id="sq-30" sourceRef="gt-7" targetRef="gt-3"/>
+        <semantic:sequenceFlow id="sq-31" sourceRef="gt-7" targetRef="b"/>
+        <semantic:endEvent id="end" name="end">
+            <semantic:incoming>sq-32</semantic:incoming>
         </semantic:endEvent>
-        <semantic:sequenceFlow sourceRef="b" targetRef="end" id="sq-32"/>
-        <semantic:parallelGateway gatewayDirection="Diverging" name="" id="gt-8" num="3">
-            <semantic:outgoing xmlns="">sq-38</semantic:outgoing>
-            <semantic:outgoing xmlns="">sq-40</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-32" sourceRef="b" targetRef="end"/>
+        <semantic:parallelGateway gatewayDirection="Diverging" id="gt-8" name="">
+            <semantic:outgoing>sq-38</semantic:outgoing>
+            <semantic:outgoing>sq-40</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-9" num="-3">
-            <semantic:incoming xmlns="">sq-37</semantic:incoming>
-            <semantic:incoming xmlns="">sq-38</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-39</semantic:outgoing>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-9" name="">
+            <semantic:incoming>sq-37</semantic:incoming>
+            <semantic:incoming>sq-38</semantic:incoming>
+            <semantic:outgoing>sq-39</semantic:outgoing>
         </semantic:exclusiveGateway>
-        <semantic:sequenceFlow sourceRef="gt-0" targetRef="gt-9" id="sq-37"/>
-        <semantic:sequenceFlow sourceRef="gt-8" targetRef="gt-9" id="sq-38"/>
-        <semantic:sequenceFlow sourceRef="gt-9" targetRef="e" id="sq-39"/>
-        <semantic:exclusiveGateway gatewayDirection="Diverging" name="" id="gt-10" num="-3">
-            <semantic:incoming xmlns="">sq-40</semantic:incoming>
-            <semantic:incoming xmlns="">sq-41</semantic:incoming>
-            <semantic:outgoing xmlns="">sq-42</semantic:outgoing>
+        <semantic:sequenceFlow id="sq-37" sourceRef="gt-0" targetRef="gt-9"/>
+        <semantic:sequenceFlow id="sq-38" sourceRef="gt-8" targetRef="gt-9"/>
+        <semantic:sequenceFlow id="sq-39" sourceRef="gt-9" targetRef="e"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-10" name="">
+            <semantic:incoming>sq-40</semantic:incoming>
+            <semantic:incoming>sq-41</semantic:incoming>
+            <semantic:outgoing>sq-42</semantic:outgoing>
         </semantic:exclusiveGateway>
-        <semantic:sequenceFlow sourceRef="gt-8" targetRef="gt-10" id="sq-40"/>
-        <semantic:sequenceFlow sourceRef="gt-0" targetRef="gt-10" id="sq-41"/>
-        <semantic:sequenceFlow sourceRef="gt-10" targetRef="f" id="sq-42"/>
-        <semantic:sequenceFlow sourceRef="i" targetRef="gt-4" id="sq-43"/>
-        <semantic:sequenceFlow sourceRef="j" targetRef="gt-4" id="sq-44"/>
+        <semantic:sequenceFlow id="sq-40" sourceRef="gt-8" targetRef="gt-10"/>
+        <semantic:sequenceFlow id="sq-41" sourceRef="gt-0" targetRef="gt-10"/>
+        <semantic:sequenceFlow id="sq-42" sourceRef="gt-10" targetRef="f"/>
+        <semantic:sequenceFlow id="sq-43" sourceRef="i" targetRef="gt-4"/>
+        <semantic:sequenceFlow id="sq-44" sourceRef="j" targetRef="gt-4"/>
     </semantic:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1" xmlns="">
+        <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
             <bpmndi:BPMNShape bpmnElement="c" id="BPMNShape_c">
-                <dc:Bounds x="840.0" y="120.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="840.0" y="120.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-2" id="BPMNShape_gt-2">
-                <dc:Bounds x="1070.0" y="120.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1070.0" y="120.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1040.0" y="90.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1040.0" y="90.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-0" id="BPMNShape_gt-0">
-                <dc:Bounds x="1270.0" y="20.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1270.0" y="20.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1240.0" y="-10.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1240.0" y="-10.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-3" id="BPMNShape_gt-3">
-                <dc:Bounds x="670.0" y="220.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="670.0" y="220.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="640.0" y="190.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="640.0" y="190.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="j" id="BPMNShape_j">
-                <dc:Bounds x="1240.0" y="320.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="1240.0" y="320.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-9" id="BPMNShape_gt-9">
-                <dc:Bounds x="1470.0" y="420.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1470.0" y="420.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1440.0" y="390.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1440.0" y="390.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="e" id="BPMNShape_e">
-                <dc:Bounds x="1640.0" y="420.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="1640.0" y="420.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-1" id="BPMNShape_gt-1">
-                <dc:Bounds x="1870.0" y="520.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1870.0" y="520.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1840.0" y="490.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1840.0" y="490.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="h" id="BPMNShape_h">
-                <dc:Bounds x="2040.0" y="520.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="2040.0" y="520.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="z" id="BPMNShape_z">
-                <dc:Bounds x="1240.0" y="220.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="1240.0" y="220.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="d" id="BPMNShape_d">
-                <dc:Bounds x="840.0" y="620.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="840.0" y="620.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-5" id="BPMNShape_gt-5">
-                <dc:Bounds x="1070.0" y="620.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1070.0" y="620.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1040.0" y="590.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1040.0" y="590.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-10" id="BPMNShape_gt-10">
-                <dc:Bounds x="1470.0" y="620.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="1470.0" y="620.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1440.0" y="590.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="1440.0" y="590.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="f" id="BPMNShape_f">
-                <dc:Bounds x="1640.0" y="620.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="1640.0" y="620.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-4" id="BPMNShape_gt-4">
-                <dc:Bounds x="2270.0" y="620.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="2270.0" y="620.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="2240.0" y="590.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="2240.0" y="590.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="k" id="BPMNShape_k">
-                <dc:Bounds x="2440.0" y="620.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="2440.0" y="620.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="l" id="BPMNShape_l">
-                <dc:Bounds x="2640.0" y="620.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="2640.0" y="620.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="end_1" id="BPMNShape_end_1">
-                <dc:Bounds x="2885.0" y="635.0" width="30.0" height="30.0"/>
+                <dc:Bounds height="30.0" width="30.0" x="2885.0" y="635.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="2885.0" y="680.0" width="30.0" height="30.0"/>
+                    <dc:Bounds height="30.0" width="30.0" x="2885.0" y="680.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
-                <dc:Bounds x="85.0" y="735.0" width="30.0" height="30.0"/>
+                <dc:Bounds height="30.0" width="30.0" x="85.0" y="735.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="85.0" y="780.0" width="30.0" height="30.0"/>
+                    <dc:Bounds height="30.0" width="30.0" x="85.0" y="780.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="a" id="BPMNShape_a">
-                <dc:Bounds x="240.0" y="720.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="240.0" y="720.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-7" id="BPMNShape_gt-7">
-                <dc:Bounds x="470.0" y="720.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="470.0" y="720.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="440.0" y="690.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="440.0" y="690.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="i" id="BPMNShape_i">
-                <dc:Bounds x="1240.0" y="720.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="1240.0" y="720.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="gt-8" id="BPMNShape_gt-8">
-                <dc:Bounds x="70.0" y="820.0" width="60.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="60.0" x="70.0" y="820.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="40.0" y="790.0" width="60.0" height="60.0"/>
+                    <dc:Bounds height="60.0" width="60.0" x="40.0" y="790.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="b" id="BPMNShape_b">
-                <dc:Bounds x="640.0" y="820.0" width="120.0" height="60.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="640.0" y="820.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
-                <dc:Bounds x="885.0" y="835.0" width="30.0" height="30.0"/>
+                <dc:Bounds height="30.0" width="30.0" x="885.0" y="835.0"/>
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="885.0" y="880.0" width="30.0" height="30.0"/>
+                    <dc:Bounds height="30.0" width="30.0" x="885.0" y="880.0"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="sq-0" id="BPMNEdge_sq-0">

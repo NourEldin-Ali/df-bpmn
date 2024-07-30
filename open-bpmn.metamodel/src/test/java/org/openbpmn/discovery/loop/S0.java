@@ -4,14 +4,15 @@ import java.util.*;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
+import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
 import org.openbpmn.bpmn.discovery.model.DecisionMerger;
 import org.openbpmn.bpmn.discovery.model.DependencyGraph;
 import org.openbpmn.bpmn.discovery.model.LoopMerger;
 import org.openbpmn.bpmn.discovery.model.ParallelismMerger;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 
-public class AllLoops {
-	private static Logger logger = Logger.getLogger(AllLoops.class.getName());
+public class S0 {
+	private static Logger logger = Logger.getLogger(S0.class.getName());
 
 	/**
 	 * This test creates an empty BPMN model instance
@@ -21,7 +22,8 @@ public class AllLoops {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
-		String path = "src/test/resources/discovery/loop/test1.bpmn";
+		logger.info("s0.bpmn done: Start generating model");
+		String path = "src/test/resources/discovery/loop/s0_results.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet<>();
@@ -52,12 +54,8 @@ public class AllLoops {
 		list.add("f->f");
 		list.add("f->e");
 		list.add("e->f");
-//		list.add("f->c");
 		list.add("e->h");
 		list.add("f->h");
-		
-		
-		list.add("h->k");
 		list.add("h->a");
 		list.add("k->l");
 		list.add("l->end_1");
@@ -158,13 +156,25 @@ public class AllLoops {
 		relations.put(BPMNDiscovery.PARALLEL, parallelMergeRelations);
 		relations.put(BPMNDiscovery.INCLUSIVE, inclusiveRelations);
 
-		System.out.println(relations);
+//		System.out.println(relations);
 
 
 
 		BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
 		bpmnDiscovery.DependencyGraphToBPMN();
 		bpmnDiscovery.saveMode(path);
+
+
+
+
+		//compaire the two models
+		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s0.bpmn");
+		if(!results){
+			logger.warning("s0.bpmn: The two models are not equivalent");
+		}else{
+			logger.info("s0.bpmn done: The two models are equivalent");
+		}
+
 		
 	}
 }

@@ -1,4 +1,4 @@
-package org.openbpmn.discovery.loop;
+package org.openbpmn.discovery.noloop;
 
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
@@ -12,8 +12,9 @@ import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class S6 {
-	private static Logger logger = Logger.getLogger(S6.class.getName());
+// https://bonitasoft.atlassian.net/wiki/spaces/TRI/pages/23300964405/BPMN+without+loops#M0
+public class M3 {
+	private static Logger logger = Logger.getLogger(M3.class.getName());
 
 	/**
 	 * This test creates an empty BPMN model instance
@@ -23,8 +24,8 @@ public class S6 {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
-		logger.info("s6.bpmn done: Start generating model");
-		String path = "src/test/resources/discovery/loop/s6_results.bpmn";
+		logger.info("M3.bpmn done: Start generating model");
+		String path = "src/test/resources/discovery/noloop/m3_results.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet<>();
@@ -40,21 +41,39 @@ public class S6 {
 
 		// dependencies
 		list.add("start->a");
+		
 		list.add("a->b");
-		list.add("b->a");
-		list.add("a->end");
+		list.add("a->c");
+
+		list.add("b->d");
+		list.add("b->e");
+		list.add("c->e");
+		list.add("c->d");
 
 
-		// parallelism
+		list.add("e->end");
+		list.add("d->end");
 
-
+	
 		// elements info
 		// start/end/human/service
 
 		elementsInfo.put(startEvent, new HashMap<String, String>() {{ put("type", "start"); }});
 		elementsInfo.put("end", new HashMap<String, String>() {{ put("type", "end"); }});
 
-
+		//parallelism
+		parallelRelations.add(new HashSet<>() {
+			{
+				add("b");
+				add("c");
+			}
+		});
+		parallelRelations.add(new HashSet<>() {
+			{
+				add("d");
+				add("e");
+			}
+		});
 
 		// extract dependencies
 		for (String dependency : list) {
@@ -91,22 +110,23 @@ public class S6 {
 
 
 
-//		System.out.println(bpmnTransformation.loops);
-//		System.out.println(bpmnTransformation.getLoops());
+		System.out.println(bpmnTransformation.loops);
+		System.out.println(bpmnTransformation.getLoops());
 
 		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
-//		System.out.println(loopMerger.getMergedLoop());
+		System.out.println(loopMerger.getMergedLoop());
 
 
 		//get exclusive
 		DecisionMerger decisionMerger = new DecisionMerger(bpmnTransformation.exlusive, bpmnTransformation.dependencyGraph);
 		LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
-
+			System.out.println(decisionRelations);
 		//get parallelism
 		ParallelismMerger parallelismMerger = new ParallelismMerger(bpmnTransformation.parallelism,
 				bpmnTransformation.dependencyGraph);
 		LinkedList<LinkedList<String>> parallelMergeRelations = parallelismMerger.getParallelims();
-
+		System.out.println("parallelMergeRelations");
+		System.out.println(parallelMergeRelations);
 		//get inclusive
 		ParallelismMerger inclusiveMerger = new ParallelismMerger(bpmnTransformation.inclusive,
 				bpmnTransformation.dependencyGraph);
@@ -130,11 +150,11 @@ public class S6 {
 
 
 		//compaire the two models
-		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s6.bpmn");
+		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/noloop/M3.bpmn");
 		if(!results){
-			logger.warning("s6.bpmn: The two models are not equivalent");
+			logger.warning("M3.bpmn: The two models are not equivalent");
 		}else{
-			logger.info("s6.bpmn done: The two models are equivalent");
+			logger.info("M3.bpmn done: The two models are equivalent");
 		}
 
 		

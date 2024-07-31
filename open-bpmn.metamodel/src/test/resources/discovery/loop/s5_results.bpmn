@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><semantic:definitions xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" exporter="demo" exporterVersion="1.0.0" targetNamespace="http://org.openbpmn">
+    <semantic:process id="process_1" name="Default Process" processType="Public">
+        <semantic:startEvent id="start" name="start">
+            <semantic:outgoing>sq-4</semantic:outgoing>
+        </semantic:startEvent>
+        <semantic:task id="a" name="a">
+            <semantic:incoming>sq-5</semantic:incoming>
+            <semantic:outgoing>sq-3</semantic:outgoing>
+        </semantic:task>
+        <semantic:endEvent id="end" name="end">
+            <semantic:incoming>sq-2</semantic:incoming>
+        </semantic:endEvent>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-0" name="">
+            <semantic:incoming>sq-3</semantic:incoming>
+            <semantic:outgoing>sq-2</semantic:outgoing>
+            <semantic:outgoing>sq-6</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow id="sq-2" sourceRef="gt-0" targetRef="end"/>
+        <semantic:sequenceFlow id="sq-3" sourceRef="a" targetRef="gt-0"/>
+        <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-1" name="">
+            <semantic:incoming>sq-4</semantic:incoming>
+            <semantic:incoming>sq-6</semantic:incoming>
+            <semantic:outgoing>sq-5</semantic:outgoing>
+        </semantic:exclusiveGateway>
+        <semantic:sequenceFlow id="sq-4" sourceRef="start" targetRef="gt-1"/>
+        <semantic:sequenceFlow id="sq-5" sourceRef="gt-1" targetRef="a"/>
+        <semantic:sequenceFlow id="sq-6" sourceRef="gt-0" targetRef="gt-1"/>
+    </semantic:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
+            <bpmndi:BPMNShape bpmnElement="a" id="BPMNShape_a">
+                <dc:Bounds height="60.0" width="120.0" x="440.0" y="20.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+                <dc:Bounds height="30.0" width="30.0" x="85.0" y="135.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="30.0" width="30.0" x="85.0" y="180.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-1" id="BPMNShape_gt-1">
+                <dc:Bounds height="60.0" width="60.0" x="270.0" y="120.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="60.0" width="60.0" x="240.0" y="90.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="gt-0" id="BPMNShape_gt-0">
+                <dc:Bounds height="60.0" width="60.0" x="670.0" y="120.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="60.0" width="60.0" x="640.0" y="90.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+                <dc:Bounds height="30.0" width="30.0" x="885.0" y="135.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="30.0" width="30.0" x="885.0" y="180.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sq-2" id="BPMNEdge_sq-2">
+                <di:waypoint x="730.0" y="150.0"/>
+                <di:waypoint x="885.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-3" id="BPMNEdge_sq-3">
+                <di:waypoint x="560.0" y="50.0"/>
+                <di:waypoint x="700.0" y="50.0"/>
+                <di:waypoint x="700.0" y="120.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-4" id="BPMNEdge_sq-4">
+                <di:waypoint x="115.0" y="150.0"/>
+                <di:waypoint x="270.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-5" id="BPMNEdge_sq-5">
+                <di:waypoint x="330.0" y="150.0"/>
+                <di:waypoint x="500.0" y="150.0"/>
+                <di:waypoint x="500.0" y="80.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-6" id="BPMNEdge_sq-6">
+                <di:waypoint x="670.0" y="150.0"/>
+                <di:waypoint x="330.0" y="150.0"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</semantic:definitions>

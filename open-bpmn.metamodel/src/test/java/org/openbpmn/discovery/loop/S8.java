@@ -12,8 +12,8 @@ import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class S6 {
-	private static Logger logger = Logger.getLogger(S6.class.getName());
+public class S8 {
+	private static Logger logger = Logger.getLogger(S8.class.getName());
 
 	/**
 	 * This test creates an empty BPMN model instance
@@ -23,8 +23,8 @@ public class S6 {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
-		logger.info("s6.bpmn done: Start generating model");
-		String path = "src/test/resources/discovery/loop/s6_results.bpmn";
+		logger.info("s8.bpmn done: Start generating model");
+		String path = "src/test/resources/discovery/loop/s8_results.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet<>();
@@ -41,12 +41,27 @@ public class S6 {
 		// dependencies
 		list.add("start->a");
 		list.add("a->b");
-		list.add("b->a");
-		list.add("a->end");
+		list.add("b->c");
+		list.add("c->f");
+		list.add("c->e");
+		list.add("c->c");
+
+		list.add("a->d");
+		list.add("d->e");
+		list.add("e->f");
+		list.add("e->e");
+		list.add("e->c");
+
+		list.add("f->end");
 
 
 		// parallelism
-
+		parallelRelations.add(new HashSet<String>() {{
+			add("c"); add("e");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("b"); add("d");
+		}});
 
 		// elements info
 		// start/end/human/service
@@ -95,7 +110,7 @@ public class S6 {
 //		System.out.println(bpmnTransformation.getLoops());
 
 		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
-//		System.out.println(loopMerger.getMergedLoop());
+		System.out.println(loopMerger.getMergedLoop());
 
 
 		//get exclusive
@@ -130,11 +145,11 @@ public class S6 {
 
 
 		//compaire the two models
-		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s6.bpmn");
+		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s8.bpmn");
 		if(!results){
-			logger.warning("s6.bpmn: The two models are not equivalent");
+			logger.warning("s8.bpmn: The two models are not equivalent");
 		}else{
-			logger.info("s6.bpmn done: The two models are equivalent");
+			logger.info("s8.bpmn done: The two models are equivalent");
 		}
 
 		

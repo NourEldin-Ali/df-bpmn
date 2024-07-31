@@ -21,8 +21,19 @@ public class ParallelismMerger {
         // Converting set back to list
         LinkedList<LinkedList<String>> result = new LinkedList<>();
         Set<Set<String>> mergedPara = mergeParallelism();
+        System.out.println(mergedPara);
+        // TODO: check why there exists a missing data?
+        // check if any missing data, and add
         for (Set<String> check : parallelism) {
-            if (!mergedPara.containsAll(check)) {
+            boolean shouldAdd = true;
+            for (Set<String> megrgedParallelism : mergedPara) {
+                if (megrgedParallelism.containsAll(check)) {
+                    shouldAdd = false;
+                    break;
+
+                }
+            }
+            if (shouldAdd) {
                 mergedPara.add(check);
             }
         }
@@ -52,7 +63,7 @@ public class ParallelismMerger {
                 Set<String> sourceActivity = new HashSet<>();
                 incomingEdgeActivity.stream().forEach(edge -> sourceActivity.add(dependencyGraph.getEdgeSource(edge)));
                 sourceActivity.stream().forEach(source -> {
-                    sortedBySource.putIfAbsent(source, new HashSet());
+                    sortedBySource.putIfAbsent(source, new HashSet<>());
                 });
             }
         }
@@ -71,13 +82,13 @@ public class ParallelismMerger {
                     }
                 }
                 if (isAllSameSource) {
-                    source.getValue().add(new HashSet(pair));
+                    source.getValue().add(new HashSet<>(pair));
                 }
             }
         }
         // Step 2 & 3: Calculate frequency and identify the highest frequency element
         String frequentElement = "";
-        Set<Set<String>> maxFreqElements = new HashSet();
+        Set<Set<String>> maxFreqElements = new HashSet<>();
         for (Map.Entry<String, Set<Set<String>>> entry : sortedBySource.entrySet()) {
             if (frequentElement.isEmpty()) {
                 frequentElement = entry.getKey();
@@ -103,11 +114,13 @@ public class ParallelismMerger {
                 }
             }
         }
-
+//        System.out.println("print test sortedBySource: ");
+//        System.out.println(sortedBySource);
         // union
         Set<Set<String>> finalParalellList = new LinkedHashSet<>();
         for (Map.Entry<String, Set<Set<String>>> source : sortedBySource.entrySet()) {
-            finalParalellList.addAll(unionSetsWithCommonElements(new ArrayList(source.getValue())));
+//            System.out.println(source.getKey());
+            finalParalellList.addAll(unionSetsWithCommonElements(new ArrayList<>(source.getValue())));
         }
         return finalParalellList;
     }
@@ -147,6 +160,8 @@ public class ParallelismMerger {
 
             originalSets = newSets; // Update the list for the next iteration
         } while (mergeOccurred);
+//        System.out.println("test unionSetsWithCommonElements: :");
+//        System.out.println(originalSets);
         return originalSets;
     }
 

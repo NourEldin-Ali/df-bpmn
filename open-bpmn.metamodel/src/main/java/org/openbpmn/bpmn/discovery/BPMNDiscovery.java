@@ -480,13 +480,14 @@ public class BPMNDiscovery {
 		// TODO: validate
 		String gatewayType;
 		String gatewayNum;
-		if (splitGateway == null) {
+//		if (splitGateway == null) {
 			gatewayType = BPMNTypes.EXCLUSIVE_GATEWAY;
 			gatewayNum = "-3";
-		} else {
-			gatewayType = splitGateway.getType();
-			gatewayNum = splitGateway.getAttribute(GATEWAY_NUM);
-		}
+//		}
+//		else {
+//			gatewayType = splitGateway.getType();
+//			gatewayNum = splitGateway.getAttribute(GATEWAY_NUM);
+//		}
 
 // add gateway before activity
 		Gateway newGateway = process.addGateway("gt-" + gatewayId.toString(), "", gatewayType);
@@ -816,7 +817,7 @@ public class BPMNDiscovery {
 
 		} else if (acceptedSequenceFlows.size() >= 1) {
 			isAdded = true;
-			System.out.print("Add new gateway after existing gateway (" + selectedGateway.getId() + "): gt-"
+			System.out.println("Add new gateway after existing gateway (" + selectedGateway.getId() + "): gt-"
 					+ gatewayId.toString());
 			String gatewayType = probablyRelationType.get(GATEWAY_TYPE);
 			// TODO: general gateway
@@ -1399,7 +1400,7 @@ public class BPMNDiscovery {
 			}
 
 			if (sourceElement == null) {
-				System.out.println("Error in detect loop targets relation");
+				System.out.println("Error in detect loop sources relation");
 				return;
 			}
 		}

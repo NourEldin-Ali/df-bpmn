@@ -24,14 +24,14 @@ public class DecisionMerger {
                 // get all source of activity
                 Set<DefaultWeightedEdge> incomingEdgeActivity = dependencyGraph.incomingEdgesOf(activity);
                 Set<String> sourcesActivity = new HashSet<>();
-                incomingEdgeActivity.stream().forEach(edge -> sourcesActivity.add(dependencyGraph.getEdgeSource(edge)));
+                incomingEdgeActivity.forEach(edge -> sourcesActivity.add(dependencyGraph.getEdgeSource(edge)));
                 for (String sourceElement : sourcesActivity) {
                     if (sortedBySource.containsKey(sourceElement)) {
                         if (!sortedBySource.get(sourceElement).containsKey(activity)) {
                             sortedBySource.get(sourceElement).putIfAbsent(activity, new HashSet<String>());
                         }
                     } else {
-                        sortedBySource.putIfAbsent(sourceElement, new HashMap());
+                        sortedBySource.putIfAbsent(sourceElement, new HashMap<>());
                     }
                 }
             }
@@ -53,7 +53,7 @@ public class DecisionMerger {
             }
         }
 
-        Set<Set<String>> finalDecisionList = new HashSet();
+        Set<Set<String>> finalDecisionList = new HashSet<>();
 
         // get most frequent element
         for (Map.Entry<String, Map<String, Set<String>>> source : sortedBySource.entrySet()) {
@@ -72,7 +72,7 @@ public class DecisionMerger {
                         }
                     }
                 }
-                if (maxFreqElements.size() > 0) {
+                if (!maxFreqElements.isEmpty()) {
                     maxFreqElements.add(frequentElement);
                     finalDecisionList.add(maxFreqElements);
                     source.getValue().remove(frequentElement);

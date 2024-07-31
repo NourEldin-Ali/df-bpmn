@@ -12,8 +12,8 @@ import org.openbpmn.bpmn.exceptions.BPMNModelException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class S6 {
-	private static Logger logger = Logger.getLogger(S6.class.getName());
+public class S7 {
+	private static Logger logger = Logger.getLogger(S7.class.getName());
 
 	/**
 	 * This test creates an empty BPMN model instance
@@ -23,8 +23,8 @@ public class S6 {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
-		logger.info("s6.bpmn done: Start generating model");
-		String path = "src/test/resources/discovery/loop/s6_results.bpmn";
+		logger.info("s7.bpmn done: Start generating model");
+		String path = "src/test/resources/discovery/loop/s7_results.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet<>();
@@ -41,12 +41,17 @@ public class S6 {
 		// dependencies
 		list.add("start->a");
 		list.add("a->b");
-		list.add("b->a");
-		list.add("a->end");
+		list.add("b->c");
+		list.add("b->d");
+
+		list.add("c->b");
+		list.add("d->b");
+
+		list.add("b->end");
 
 
 		// parallelism
-
+		parallelRelations.add(new HashSet<String>() {{ add("c"); add("d"); }});
 
 		// elements info
 		// start/end/human/service
@@ -130,11 +135,11 @@ public class S6 {
 
 
 		//compaire the two models
-		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s6.bpmn");
+		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s7.bpmn");
 		if(!results){
-			logger.warning("s6.bpmn: The two models are not equivalent");
+			logger.warning("s7.bpmn: The two models are not equivalent");
 		}else{
-			logger.info("s6.bpmn done: The two models are equivalent");
+			logger.info("s7.bpmn done: The two models are equivalent");
 		}
 
 		

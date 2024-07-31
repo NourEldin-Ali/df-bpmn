@@ -6,6 +6,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LoopMerger {
     private Set<List<String>> loops;
@@ -17,9 +18,12 @@ public class LoopMerger {
     }
 
     public List<Pair<Set<String>, Set<String>>> getMergedLoop(){
+        System.out.println("before merge");
+        System.out.println(this.loops);
         //merge loops by source
         List<Pair<String, Set<String>>> mergetBySource = mergeLoopsBySource();
-//        System.out.println(mergetBySource);
+        System.out.println("after  by source");
+        System.out.println(mergetBySource);
         //merge loops by target
         List<Pair<Set<String>, Set<String>>> mergetloop = mergeLoopsByTarget(mergetBySource);
 //        System.out.println(mergetloop);
@@ -55,7 +59,7 @@ public class LoopMerger {
                 String otherSource = otherLoop.get(0);
                 String otherTarget = otherLoop.get(1);
 
-                if (source.contentEquals(otherSource) && DependencyGraph.haveSameSuccessors(dependencyGraph, target, otherTarget)) {
+                if (source.contentEquals(otherSource) && DependencyGraph.haveIntersectPredecessors(dependencyGraph, target, otherTarget)) {
                     targets.add(otherTarget);
                     it.remove(); // Remove the merged loop
                 }
@@ -81,7 +85,7 @@ public class LoopMerger {
                 Pair<String, Set<String>> lPrime = it.next();
                 if (l == lPrime) continue; // Skip the same element
 
-                if (l.getTarget().equals(lPrime.getTarget()) && DependencyGraph.haveSamePredecessors(dependencyGraph,l.getSource(), lPrime.getSource())) {
+                if (l.getTarget().equals(lPrime.getTarget()) && DependencyGraph.haveIntersectSuccessors(dependencyGraph,l.getSource(), lPrime.getSource())) {
                     sources.add(lPrime.getSource());
                     it.remove(); // Remove l' from mergedLoopBySource
                 }

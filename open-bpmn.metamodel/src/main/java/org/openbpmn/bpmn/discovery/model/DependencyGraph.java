@@ -170,8 +170,28 @@ public class DependencyGraph {
 
 				}
 			}
+//			//if there is a loop in the graph that not removed like a->b, b->a, and a is connected to other activity and b is connected to other activity so should remove both loops
+//			for (DefaultWeightedEdge edge : tempGraph.edgeSet()) {
+//				String source = tempGraph.getEdgeSource(edge);
+//				String target = tempGraph.getEdgeTarget(edge);
+//
+//				DefaultWeightedEdge reverseEdge = tempGraph.getEdge(target, source);
+//				if (reverseEdge != null) {
+//					// Add to loops
+//					loops.add(new ArrayList<>(Arrays.asList(source, target)));
+//
+//					// Remove marked edges=
+//					tempGraph.removeEdge(edge);
+//					tempGraph.removeEdge(reverseEdge);
+//				}
+//			}
+
+
 
 		}
+
+
+
 		// remove loops from dependency graph
 		dependencyGraph = (DirectedWeightedPseudograph<String, DefaultWeightedEdge>) dependencyGraphWithLoop.clone();
 		loops.stream().forEach(edge -> {
@@ -667,9 +687,50 @@ public class DependencyGraph {
 		// Get predecessor lists for both vertices
 		var predecessorsV1 = Graphs.predecessorListOf(graph, vertex1);
 		var predecessorsV2 = Graphs.predecessorListOf(graph, vertex2);
-
+		System.out.println("haveSamePredecessors: "+vertex1 + " and " + vertex2);
+		System.out.println("Predecessors of "+vertex1+": "+predecessorsV1);
+		System.out.println("Predecessors of "+vertex2+": "+predecessorsV2);
+		System.out.println("******");
 		// Check if the predecessor lists are equal
 		return predecessorsV1.containsAll(predecessorsV2) && predecessorsV2.containsAll(predecessorsV1);
+
+	}
+
+	public static boolean haveIntersectSuccessors(DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph, String vertex1, String vertex2) {
+		// Get successor lists for both vertices
+		var successorsV1 = Graphs.successorListOf(graph, vertex1);
+		var successorsV2 = Graphs.successorListOf(graph, vertex2);
+
+		// Check if the lists are equal
+		boolean areEqual = successorsV1.containsAll(successorsV2) && successorsV2.containsAll(successorsV1);
+
+		// Check if one list is a subset of the other
+		boolean isSubsetV1inV2 = successorsV2.containsAll(successorsV1);
+		boolean isSubsetV2inV1 = successorsV1.containsAll(successorsV2);
+
+		// Check if either the lists are equal or one is a subset of the other
+		boolean result = areEqual || isSubsetV1inV2 || isSubsetV2inV1;
+		return result;
+	}
+
+	public static boolean haveIntersectPredecessors(DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph, String vertex1, String vertex2) {
+		// Get predecessor lists for both vertices
+		var predecessorsV1 = Graphs.predecessorListOf(graph, vertex1);
+		var predecessorsV2 = Graphs.predecessorListOf(graph, vertex2);
+		System.out.println("haveSamePredecessors: "+vertex1 + " and " + vertex2);
+		System.out.println("Predecessors of "+vertex1+": "+predecessorsV1);
+		System.out.println("Predecessors of "+vertex2+": "+predecessorsV2);
+		System.out.println("******");
+		// Check if the lists are equal
+		boolean areEqual = predecessorsV1.containsAll(predecessorsV2) && predecessorsV2.containsAll(predecessorsV1);
+
+		// Check if one list is a subset of the other
+		boolean isSubsetV1inV2 = predecessorsV2.containsAll(predecessorsV1);
+		boolean isSubsetV2inV1 = predecessorsV1.containsAll(predecessorsV2);
+
+		// Check if either the lists are equal or one is a subset of the other
+		boolean result = areEqual || isSubsetV1inV2 || isSubsetV2inV1;
+		return result;
 
 	}
 }

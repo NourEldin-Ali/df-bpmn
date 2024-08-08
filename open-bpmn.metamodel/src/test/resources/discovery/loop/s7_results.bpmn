@@ -14,11 +14,11 @@
         </semantic:task>
         <semantic:task id="c" name="c">
             <semantic:incoming>sq-4</semantic:incoming>
-            <semantic:outgoing>sq-9</semantic:outgoing>
+            <semantic:outgoing>sq-10</semantic:outgoing>
         </semantic:task>
         <semantic:task id="d" name="d">
             <semantic:incoming>sq-5</semantic:incoming>
-            <semantic:outgoing>sq-10</semantic:outgoing>
+            <semantic:outgoing>sq-9</semantic:outgoing>
         </semantic:task>
         <semantic:parallelGateway gatewayDirection="Diverging" id="gt-0" name="">
             <semantic:incoming>sq-7</semantic:incoming>
@@ -43,8 +43,8 @@
             <semantic:incoming>sq-10</semantic:incoming>
             <semantic:outgoing>sq-13</semantic:outgoing>
         </semantic:parallelGateway>
-        <semantic:sequenceFlow id="sq-9" sourceRef="c" targetRef="gt-2"/>
-        <semantic:sequenceFlow id="sq-10" sourceRef="d" targetRef="gt-2"/>
+        <semantic:sequenceFlow id="sq-9" sourceRef="d" targetRef="gt-2"/>
+        <semantic:sequenceFlow id="sq-10" sourceRef="c" targetRef="gt-2"/>
         <semantic:exclusiveGateway gatewayDirection="Diverging" id="gt-3" name="">
             <semantic:incoming>sq-11</semantic:incoming>
             <semantic:incoming>sq-13</semantic:incoming>
@@ -133,13 +133,13 @@
                 <di:waypoint x="1085.0" y="450.0"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="sq-9" id="BPMNEdge_sq-9">
-                <di:waypoint x="1360.0" y="50.0"/>
-                <di:waypoint x="1500.0" y="50.0"/>
+                <di:waypoint x="1360.0" y="250.0"/>
+                <di:waypoint x="1500.0" y="250.0"/>
                 <di:waypoint x="1500.0" y="320.0"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="sq-10" id="BPMNEdge_sq-10">
-                <di:waypoint x="1360.0" y="250.0"/>
-                <di:waypoint x="1500.0" y="250.0"/>
+                <di:waypoint x="1360.0" y="50.0"/>
+                <di:waypoint x="1500.0" y="50.0"/>
                 <di:waypoint x="1500.0" y="320.0"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="sq-11" id="BPMNEdge_sq-11">

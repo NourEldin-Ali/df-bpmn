@@ -43,12 +43,12 @@
         <semantic:sequenceFlow id="sq-8" sourceRef="g" targetRef="gt-1"/>
         <semantic:sequenceFlow id="sq-9" sourceRef="gt-1" targetRef="h"/>
         <semantic:task id="e" name="e">
-            <semantic:incoming>sq-25</semantic:incoming>
-            <semantic:outgoing>sq-26</semantic:outgoing>
-        </semantic:task>
-        <semantic:task id="d" name="d">
             <semantic:incoming>sq-24</semantic:incoming>
             <semantic:outgoing>sq-27</semantic:outgoing>
+        </semantic:task>
+        <semantic:task id="d" name="d">
+            <semantic:incoming>sq-25</semantic:incoming>
+            <semantic:outgoing>sq-26</semantic:outgoing>
         </semantic:task>
         <semantic:task id="c" name="c">
             <semantic:incoming>sq-20</semantic:incoming>
@@ -70,10 +70,10 @@
         </semantic:exclusiveGateway>
         <semantic:sequenceFlow id="sq-22" sourceRef="c" targetRef="gt-5"/>
         <semantic:sequenceFlow id="sq-23" sourceRef="gt-5" targetRef="gt-1"/>
-        <semantic:sequenceFlow id="sq-24" sourceRef="gt-4" targetRef="d"/>
-        <semantic:sequenceFlow id="sq-25" sourceRef="gt-4" targetRef="e"/>
-        <semantic:sequenceFlow id="sq-26" sourceRef="e" targetRef="gt-5"/>
-        <semantic:sequenceFlow id="sq-27" sourceRef="d" targetRef="gt-5"/>
+        <semantic:sequenceFlow id="sq-24" sourceRef="gt-4" targetRef="e"/>
+        <semantic:sequenceFlow id="sq-25" sourceRef="gt-4" targetRef="d"/>
+        <semantic:sequenceFlow id="sq-26" sourceRef="d" targetRef="gt-5"/>
+        <semantic:sequenceFlow id="sq-27" sourceRef="e" targetRef="gt-5"/>
     </semantic:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
         <bpmndi:BPMNPlane bpmnElement="process_1" id="BPMNPlane_1">
@@ -87,10 +87,10 @@
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="e" id="BPMNShape_e">
-                <dc:Bounds height="60.0" width="120.0" x="840.0" y="420.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="840.0" y="320.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="d" id="BPMNShape_d">
-                <dc:Bounds height="60.0" width="120.0" x="840.0" y="320.0"/>
+                <dc:Bounds height="60.0" width="120.0" x="840.0" y="420.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="c" id="BPMNShape_c">
                 <dc:Bounds height="60.0" width="120.0" x="840.0" y="220.0"/>

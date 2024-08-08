@@ -1,5 +1,8 @@
 package org.openbpmn.discovery.loop;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
 import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
@@ -119,6 +122,7 @@ public class S1 {
 		bpmnTransformation.parallelism = parallelRelations;
 		bpmnTransformation.elementInformations = elementsInfo;
 		bpmnTransformation.elementsName = elementsName;
+
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
 		bpmnTransformation.findParallelism();
@@ -154,13 +158,13 @@ public class S1 {
 		relations.put(BPMNDiscovery.PARALLEL, parallelMergeRelations);
 		relations.put(BPMNDiscovery.INCLUSIVE, inclusiveRelations);
 
-//		System.out.println(relations);
+		System.out.println(relations);
 
 
 
-//		BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
-//		bpmnDiscovery.DependencyGraphToBPMN();
-//		bpmnDiscovery.saveMode(path);
+		BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);
+		bpmnDiscovery.DependencyGraphToBPMN();
+		bpmnDiscovery.saveMode(path);
 
 
 

@@ -109,7 +109,7 @@ public class S8 {
 //		System.out.println(bpmnTransformation.loops);
 //		System.out.println(bpmnTransformation.getLoops());
 
-		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
+		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraphWithLoop);
 		System.out.println(loopMerger.getMergedLoop());
 
 

@@ -1804,4 +1804,53 @@ public class BPMNProcess extends BPMNElement {
 		return activities;
 	}
 
+	public List<BPMNElementNode> getAllForwardNestedGateways(BPMNElementNode sourceElement) {
+		Set<BPMNElementNode> foundGateways = new HashSet<>();
+		Set<BPMNElementNode> visitedNodes = new HashSet<>();
+		findGateways(sourceElement, foundGateways, visitedNodes);
+		return new ArrayList<>(foundGateways);
+	}
+
+	private void findGateways(BPMNElementNode node, Set<BPMNElementNode> foundGateways, Set<BPMNElementNode> visitedNodes) {
+		if (!visitedNodes.add(node)) {
+			return; // Node has already been visited, return to avoid cycles
+		}
+
+		node.getOutgoingSequenceFlows().stream()
+				.map(BPMNElementEdge::getTargetElement)
+				.forEach(target -> {
+					if (target instanceof Gateway ) {
+						foundGateways.add(target);
+						findGateways(target, foundGateways, visitedNodes); // Recurse with the same sets
+					}
+//					else {
+//						findGateways(target, foundGateways, visitedNodes); // Continue traversal
+//					}
+				});
+	}
+
+	public List<BPMNElementNode> getAllBackwardNestedGateways(BPMNElementNode sourceElement) {
+		Set<BPMNElementNode> foundGateways = new HashSet<>();
+		Set<BPMNElementNode> visitedNodes = new HashSet<>();
+		findBackGateways(sourceElement, foundGateways, visitedNodes);
+		return new ArrayList<>(foundGateways);
+	}
+
+	private void findBackGateways(BPMNElementNode node, Set<BPMNElementNode> foundGateways, Set<BPMNElementNode> visitedNodes) {
+		if (!visitedNodes.add(node)) {
+			return; // Node has already been visited, return to avoid cycles
+		}
+
+		node.getIngoingSequenceFlows().stream()
+				.map(BPMNElementEdge::getSourceElement)
+				.forEach(target -> {
+					if (target instanceof Gateway ) {
+						foundGateways.add(target);
+						findBackGateways(target, foundGateways, visitedNodes); // Recurse with the same sets
+					}
+//					else {
+//						findGateways(target, foundGateways, visitedNodes); // Continue traversal
+//					}
+				});
+	}
 }

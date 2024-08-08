@@ -95,7 +95,7 @@ public class S6 {
 //		System.out.println(bpmnTransformation.getLoops());
 
 		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
-//		System.out.println(loopMerger.getMergedLoop());
+		System.out.println(loopMerger.getMergedLoop());
 
 
 		//get exclusive

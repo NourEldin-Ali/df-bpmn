@@ -3,10 +3,7 @@ package org.openbpmn.discovery.loop;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
 import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
-import org.openbpmn.bpmn.discovery.model.DecisionMerger;
-import org.openbpmn.bpmn.discovery.model.DependencyGraph;
-import org.openbpmn.bpmn.discovery.model.LoopMerger;
-import org.openbpmn.bpmn.discovery.model.ParallelismMerger;
+import org.openbpmn.bpmn.discovery.model.*;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 
 import java.util.*;
@@ -60,7 +57,27 @@ public class S9 {
 		list.add("f->e");
 		list.add("f->f");
 
-		list.add("f->end");
+		list.add("g->end");
+
+//		list.add("start->a");
+//		list.add("a->f");
+//		list.add("a->e");
+//		list.add("a->c");
+//
+//
+//
+//		list.add("e->g");
+//		list.add("f->g");
+//		list.add("c->g");
+//
+//		list.add("g->end");
+//		// parallelism
+//		parallelRelations.add(new HashSet<String>() {{
+//			add("c"); add("e");
+//		}});
+//		parallelRelations.add(new HashSet<String>() {{
+//			add("c"); add("f");
+//		}});
 
 
 		// parallelism
@@ -70,8 +87,15 @@ public class S9 {
 		parallelRelations.add(new HashSet<String>() {{
 			add("c"); add("f");
 		}});
+
 		parallelRelations.add(new HashSet<String>() {{
 			add("b"); add("d");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("b"); add("f");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("f"); add("d");
 		}});
 
 		// elements info
@@ -120,22 +144,36 @@ public class S9 {
 //		System.out.println(bpmnTransformation.loops);
 //		System.out.println(bpmnTransformation.getLoops());
 
-		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
+		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraphWithLoop);
 		System.out.println(loopMerger.getMergedLoop());
 
+		System.out.println("exlusive");
+		System.out.println(bpmnTransformation.exlusive);
+
+		DecisionForLoop decisionForLoop = new DecisionForLoop(bpmnTransformation.exlusive, bpmnTransformation.parallelism,
+				bpmnTransformation.inclusive, loopMerger.getMergedLoop());
+		decisionForLoop.appendDecisions();
+
+		System.out.println("exclusive");
+		System.out.println(bpmnTransformation.exlusive);
 
 		//get exclusive
 		DecisionMerger decisionMerger = new DecisionMerger(bpmnTransformation.exlusive, bpmnTransformation.dependencyGraph);
 		LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
 
+		System.out.println("decisionRelations");
+		System.out.println(decisionRelations);
+
 		//get parallelism
 		ParallelismMerger parallelismMerger = new ParallelismMerger(bpmnTransformation.parallelism,
-				bpmnTransformation.dependencyGraph);
+				bpmnTransformation.dependencyGraphWithLoop);
 		LinkedList<LinkedList<String>> parallelMergeRelations = parallelismMerger.getParallelims();
+		System.out.println("parallelMergeRelations");
+		System.out.println(parallelMergeRelations);
 
 		//get inclusive
 		ParallelismMerger inclusiveMerger = new ParallelismMerger(bpmnTransformation.inclusive,
-				bpmnTransformation.dependencyGraph);
+				bpmnTransformation.dependencyGraphWithLoop);
 		LinkedList<LinkedList<String>> inclusiveRelations = inclusiveMerger.getParallelims();
 
 

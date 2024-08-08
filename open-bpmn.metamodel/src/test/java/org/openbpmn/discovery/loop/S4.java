@@ -1,5 +1,8 @@
 package org.openbpmn.discovery.loop;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
 import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
@@ -98,11 +101,14 @@ public class S4 {
 				endEvents.add(entry.getKey());
 			}
 		}
+
 		bpmnTransformation.endActivities = endEvents;
 		bpmnTransformation.startActivities = startsEvent;
 		bpmnTransformation.parallelism = parallelRelations;
 		bpmnTransformation.elementInformations = elementsInfo;
 		bpmnTransformation.elementsName = elementsName;
+
+
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
 		bpmnTransformation.findParallelism();
@@ -110,11 +116,10 @@ public class S4 {
 		bpmnTransformation.findExculisve();
 
 
-
 		System.out.println(bpmnTransformation.loops);
 		System.out.println(bpmnTransformation.getLoops());
-
-		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraph);
+//
+		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraphWithLoop);
 		System.out.println(loopMerger.getMergedLoop());
 
 
@@ -137,9 +142,6 @@ public class S4 {
 		relations.put(BPMNDiscovery.DECISION, decisionRelations);
 		relations.put(BPMNDiscovery.PARALLEL, parallelMergeRelations);
 		relations.put(BPMNDiscovery.INCLUSIVE, inclusiveRelations);
-
-//		System.out.println(relations);
-
 
 
 		BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(bpmnTransformation);

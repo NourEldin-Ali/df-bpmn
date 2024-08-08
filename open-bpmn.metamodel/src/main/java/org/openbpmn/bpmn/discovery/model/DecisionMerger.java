@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 public class DecisionMerger {
     Set<Set<String>> decisions;
     DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraph;
- public DecisionMerger(Set<Set<String>> decisions, DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraph) {
+
+    public DecisionMerger(Set<Set<String>> decisions, DirectedWeightedPseudograph<String, DefaultWeightedEdge> dependencyGraph) {
         this.decisions = decisions;
         this.dependencyGraph = dependencyGraph;
     }
@@ -91,6 +92,26 @@ public class DecisionMerger {
             LinkedList<String> innerList = new LinkedList<>(innerSet);
             result.add(innerList);
         }
+        System.out.println("result: " + result);
+
+        //check if there any missing data
+        for (Set<String> pair : decisions) {
+            if (result.isEmpty()) {
+                result.add(new LinkedList<>(pair));
+            } else {
+                for (LinkedList<String> checkPair : result) {
+                    boolean isAdded = false;
+                    if (checkPair.containsAll(pair)) {
+                        isAdded = true;
+                        break;
+                    }
+                    if (!isAdded) {
+                        decisions.add(pair);
+                    }
+                }
+            }
+        }
+
 
         return result;
     }

@@ -14,7 +14,7 @@
         </semantic:task>
         <semantic:task id="e" name="e">
             <semantic:incoming>sq-7</semantic:incoming>
-            <semantic:outgoing>sq-22</semantic:outgoing>
+            <semantic:outgoing>sq-23</semantic:outgoing>
         </semantic:task>
         <semantic:task id="g" name="g">
             <semantic:incoming>sq-24</semantic:incoming>
@@ -74,7 +74,7 @@
         <semantic:parallelGateway gatewayDirection="Diverging" id="gt-4" name="">
             <semantic:incoming>sq-19</semantic:incoming>
             <semantic:outgoing>sq-20</semantic:outgoing>
-            <semantic:outgoing>sq-23</semantic:outgoing>
+            <semantic:outgoing>sq-22</semantic:outgoing>
         </semantic:parallelGateway>
         <semantic:sequenceFlow id="sq-19" sourceRef="b" targetRef="gt-4"/>
         <semantic:sequenceFlow id="sq-20" sourceRef="gt-4" targetRef="d"/>
@@ -83,8 +83,8 @@
             <semantic:incoming>sq-23</semantic:incoming>
             <semantic:outgoing>sq-24</semantic:outgoing>
         </semantic:exclusiveGateway>
-        <semantic:sequenceFlow id="sq-22" sourceRef="e" targetRef="gt-5"/>
-        <semantic:sequenceFlow id="sq-23" sourceRef="gt-4" targetRef="gt-5"/>
+        <semantic:sequenceFlow id="sq-22" sourceRef="gt-4" targetRef="gt-5"/>
+        <semantic:sequenceFlow id="sq-23" sourceRef="e" targetRef="gt-5"/>
         <semantic:sequenceFlow id="sq-24" sourceRef="gt-5" targetRef="g"/>
     </semantic:process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -229,14 +229,14 @@
                 <di:waypoint x="1040.0" y="450.0"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="sq-22" id="BPMNEdge_sq-22">
-                <di:waypoint x="1160.0" y="50.0"/>
-                <di:waypoint x="1300.0" y="50.0"/>
-                <di:waypoint x="1300.0" y="320.0"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge bpmnElement="sq-23" id="BPMNEdge_sq-23">
                 <di:waypoint x="930.0" y="550.0"/>
                 <di:waypoint x="1300.0" y="550.0"/>
                 <di:waypoint x="1300.0" y="380.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sq-23" id="BPMNEdge_sq-23">
+                <di:waypoint x="1160.0" y="50.0"/>
+                <di:waypoint x="1300.0" y="50.0"/>
+                <di:waypoint x="1300.0" y="320.0"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="sq-24" id="BPMNEdge_sq-24">
                 <di:waypoint x="1330.0" y="350.0"/>

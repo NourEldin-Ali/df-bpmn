@@ -1,18 +1,16 @@
 package org.openbpmn.discovery.loop;
 
-import java.util.*;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
 import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
-import org.openbpmn.bpmn.discovery.model.DecisionMerger;
-import org.openbpmn.bpmn.discovery.model.DependencyGraph;
-import org.openbpmn.bpmn.discovery.model.LoopMerger;
-import org.openbpmn.bpmn.discovery.model.ParallelismMerger;
+import org.openbpmn.bpmn.discovery.model.*;
 import org.openbpmn.bpmn.exceptions.BPMNModelException;
 
-public class S0 {
-	private static Logger logger = Logger.getLogger(S0.class.getName());
+import java.util.*;
+import java.util.logging.Logger;
+
+public class S12 {
+	private static Logger logger = Logger.getLogger(S12.class.getName());
 
 	/**
 	 * This test creates an empty BPMN model instance
@@ -22,8 +20,8 @@ public class S0 {
 	 */
 	@Test
 	public void testInputProcess() throws BPMNModelException, CloneNotSupportedException {
-		logger.info("s0.bpmn done: Start generating model");
-		String path = "src/test/resources/discovery/loop/s0_results.bpmn";
+		logger.info("s12.bpmn done: Start generating model");
+		String path = "src/test/resources/discovery/loop/s12_results.bpmn";
 		LinkedList<String> list = new LinkedList<>();
 		List<String> startsEvent = new ArrayList<>();
 		Set<Set<String>> parallelRelations = new HashSet<>();
@@ -40,57 +38,74 @@ public class S0 {
 		// dependencies
 		list.add("start->a");
 		list.add("a->b");
-		list.add("a->a");
-		list.add("b->end");
-		
-		list.add("a->c");
-		list.add("c->z");
-		list.add("z->c");
-		list.add("a->d");
-		
-		list.add("c->e");
+		list.add("b->c");
 		list.add("c->f");
-		list.add("e->e");
-		list.add("f->f");
-		list.add("f->e");
+		list.add("c->e");
+		list.add("c->c");
+		list.add("c->g");
+
+		list.add("a->d");
+		list.add("d->e");
 		list.add("e->f");
+		list.add("e->e");
+		list.add("e->c");
+		list.add("e->g");
+
+		list.add("a->f");
+		list.add("f->g");
+		list.add("f->c");
+		list.add("f->e");
+		list.add("f->f");
+
+		list.add("h->h");
+		list.add("h->f");
+		list.add("h->e");
+		list.add("h->c");
+
+		list.add("c->h");
 		list.add("e->h");
 		list.add("f->h");
-		list.add("h->a");
-		list.add("k->l");
-		list.add("l->end_1");
-		
-		list.add("d->i");
-		list.add("d->j");
-		list.add("i->k");
-		list.add("j->k");
+
+
+
+		list.add("h->g");
+
+		list.add("g->end");
+
 
 		// parallelism
-		parallelRelations.add(new HashSet<>() {
-			{
-				add("e");
-				add("f");
-			}
-		});
-		parallelRelations.add(new HashSet<>() {
-			{
-				add("i");
-				add("j");
-			}
-		});
-		parallelRelations.add(new HashSet<>() {
-			{
-				add("c");
-				add("d");
-			}
-		});
-	
+		parallelRelations.add(new HashSet<String>() {{
+			add("c"); add("e");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("c"); add("f");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("c"); add("h");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("e"); add("h");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("f"); add("h");
+		}});
+
+
+		parallelRelations.add(new HashSet<String>() {{
+			add("b"); add("d");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("b"); add("f");
+		}});
+		parallelRelations.add(new HashSet<String>() {{
+			add("f"); add("d");
+		}});
+
 		// elements info
 		// start/end/human/service
 
 		elementsInfo.put(startEvent, new HashMap<String, String>() {{ put("type", "start"); }});
 		elementsInfo.put("end", new HashMap<String, String>() {{ put("type", "end"); }});
-		elementsInfo.put("end_1", new HashMap<String, String>() {{ put("type", "end"); }});
 
 
 
@@ -129,25 +144,39 @@ public class S0 {
 
 
 
-		System.out.println(bpmnTransformation.loops);
-		System.out.println(bpmnTransformation.getLoops());
+//		System.out.println(bpmnTransformation.loops);
+//		System.out.println(bpmnTransformation.getLoops());
 
 		LoopMerger loopMerger = new LoopMerger(bpmnTransformation.loops, bpmnTransformation.dependencyGraphWithLoop);
 		System.out.println(loopMerger.getMergedLoop());
 
+		System.out.println("exlusive");
+		System.out.println(bpmnTransformation.exlusive);
+
+		DecisionForLoop decisionForLoop = new DecisionForLoop(bpmnTransformation.exlusive, bpmnTransformation.parallelism,
+				bpmnTransformation.inclusive, loopMerger.getMergedLoop());
+		decisionForLoop.appendDecisions();
+
+		System.out.println("exclusive");
+		System.out.println(bpmnTransformation.exlusive);
 
 		//get exclusive
 		DecisionMerger decisionMerger = new DecisionMerger(bpmnTransformation.exlusive, bpmnTransformation.dependencyGraph);
 		LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
 
+		System.out.println("decisionRelations");
+		System.out.println(decisionRelations);
+
 		//get parallelism
 		ParallelismMerger parallelismMerger = new ParallelismMerger(bpmnTransformation.parallelism,
-				bpmnTransformation.dependencyGraph);
+				bpmnTransformation.dependencyGraphWithLoop);
 		LinkedList<LinkedList<String>> parallelMergeRelations = parallelismMerger.getParallelims();
+		System.out.println("parallelMergeRelations");
+		System.out.println(parallelMergeRelations);
 
 		//get inclusive
 		ParallelismMerger inclusiveMerger = new ParallelismMerger(bpmnTransformation.inclusive,
-				bpmnTransformation.dependencyGraph);
+				bpmnTransformation.dependencyGraphWithLoop);
 		LinkedList<LinkedList<String>> inclusiveRelations = inclusiveMerger.getParallelims();
 
 
@@ -168,11 +197,11 @@ public class S0 {
 
 
 		//compaire the two models
-		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s0.bpmn");
+		boolean results = BPMNComparatorExecutor.execute(path, "src/main/resources/discovery/loop/s12.bpmn");
 		if(!results){
-			logger.warning("s0.bpmn: The two models are not equivalent");
+			logger.warning("s12.bpmn: The two models are not equivalent");
 		}else{
-			logger.info("s0.bpmn done: The two models are equivalent");
+			logger.info("s12.bpmn done: The two models are equivalent");
 		}
 
 		

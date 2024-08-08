@@ -54,23 +54,22 @@ import com.google.inject.Inject;
  * <p>
  * Currently we do not validate any model logic here.
  *
- * @see: https://www.eclipse.org/glsp/documentation/validation/
  * @author rsoika
- *
+ * @see: https://www.eclipse.org/glsp/documentation/validation/
  */
 public class BPMNModelValidator implements ModelValidator {
-	private static Logger logger = Logger.getLogger(BPMNModelValidator.class.getName());
+    private static Logger logger = Logger.getLogger(BPMNModelValidator.class.getName());
 
-	@Inject
-	protected BPMNGModelState modelState;
+    @Inject
+    protected BPMNGModelState modelState;
 
-	@Override
-	public List<Marker> validate(final GModelElement... elements) {
-		logger.fine("...starting validating model...");
-		List<Marker> markers = new ArrayList<>();
+    @Override
+    public List<Marker> validate(final GModelElement... elements) {
+        logger.fine("...starting validating model...");
+        List<Marker> markers = new ArrayList<>();
 
-		// DF-BPMN validator
-		markers.addAll(DFBPMNValidator(elements));
+        // DF-BPMN validator
+        markers.addAll(DFBPMNValidator(elements));
 //		for (GModelElement element : elements) {
 //			if (element instanceof GNode) {
 //				if (element.getId().contentEquals("task_tKuyrg")) {
@@ -84,189 +83,197 @@ public class BPMNModelValidator implements ModelValidator {
 //			}
 //			element.getChildren().forEach(child -> markers.addAll(validate(child)));
 //		}
-		return markers;
-	}
+        return markers;
+    }
 
-	public List<Marker> DFBPMNValidator(final GModelElement... elements) {
-		List<Marker> markers = new ArrayList<>();
-		for (GModelElement element : elements) {
-			if (element instanceof GNode) {
-				if (element instanceof DataObjectExtensionGNode || element instanceof DataAttributeExtensionGNode
-						|| element instanceof DataProcessingExtenstionGNode) {
-					Marker validatorMarker = validateDataElements((GNode) element);
-					if (validatorMarker != null)
-						markers.add(validatorMarker);
-				}
-			} else if (element instanceof GEdge) {
-				if (element.getType().contentEquals(BPMNTypes.DATA_FLOW)) {
-					Marker validatorMarker = validateDataFlow((GEdge) element);
-					if (validatorMarker != null) {
-						markers.add(validatorMarker);
-					}
+    public List<Marker> DFBPMNValidator(final GModelElement... elements) {
+        List<Marker> markers = new ArrayList<>();
+        for (GModelElement element : elements) {
+            if (element instanceof GNode) {
+                if (element instanceof DataObjectExtensionGNode || element instanceof DataAttributeExtensionGNode
+                        || element instanceof DataProcessingExtenstionGNode) {
+                    Marker validatorMarker = validateDataElements((GNode) element);
+                    if (validatorMarker != null)
+                        markers.add(validatorMarker);
+                }
+            } else if (element instanceof GEdge) {
+                if (element.getType().contentEquals(BPMNTypes.DATA_FLOW)) {
+                    Marker validatorMarker = validateDataFlow((GEdge) element);
+                    if (validatorMarker != null) {
+                        markers.add(validatorMarker);
+                    }
 
-				}
-			}
-			element.getChildren().forEach(child -> markers.addAll(DFBPMNValidator(child)));
-		}
-		return markers;
-	}
+                }
+            }
+            element.getChildren().forEach(child -> markers.addAll(DFBPMNValidator(child)));
+        }
+        return markers;
+    }
 
-	// create a dummy marker
-	protected Marker validateDataElements(final GNode element) {
+    // create a dummy marker
+    protected Marker validateDataElements(final GNode element) {
 
 //		System.out.println(element.getType());
 //		System.out.println(element.getArgs().get("JSONFormsData"));
-		Map<String, Object> data = new Gson().fromJson((String) element.getArgs().get("JSONFormsData"),
-				new TypeToken<HashMap<String, Object>>() {
-				}.getType());
+        Map<String, Object> data = new Gson().fromJson((String) element.getArgs().get("JSONFormsData"),
+                new TypeToken<HashMap<String, Object>>() {
+                }.getType());
 
-		// check if output state is deleted
-		if (element.getType().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
-			if (data.get("state").toString().contentEquals("delete")) {
+        // check if output state is deleted
+        if (element.getType().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
+            if (data.get("state").toString().contentEquals("delete")) {
 //				System.out.println(element.getChildren().size());
-				if (element.getChildren().size() > 3) {
-					return new Marker("Node",
-							"The data store output with 'delete' state should not have any attributes", element.getId(),
-							MarkerKind.ERROR);
-				}
-			}
+                if (element.getChildren().size() > 3) {
+                    return new Marker("Node",
+                            "The data store output with 'delete' state should not have any attributes", element.getId(),
+                            MarkerKind.ERROR);
+                }
+            }
 
-			DataOutputObjectExtension bpmnElement = (DataOutputObjectExtension) modelState.getBpmnModel()
-					.findElementDataExtensionNodeById(element.getId());
-			if (bpmnElement != null) {
-				if (!bpmnElement.getAttribute("state").contentEquals("read")) {
-					Map<String, Object> values = modelState.getBpmnModel().openDefaultProces().getDataStoresExtensions()
-							.get(bpmnElement.getName());
+            DataOutputObjectExtension bpmnElement = (DataOutputObjectExtension) modelState.getBpmnModel()
+                    .findElementDataExtensionNodeById(element.getId());
+            if (bpmnElement != null) {
+                if (!bpmnElement.getAttribute("state").contentEquals("read")) {
+                    Map<String, Object> values = modelState.getBpmnModel().openDefaultProces().getDataStoresExtensions()
+                            .get(bpmnElement.getName());
 //					System.out.println(values.get("readonly"));
-					if (Boolean.parseBoolean((String) values.get("readonly")) == true) {
-						return new Marker("Node",
-								"The data store output is read only data object, should not used as output data for insert/update/delete",
-								element.getId(), MarkerKind.ERROR);
-					}
-				}
-			}
-		}
+                    if (Boolean.parseBoolean((String) values.get("readonly")) == true) {
+                        return new Marker("Node",
+                                "The data store output is read only data object, should not used as output data for insert/update/delete",
+                                element.getId(), MarkerKind.ERROR);
+                    }
+                }
 
-		// check attribute
-		if (element.getType().contentEquals(BPMNTypes.DATA_OBJECT_ATTRIBUTE)) {
-			// check the attribute of the attribute if data store output with state "delete"
-			GNode parentElement = (GNode) element.getParent();
-			if (parentElement.getType().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
+
+            }
+        }
+
+        // check attribute
+        if (element.getType().contentEquals(BPMNTypes.DATA_OBJECT_ATTRIBUTE)) {
+            // check the attribute of the attribute if data store output with state "delete"
+            GNode parentElement = (GNode) element.getParent();
+            if (parentElement.getType().contentEquals(BPMNTypes.DATA_OUTPUT_OBJECT_DATA_STORE)) {
 //				Map<String, Map<String, Object>> dataStoreVariables = openProcess.getDataStoresExtensions();
 
-				Map<String, Object> parentData = new Gson().fromJson(
-						(String) parentElement.getArgs().get("JSONFormsData"),
-						new TypeToken<HashMap<String, Object>>() {
-						}.getType());
-				if (parentData.get("state").toString().contentEquals("delete")) {
-					if (parentElement.getChildren().size() > 3) {
-						return new Marker("Node",
-								"The data store output with 'delete' state should not have any attributes",
-								element.getId(), MarkerKind.ERROR);
-					}
-				}
-			}
-			DataObjectAttributeExtension bpmnElement = (DataObjectAttributeExtension) modelState.getBpmnModel()
-					.findElementDataExtensionNodeById(element.getId());
+                Map<String, Object> parentData = new Gson().fromJson(
+                        (String) parentElement.getArgs().get("JSONFormsData"),
+                        new TypeToken<HashMap<String, Object>>() {
+                        }.getType());
+                if (parentData.get("state").toString().contentEquals("delete")) {
+                    if (parentElement.getChildren().size() > 3) {
+                        return new Marker("Node",
+                                "The data store output with 'delete' state should not have any attributes",
+                                element.getId(), MarkerKind.ERROR);
+                    }
+                }
+            }
+            DataObjectAttributeExtension bpmnElement = (DataObjectAttributeExtension) modelState.getBpmnModel()
+                    .findElementDataExtensionNodeById(element.getId());
 
-			boolean isConnectedToInput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "incoming");
-			boolean isConnectedToOutput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
-			if (!isConnectedToInput && !isConnectedToOutput) {
-				return new Marker("Node", "Data attribute should be connect to other data object", element.getId(),
-						MarkerKind.ERROR);
-			}
+            boolean isConnectedToInput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "incoming");
+            boolean isConnectedToOutput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
+            if (!isConnectedToInput && !isConnectedToOutput) {
+                return new Marker("Node", "Data attribute should be connect to other data object", element.getId(),
+                        MarkerKind.ERROR);
+            }
 
-		}
+        }
 
-		// check if data item is data processing
-		if (element.getType().contentEquals(BPMNTypes.DATA_PROCESSING)) {
-			DataProcessingExtension bpmnElement = (DataProcessingExtension) modelState.getBpmnModel()
-					.findElementDataExtensionNodeById(element.getId());
-			boolean isConnectedToInput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "incoming");
-			boolean isConnectedToOutput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
+        // check if data item is data processing
+        if (element.getType().contentEquals(BPMNTypes.DATA_PROCESSING)) {
+            DataProcessingExtension bpmnElement = (DataProcessingExtension) modelState.getBpmnModel()
+                    .findElementDataExtensionNodeById(element.getId());
+            boolean isConnectedToInput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "incoming");
+            boolean isConnectedToOutput = bpmnElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
 
-			if (!isConnectedToInput && !isConnectedToOutput) {
-				return new Marker("Node", "Data processing operater should be connect to input and output data objects",
-						element.getId(), MarkerKind.ERROR);
-			} else if (!isConnectedToInput) {
-				return new Marker("Node", "Data processing operater should be connect to input data object",
-						element.getId(), MarkerKind.ERROR);
-			} else if (!isConnectedToOutput) {
-				return new Marker("Node", "Data processing operater should be connect to output data object",
-						element.getId(), MarkerKind.ERROR);
-			}
-			// validate if the user add gherkin
-			boolean isGherkinAdded = bpmnElement.hasAttribute("gherkin")
-					&& !bpmnElement.getAttribute("gherkin").isEmpty();
-			if (!isGherkinAdded) {
-				return new Marker("Node", "Data processing operater should be contain the gherkin to be executed",
-						element.getId(), MarkerKind.ERROR);
-			}
+            if (!isConnectedToInput && !isConnectedToOutput) {
+                return new Marker("Node", "Data processing operater should be connect to input and output data objects",
+                        element.getId(), MarkerKind.ERROR);
+            } else if (!isConnectedToInput) {
+                return new Marker("Node", "Data processing operater should be connect to input data object",
+                        element.getId(), MarkerKind.ERROR);
+            } else if (!isConnectedToOutput) {
+                return new Marker("Node", "Data processing operater should be connect to output data object",
+                        element.getId(), MarkerKind.ERROR);
+            }
+            // validate if the user add gherkin
+            boolean isGherkinAdded = bpmnElement.hasAttribute("gherkin")
+                    && !bpmnElement.getAttribute("gherkin").isEmpty();
+            if (!isGherkinAdded) {
+                return new Marker("Node", "Data processing operater should be contain the gherkin to be executed",
+                        element.getId(), MarkerKind.ERROR);
+            }
 
-		} else
-		// check the data object types
-		if (data.get("type").toString().toLowerCase().contentEquals("none")) {
-			return new Marker("Node", "You should select a data type", element.getId(), MarkerKind.ERROR);
-		}
+        } else
+            // check the data object types
+            if (data.get("type").toString().toLowerCase().contentEquals("none")) {
+                return new Marker("Node", "You should select a data type", element.getId(), MarkerKind.ERROR);
+            }
 
-		try {
+        try {
 
-			// check if the data object if connected by a data flow
-			DataInputObjectExtension bpmnInputElement = (DataInputObjectExtension) modelState.getBpmnModel()
-					.findElementDataExtensionNodeById(element.getId());
-			if (bpmnInputElement != null) {
-				boolean hasAttribute = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "attribute");
-				boolean isConnectedToInput = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "incoming");
-				boolean isConnectedToOutput = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
-				if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute) {
-					return new Marker("Node", "Data input should be connect to other data object", element.getId(),
-							MarkerKind.ERROR);
-				}
-			}
-		} catch (Exception e) {
-		}
+            // check if the data object if connected by a data flow
+            DataInputObjectExtension bpmnInputElement = (DataInputObjectExtension) modelState.getBpmnModel()
+                    .findElementDataExtensionNodeById(element.getId());
+            if (bpmnInputElement != null) {
+                boolean hasAttribute = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "attribute");
+                boolean isConnectedToInput = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "incoming");
+                boolean isConnectedToOutput = bpmnInputElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
+                if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute) {
+                    return new Marker("Node", "Data input should be connect to other data object", element.getId(),
+                            MarkerKind.ERROR);
+                }
+            }
+        } catch (Exception e) {
+        }
 
-		try {
-			DataOutputObjectExtension bpmnOutputElement = (DataOutputObjectExtension) modelState.getBpmnModel()
-					.findElementDataExtensionNodeById(element.getId());
-			if (bpmnOutputElement != null) {
-				boolean hasAttribute = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "attribute");
-				boolean isConnectedToInput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "incoming");
-				boolean isConnectedToOutput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
-				if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute && ! bpmnOutputElement.getAttribute("state").contentEquals("delete")) {
-					return new Marker("Node", "Data attribute should be connect to other data object", element.getId(),
-							MarkerKind.ERROR);
-				}
-			}
-		} catch (Exception e) {
-		}
-		return null;
-	}
+        try {
+            DataOutputObjectExtension bpmnOutputElement = (DataOutputObjectExtension) modelState.getBpmnModel()
+                    .findElementDataExtensionNodeById(element.getId());
 
-	// create a dummy marker
-	protected Marker validateDataFlow(final GEdge element) {
+            if (bpmnOutputElement != null) {
+                boolean hasAttribute = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "attribute");
+                boolean isConnectedToInput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "incoming");
+                boolean isConnectedToOutput = bpmnOutputElement.hasChildNode(BPMNNS.BPMN2, "outgoing");
+                System.out.println(bpmnOutputElement.getName());
+                System.out.println(hasAttribute);
+                System.out.println(isConnectedToInput);
+                System.out.println(isConnectedToOutput);
+                System.out.println("***************************");
+                if ((!isConnectedToInput && !isConnectedToOutput) && !hasAttribute && !bpmnOutputElement.getAttribute("state").contentEquals("delete")) {
+                    return new Marker("Node", "Data attribute should be connect to other data object", element.getId(),
+                            MarkerKind.ERROR);
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    // create a dummy marker
+    protected Marker validateDataFlow(final GEdge element) {
 //		System.out.println(element.getTarget().getType());
 //		System.out.println(element.getSourceId());
 //		System.out.println(element.getTargetId());
 
-		if (element.getTarget().getType().contentEquals(BPMNTypes.DATA_PROCESSING)
-				|| element.getSource().getType().contentEquals(BPMNTypes.DATA_PROCESSING)) {
-			return null;
-		}
+        if (element.getTarget().getType().contentEquals(BPMNTypes.DATA_PROCESSING)
+                || element.getSource().getType().contentEquals(BPMNTypes.DATA_PROCESSING)) {
+            return null;
+        }
 
-		BPMNElement source = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getSourceId());
-		BPMNElement target = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getTargetId());
+        BPMNElement source = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getSourceId());
+        BPMNElement target = modelState.getBpmnModel().findElementDataExtensionNodeById(element.getTargetId());
 
-		if (source.hasAttribute("type") && target.hasAttribute("type")) {
-			if (!source.getAttribute("type").contentEquals(target.getAttribute("type"))) {
-				return new Marker("Edge", "The source and hte target should have the same type", element.getId(),
-						MarkerKind.ERROR);
-			}
-		}
-		return null;
-	}
+        if (source.hasAttribute("type") && target.hasAttribute("type")) {
+            if (!source.getAttribute("type").contentEquals(target.getAttribute("type"))) {
+                return new Marker("Edge", "The source and hte target should have the same type", element.getId(),
+                        MarkerKind.ERROR);
+            }
+        }
+        return null;
+    }
 
-	// create a dummy marker
+    // create a dummy marker
 //	protected Marker validateGNode(final GNode element) {
 //		return new Marker("Node", "This graphical element is a node", element.getId(), MarkerKind.ERROR);
 //

@@ -18,12 +18,12 @@ public class LoopMerger {
     }
 
     public List<Pair<Set<String>, Set<String>>> getMergedLoop(){
-        System.out.println("before merge");
-        System.out.println(this.loops);
+//        System.out.println("before merge");
+//        System.out.println(this.loops);
         //merge loops by source
         List<Pair<String, Set<String>>> mergetBySource = mergeLoopsBySource();
-        System.out.println("after  by source");
-        System.out.println(mergetBySource);
+//        System.out.println("after  by source");
+//        System.out.println(mergetBySource);
         //merge loops by target
         List<Pair<Set<String>, Set<String>>> mergetloop = mergeLoopsByTarget(mergetBySource);
 //        System.out.println(mergetloop);
@@ -79,7 +79,11 @@ public class LoopMerger {
             Pair<String, Set<String>> l = mergedLoopBySource.get(0);
             Set<String> sources = new HashSet<>();
             sources.add(l.getSource());
-
+            if(l.getTarget().size()==1 && l.getSource().contentEquals(l.getTarget().iterator().next())){
+                mergedLoops.add(Pair.of(sources, l.getTarget()));
+                mergedLoopBySource.remove(l); // Remove l from mergedLoopBySource
+                continue;
+            }
             Iterator<Pair<String, Set<String>>> it = mergedLoopBySource.iterator();
             while (it.hasNext()) {
                 Pair<String, Set<String>> lPrime = it.next();

@@ -610,7 +610,7 @@ public class BPMNModel implements Cloneable {
      * Deletes a BPMNParticipant element from this model.
      * <p>
      * 
-     * @param id
+     * @param participant
      */
     public void deleteParticipant(Participant participant) {
         if (participant != null) {

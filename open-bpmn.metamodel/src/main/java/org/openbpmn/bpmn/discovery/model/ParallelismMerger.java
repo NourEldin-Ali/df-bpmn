@@ -21,7 +21,6 @@ public class ParallelismMerger {
         // Converting set back to list
         LinkedList<LinkedList<String>> result = new LinkedList<>();
         Set<Set<String>> mergedPara = mergeParallelism();
-        System.out.println(mergedPara);
         // TODO: check why there exists a missing data?
         // check if any missing data, and add
         for (Set<String> check : parallelism) {

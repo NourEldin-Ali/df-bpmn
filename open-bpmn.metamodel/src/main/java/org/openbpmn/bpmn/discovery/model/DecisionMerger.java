@@ -94,8 +94,10 @@ public class DecisionMerger {
         }
         System.out.println("result: " + result);
 
-        //check if there any missing data
-        for (Set<String> pair : decisions) {
+        Iterator<Set<String>> pairIterator = decisions.iterator();
+        List<Set<String>> toBeAdded= new ArrayList<>();
+        while (pairIterator.hasNext()) {
+            Set<String> pair = pairIterator.next();
             if (result.isEmpty()) {
                 result.add(new LinkedList<>(pair));
             } else {
@@ -106,11 +108,12 @@ public class DecisionMerger {
                         break;
                     }
                     if (!isAdded) {
-                        decisions.add(pair);
+                        toBeAdded.add(pair);
                     }
                 }
             }
         }
+        this.decisions.addAll(toBeAdded);
 
 
         return result;

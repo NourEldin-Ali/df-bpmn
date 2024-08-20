@@ -128,7 +128,7 @@ public class M7 {
 		bpmnTransformation.elementsName = elementsName;
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
-		bpmnTransformation.findParallelism();
+		bpmnTransformation.removeParallelism();
 		bpmnTransformation.findInclusive();
 		bpmnTransformation.findExculisve();
 

@@ -1,8 +1,5 @@
 package org.openbpmn.discovery.loop;
 
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.AllDirectedPaths;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.jupiter.api.Test;
 import org.openbpmn.bpmn.discovery.BPMNDiscovery;
 import org.openbpmn.bpmn.discovery.compare.BPMNComparatorExecutor;
@@ -111,7 +108,7 @@ public class S4 {
 
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
-		bpmnTransformation.findParallelism();
+		bpmnTransformation.removeParallelism();
 		bpmnTransformation.findInclusive();
 		bpmnTransformation.findExculisve();
 

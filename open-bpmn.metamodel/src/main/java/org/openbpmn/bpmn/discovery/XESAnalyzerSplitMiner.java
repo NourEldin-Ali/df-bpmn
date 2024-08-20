@@ -1,22 +1,26 @@
 package org.openbpmn.bpmn.discovery;
 
+import org.apache.commons.lang3.StringUtils;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.openbpmn.bpmn.discovery.model.*;
+import org.openbpmn.bpmn.discovery.model.DecisionMerger;
+import org.openbpmn.bpmn.discovery.model.DependencyGraph;
+import org.openbpmn.bpmn.discovery.model.LoopMerger;
+import org.openbpmn.bpmn.discovery.model.ParallelismMerger;
 
 import java.io.File;
 import java.util.*;
 
-public class XESAnalyzer {
+public class XESAnalyzerSplitMiner {
 
     public static void main(String[] args) {
         try {
             // Start timing
-            String fileName = "S10";
+            String fileName = "M3";
             String pathLog = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\event_logs\\" + fileName + ".xes";
             String outputpath = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\our\\" + fileName + ".bpmn";
             Double epsilom = 1.0;
@@ -25,16 +29,20 @@ public class XESAnalyzer {
 
             long startTime = System.nanoTime();
 
-            XLog log = new XESAnalyzer().readLog(pathLog);
-            DependencyGraph dependencyGraph = generateDependencyGraph(log);
+            XLog log = new XESAnalyzerSplitMiner().readLog(pathLog);
+
+            Map<String, Integer> traces = new HashMap<>();
+            Map<String, List<String>> tracesList = new HashMap<>();
+
+            DependencyGraph dependencyGraph = generateDependencyGraph(log, traces, tracesList);
 
             //get names
             dependencyGraph.dependencyGraph.vertexSet().forEach(vertex -> {
                 dependencyGraph.elementsName.put(vertex.trim(), vertex);
             });
 
-            List<String> startActivities = new ArrayList<>( dependencyGraph.startActivities);
-            List<String> endActivities =  new ArrayList<>( dependencyGraph.endActivities);
+            List<String> startActivities = new ArrayList<>(dependencyGraph.startActivities);
+            List<String> endActivities = new ArrayList<>(dependencyGraph.endActivities);
             dependencyGraph.startActivities.clear();
             dependencyGraph.endActivities.clear();
             for (String str : startActivities) {
@@ -47,37 +55,116 @@ public class XESAnalyzer {
                 dependencyGraph.elementsName.put(startEvent.trim(), startEvent);
                 dependencyGraph.startActivities.add(startEvent);
             }
+            String endEvent = "end";
+            dependencyGraph.addVertex(endEvent);
+            dependencyGraph.elementInformations.put(endEvent, new HashMap<String, String>() {{
+                put("type", "end");
+            }});
+            dependencyGraph.elementsName.put(endEvent.trim(), endEvent);
+            dependencyGraph.endActivities.add(endEvent);
 
-
-            for (String end : endActivities) {
-                String endEvent = "end_" + end;
-                dependencyGraph.addVertex(endEvent);
-                dependencyGraph.addEdge(end, endEvent);
-                dependencyGraph.elementsName.put(endEvent.trim(), endEvent);
-                dependencyGraph.elementInformations.put(endEvent, new HashMap<String, String>() {{
-                    put("type", "end");
-                }});
-                dependencyGraph.endActivities.add(endEvent);
+            for (String str : endActivities) {
+                dependencyGraph.addEdge(str, endEvent);
+                dependencyGraph.endActivities.remove(str);
             }
+
+//            for (String end : endActivities) {
+//                String endEvent = "end_" + end;
+//                dependencyGraph.addVertex(endEvent);
+//                dependencyGraph.addEdge(end, endEvent);
+//                dependencyGraph.elementsName.put(endEvent.trim(), endEvent);
+//                dependencyGraph.elementInformations.put(endEvent, new HashMap<String, String>() {{
+//                    put("type", "end");
+//                }});
+//                dependencyGraph.endActivities.add(endEvent);
+//            }
             System.out.println(dependencyGraph.dependencyGraph.toString());
+
+
             long startTime_1;
-
-
             //get loop
             System.out.println("Loop: ");
             startTime_1 = System.nanoTime();
             System.out.println(dependencyGraph.loops);
-            dependencyGraph.filterLoopsDiscovery(epsilom);
+            dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
+                String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
+                String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
+
+                List<String> loop = new ArrayList<>();
+                loop.add(source);
+                loop.add(target);
+
+                if (source.equals(target)) {
+
+                    dependencyGraph.loops.add(loop);
+                } else {
+                    if (!dependencyGraph.loops.contains(loop) && dependencyGraph.dependencyGraph.containsEdge(target, source)) {
+                        String src2tgt_loop2Pattern = "::" + source + "::" + target + "::" + source + "::";
+                        String tgt2src_loop2Pattern = "::" + target + "::" + source + "::" + target + "::";
+                        double src2tgt_loop2Frequency = 0;
+                        double tgt2src_loop2Frequency = 0;
+                        for (String trace : traces.keySet()) {
+                            src2tgt_loop2Frequency += (StringUtils.countMatches(trace, src2tgt_loop2Pattern) * traces.get(trace));
+                            tgt2src_loop2Frequency += (StringUtils.countMatches(trace, tgt2src_loop2Pattern) * traces.get(trace));
+                        }
+                        double loop2score = src2tgt_loop2Frequency + tgt2src_loop2Frequency;
+                        System.out.println(loop2score);
+
+                        if (loop2score != 0) {
+                            List<String> loop2 = new ArrayList<>();
+                            loop2.add(target);
+                            loop2.add(source);
+
+                            dependencyGraph.loops.add(loop);
+                            dependencyGraph.loops.add(loop2);
+                        }
+                    }
+
+                }
+            });
+
+
             System.out.println(dependencyGraph.loops);
             printOutTime(startTime_1);
             System.out.println("END Loop");
 
-
             //get parallelism
             System.out.println("Parallelism: ");
             startTime_1 = System.nanoTime();
-            dependencyGraph.filterGraph();
-            dependencyGraph.parallelism = findAllConcurrentPairs(dependencyGraph.dependencyGraph, epsilom);
+
+            HashSet<DefaultWeightedEdge> removableEdge = new HashSet<>();
+
+            dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
+                String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
+                String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
+
+                boolean priorityCheck = !dependencyGraph.loops.contains(new ArrayList<String>() {{
+                    add(source);
+                    add(target);
+                }}) || true;
+
+                if (dependencyGraph.dependencyGraph.containsEdge(target, source) && !removableEdge.contains(edge) && priorityCheck && target != source) {
+                    DefaultWeightedEdge edge2 = dependencyGraph.dependencyGraph.getEdge(target, source);
+                    double src2tgt_frequency = dependencyGraph.dependencyGraph.getEdgeWeight(edge);
+                    double tgt2src_frequency = dependencyGraph.dependencyGraph.getEdgeWeight(edge2);
+                    double parallelismScore = (double) (src2tgt_frequency - tgt2src_frequency) / (src2tgt_frequency + tgt2src_frequency);
+                    if (Math.abs(parallelismScore) < epsilom) {
+                        removableEdge.add(edge);
+                        removableEdge.add(edge2);
+                        dependencyGraph.parallelism.add(new HashSet<String>() {{
+                            add(source);
+                            add(target);
+                        }});
+                    } else {
+                        if (parallelismScore > 0) removableEdge.add(edge2);
+                        else removableEdge.add(edge);
+                    }
+                }
+
+            });
+            dependencyGraph.dependencyGraph.removeAllEdges(removableEdge);
+            dependencyGraph.dependencyGraphWithLoop.removeAllEdges(removableEdge);
+
             System.out.println(dependencyGraph.parallelism);
             dependencyGraph.removeParallelismDiscovery();
             System.out.println(dependencyGraph.parallelism);
@@ -96,15 +183,15 @@ public class XESAnalyzer {
             System.out.println("Loop2: ");
             startTime_1 = System.nanoTime();
             System.out.println(dependencyGraph.loops);
-            dependencyGraph.getLongLoopDiscovery();
+//            dependencyGraph.getLongLoopDiscovery();
+            dependencyGraph.findAndRemoveLoops();
             System.out.println(dependencyGraph.loops);
             LoopMerger loopMerger = new LoopMerger(dependencyGraph.loops, dependencyGraph.dependencyGraphWithLoop);
             System.out.println(loopMerger.getMergedLoop());
             printOutTime(startTime_1);
             System.out.println("END Loop2");
-
-
-
+//
+//
             //get inclusive
             System.out.println("Inclusive: ");
             startTime_1 = System.nanoTime();
@@ -128,16 +215,17 @@ public class XESAnalyzer {
             System.out.println(dependencyGraph.dependencyGraph.toString());
 
             //get sequence
-			BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(dependencyGraph);
-			bpmnDiscovery.DependencyGraphToBPMN();
-			bpmnDiscovery.saveMode(outputpath);
+            BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(dependencyGraph);
+            bpmnDiscovery.DependencyGraphToBPMN();
+            bpmnDiscovery.saveMode(outputpath);
             printOutTime(startTime);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static void printOutTime(long startTime){
+
+    public static void printOutTime(long startTime) {
 
         // Stop timing
         long endTime = System.nanoTime();
@@ -157,27 +245,30 @@ public class XESAnalyzer {
         throw new Exception("Unable to parse log");
     }
 
-    public static DependencyGraph generateDependencyGraph(XLog log) {
+    public static DependencyGraph generateDependencyGraph(XLog log, Map<String, Integer> traces, Map<String, List<String>> tracesList) {
         DependencyGraph graph = new DependencyGraph();
         for (XTrace trace : log) {
-            DependencyGraph tempgraph = new DependencyGraph();
-//            System.out.println(tempgraph.dependencyGraph.toString());
+            List<String> lst = new ArrayList<>();
+            String traceName = "::";
             String lastEvent = null;
-//            Set<String> visited = new HashSet<>();
             for (XEvent event : trace) {
                 String eventName = event.getAttributes().get("concept:name").toString();
                 graph.addVertex(eventName);
-                tempgraph.addVertex(eventName);
+
+
                 if (lastEvent != null) {
-                    tempgraph.addEdge(lastEvent, eventName);
                     graph.addEdge(lastEvent, eventName);
                 }
                 lastEvent = eventName;
+                traceName += DependencyGraph.regex(eventName) + "::";
+                lst.add(DependencyGraph.regex(eventName));
             }
-            tempgraph.getSelfAndShortLoop();
-//            System.out.println(tempgraph.dependencyGraph.toString());
-            graph.loops.addAll(tempgraph.loops);
-
+            if (traces.containsKey(traceName)) {
+                traces.put(traceName, traces.get(traceName) + 1);
+            } else {
+                traces.put(traceName, 1);
+                tracesList.put(traceName, lst);
+            }
             graph.startActivities.add(trace.get(0).getAttributes().get("concept:name").toString());
             graph.endActivities.add(trace.get(trace.size() - 1).getAttributes().get("concept:name").toString());
         }

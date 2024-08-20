@@ -1804,6 +1804,46 @@ public class BPMNProcess extends BPMNElement {
 		return activities;
 	}
 
+	public List<BPMNElementNode> getAllPredeccessors(BPMNElementNode element) {
+		List<BPMNElementNode> activities = new ArrayList<>();
+
+		Queue<BPMNElementNode> queue = new LinkedList<>();
+		Set<BPMNElementNode> visited = new HashSet<>();
+
+		List<BPMNElementNode> children = element.getIngoingSequenceFlows().stream().map(sq -> sq.getSourceElement())
+				.collect(Collectors.toList());
+
+		for (BPMNElementNode child : children) {
+			if (!visited.contains(child)) {
+				visited.add(child);
+				queue.add(child);
+			}
+		}
+
+//		visited.add(element);
+//		queue.add(element);
+		while (!queue.isEmpty()) {
+			BPMNElementNode current = queue.poll();
+			if (BPMNTypes.BPMN_ACTIVITIES.contains(current.getType())
+					|| BPMNTypes.BPMN_EVENTS.contains(current.getType())) {
+				activities.add(current);
+				continue;
+			}
+
+			children = current.getIngoingSequenceFlows().stream().map(sq -> sq.getSourceElement())
+					.collect(Collectors.toList());
+
+			for (BPMNElementNode child : children) {
+				if (!visited.contains(child)) {
+					visited.add(child);
+					queue.add(child);
+				}
+			}
+		}
+
+		return activities;
+	}
+
 	public List<BPMNElementNode> getAllForwardNestedGateways(BPMNElementNode sourceElement) {
 		Set<BPMNElementNode> foundGateways = new HashSet<>();
 		Set<BPMNElementNode> visitedNodes = new HashSet<>();
@@ -1843,14 +1883,11 @@ public class BPMNProcess extends BPMNElement {
 
 		node.getIngoingSequenceFlows().stream()
 				.map(BPMNElementEdge::getSourceElement)
-				.forEach(target -> {
-					if (target instanceof Gateway ) {
-						foundGateways.add(target);
-						findBackGateways(target, foundGateways, visitedNodes); // Recurse with the same sets
+				.forEach(source -> {
+					if (source instanceof Gateway ) {
+						foundGateways.add(source);
+						findBackGateways(source, foundGateways, visitedNodes); // Recurse with the same sets
 					}
-//					else {
-//						findGateways(target, foundGateways, visitedNodes); // Continue traversal
-//					}
 				});
 	}
 }

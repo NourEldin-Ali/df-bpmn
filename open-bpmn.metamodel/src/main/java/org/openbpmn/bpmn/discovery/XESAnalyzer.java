@@ -16,7 +16,7 @@ public class XESAnalyzer {
     public static void main(String[] args) {
         try {
             // Start timing
-            String fileName = "S10";
+            String fileName = "S7";
             String pathLog = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\event_logs\\" + fileName + ".xes";
             String outputpath = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\our\\" + fileName + ".bpmn";
             Double epsilom = 1.0;

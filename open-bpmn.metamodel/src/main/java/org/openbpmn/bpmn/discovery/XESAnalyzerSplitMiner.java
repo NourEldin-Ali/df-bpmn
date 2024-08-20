@@ -20,7 +20,7 @@ public class XESAnalyzerSplitMiner {
     public static void main(String[] args) {
         try {
             // Start timing
-            String fileName = "M3";
+            String fileName = "M7";
             String pathLog = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\event_logs\\" + fileName + ".xes";
             String outputpath = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\our\\" + fileName + ".bpmn";
             Double epsilom = 1.0;
@@ -45,28 +45,36 @@ public class XESAnalyzerSplitMiner {
             List<String> endActivities = new ArrayList<>(dependencyGraph.endActivities);
             dependencyGraph.startActivities.clear();
             dependencyGraph.endActivities.clear();
+            String startEvent = "start" ;
+            dependencyGraph.addVertex(startEvent);
+            dependencyGraph.elementInformations.put(startEvent, new HashMap<String, String>() {{
+                put("type", "start");
+            }});
+            dependencyGraph.elementsName.put(startEvent.trim(), startEvent);
+
             for (String str : startActivities) {
-                String startEvent = "start_" + str;
-                dependencyGraph.addVertex(startEvent);
                 dependencyGraph.addEdge(startEvent, str);
-                dependencyGraph.elementInformations.put(startEvent, new HashMap<String, String>() {{
-                    put("type", "start");
-                }});
-                dependencyGraph.elementsName.put(startEvent.trim(), startEvent);
-                dependencyGraph.startActivities.add(startEvent);
             }
+
+            startActivities.clear();
+            startActivities.add(startEvent);
+            dependencyGraph.startActivities.add(startEvent);
+
+
             String endEvent = "end";
             dependencyGraph.addVertex(endEvent);
             dependencyGraph.elementInformations.put(endEvent, new HashMap<String, String>() {{
                 put("type", "end");
             }});
             dependencyGraph.elementsName.put(endEvent.trim(), endEvent);
-            dependencyGraph.endActivities.add(endEvent);
 
             for (String str : endActivities) {
                 dependencyGraph.addEdge(str, endEvent);
-                dependencyGraph.endActivities.remove(str);
+//                dependencyGraph.endActivities.remove(str);
             }
+            endActivities.clear();
+            endActivities.add(endEvent);
+            dependencyGraph.endActivities.add(endEvent);
 
 //            for (String end : endActivities) {
 //                String endEvent = "end_" + end;

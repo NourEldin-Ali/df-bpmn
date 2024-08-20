@@ -718,15 +718,15 @@ public class DependencyGraph {
         for (String v : vertix) {
             changeVertexName(dependencyGraph, v, regex(v));
             changeVertexName(dependencyGraphWithLoop, v, regex(v));
-            if (elementInformations.containsKey(v)) {
+            if (elementInformations.containsKey(v) && !regex(v).contentEquals(v)) {
                 elementInformations.put(regex(v), elementInformations.get(v));
                 elementInformations.remove(v);
             }
+
             elementsName.put(regex(v), elementsName.get(v));
             if (!regex(v).contentEquals(v)) {
                 elementsName.remove(v);
             }
-
         }
         regex(startActivities);
         regex(endActivities);

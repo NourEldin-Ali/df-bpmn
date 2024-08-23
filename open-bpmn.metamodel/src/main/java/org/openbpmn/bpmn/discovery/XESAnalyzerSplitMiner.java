@@ -20,10 +20,11 @@ public class XESAnalyzerSplitMiner {
     public static void main(String[] args) {
         try {
             // Start timing
-            String fileName = "M7";
+            String fileName = "S0";
             String pathLog = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\event_logs\\" + fileName + ".xes";
             String outputpath = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\our\\" + fileName + ".bpmn";
             Double epsilom = 1.0;
+            Double frequencyNoiseRemove = 0.05;
             Double frequency = 0.0;
 
 
@@ -35,6 +36,9 @@ public class XESAnalyzerSplitMiner {
             Map<String, List<String>> tracesList = new HashMap<>();
 
             DependencyGraph dependencyGraph = generateDependencyGraph(log, traces, tracesList);
+            double maxWeight = getMaxEdgeWeight(dependencyGraph.dependencyGraph);
+            System.out.println("Max Weight: " + maxWeight);
+
 
             //get names
             dependencyGraph.dependencyGraph.vertexSet().forEach(vertex -> {
@@ -45,7 +49,7 @@ public class XESAnalyzerSplitMiner {
             List<String> endActivities = new ArrayList<>(dependencyGraph.endActivities);
             dependencyGraph.startActivities.clear();
             dependencyGraph.endActivities.clear();
-            String startEvent = "start" ;
+            String startEvent = "start";
             dependencyGraph.addVertex(startEvent);
             dependencyGraph.elementInformations.put(startEvent, new HashMap<String, String>() {{
                 put("type", "start");
@@ -116,9 +120,8 @@ public class XESAnalyzerSplitMiner {
                             tgt2src_loop2Frequency += (StringUtils.countMatches(trace, tgt2src_loop2Pattern) * traces.get(trace));
                         }
                         double loop2score = src2tgt_loop2Frequency + tgt2src_loop2Frequency;
-                        System.out.println(loop2score);
-
-                        if (loop2score != 0) {
+                        if (loop2score > 0) {
+//                        if(src2tgt_loop2Frequency>0 && tgt2src_loop2Frequency>0){
                             List<String> loop2 = new ArrayList<>();
                             loop2.add(target);
                             loop2.add(source);
@@ -130,51 +133,150 @@ public class XESAnalyzerSplitMiner {
 
                 }
             });
-
-
             System.out.println(dependencyGraph.loops);
             printOutTime(startTime_1);
             System.out.println("END Loop");
 
+            //remove self loop
+            dependencyGraph.loops.forEach(loop -> {
+                if (loop.get(0).equals(loop.get(1))) {
+                    dependencyGraph.loopsL1.add(loop);
+                    dependencyGraph.dependencyGraphWithLoop.removeEdge(loop.get(0), loop.get(0));
+                    dependencyGraph.dependencyGraph.addEdge(loop.get(0), loop.get(1));
+                }
+            });
+
+
             //get parallelism
             System.out.println("Parallelism: ");
             startTime_1 = System.nanoTime();
-
-            HashSet<DefaultWeightedEdge> removableEdge = new HashSet<>();
-
             dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
                 String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
                 String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
 
-                boolean priorityCheck = !dependencyGraph.loops.contains(new ArrayList<String>() {{
-                    add(source);
-                    add(target);
-                }}) || true;
+                Set<String> loop = new HashSet<>();
+                loop.add(source);
+                loop.add(target);
 
-                if (dependencyGraph.dependencyGraph.containsEdge(target, source) && !removableEdge.contains(edge) && priorityCheck && target != source) {
+                if (!source.equals(target)) {
+
+                    if (!dependencyGraph.parallelism.contains(loop) && dependencyGraph.dependencyGraph.containsEdge(target, source)) {
+//                        String src2tgt_loop2Pattern = "::" + source + "::" + target + "::" + source + "::";
+//                        String tgt2src_loop2Pattern = "::" + target + "::" + source + "::" + target + "::";
+//                        double src2tgt_loop2Frequency = 0;
+//                        double tgt2src_loop2Frequency = 0;
+//                        for (String trace : traces.keySet()) {
+//                            src2tgt_loop2Frequency += (StringUtils.countMatches(trace, src2tgt_loop2Pattern) * traces.get(trace));
+//                            tgt2src_loop2Frequency += (StringUtils.countMatches(trace, tgt2src_loop2Pattern) * traces.get(trace));
+//                        }
+//                        double loop2score = src2tgt_loop2Frequency + tgt2src_loop2Frequency;
+//                        if(loop2score==0){
+                        Set<String> loop2 = new HashSet<>();
+                        loop2.add(target);
+                        loop2.add(source);
+                        dependencyGraph.parallelism.add(loop2);
+                    }
+//                    }
+
+                }
+            });
+
+            Set<Set<String>> tempParallelism = new HashSet<>(dependencyGraph.parallelism);
+            dependencyGraph.parallelism.clear();
+            tempParallelism.stream().forEach(loop -> {
+                Iterator<String> it = loop.iterator();
+                String source = it.next();
+                String target = it.next();
+                DefaultWeightedEdge edge = dependencyGraph.dependencyGraph.getEdge(source, target);
+
+
+                if (dependencyGraph.dependencyGraph.containsEdge(target, source)) {
                     DefaultWeightedEdge edge2 = dependencyGraph.dependencyGraph.getEdge(target, source);
                     double src2tgt_frequency = dependencyGraph.dependencyGraph.getEdgeWeight(edge);
                     double tgt2src_frequency = dependencyGraph.dependencyGraph.getEdgeWeight(edge2);
-                    double parallelismScore = (double) (src2tgt_frequency - tgt2src_frequency) / (src2tgt_frequency + tgt2src_frequency);
+//                    double parallelismScore = (double) (src2tgt_frequency - tgt2src_frequency) / (src2tgt_frequency + tgt2src_frequency);
+                    double parallelismScore = (double) (src2tgt_frequency - tgt2src_frequency) / Math.max(src2tgt_frequency, tgt2src_frequency);
                     if (Math.abs(parallelismScore) < epsilom) {
-                        removableEdge.add(edge);
-                        removableEdge.add(edge2);
                         dependencyGraph.parallelism.add(new HashSet<String>() {{
                             add(source);
                             add(target);
                         }});
-                    } else {
-                        if (parallelismScore > 0) removableEdge.add(edge2);
-                        else removableEdge.add(edge);
                     }
+
                 }
 
             });
-            dependencyGraph.dependencyGraph.removeAllEdges(removableEdge);
-            dependencyGraph.dependencyGraphWithLoop.removeAllEdges(removableEdge);
+
 
             System.out.println(dependencyGraph.parallelism);
-            dependencyGraph.removeParallelismDiscovery();
+
+
+            // Remove edges with frequency less than the threshold
+            Map<String, Double> removableEdge = removeEdgesBasedOnFrequency(dependencyGraph, frequencyNoiseRemove, maxWeight);
+            removableEdge.putAll(removeEdgesBasedOnFrequency(dependencyGraph, frequency, maxWeight));
+
+
+            dependencyGraph.loops.clear();
+
+            //get loop
+            System.out.println("Loop: ");
+            startTime_1 = System.nanoTime();
+            System.out.println(dependencyGraph.loops);
+            dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
+                String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
+                String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
+
+                List<String> loop = new ArrayList<>();
+                loop.add(source);
+                loop.add(target);
+
+                if (source.equals(target)) {
+
+                    dependencyGraph.loops.add(loop);
+                } else {
+                    if (!dependencyGraph.loops.contains(loop) && dependencyGraph.dependencyGraph.containsEdge(target, source)) {
+                        String src2tgt_loop2Pattern = "::" + source + "::" + target + "::" + source + "::";
+                        String tgt2src_loop2Pattern = "::" + target + "::" + source + "::" + target + "::";
+                        double src2tgt_loop2Frequency = 0;
+                        double tgt2src_loop2Frequency = 0;
+                        for (String trace : traces.keySet()) {
+                            src2tgt_loop2Frequency += (StringUtils.countMatches(trace, src2tgt_loop2Pattern) * traces.get(trace));
+                            tgt2src_loop2Frequency += (StringUtils.countMatches(trace, tgt2src_loop2Pattern) * traces.get(trace));
+                        }
+                        double loop2score = src2tgt_loop2Frequency + tgt2src_loop2Frequency;
+                        if (loop2score > 0) {
+//                        if(src2tgt_loop2Frequency>0 && tgt2src_loop2Frequency>0){
+                            List<String> loop2 = new ArrayList<>();
+                            loop2.add(target);
+                            loop2.add(source);
+
+                            dependencyGraph.loops.add(loop);
+                            dependencyGraph.loops.add(loop2);
+                        }
+                    }
+
+                }
+            });
+            System.out.println(dependencyGraph.loops);
+            printOutTime(startTime_1);
+            System.out.println("END Loop");
+
+            removableEdge.keySet().forEach(edge -> {
+                String[] edgeVertices = edge.split("::");
+                dependencyGraph.dependencyGraph.addEdge(edgeVertices[0], edgeVertices[1]);
+                dependencyGraph.dependencyGraph.setEdgeWeight(edgeVertices[0], edgeVertices[1], removableEdge.get(edge));
+                dependencyGraph.dependencyGraphWithLoop.addEdge(edgeVertices[0], edgeVertices[1]);
+                dependencyGraph.dependencyGraphWithLoop.setEdgeWeight(edgeVertices[0], edgeVertices[1], removableEdge.get(edge));
+            });
+
+            dependencyGraph.removeAllParallelismDiscovery(tempParallelism);
+
+            removableEdge.clear();
+
+            // Remove edges with frequency less than the threshold
+            removableEdge.putAll(removeEdgesBasedOnFrequency(dependencyGraph, frequencyNoiseRemove, maxWeight));
+            removableEdge.putAll(removeEdgesBasedOnFrequency(dependencyGraph, frequency, maxWeight));
+
             System.out.println(dependencyGraph.parallelism);
             dependencyGraph.filerParallelism();
             System.out.println(dependencyGraph.parallelism);
@@ -187,12 +289,62 @@ public class XESAnalyzerSplitMiner {
             System.out.println("END Parallelism");
 
 
+            //check if there is not connected vertices in the outgoing or incomming, should add the edge from the removable edge based on teh high frequency of this edge
+            dependencyGraph.dependencyGraph.vertexSet().forEach(vertex -> {
+                if (dependencyGraph.loops.stream().noneMatch(list -> list.contains(vertex))) {
+                    Set<DefaultWeightedEdge> incomingEdges = dependencyGraph.dependencyGraph.incomingEdgesOf(vertex);
+                    Set<DefaultWeightedEdge> outgoingEdges = dependencyGraph.dependencyGraph.outgoingEdgesOf(vertex);
+                    if (incomingEdges.isEmpty()) {
+                        System.out.println("Incoming: " + vertex);
+                        String maxEdge = "";
+                        double maxFrequency = 0;
+                        for (String edge : removableEdge.keySet()) {
+                            String[] edgeVertices = edge.split("::");
+                            if (edgeVertices[1].equals(vertex)) {
+                                if (removableEdge.get(edge) > maxFrequency) {
+                                    maxFrequency = removableEdge.get(edge);
+                                    maxEdge = edge;
+                                }
+                            }
+                        }
+                        if (!maxEdge.isEmpty()) {
+                            String[] edgeVertices = maxEdge.split("::");
+                            dependencyGraph.dependencyGraph.addEdge(edgeVertices[0], edgeVertices[1]);
+                            dependencyGraph.dependencyGraphWithLoop.addEdge(edgeVertices[0], edgeVertices[1]);
+                        }
+                    }
+
+                    if (outgoingEdges.isEmpty()) {
+                        System.out.println("Outgoing: " + vertex);
+                        String maxEdge = "";
+                        double maxFrequency = 0;
+                        for (String edge : removableEdge.keySet()) {
+                            String[] edgeVertices = edge.split("::");
+                            if (edgeVertices[0].equals(vertex)) {
+                                if (removableEdge.get(edge) > maxFrequency) {
+                                    maxFrequency = removableEdge.get(edge);
+                                    maxEdge = edge;
+                                }
+                            }
+                        }
+                        if (!maxEdge.isEmpty()) {
+                            String[] edgeVertices = maxEdge.split("::");
+                            dependencyGraph.dependencyGraph.addEdge(edgeVertices[0], edgeVertices[1]);
+                            dependencyGraph.dependencyGraphWithLoop.addEdge(edgeVertices[0], edgeVertices[1]);
+                        }
+                    }
+                }
+            });
+
+
             //continue loop detection
             System.out.println("Loop2: ");
             startTime_1 = System.nanoTime();
             System.out.println(dependencyGraph.loops);
 //            dependencyGraph.getLongLoopDiscovery();
-            dependencyGraph.findAndRemoveLoops();
+//            dependencyGraph.findAndRemoveLoops();
+
+            dependencyGraph.findAndRemoveLoops2(traces);
             System.out.println(dependencyGraph.loops);
             LoopMerger loopMerger = new LoopMerger(dependencyGraph.loops, dependencyGraph.dependencyGraphWithLoop);
             System.out.println(loopMerger.getMergedLoop());
@@ -373,4 +525,38 @@ public class XESAnalyzerSplitMiner {
 
         return concurrentPairs;
     }
+
+    public static double getMaxEdgeWeight(DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph) {
+        double maxWeight = Double.NEGATIVE_INFINITY;
+        for (DefaultWeightedEdge edge : graph.edgeSet()) {
+            double weight = graph.getEdgeWeight(edge);
+            if (weight > maxWeight) {
+                maxWeight = weight;
+            }
+        }
+        return maxWeight;
+    }
+
+    public static Map<String, Double> removeEdgesBasedOnFrequency(DependencyGraph dependencyGraph, double frequency, Double maxWeight) {
+
+        Map<String, Double> removableList = new HashMap<>();
+        Set<DefaultWeightedEdge> edgesToRemove = new HashSet<>();
+
+        for (DefaultWeightedEdge edge : dependencyGraph.dependencyGraph.edgeSet()) {
+            double weight = dependencyGraph.dependencyGraph.getEdgeWeight(edge);
+            if (weight / maxWeight < frequency) {
+                edgesToRemove.add(edge);
+            }
+        }
+
+        for (DefaultWeightedEdge edge : edgesToRemove) {
+            String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
+            String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
+            removableList.put(source + "::" + target, dependencyGraph.dependencyGraph.getEdgeWeight(edge));
+            dependencyGraph.dependencyGraph.removeEdge(source, target);
+            dependencyGraph.dependencyGraphWithLoop.removeEdge(source, target);
+        }
+        return removableList;
+    }
+
 }

@@ -11,9 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,6 @@ import org.openbpmn.bpmn.elements.BPMNProcess;
 import org.openbpmn.bpmn.elements.Gateway;
 import org.openbpmn.bpmn.elements.SequenceFlow;
 import org.openbpmn.bpmn.elements.core.BPMNElement;
-import org.openbpmn.bpmn.elements.core.BPMNElementEdge;
 import org.openbpmn.bpmn.elements.core.BPMNElementNode;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidReferenceException;
 import org.openbpmn.bpmn.exceptions.BPMNInvalidTypeException;
@@ -85,16 +84,13 @@ public class BPMNDiscovery {
         this.dependencies = (LinkedList<String>) dependenciesGraph.getDependenciesDFA();
 
 
-
-
-
         LoopMerger loopMerger = new LoopMerger(this.dependenciesGraph.loops, dependenciesGraph.dependencyGraphWithLoop);
         this.loops = loopMerger.getMergedLoop();
         System.out.println("loops");
         System.out.println(this.loops);
 
-        System.out.println( this.dependenciesGraph.elementInformations);
-        System.out.println( this.dependenciesGraph.elementsName);
+        System.out.println(this.dependenciesGraph.elementInformations);
+        System.out.println(this.dependenciesGraph.elementsName);
         //get missing exclusive for the loops
         DecisionForLoop decisionForLoop = new DecisionForLoop(dependenciesGraph.exlusive, dependenciesGraph.parallelism,
                 dependenciesGraph.inclusive, this.loops);
@@ -109,7 +105,7 @@ public class BPMNDiscovery {
         System.out.println(decisionRelations);
         //get parallelism
         ParallelismMerger parallelismMerger = new ParallelismMerger(dependenciesGraph.parallelism,
-                dependenciesGraph.dependencyGraphWithLoop);
+                dependenciesGraph.dependencyGraph);
         LinkedList<LinkedList<String>> parallelRelations = parallelismMerger.getParallelims();
         System.out.println("parallelRelations1");
         System.out.println(parallelRelations);
@@ -455,7 +451,7 @@ public class BPMNDiscovery {
                 targetElements.add(targetElement);
             }
             try {
-                loopBlockConstruction(sourceElements, targetElements);
+//                loopBlockConstruction(sourceElements, targetElements);
             } catch (Exception e) {
                 System.out.println("########### LOOP CONSTRACTION ERROR ##################");
                 System.out.println(e.getMessage());
@@ -477,7 +473,7 @@ public class BPMNDiscovery {
                 targetElements.add(targetElement);
             }
             try {
-                addLoopGateway(sourceElements, targetElements);
+//                addLoopGateway(sourceElements, targetElements);
             } catch (Exception e) {
                 System.out.println("########### LOOP ERROR ##################");
                 System.out.println(e.getMessage());
@@ -1158,14 +1154,49 @@ public class BPMNDiscovery {
 
         //check if we have multiple source elements
         if (sourceElements.size() > 1) {
-            int countSqOfsSource = 0;
-            for (BPMNElementNode element : sourceElements) {
-                if (!element.getOutgoingSequenceFlows().isEmpty()) {
-                    countSqOfsSource++;
+//            int countSqOfsSource = 0;
+//            for (BPMNElementNode element : sourceElements) {
+//                if (!element.getOutgoingSequenceFlows().isEmpty()) {
+//                    countSqOfsSource++;
+//                }
+//            }
+
+//            if (countSqOfsSource != sourceElements.size()) {
+
+            Set<BPMNElementNode> gatewaysofSource = sourceElements.stream()
+                    .flatMap(element -> process.getAllForwardNestedGateways(element).stream())
+                    .collect(Collectors.toSet());
+
+            List<BPMNElementNode> acceptedGateway = new ArrayList<>();
+            for (BPMNElementNode bpmnElementNode : gatewaysofSource) {
+                List<BPMNElementNode> predeccessors = process.getAllPredeccessors(bpmnElementNode);
+                if (predeccessors.containsAll(sourceElements)) {
+                    acceptedGateway.add(bpmnElementNode);
                 }
             }
+            AtomicReference<BPMNElementNode> sourceElement = new AtomicReference<>(acceptedGateway.stream().filter(gateway ->
+                            gateway.getIngoingSequenceFlows().stream().
+                                    allMatch(sequenceFlow -> !acceptedGateway.contains(sequenceFlow.getSourceElement())))
+                    .findAny().orElse(null));
+//            System.out.println("LOOP BLOCK CONSTRUCTION: "
+//                    + sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
+//            System.out.println(sourceElement.getId());
+            if (sourceElement.get() != null) {
+                sourceElements.stream().flatMap(element -> element.getOutgoingSequenceFlows().stream())
+                        .forEach(sq -> {
+                            if (sq.getTargetElement() instanceof Gateway) {
+                                if(sq.getTargetElement().getOutgoingSequenceFlows().size()>1){
+                                    sourceElement.set(null);
+                                    return;
+                                }
+                            }else{
+                                sourceElement.set(null);
+                                return;
+                            }
+                        });
+            }
+            if (sourceElement.get() == null) {
 
-            if (countSqOfsSource != sourceElements.size()) {
                 System.out.println("LOOP BLOCK CONSTRUCTION: "
                         + sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
                 List<Pair<BPMNElementNode, BPMNElementNode>> sourcesAsPair = new ArrayList<>();
@@ -1287,24 +1318,72 @@ public class BPMNDiscovery {
         }
         if (targetElements.size() > 1) {
 
-            // check if there exists a relation between the targets (relation = gateway)
+//            // check if there exists a relation between the targets (relation = gateway)
+//            List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
+//
+//            boolean shouldConstruct = true;
+//            Set<BPMNElementNode> gatewaysofSource = targetElements.stream()
+//                    .flatMap(element -> process.getAllBackwardNestedGateways(element).stream())
+//                    .collect(Collectors.toSet());
+//
+//
+//            for (BPMNElementNode bpmnElementNode : gatewaysofSource) {
+//                List<BPMNElementNode> sucessors = process.getAllSuccesssors(bpmnElementNode);
+//                if (sucessors.containsAll(targetElements)) {
+//                    shouldConstruct = false;
+//                    break;
+//                }
+//            }
+
+            AtomicReference<BPMNElementNode> targetElementTemp = new AtomicReference<>();
+            // get root gateway based on the relation
             List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
+            int num = getGatewayNum(targetIds);
+            StringBuffer gatewayNum = new StringBuffer();
+            gatewayNum.append(num);
+            if (!gatewayNum.toString().contentEquals("-1")) {
 
-            boolean shouldConstruct = true;
-            Set<BPMNElementNode> gatewaysofSource = targetElements.stream()
-                    .flatMap(element -> process.getAllBackwardNestedGateways(element).stream())
-                    .collect(Collectors.toSet());
+                targetElementTemp.set(process.getGateways().stream()
+                        .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).findAny()
+                        .orElse(null));
 
+            } else {
+                Set<BPMNElementNode> gatewaysofSource = sourceElements.stream()
+                        .flatMap(element -> process.getAllBackwardNestedGateways(element).stream())
+                        .collect(Collectors.toSet());
 
-            for (BPMNElementNode bpmnElementNode : gatewaysofSource) {
-                List<BPMNElementNode> sucessors = process.getAllSuccesssors(bpmnElementNode);
-                if (sucessors.containsAll(targetElements)) {
-                    shouldConstruct = false;
-                    break;
+                List<BPMNElementNode> acceptedGateway = new ArrayList<>();
+                for (BPMNElementNode bpmnElementNode : gatewaysofSource) {
+                    List<BPMNElementNode> sucessors = process.getAllSuccesssors(bpmnElementNode);
+                    if (sucessors.containsAll(targetElements)) {
+                        acceptedGateway.add(bpmnElementNode);
+                    }
                 }
+                targetElementTemp.set(acceptedGateway.stream().filter(gateway ->
+                                gateway.getOutgoingSequenceFlows().stream().
+                                        allMatch(sequenceFlow -> !acceptedGateway.contains(sequenceFlow.getTargetElement())))
+                        .findAny().orElse(null));
+//                targetElement = bpmnElementNode;
+
             }
+
+            if (targetElementTemp.get() != null) {
+                targetElements.stream().flatMap(element -> element.getIngoingSequenceFlows().stream())
+                        .forEach(sq -> {
+                            if (sq.getSourceElement() instanceof Gateway) {
+                                if(sq.getSourceElement().getIngoingSequenceFlows().size()>1){
+                                    targetElementTemp.set(null);
+                                    return;
+                                }
+                            }else{
+                                targetElementTemp.set(null);
+                                return;
+                            }
+                        });
+            }
+
             // if no gateway added to the source elements
-            if (shouldConstruct) {
+            if (targetElementTemp.get() ==null) {
 
                 System.out.println("LOOP BLOCK TARGET CONSTRUCTION: "
                         + targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));

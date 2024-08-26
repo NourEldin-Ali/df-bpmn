@@ -7,21 +7,19 @@ import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.openbpmn.bpmn.discovery.model.DecisionMerger;
 import org.openbpmn.bpmn.discovery.model.DependencyGraph;
 import org.openbpmn.bpmn.discovery.model.LoopMerger;
-import org.openbpmn.bpmn.discovery.model.ParallelismMerger;
 
 import java.io.File;
-import java.sql.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class XESAnalyzerBonitaMiner {
 
     public static void main(String[] args) {
         try {
             // Start timing
-            String fileName = "S16";
+            String fileName = "M2";
             String pathLog = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\event_logs\\" + fileName + ".xes";
             String outputpath = "C:\\Users\\AliNourEldin\\Desktop\\da-bpmn\\generated-BPMN\\our\\" + fileName + ".bpmn";
             Double epsilom = 1.0;
@@ -37,116 +35,57 @@ public class XESAnalyzerBonitaMiner {
             DependencyGraph dependencyGraph = generateDependencyGraph(log, traces, tracesList);
 
             double maxWeight = getMaxEdgeWeight(dependencyGraph.dependencyGraph);
-            System.out.println("Max Weight: " + maxWeight);
-            System.out.println(dependencyGraph.dependencyGraph.toString());
 
 
             //loop detection
             loopDetection(dependencyGraph, traces);
-            System.out.println(dependencyGraph.loops);
 
             //get parallelism
             DependencyGraph dependencyGraphNew = generateDependencyGraph(log, traces, tracesList);
+
             dependencyGraphNew.loops.addAll(dependencyGraph.loops);
             parallelDetection(dependencyGraphNew, epsilom);
             dependencyGraph.parallelism.addAll(dependencyGraphNew.parallelism);
-            System.out.println(dependencyGraph.parallelism);
 
 
             // add loops to dependency graph with loop
             dependencyGraph.loops.forEach(loop -> {
                 dependencyGraph.dependencyGraphWithLoop.addEdge(loop.get(0), loop.get(1));
             });
-
-
-            System.out.println("Start loop merge");
-            LoopMerger loopMerger = new LoopMerger(dependencyGraph.loops, dependencyGraph.dependencyGraphWithLoop);
-            System.out.println(loopMerger.getMergedLoop());
-            System.out.println("END loop merge");
-
             DependencyGraph dependencyGraphNew2 = generateDependencyGraph(log, traces, tracesList);
-            Set<List<String>> toAddToLoop = new HashSet<>();
+
+            //should check if there is activities not connected
+            addDisconnectedActivities(dependencyGraph, dependencyGraphNew2);
+
             //extra loop
-            System.out.println("Start Extract loop");
-            dependencyGraph.loops.forEach(edge1 -> {
-                dependencyGraph.loops.forEach(edge2 -> {
-                    if (edge1 != edge2 && !edge1.get(0).equals(edge1.get(1)) && !edge2.get(0).equals(edge2.get(1))) {
-                        System.out.println("go to test");
-                        System.out.println(edge1.toString() + " " + edge2.toString());
-                        if (dependencyGraph.parallelism.stream().anyMatch(parallel-> parallel.contains(edge1.get(1)) && parallel.contains(edge2.get(1)))){
+            extraLoop(dependencyGraph, dependencyGraphNew2);
 
-                            System.out.println("OK***** parallel");
-                            System.out.print(edge1.get(0) + " "+ edge2.get(0));
-                            if (dependencyGraphNew2.dependencyGraph.containsEdge(edge1.get(1), edge2.get(0)) &&
-                                    dependencyGraphNew2.dependencyGraph.containsEdge(edge2.get(1), edge1.get(0))) {
-                                List<String> loop = new ArrayList<>();
-                                loop.add(edge2.get(0));
-                                loop.add(edge1.get(1));
-                                toAddToLoop.add(loop);
-                                dependencyGraph.dependencyGraphWithLoop.addEdge(loop.get(0), loop.get(1));
-//                                loop.clear();
-//                                loop.add(edge2.get(1));
-//                                loop.add(edge1.get(0));
-//
-//                                toAddToLoop.add(loop);
-//                                dependencyGraph.dependencyGraphWithLoop.addEdge(loop.get(0), loop.get(1));
-                            }
-                        }
-                    }
-                });
-            });
-
-            dependencyGraph.loops.addAll(toAddToLoop);
-            System.out.println(dependencyGraph.loops);
-            System.out.println("END extra loop: ");
-            System.out.println("Extra parallelism: ");
-            loopMerger.getMergedLoop().forEach(loop -> {
-                if (dependencyGraph.parallelism.contains(new HashSet<>(loop.getSource()))
-                        && dependencyGraph.parallelism.contains(new HashSet<>(loop.getTarget()))
-                        && loop.getSource().containsAll(loop.getTarget()) && loop.getTarget().containsAll(loop.getSource())
-                ) {
-                    System.out.println(loop.getSource());
-                    loop.getSource().forEach(source -> {
-                        loop.getSource().forEach(target -> {
-                            if (!source.equals(target)) {
-                                if (dependencyGraph.parallelism.contains(new HashSet<>(Arrays.asList(source, target)))) {
-
-                                    if (dependencyGraph.vertexWeights.get(source) != dependencyGraph.vertexWeights.get(target)) {
-                                        dependencyGraph.parallelism.remove(new HashSet<>(Arrays.asList(source, target)));
-                                    }
-
-                                }
-                            }
-                        });
-                    });
-                }
-            });
-            System.out.println(dependencyGraph.parallelism);
-            System.out.println("End parallelism: ");
+            // extra parallelism
+            extraParallelism(dependencyGraph, dependencyGraphNew2);
 
 
-            long startTime_1;
+//            long startTime_1;
             //get inclusive
-            System.out.println("Inclusive: ");
-            startTime_1 = System.nanoTime();
+//            System.out.println("Inclusive: ");
+//            startTime_1 = System.nanoTime();
             dependencyGraph.findInclusive();
-            System.out.println(dependencyGraph.inclusive);
-            printOutTime(startTime_1);
-            System.out.println("END Inclusive");
+//            System.out.println(dependencyGraph.inclusive);
+//            printOutTime(startTime_1);
+//            System.out.println("END Inclusive");
 
             //get exclusive
-            System.out.println("Decision: ");
-            startTime_1 = System.nanoTime();
+//            System.out.println("Decision: ");
+//            startTime_1 = System.nanoTime();
             dependencyGraph.findExculisve();
-            System.out.println(dependencyGraph.exlusive);
-            DecisionMerger decisionMerger = new DecisionMerger(dependencyGraph.exlusive, dependencyGraph.dependencyGraphWithLoop);
-            LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
-            System.out.println("Decision Relations: ");
-            System.out.println(decisionRelations);
-            printOutTime(startTime_1);
-            System.out.println("End Decision");
-            System.out.println(dependencyGraph.dependencyGraphWithLoop.toString());
-            System.out.println(dependencyGraph.dependencyGraph.toString());
+//            System.out.println(dependencyGraph.exlusive);
+//            DecisionMerger decisionMerger = new DecisionMerger(dependencyGraph.exlusive, dependencyGraph.dependencyGraphWithLoop);
+//            LinkedList<LinkedList<String>> decisionRelations = decisionMerger.getDecisions();
+//            System.out.println("Decision Relations: ");
+//            System.out.println(decisionRelations);
+//            printOutTime(startTime_1);
+//            System.out.println("End Decision");
+//            System.out.println(dependencyGraph.dependencyGraphWithLoop.toString());
+//            System.out.println(dependencyGraph.dependencyGraph.toString());
 
 //            get sequence
             BPMNDiscovery bpmnDiscovery = new BPMNDiscovery(dependencyGraph);
@@ -157,6 +96,59 @@ public class XESAnalyzerBonitaMiner {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void addDisconnectedActivities(DependencyGraph dependencyGraph, DependencyGraph dependencyGraphNew2) {
+        dependencyGraph.dependencyGraphWithLoop.vertexSet().forEach(vertex -> {
+            if(dependencyGraph.startActivities.contains(vertex) || dependencyGraph.endActivities.contains(vertex)){
+                return;
+            }
+
+            if (dependencyGraph.dependencyGraphWithLoop.incomingEdgesOf(vertex).size() == 0) {
+                //get the max weth comming to this source
+                final DefaultWeightedEdge[] e = {null};
+                final double[] max = {0};
+                dependencyGraphNew2.dependencyGraph.incomingEdgesOf(vertex).forEach(edge -> {
+                    double weight = dependencyGraphNew2.dependencyGraph.getEdgeWeight(edge);
+                    if (weight> max[0]) {
+                        e[0] = edge;
+                        max[0] = weight;
+                    }
+                });
+                if(e[0] == null){
+                    return;
+                }
+                String source = dependencyGraphNew2.dependencyGraph.getEdgeSource(e[0]);
+                DefaultWeightedEdge edge =  dependencyGraph.dependencyGraphWithLoop.addEdge(source, vertex);
+                dependencyGraph.dependencyGraphWithLoop.setEdgeWeight(edge, max[0]);
+                DefaultWeightedEdge edge1 =  dependencyGraph.dependencyGraph.addEdge(source, vertex);
+                dependencyGraph.dependencyGraph.setEdgeWeight(edge1, max[0]);
+
+//                    dependencyGraph.dependencyGraphWithLoop.addEdge("start", vertex);
+            } else if (dependencyGraph.dependencyGraphWithLoop.outgoingEdgesOf(vertex).size() == 0) {
+//                    dependencyGraph.dependencyGraphWithLoop.addEdge(vertex, "end");
+                final DefaultWeightedEdge[] e = {null};
+                final double[] max = {-1};
+                //get max weigth edge
+                dependencyGraphNew2.dependencyGraph.outgoingEdgesOf(vertex).forEach(edge -> {
+                    double weight = dependencyGraphNew2.dependencyGraph.getEdgeWeight(edge);
+                    System.out.println(weight);
+                    if (weight> max[0]) {
+                        e[0] = edge;
+                        max[0] = weight;
+                    }
+                });
+
+                if(e[0] == null){
+                    return;
+                }
+                String target = dependencyGraphNew2.dependencyGraph.getEdgeTarget(e[0]);
+                DefaultWeightedEdge edge =  dependencyGraph.dependencyGraphWithLoop.addEdge(vertex,target);
+                dependencyGraph.dependencyGraphWithLoop.setEdgeWeight(edge, max[0]);
+                DefaultWeightedEdge edge1 =  dependencyGraph.dependencyGraph.addEdge(vertex,target);
+                dependencyGraph.dependencyGraph.setEdgeWeight(edge1, max[0]);
+            }
+        });
     }
 
     public static void printOutTime(long startTime) {
@@ -375,7 +367,6 @@ public class XESAnalyzerBonitaMiner {
 
 
     public static void parallelDetection(DependencyGraph dependencyGraph, Double epsilom) {
-        long startTime_1;
         //remove looping edge (we dont remove a->, b->a)
         Set<List<String>> edgesToRemove = new HashSet<>();
         dependencyGraph.loops.forEach(loop -> {
@@ -401,10 +392,6 @@ public class XESAnalyzerBonitaMiner {
             dependencyGraph.dependencyGraphWithLoop.removeEdge(target, source);
         });
 
-        dependencyGraph.loops.clear();
-        dependencyGraph.loopsL1.clear();
-        System.out.println("Parallelism: ");
-        startTime_1 = System.nanoTime();
         dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
             String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
             String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
@@ -422,7 +409,7 @@ public class XESAnalyzerBonitaMiner {
                 }
             }
         });
-
+        System.out.println(dependencyGraph.parallelism);
         Set<Set<String>> tempParallelism = new HashSet<>(dependencyGraph.parallelism);
         dependencyGraph.parallelism.clear();
         tempParallelism.stream().forEach(parallel -> {
@@ -446,22 +433,19 @@ public class XESAnalyzerBonitaMiner {
             }
         });
         dependencyGraph.removeParallelism();
-        System.out.println(dependencyGraph.parallelism);
-        dependencyGraph.filerParallelism();
-        System.out.println(dependencyGraph.parallelism);
+        dependencyGraph.dependencyGraph.vertexSet().forEach(vertex -> {
+            if (dependencyGraph.dependencyGraph.incomingEdgesOf(vertex).size() == 0) {
 
-        printOutTime(startTime_1);
-        System.out.println("END Parallelism");
+            } else if (dependencyGraph.dependencyGraph.outgoingEdgesOf(vertex).size() == 0) {
+
+            }
+            ;
+        });
+        dependencyGraph.filerParallelism();
     }
 
 
     public static void loopDetection(DependencyGraph dependencyGraph, Map<String, Integer> traces) {
-        long startTime_1;
-        // loop detection
-        //get loop
-        System.out.println("Start selfLoop: ");
-        startTime_1 = System.nanoTime();
-
         //self loop detection
         Set<List<String>> selfLoops = new HashSet<>();
         dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
@@ -474,9 +458,7 @@ public class XESAnalyzerBonitaMiner {
                 selfLoops.add(loop);
             }
         });
-        System.out.println(selfLoops);
-        printOutTime(startTime_1);
-        System.out.println("END selfLoop");
+
 
         //remove self loop
         selfLoops.forEach(loop -> {
@@ -486,9 +468,7 @@ public class XESAnalyzerBonitaMiner {
 
         //detect short loop
         Set<List<String>> shortLoops = new HashSet<>();
-        System.out.println("Start shortLoops: ");
-        startTime_1 = System.nanoTime();
-        System.out.println(dependencyGraph.loops);
+
         dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
             String source = dependencyGraph.dependencyGraph.getEdgeSource(edge);
             String target = dependencyGraph.dependencyGraph.getEdgeTarget(edge);
@@ -520,9 +500,7 @@ public class XESAnalyzerBonitaMiner {
 
 
         });
-        System.out.println(shortLoops);
-        printOutTime(startTime_1);
-        System.out.println("END shortLoops");
+
 
         //check if any self loop has a loop based on the sources of all the self loop
         selfLoops.forEach(loop -> {
@@ -547,8 +525,7 @@ public class XESAnalyzerBonitaMiner {
                 }
             });
         });
-        System.out.println("ShortLoops: ");
-        System.out.println(shortLoops);
+
         //remove all a->b, b->a from the graph, and add all the loops to it
         Set<DefaultWeightedEdge> edgesToRemove = new HashSet<>();
         dependencyGraph.dependencyGraph.edgeSet().forEach(edge -> {
@@ -568,15 +545,8 @@ public class XESAnalyzerBonitaMiner {
         });
 
         //detect looping edge
-        Set<List<String>> loopingEdges = new HashSet<>();
-        System.out.println("Start looping edge: ");
-        startTime_1 = System.nanoTime();
-        System.out.println(dependencyGraph.dependencyGraphWithLoop.toString());
         dependencyGraph.findAndRemoveLoops2(traces);
         dependencyGraph.loops.addAll(selfLoops);
-        System.out.println(dependencyGraph.loops);
-        printOutTime(startTime_1);
-        System.out.println("END looping edge");
     }
 
     public static List<Integer> getAllIndexes(String str, String subStr) {
@@ -587,5 +557,111 @@ public class XESAnalyzerBonitaMiner {
             index = str.indexOf(subStr, index + 1);
         }
         return indexes;
+    }
+
+    public static void extraLoop(DependencyGraph dependencyGraph, DependencyGraph dependencyGraphNew2) {
+        Set<List<String>> toAddToLoop = new HashSet<>();
+        dependencyGraph.loops.forEach(edge1 -> {
+            dependencyGraph.loops.forEach(edge2 -> {
+                if (edge1 != edge2 && !edge1.get(0).equals(edge1.get(1)) && !edge2.get(0).equals(edge2.get(1))) {
+                    if (dependencyGraph.parallelism.stream().anyMatch(parallel -> parallel.contains(edge1.get(1)) && parallel.contains(edge2.get(1)))) {
+
+                        if (dependencyGraphNew2.dependencyGraph.containsEdge(edge1.get(1), edge2.get(0)) &&
+                                dependencyGraphNew2.dependencyGraph.containsEdge(edge2.get(1), edge1.get(0))) {
+                            List<String> loop = new ArrayList<>();
+                            loop.add(edge2.get(0));
+                            loop.add(edge1.get(1));
+                            toAddToLoop.add(loop);
+                            dependencyGraph.dependencyGraphWithLoop.addEdge(loop.get(0), loop.get(1));
+                        }
+                    }
+                }
+            });
+        });
+        dependencyGraph.loops.addAll(toAddToLoop);
+        dependencyGraph.loops.forEach(loop -> {
+            dependencyGraph.dependencyGraphWithLoop.addEdge(loop.get(0), loop.get(1));
+        });
+    }
+
+    public static void extraParallelism(DependencyGraph dependencyGraph, DependencyGraph dependencyGraphNew2) {
+
+        LoopMerger loopMerger = new LoopMerger(dependencyGraph.loops, dependencyGraph.dependencyGraphWithLoop);
+        //step 1 to get the parallelism from the loops
+        //step 2 to check if all the elements in the parallelism are parallel (based on the frequency)
+
+        //step 1
+        loopMerger.getMergedLoop().forEach(loop -> {
+            Set<Set<String>> allCombination = new HashSet<>();
+            loop.getTarget().forEach(element -> {
+                loop.getTarget().forEach(element2 -> {
+                    Set<String> combination = new HashSet<>();
+                    if (!element.equals(element2)) {
+                        combination.add(element);
+                        combination.add(element2);
+                        allCombination.add(combination);
+                    }
+                });
+            });
+            //check if the loop is parallel
+            allCombination.forEach(para -> {
+                if (!dependencyGraph.parallelism.contains(para)) {
+                    Iterator<String> it = para.iterator();
+                    String source = it.next();
+                    String target = it.next();
+                    if (dependencyGraphNew2.dependencyGraph.containsEdge(source, target) && dependencyGraphNew2.dependencyGraph.containsEdge(target, source)) {
+                        dependencyGraph.parallelism.add(para);
+                    }
+                }
+            });
+        });
+
+        // step 2
+        Set<Set<String>> paraToDelete = new HashSet<>();
+        dependencyGraph.parallelism.forEach(para -> {
+            Iterator<String> it = para.iterator();
+            String source = it.next();
+            String target = it.next();
+
+            Set<String> sourceConnection = dependencyGraph.parallelism.stream().filter(parallel -> parallel.contains(source)).map(s -> {
+                Iterator<String> it1 = s.iterator();
+                String k = it1.next();
+                if (k.contentEquals(source)) {
+                    k = it1.next();
+                }
+                return k;
+            }).collect(Collectors.toSet());
+
+            Set<String> targetConnection = dependencyGraph.parallelism.stream().filter(parallel -> parallel.contains(target)).map(s -> {
+                Iterator<String> it1 = s.iterator();
+                String k = it1.next();
+                if (k.contentEquals(target)) {
+                    k = it1.next();
+                }
+                return k;
+            }).collect(Collectors.toSet());
+
+            double sumOfFrequencyOfSourceConnections = sourceConnection.stream().mapToDouble(s -> dependencyGraph.vertexWeights.get(s)).sum();
+            double sumOfFrequencyOfTargetConnections = targetConnection.stream().mapToDouble(s -> dependencyGraph.vertexWeights.get(s)).sum();
+//            System.out.println(source + " " + sourceConnection);
+//            System.out.println(dependencyGraph.vertexWeights.get(source));
+//            System.out.println(sumOfFrequencyOfSourceConnections);
+//
+//            System.out.println(target + " " + targetConnection);
+//            System.out.println(dependencyGraph.vertexWeights.get(target));
+//            System.out.println(sumOfFrequencyOfTargetConnections);
+
+            if (!(
+                    dependencyGraph.vertexWeights.get(source).doubleValue() == dependencyGraph.vertexWeights.get(target).doubleValue())
+                    && !((sourceConnection.size() != 1 ||
+                    targetConnection.size() != 1) &&
+                    (sumOfFrequencyOfSourceConnections == dependencyGraph.vertexWeights.get(target)
+                            || sumOfFrequencyOfTargetConnections == dependencyGraph.vertexWeights.get(source)))
+            ) {
+                paraToDelete.add(para);
+            }
+        });
+        System.out.println(paraToDelete);
+        dependencyGraph.parallelism.removeAll(paraToDelete);
     }
 }

@@ -451,7 +451,7 @@ public class BPMNDiscovery {
                 targetElements.add(targetElement);
             }
             try {
-//                loopBlockConstruction(sourceElements, targetElements);
+                loopBlockConstruction(sourceElements, targetElements);
             } catch (Exception e) {
                 System.out.println("########### LOOP CONSTRACTION ERROR ##################");
                 System.out.println(e.getMessage());
@@ -473,7 +473,7 @@ public class BPMNDiscovery {
                 targetElements.add(targetElement);
             }
             try {
-//                addLoopGateway(sourceElements, targetElements);
+                addLoopGateway(sourceElements, targetElements);
             } catch (Exception e) {
                 System.out.println("########### LOOP ERROR ##################");
                 System.out.println(e.getMessage());
@@ -1178,14 +1178,13 @@ public class BPMNDiscovery {
                             gateway.getIngoingSequenceFlows().stream().
                                     allMatch(sequenceFlow -> !acceptedGateway.contains(sequenceFlow.getSourceElement())))
                     .findAny().orElse(null));
-//            System.out.println("LOOP BLOCK CONSTRUCTION: "
-//                    + sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
-//            System.out.println(sourceElement.getId());
+            System.out.println("LOOP BLOCK CONSTRUCTION: "
+                    + sourceElements.stream().map(BPMNElement::getId).collect(Collectors.toList()));
             if (sourceElement.get() != null) {
                 sourceElements.stream().flatMap(element -> element.getOutgoingSequenceFlows().stream())
                         .forEach(sq -> {
                             if (sq.getTargetElement() instanceof Gateway) {
-                                if(sq.getTargetElement().getOutgoingSequenceFlows().size()>1){
+                                if(sq.getTargetElement().getIngoingSequenceFlows().size()>1){
                                     sourceElement.set(null);
                                     return;
                                 }
@@ -1316,6 +1315,9 @@ public class BPMNDiscovery {
                 }
             }
         }
+
+
+
         if (targetElements.size() > 1) {
 
 //            // check if there exists a relation between the targets (relation = gateway)
@@ -1342,10 +1344,12 @@ public class BPMNDiscovery {
             StringBuffer gatewayNum = new StringBuffer();
             gatewayNum.append(num);
             if (!gatewayNum.toString().contentEquals("-1")) {
-
-                targetElementTemp.set(process.getGateways().stream()
-                        .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).findAny()
-                        .orElse(null));
+                List<BPMNElementNode> acceptedGateway = new ArrayList<>();
+                acceptedGateway =
+                        process.getGateways().stream()
+                                .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).collect(Collectors.toList());
+                targetElementTemp.set(acceptedGateway.stream().filter(gateway ->
+                        process.getAllSuccesssors(gateway).size() == targetElements.size()).findAny().orElse(null));
 
             } else {
                 Set<BPMNElementNode> gatewaysofSource = sourceElements.stream()
@@ -1431,20 +1435,80 @@ public class BPMNDiscovery {
             targetElement = targetElements.get(0);
         } else {
 
+//            // get root gateway based on the relation
+//            List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
+//            int num = getGatewayNum(targetIds);
+//            StringBuffer gatewayNum = new StringBuffer();
+//            gatewayNum.append(num);
+//            if (!gatewayNum.toString().contentEquals("-1")) {
+//                List<Gateway> acceptedGateway =
+//                process.getGateways().stream()
+//                        .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).collect(Collectors.toList());
+//
+//                if(acceptedGateway.isEmpty()){
+//                    System.out.println("Error in detect loop targets relation (gateway)");
+//                    return;
+//                }else{
+//                    targetElement = acceptedGateway.stream().filter(gateway ->
+//                            gateway.getOutgoingSequenceFlows().size() == targetElements.size()).findAny().orElse(null);
+//                    if(targetElement==null){
+//                        System.out.println("Error in detect loop targets relation");
+//                        return;
+//                    }
+//                }
+//            } else {
+//                Set<BPMNElementNode> gatewaysofSource = sourceElements.stream()
+//                        .flatMap(element -> process.getAllBackwardNestedGateways(element).stream())
+//                        .collect(Collectors.toSet());
+//
+//                List<BPMNElementNode> acceptedGateway = new ArrayList<>();
+//                for (BPMNElementNode bpmnElementNode : gatewaysofSource) {
+//                    List<BPMNElementNode> sucessors = process.getAllSuccesssors(bpmnElementNode);
+//                    if (sucessors.containsAll(targetElements)) {
+//                        acceptedGateway.add(bpmnElementNode);
+//                    }
+//                }
+//
+//
+//                List<BPMNElementNode> acceptedGateway2 =  acceptedGateway.stream().filter(gateway ->
+//                        gateway.getOutgoingSequenceFlows().stream().
+//                                allMatch(sequenceFlow -> !acceptedGateway.contains(sequenceFlow.getTargetElement()))).collect(Collectors.toList());
+//
+//                if(acceptedGateway2.isEmpty()){
+//                    System.out.println("Error in detect loop targets relation-0 (gateway)");
+//                    return;
+//                }else{
+//                    targetElement = acceptedGateway2.stream().filter(gateway ->
+//                            gateway.getOutgoingSequenceFlows().size() == targetElements.size()).findAny().orElse(null);
+//                    if(targetElement==null){
+//                        System.out.println("Error in detect loop targets relation-0");
+//                        return;
+//                    }
+//                }
+//
+////                targetElement = bpmnElementNode;
+//                if (targetElement == null) {
+//                    System.out.println("Error in detect loop targets relation-1");
+//                    return;
+//                }
+//            }
+
+            AtomicReference<BPMNElementNode> targetElementTemp = new AtomicReference<>();
             // get root gateway based on the relation
             List<String> targetIds = targetElements.stream().map(BPMNElement::getId).collect(Collectors.toList());
             int num = getGatewayNum(targetIds);
             StringBuffer gatewayNum = new StringBuffer();
             gatewayNum.append(num);
             if (!gatewayNum.toString().contentEquals("-1")) {
+                List<BPMNElementNode> acceptedGateway = new ArrayList<>();
 
-                targetElement = process.getGateways().stream()
-                        .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).findAny()
-                        .orElse(null);
-                if (targetElement == null) {
-                    System.out.println("Error in detect loop targets relation");
-                    return;
-                }
+                acceptedGateway =
+                        process.getGateways().stream()
+                        .filter(gateway -> gateway.getAttribute(GATEWAY_NUM).contentEquals(gatewayNum) && gateway.getIngoingSequenceFlows().size() <= 1).collect(Collectors.toList());
+                targetElementTemp.set(acceptedGateway.stream().filter(gateway ->
+                        process.getAllSuccesssors(gateway).size() == targetElements.size()).findAny().orElse(null));
+
+
             } else {
                 Set<BPMNElementNode> gatewaysofSource = sourceElements.stream()
                         .flatMap(element -> process.getAllBackwardNestedGateways(element).stream())
@@ -1457,17 +1521,24 @@ public class BPMNDiscovery {
                         acceptedGateway.add(bpmnElementNode);
                     }
                 }
-                targetElement = acceptedGateway.stream().filter(gateway ->
+                targetElementTemp.set(acceptedGateway.stream().filter(gateway ->
                                 gateway.getOutgoingSequenceFlows().stream().
                                         allMatch(sequenceFlow -> !acceptedGateway.contains(sequenceFlow.getTargetElement())))
-                        .findAny().orElse(null);
+                        .findAny().orElse(null));
 //                targetElement = bpmnElementNode;
-                if (targetElement == null) {
-                    System.out.println("Error in detect loop targets relation-1");
-                    return;
-                }
+
+            }
+
+            if(targetElementTemp.get() == null){
+                System.out.println("Error in detect loop targets relation");
+                return;
+            }else{
+                targetElement = targetElementTemp.get();
             }
         }
+
+
+
 
         BPMNElementNode sourceElement = null;
         if (sourceElements.size() == 1) {

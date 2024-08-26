@@ -108,7 +108,7 @@ public class S4 {
 
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
-		bpmnTransformation.removeParallelism();
+//		bpmnTransformation.removeParallelism();
 		bpmnTransformation.findInclusive();
 		bpmnTransformation.findExculisve();
 

@@ -102,7 +102,7 @@ public class S3 {
 		bpmnTransformation.elementsName = elementsName;
 		// find loops
 		bpmnTransformation.findAndRemoveLoops();
-		bpmnTransformation.removeParallelism();
+//		bpmnTransformation.removeParallelism();
 		bpmnTransformation.findInclusive();
 		bpmnTransformation.findExculisve();
 

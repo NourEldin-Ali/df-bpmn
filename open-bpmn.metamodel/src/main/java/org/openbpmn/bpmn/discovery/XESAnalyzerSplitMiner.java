@@ -140,7 +140,6 @@ public class XESAnalyzerSplitMiner {
             //remove self loop
             dependencyGraph.loops.forEach(loop -> {
                 if (loop.get(0).equals(loop.get(1))) {
-                    dependencyGraph.loopsL1.add(loop);
                     dependencyGraph.dependencyGraphWithLoop.removeEdge(loop.get(0), loop.get(0));
                     dependencyGraph.dependencyGraph.addEdge(loop.get(0), loop.get(1));
                 }

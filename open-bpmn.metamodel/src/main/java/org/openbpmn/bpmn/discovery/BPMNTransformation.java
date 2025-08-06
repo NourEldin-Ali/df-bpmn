@@ -103,8 +103,8 @@ public class BPMNTransformation {
 					"INVALID INPUTS: outputPath (/src/example.bpmn), startEvent, endEvents (List), dependencyRelations(List), parallelRelation (List[List])");
 			// correct
 //			example1();
-			// correct
-			// example2();
+//			 correct
+//			 example2();
 			// correct
 			// example3();
 			// correct
@@ -113,8 +113,8 @@ public class BPMNTransformation {
 //			example5();
 //			 example6();
 			// three loops
-			example0();
-			example8();
+//			example0();
+//			example8();
 //			example0();
 		}
 		long endTime = System.nanoTime();
@@ -122,7 +122,7 @@ public class BPMNTransformation {
 		System.out.println("Execution time: " + duration + " ms");
 	}
 
-	static String path = "C:\\Users\\AliNourEldin\\Desktop\\testt.bpmn";
+	static String path = "C:\\Users\\alino\\Desktop\\testt.bpmn";
 
 	private static void example0() {
 		String output = path;

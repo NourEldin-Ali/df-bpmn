@@ -28,7 +28,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.openbpmn.bpmn.layout.App</mainClass>
+							<mainClass>org.openbpmn.bpmn.discovery.BPMNTransformation</mainClass>
 							<classpathPrefix>lib/*</classpathPrefix>
 						</manifest>
 					</archive>
@@ -36,8 +36,17 @@
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
+				 <executions>
+	                <execution>
+	                    <id>make-assembly</id>
+	                    <phase>package</phase>
+	                    <goals>
+	                        <goal>single</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
 			</plugin>
-
+			
 		</plugins>
 	</build>
 	<dependencies>
@@ -64,27 +73,27 @@
 		
 		<dependency>
 			<groupId>com.discovery</groupId>
-			<artifactId>discovery-bonita-bpmn-layout-generator</artifactId>
+			<artifactId>discovery-bpmn-layout-generator</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.discovery</groupId>
-			<artifactId>discovery-bonita-javax.activation-api</artifactId>
+			<artifactId>discovery-javax.activation-api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.discovery</groupId>
-			<artifactId>discovery-bonita-jaxb-api</artifactId>
+			<artifactId>discovery-jaxb-api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.discovery</groupId>
-			<artifactId>discovery-bonita-open-xes</artifactId>
+			<artifactId>discovery-open-xes</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.discovery</groupId>
-			<artifactId>discovery-bonita-openxes-xstream</artifactId>
+			<artifactId>discovery-openxes-xstream</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<!-- JUnit Tests -->
@@ -105,6 +114,11 @@
             <version>3.13.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+		  <groupId>jakarta.xml.bind</groupId>
+		  <artifactId>jakarta.xml.bind-api</artifactId>
+		  <version>4.0.0</version>
+		</dependency>
     </dependencies>
 
 	<repositories>
